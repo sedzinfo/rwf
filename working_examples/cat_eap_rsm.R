@@ -111,6 +111,107 @@ Pi_rsm<-function(theta,bank,D=1) {
   return(result)
 }
 ##########################################################################################
+# ITEM INFORMATION
+##########################################################################################
+#' @title compute item information under the rating scale model
+#' @param theta ability
+#' @param bank matrix of item parameters
+#' @param D metric constant can be 1 or 1.702
+#' @note this function should return the same result as catR::Ii(model="RSM") \cr
+#'       the polytomous item information is the sum over categories of the squared \cr
+#'       first derivative divided by the probability \cr
+#'       I_j(theta)=sum_k (dP_jk/dtheta)^2/P_jk \cr
+#'       for a dichotomous item the two categories are P and 1-P with derivatives \cr
+#'       dP and -dP so the sum collapses to dP^2/P+dP^2/(1-P)=dP^2/(P*(1-P)) which is \cr
+#'       the familiar 4PL formula so this is the same quantity not a different one \cr
+#'       under the rating scale model every item shares the same delta thresholds so \cr
+#'       every information curve has the same shape and the same maximum and differs \cr
+#'       only by a shift of lambdaj \cr
+#'       test information is the sum of the item informations
+#' @return Ii item information for each item
+#' @export
+#' @examples
+#' bank<-matrix(c(-0.560,-0.230,1.559,0.071,0.129,
+#'                rep(1.715,5),rep(0.461,5),rep(-1.265,5),rep(-0.687,5)),
+#'              nrow=5,dimnames=list(c(1,2,3,4,5),
+#'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
+#' catR::Ii(th=0,bank,model="RSM") # this will work with catR package installed
+#' Ii_rsm(theta=0,bank)
+#' sum(Ii_rsm(theta=0,bank)$Ii) # test information
+#' v<-seq(-4,4,by=.1)
+#' info<-matrix(NA,length(v),nrow(bank))
+#' for (i in 1:length(v)) info[i,]<-Ii_rsm(theta=v[i],bank)$Ii
+#' plot(x=v,y=info[,1],xlab=expression(theta),ylab="information",
+#'      main="item information curves",type="l",col="red",ylim=c(0,max(info)))
+#' lines(y=info[,2],x=v,col="green")
+#' lines(y=info[,3],x=v,col="blue")
+#' lines(y=info[,4],x=v,col="yellow")
+#' lines(y=info[,5],x=v,col="orange")
+#' plot(x=v,y=rowSums(info),xlab=expression(theta),ylab="information",
+#'      main="test information",type="l")
+Ii_rsm<-function(theta,bank,D=1) {
+  bank<-rbind(bank)
+  prob<-Pi_rsm(theta,bank,D=D)
+  P<-prob$Pi
+  dP<-prob$dPi
+  Ii<-as.numeric(rowSums(dP^2/P,na.rm=TRUE))
+  result<-list(Ii=Ii)
+  return(result)
+}
+##########################################################################################
+# NEXT ITEM SELECTION
+##########################################################################################
+#' @title select the next item by maximum Fisher information
+#' @param theta current ability estimate
+#' @param bank matrix of item parameters
+#' @param out vector of the indices of the items already administered
+#' @param D metric constant can be 1 or 1.702
+#' @param randomesque number of most informative items to draw at random from \cr
+#'                    1 is pure maximum information and 3 to 5 spreads item exposure
+#' @note this function should return the same result as \cr
+#'       catR::nextItem(itemBank,model="RSM",theta,out,criterion="MFI") when \cr
+#'       randomesque is 1 \cr
+#'       under the rating scale model this is equivalent to picking the item whose \cr
+#'       lambdaj sits closest to theta because all information curves are identical \cr
+#'       in shape so the maximum is a pure nearest neighbour lookup on lambdaj
+#' @return item  index of the selected item in the bank \cr
+#'         info  information of the selected item at theta \cr
+#'         available indices of the items still available
+#' @export
+#' @examples
+#' bank<-matrix(c(-0.560,-0.230,1.559,0.071,0.129,
+#'                rep(1.715,5),rep(0.461,5),rep(-1.265,5),rep(-0.687,5)),
+#'              nrow=5,dimnames=list(c(1,2,3,4,5),
+#'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
+#' catR::nextItem(bank,model="RSM",theta=0,criterion="MFI") # with catR installed
+#' next_item_rsm(theta=0,bank)
+#' next_item_rsm(theta=0,bank,out=c(4))
+#' catR::nextItem(bank,model="RSM",theta=1.5,criterion="MFI") # with catR installed
+#' next_item_rsm(theta=1.5,bank,out=c(4,5))
+#' # a short adaptive test driven by the functions in this file
+#' responses<-c()
+#' administered<-c()
+#' theta<-0
+#' for (step in 1:4) {
+#'   item<-next_item_rsm(theta,bank,out=administered)$item
+#'   administered<-c(administered,item)
+#'   responses<-c(responses,4) # replace by the real response scored 0 to m
+#'   theta<-eap_est_rsm(bank[administered,,drop=FALSE],responses)
+#'   cat("step",step,"item",item,"theta",round(theta,4),
+#'       "se",round(eap_se_rsm(theta,bank[administered,,drop=FALSE],responses),4),"\n")
+#' }
+next_item_rsm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
+  bank<-rbind(bank)
+  available<-setdiff(1:nrow(bank),out)
+  if (length(available)==0) stop("no item left in the bank",call.=FALSE)
+  info<-Ii_rsm(theta,bank[available,,drop=FALSE],D=D)$Ii
+  k<-min(randomesque,length(available))
+  top<-order(info,decreasing=TRUE)[1:k]
+  pick<-if (k==1) top else sample(top,1)
+  result<-list(item=available[pick],info=info[pick],available=available)
+  return(result)
+}
+##########################################################################################
 # LIKELIHOOD
 ##########################################################################################
 #' @title compute the likelihood of a polytomous response pattern
@@ -275,10 +376,15 @@ eap_est_rsm(bank,response_5)
 catR::eapEst(bank,response_5,model="RSM")
 # STANDARD ERROR ESTIMATION
 eap_se_rsm(eap_est_rsm(bank,response_1),bank,response_1)
+catR::eapSem(eap_est_rsm(bank,response_1),bank,response_1,model="RSM")
 eap_se_rsm(eap_est_rsm(bank,response_2),bank,response_2)
+catR::eapSem(eap_est_rsm(bank,response_2),bank,response_2,model="RSM")
 eap_se_rsm(eap_est_rsm(bank,response_3),bank,response_3)
+catR::eapSem(eap_est_rsm(bank,response_3),bank,response_3,model="RSM")
 eap_se_rsm(eap_est_rsm(bank,response_4),bank,response_4)
+catR::eapSem(eap_est_rsm(bank,response_4),bank,response_4,model="RSM")
 eap_se_rsm(eap_est_rsm(bank,response_5),bank,response_5)
+catR::eapSem(eap_est_rsm(bank,response_5),bank,response_5,model="RSM")
 ##########################################################################################
 # EXAMPLE 2
 ##########################################################################################
@@ -306,3 +412,4 @@ Pi_rsm(theta=0,bank)$Pi
 response_1<-c(4,3,2,1,3)
 eap_est_rsm(bank,response_1)
 eap_se_rsm(eap_est_rsm(bank,response_1),bank,response_1)
+
