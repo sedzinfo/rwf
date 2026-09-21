@@ -1,0 +1,614 @@
+---
+title: "EAP Ability Estimation From Scratch: The Rating Scale Model"
+author: ""
+output:
+  html_document:
+    css: styles.css
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+    code_folding: show
+    self_contained: true
+vignette: >
+  %\VignetteIndexEntry{EAP Ability Estimation From Scratch: The Rating Scale Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+source(paste0(directory, "code_options.R"))
+
+library(ggplot2)
+```
+
+## Description
+
+The companion vignette *EAP Ability Estimation From Scratch* builds the whole EAP pipeline for **dichotomous** items scored right/wrong under the 4PL model. This vignette does the same job for **polytomous** items — a Likert scale scored 0, 1, 2, 3, 4 — under Andrich's **Rating Scale Model (RSM)**, and adds the two pieces an adaptive test actually needs on top of scoring: **item information** and **next-item selection**.
+
+[`working_examples/cat_eap_rsm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_rsm.R) implements the full pipeline in eight small functions, in base R, with no dependency on `catR`:
+
+| Function | Purpose | `catR` equivalent it mirrors |
+|---|---|---|
+| `density_function()` | Normal density | `stats::dnorm()` |
+| `integrate_cat()` | Numerical integration (trapezoidal rule) | `catR::integrate.catR()` |
+| `Pi_rsm()` | Category response probabilities + derivatives | `catR::Pi(model="RSM")` |
+| `Ii_rsm()` | Item information | `catR::Ii(model="RSM")` |
+| `next_item_rsm()` | Maximum Fisher information item selection | `catR::nextItem(criterion="MFI")` |
+| `likelihood_rsm()` | Likelihood of a polytomous response pattern | *(internal to `catR`)* |
+| `eap_est_rsm()` | EAP ability estimate | `catR::eapEst(model="RSM")` |
+| `eap_se_rsm()` | EAP standard error | `catR::eapSem(model="RSM")` |
+
+This vignette walks through the theory behind each function, validates every one of them against its `catR` counterpart, and then uses them to run a small adaptive test end to end.
+
+```{r library,message=FALSE,warning=FALSE}
+library(catR)
+```
+
+```{r source_functions}
+source(paste0(directory, "../working_examples/cat_eap_rsm.R"), local = knitr::knit_global())
+```
+
+---
+
+## Theoretical Background
+
+### From right/wrong to ordered categories
+
+A dichotomous model needs one curve per item: the probability of a correct response. A polytomous item scored $0,1,\ldots,m$ needs $m+1$ curves — one per category — that sum to 1 at every ability level. The **Rating Scale Model** builds those curves from a step-by-step argument: to land in category $k$ you must have passed each of the $k$ thresholds below it.
+
+$$P(X_j = k \mid \theta) = \frac{\exp\left[\sum_{t=1}^{k} D\big(\theta - (\lambda_j + \delta_t)\big)\right]}{\sum_{h=0}^{m}\exp\left[\sum_{t=1}^{h} D\big(\theta - (\lambda_j + \delta_t)\big)\right]}$$
+
+with the empty sum for $k=0$ taken to be zero.
+
+- $\lambda_j$ — the **item location**: how endorsable item $j$ is overall. This is the only parameter that varies across items.
+- $\delta_1,\ldots,\delta_m$ — the **category thresholds**: how much harder each successive step is than the item's own location. In the RSM these are **shared by every item in the bank**.
+- $D$ — the usual metric constant (1, or 1.702 for the normal-ogive metric).
+
+That shared-threshold assumption is the whole point of the model, and it is what separates the RSM from the **Partial Credit Model (PCM)**. Under the PCM each item gets its own set of thresholds $\delta_{j1},\ldots,\delta_{jm}$; under the RSM the rating scale is assumed to work the same way for every item — "agree" means the same distance above an item's location whether the item is easy or hard. This is the natural assumption for a questionnaire where every item shares one response format ("strongly disagree" … "strongly agree"), and it buys a large reduction in the number of parameters: $n + m$ instead of $n \times m$.
+
+The layout `cat_eap_rsm.R` expects encodes this directly: column 1 of `bank` holds $\lambda_j$, columns 2 to $m+1$ hold $\delta_1,\ldots,\delta_m$ — and those threshold columns are **identical down every row**. An item with fewer categories than the widest item is padded with `NA`.
+
+### Item information
+
+For a dichotomous item, Fisher information is the familiar $I_j(\theta) = P'^2 / \big(P(1-P)\big)$. The polytomous generalisation sums the same quantity over categories:
+
+$$I_j(\theta) = \sum_{k=0}^{m} \frac{\big[\partial P_{jk}(\theta)/\partial\theta\big]^2}{P_{jk}(\theta)}$$
+
+These are not two different formulas. For $m=1$ the two categories are $P$ and $1-P$, with derivatives $P'$ and $-P'$, so the sum collapses to $P'^2/P + P'^2/(1-P) = P'^2/\big(P(1-P)\big)$ — the dichotomous case exactly. This is why `Pi_rsm()` returns the derivatives alongside the probabilities: `Ii_rsm()` is a one-line consumer of them. **Test information** is the sum of item informations, and its reciprocal square root is the asymptotic standard error of a maximum-likelihood ability estimate.
+
+### Next-item selection
+
+An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate — the **Maximum Fisher Information (MFI)** criterion. Because the RSM gives every item the *same* thresholds, every item information curve is the *same function shifted by $\lambda_j$*: $I_j(\theta) = f(\theta - \lambda_j)$ for one common $f$. Two consequences, both verified numerically below:
+
+1. Every item in the bank has the **same maximum information**. Items differ only in *where* on the $\theta$ axis they are useful, never in *how* useful they can be. There is no such thing as a "better" item in an RSM bank, only a better-targeted one.
+2. MFI therefore reduces to a **nearest-neighbour lookup on $\lambda_j$** — no information needs to be computed at all, in principle.
+
+`next_item_rsm()` also exposes a `randomesque` argument: drawing at random from the $k$ most informative items rather than always taking the single best. This is standard exposure control — pure MFI would administer the same handful of items to almost everyone, which is both a security problem and a waste of the bank.
+
+### Likelihood of a response pattern
+
+Under **local independence**, the likelihood of a response pattern $\mathbf{x} = (x_1,\ldots,x_n)$, with each $x_i \in \{0,\ldots,m\}$, is
+
+$$L(\theta) = \prod_{i=1}^{n} P_{i,x_i}(\theta)$$
+
+This is the polytomous counterpart of $\prod P_i^{x_i}(1-P_i)^{1-x_i}$. The dichotomous version uses the exponents $x_i$ and $1-x_i$ as a *switch* to pick one of two probabilities; with more than two categories there is nothing to switch between, so the response simply indexes the right column of the probability matrix. The `x[i]+1` in the code is index bookkeeping: categories start at 0, R columns start at 1.
+
+### EAP and its standard error
+
+Exactly as in the dichotomous case, a **prior** $\pi(\theta)$ on ability (standard normal by default) turns the likelihood into a posterior, and EAP reports its mean and standard deviation:
+
+$$\hat\theta_{EAP} = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}
+\qquad
+SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
+
+Both integrals are evaluated on a grid of `nqp` quadrature points (default 33) spanning `lower` to `upper` (default $\pm 4$) and integrated with the trapezoidal rule. The motivation is unchanged: Maximum Likelihood has no finite maximum for a pattern in which every response sits in the lowest or the highest category, whereas the normal prior guarantees both integrals converge.
+
+### A Rasch-family consequence: the raw score is sufficient
+
+The RSM has no discrimination parameter — it is a member of the **Rasch family**. Writing out $L(\theta)$ for the RSM shows that $\theta$ enters the numerator only through $D\,\theta \sum_i x_i$: the response pattern touches the likelihood *only* through its **total score**. The raw sum score is therefore a **sufficient statistic** for $\theta$, and two examinees with the same total get the *identical* EAP estimate no matter which items they endorsed. This is a sharp contrast with the 4PL vignette, where differing discriminations make the pattern itself informative, and it is demonstrated to twelve decimal places below.
+
+---
+
+## The item bank
+
+A five-item, five-category bank: $\lambda_j$ varies across items, the four thresholds are common to all of them.
+
+```{r bank}
+lambdaj <- c(-0.560, -0.230, 1.559, 0.071, 0.129)
+delta1  <- rep( 1.715, 5)
+delta2  <- rep( 0.461, 5)
+delta3  <- rep(-1.265, 5)
+delta4  <- rep(-0.687, 5)
+
+bank <- matrix(c(lambdaj, delta1, delta2, delta3, delta4), nrow = 5,
+               dimnames = list(1:5, c("lambdaj", "delta1", "delta2", "delta3", "delta4")))
+bank
+```
+
+Note the threshold columns are constant down each column — that is the rating scale assumption made concrete.
+
+---
+
+## Validating each piece against `catR`
+
+### Normal density
+
+```{r density_check}
+v <- seq(-3, 3, by = 0.1)
+comparison <- data.frame(x = v, density_function = density_function(v), dnorm = dnorm(v))
+head(comparison)
+all.equal(comparison$density_function, comparison$dnorm)
+```
+
+```{r density_plot,dev='png'}
+ggplot(comparison, aes(x = x)) +
+  geom_line(aes(y = density_function, color = "density_function()"), linewidth = 1) +
+  geom_point(aes(y = dnorm, color = "dnorm()"), shape = 1) +
+  labs(title = "Hand-written normal density vs. dnorm()",
+       x = expression(theta), y = "density", color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+The function writes out the textbook normal density longhand. One detail from its documentation is worth repeating: it uses `exp(1)` rather than a hard-coded `2.71828`, which is accurate to only six significant digits and shifts the EAP estimate in the seventh decimal.
+
+### Numerical integration
+
+```{r integration_check}
+x <- seq(from = -3, to = 3, length = 33)
+y <- round(exp(x), 2)
+c(integrate_cat = integrate_cat(x, y), integrate.catR = catR::integrate.catR(x, y))
+all.equal(integrate_cat(x, y), catR::integrate.catR(x, y))
+```
+
+### Category response probabilities and derivatives
+
+```{r pi_check}
+mine <- Pi_rsm(theta = 0, bank)
+theirs <- catR::Pi(th = 0, bank, model = "RSM")
+
+round(mine$Pi, 6)
+all.equal(mine$Pi, theirs$Pi)
+all.equal(mine$dPi, theirs$dPi)
+```
+
+The derivatives matter as much as the probabilities — `Ii_rsm()` is built entirely from them — so both are checked. The metric constant is checked too, since `D` enters every exponent:
+
+```{r pi_check_D}
+c(Pi  = all.equal(Pi_rsm(0.7, bank, D = 1.702)$Pi,
+                  catR::Pi(0.7, bank, model = "RSM", D = 1.702)$Pi),
+  dPi = all.equal(Pi_rsm(0.7, bank, D = 1.702)$dPi,
+                  catR::Pi(0.7, bank, model = "RSM", D = 1.702)$dPi))
+```
+
+```{r pi_plot,dev='png'}
+theta_grid <- seq(-6, 6, by = 0.1)
+curves <- t(sapply(theta_grid, function(th) Pi_rsm(theta = th, bank)$Pi[1, ]))
+df_curves <- data.frame(theta = theta_grid, curves)
+names(df_curves)[-1] <- paste0("category ", 0:4)
+df_long <- reshape2::melt(df_curves, id.vars = "theta",
+                          variable.name = "category", value.name = "P")
+
+ggplot(df_long, aes(x = theta, y = P, color = category)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Category response curves, item 1",
+       subtitle = "probability of each of the five response categories as a function of ability",
+       x = expression(theta), y = expression(P(theta)), color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+These five curves sum to 1 at every $\theta$, and the extremes behave as they must: category 0 dominates at low ability, category 4 at high ability. The middle three, however, never dominate anywhere — the section on threshold ordering below explains why, because this is a property of the bank rather than of the model.
+
+### Item information
+
+```{r ii_check}
+data.frame(mine = Ii_rsm(theta = 0, bank)$Ii,
+           catR = as.numeric(catR::Ii(th = 0, bank, model = "RSM")$Ii))
+all.equal(Ii_rsm(0, bank)$Ii, as.numeric(catR::Ii(0, bank, model = "RSM")$Ii))
+```
+
+```{r ii_plot,dev='png'}
+info_grid <- seq(-4, 4, by = 0.05)
+info <- t(sapply(info_grid, function(th) Ii_rsm(th, bank)$Ii))
+df_info <- data.frame(theta = info_grid, info)
+names(df_info)[-1] <- paste0("item ", 1:5, " (λ=", lambdaj, ")")
+df_info_long <- reshape2::melt(df_info, id.vars = "theta",
+                               variable.name = "item", value.name = "information")
+
+ggplot(df_info_long, aes(x = theta, y = information, color = item)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Item information curves",
+       subtitle = "identical in shape, shifted only by the item location",
+       x = expression(theta), y = "information", color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+```{r test_info_plot,dev='png'}
+df_test <- data.frame(theta = info_grid, information = rowSums(info))
+
+ggplot(df_test, aes(x = theta, y = information)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  labs(title = "Test information", x = expression(theta), y = "information") +
+  theme_bw(base_size = 12)
+```
+
+The claim that every curve is one common function shifted by $\lambda_j$ is easy to check directly — locate each peak numerically:
+
+```{r info_peaks}
+peaks <- t(sapply(1:5, function(j) {
+  opt <- optimize(function(th) Ii_rsm(th, bank[j, , drop = FALSE])$Ii,
+                  interval = c(-6, 6), maximum = TRUE)
+  c(peak = opt$maximum, max_information = opt$objective)
+}))
+data.frame(lambdaj = lambdaj, peaks, offset = peaks[, "peak"] - lambdaj)
+```
+
+Every item reaches the same maximum information, at a point a constant offset above its own $\lambda_j$. The bank has no strong and weak items — only items aimed at different parts of the scale.
+
+### Next-item selection
+
+```{r next_item_check}
+mine <- next_item_rsm(theta = 0, bank)
+theirs <- catR::nextItem(bank, model = "RSM", theta = 0, criterion = "MFI")
+c(mine_item = mine$item, catR_item = theirs$item,
+  mine_info = mine$info, catR_info = theirs$info)
+```
+
+With items already administered excluded via `out`:
+
+```{r next_item_out}
+c(mine = next_item_rsm(theta = 1.5, bank, out = c(4, 5))$item,
+  catR = catR::nextItem(bank, model = "RSM", theta = 1.5, out = c(4, 5),
+                        criterion = "MFI")$item)
+```
+
+And the nearest-neighbour shortcut, checked across the whole ability range:
+
+```{r nn_check}
+grid <- seq(-4, 4, by = 0.05)
+mfi <- sapply(grid, function(th) which.max(Ii_rsm(th, bank)$Ii))
+nn  <- sapply(grid, function(th) which.min(abs(th - lambdaj)))
+c(agreements = sum(mfi == nn), grid_points = length(grid))
+grid[mfi != nn]
+```
+
+MFI and "pick the item whose $\lambda_j$ is closest to $\theta$" agree almost everywhere. The two disagreements are not errors: the information peak sits a constant ~0.0067 *above* $\lambda_j$, so the exact rule is nearest-neighbour on $\lambda_j$ relative to $\theta - 0.0067$, and the two rules can only differ inside a band that thin around the midpoint between two adjacent item locations.
+
+### Likelihood
+
+`catR` has no exported likelihood function to compare against, so the check reconstructs the same product from `catR`'s own probability matrix:
+
+```{r likelihood_check}
+response <- c(4, 3, 2, 1, 0)
+P_catR <- catR::Pi(th = 0.3, bank, model = "RSM")$Pi
+manual <- prod(sapply(1:5, function(i) P_catR[i, response[i] + 1]))
+
+c(likelihood_rsm = likelihood_rsm(theta = 0.3, bank = bank, x = response),
+  from_catR_Pi   = manual)
+```
+
+```{r likelihood_plot,dev='png'}
+lik_grid <- seq(-4, 4, by = 0.05)
+df_lik <- data.frame(theta = lik_grid,
+                     likelihood = sapply(lik_grid, function(th)
+                       likelihood_rsm(th, bank, response)))
+
+ggplot(df_lik, aes(x = theta, y = likelihood)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  labs(title = "Likelihood of the response pattern (4, 3, 2, 1, 0)",
+       x = expression(theta), y = "likelihood") +
+  theme_bw(base_size = 12)
+```
+
+### EAP ability estimate and standard error
+
+```{r eap_check}
+patterns <- list(c(0, 0, 0, 0, 0), c(1, 1, 1, 1, 1), c(2, 2, 2, 2, 2),
+                 c(3, 3, 3, 3, 3), c(4, 4, 4, 4, 4), c(4, 3, 2, 1, 0))
+
+validation <- do.call(rbind, lapply(patterns, function(x) {
+  th_mine <- eap_est_rsm(bank, x)
+  th_catR <- catR::eapEst(bank, x, model = "RSM")
+  data.frame(pattern = paste(x, collapse = " "),
+             eap_mine = th_mine,
+             eap_catR = th_catR,
+             se_mine  = eap_se_rsm(th_mine, bank, x),
+             se_catR  = catR::eapSem(th_mine, bank, x, model = "RSM"))
+}))
+validation
+
+c(max_eap_difference = max(abs(validation$eap_mine - validation$eap_catR)),
+  max_se_difference  = max(abs(validation$se_mine  - validation$se_catR)))
+```
+
+Both the point estimate and the standard error reproduce `catR` to machine precision across every pattern, including the two extreme ones where Maximum Likelihood would have failed outright.
+
+---
+
+## Worked example: the raw score is all that matters
+
+Five response patterns, all summing to 10, all endorsing completely different items:
+
+```{r sufficiency}
+same_total <- list(c(2, 2, 2, 2, 2), c(4, 3, 2, 1, 0), c(0, 1, 2, 3, 4),
+                   c(4, 4, 2, 0, 0), c(3, 3, 2, 1, 1))
+
+data.frame(pattern   = sapply(same_total, paste, collapse = " "),
+           raw_score = sapply(same_total, sum),
+           theta_EAP = sprintf("%.12f", sapply(same_total, function(x) eap_est_rsm(bank, x))))
+```
+
+Identical to twelve decimal places. This is the Rasch-family property in action: with no discrimination parameter, $\theta$ enters the likelihood only through the total score, so the pattern carries no information beyond its sum. Whether the examinee gave a middling answer to every item or a maximal answer to some and a minimal answer to others makes no difference at all to the estimate.
+
+This is genuinely a modelling *choice*, not a limitation to work around. It is what makes RSM scores easy to explain and easy to defend — the score sheet and the model agree — and it is exactly what a 2PL/4PL model gives up in exchange for letting better items count for more.
+
+---
+
+## Worked example: EAP across the score range
+
+```{r score_range}
+uniform <- list(c(0, 0, 0, 0, 0), c(1, 1, 1, 1, 1), c(2, 2, 2, 2, 2),
+                c(3, 3, 3, 3, 3), c(4, 4, 4, 4, 4))
+
+results <- data.frame(
+  raw_score = sapply(uniform, sum),
+  theta_EAP = sapply(uniform, function(x) eap_est_rsm(bank, x))
+)
+results$SE <- mapply(function(x, th) eap_se_rsm(th, bank, x), uniform, results$theta_EAP)
+results
+```
+
+```{r score_range_plot,dev='png'}
+ggplot(results, aes(x = raw_score, y = theta_EAP)) +
+  geom_ribbon(aes(ymin = theta_EAP - SE, ymax = theta_EAP + SE),
+              alpha = 0.2, fill = "steelblue") +
+  geom_line(color = "steelblue", linewidth = 1) +
+  geom_point(size = 2, color = "steelblue") +
+  labs(title = "EAP estimate (± 1 SE) vs. raw score",
+       x = "raw score (out of 20)", y = expression(hat(theta)[EAP])) +
+  theme_bw(base_size = 12)
+```
+
+The estimate rises monotonically with the raw score and never approaches the integration bounds of $\pm 4$, even for an all-minimum or an all-maximum pattern — the prior pulls the posterior mean back toward zero. That regularisation is the whole reason to prefer EAP over Maximum Likelihood at the edges of the score range, and the price is a deliberate, known bias toward the prior mean.
+
+Note also that the standard error is *largest* at the extremes. A perfect or a zero score is compatible with a wide range of high (or low) abilities, so the posterior stays broad; a mid-range score pins $\theta$ down much more tightly against this bank.
+
+---
+
+## Worked example: standard error as a function of $\theta$
+
+`eap_se_rsm()` takes `theta` as a free argument. Passing the EAP estimate returns the posterior standard deviation; passing anything else returns the posterior root mean squared deviation around that point, which is necessarily larger.
+
+```{r se_curves}
+se_grid <- seq(-3, 3, by = 0.05)
+se_patterns <- list("all lowest (0 0 0 0 0)"  = c(0, 0, 0, 0, 0),
+                    "all highest (4 4 4 4 4)" = c(4, 4, 4, 4, 4),
+                    "mixed (4 3 2 1 0)"       = c(4, 3, 2, 1, 0))
+
+se_df <- do.call(rbind, lapply(names(se_patterns), function(nm) {
+  data.frame(theta = se_grid,
+             SE = sapply(se_grid, function(th)
+               eap_se_rsm(theta = th, bank = bank, x = se_patterns[[nm]])),
+             pattern = nm)
+}))
+
+eap_points <- do.call(rbind, lapply(names(se_patterns), function(nm) {
+  th <- eap_est_rsm(bank, se_patterns[[nm]])
+  data.frame(theta = th, SE = eap_se_rsm(th, bank, se_patterns[[nm]]), pattern = nm)
+}))
+eap_points
+```
+
+```{r se_curves_plot,dev='png'}
+ggplot(se_df, aes(x = theta, y = SE, color = pattern)) +
+  geom_line(linewidth = 1) +
+  geom_point(data = eap_points, size = 3) +
+  labs(title = "Posterior RMSD vs. evaluation point, by response pattern",
+       subtitle = "solid points mark the EAP estimate, where each curve bottoms out",
+       x = expression(theta), y = "standard error", color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+Each curve is minimised exactly at its own EAP estimate — that is the defining property of a mean as a least-squares summary of a distribution. In practice the two functions are always paired, `eap_se_rsm(eap_est_rsm(bank, x), bank, x)`, and the free `theta` argument is useful mainly for showing what the pairing is doing.
+
+---
+
+## Worked example: a short adaptive test
+
+Everything above assembles into an adaptive loop. At each step, pick the most informative unadministered item at the current estimate, collect a response, rescore, repeat.
+
+```{r adaptive}
+set.seed(1)
+true_theta <- 1.0
+
+# simulate a response to item j from an examinee at true_theta
+simulate_response <- function(j, theta) {
+  p <- Pi_rsm(theta, bank[j, , drop = FALSE])$Pi[1, ]
+  sample(0:(length(p) - 1), size = 1, prob = p)
+}
+
+theta <- 0
+administered <- integer(0)
+responses <- integer(0)
+trace <- data.frame()
+
+for (step in 1:5) {
+  sel <- next_item_rsm(theta, bank, out = administered)
+  administered <- c(administered, sel$item)
+  responses <- c(responses, simulate_response(sel$item, true_theta))
+
+  sub_bank <- bank[administered, , drop = FALSE]
+  theta <- eap_est_rsm(sub_bank, responses)
+  se <- eap_se_rsm(theta, sub_bank, responses)
+
+  trace <- rbind(trace, data.frame(step = step, item = sel$item,
+                                   lambdaj = bank[sel$item, 1],
+                                   information = sel$info,
+                                   response = tail(responses, 1),
+                                   theta_EAP = theta, SE = se))
+}
+trace
+```
+
+```{r adaptive_plot,dev='png'}
+ggplot(trace, aes(x = step, y = theta_EAP)) +
+  geom_hline(yintercept = true_theta, linetype = "dashed", color = "grey40") +
+  geom_ribbon(aes(ymin = theta_EAP - SE, ymax = theta_EAP + SE),
+              alpha = 0.2, fill = "steelblue") +
+  geom_line(color = "steelblue", linewidth = 1) +
+  geom_point(size = 2, color = "steelblue") +
+  annotate("text", x = 1, y = true_theta + 0.08, hjust = 0,
+           label = "true theta", color = "grey40", size = 3.5) +
+  scale_x_continuous(breaks = trace$step) +
+  labs(title = "Adaptive test: EAP estimate (± 1 SE) after each item",
+       x = "item administered", y = expression(hat(theta)[EAP])) +
+  theme_bw(base_size = 12)
+```
+
+The standard error shrinks as items accumulate. Item selection also behaves as the theory predicts — starting from $\theta = 0$ the loop first reaches for the items whose $\lambda_j$ sits nearest zero, then moves outward as the estimate settles.
+
+### Exposure control
+
+Pure MFI is deterministic: every examinee starting at $\theta = 0$ receives the same first item. The `randomesque` argument draws at random from the $k$ best instead.
+
+```{r randomesque}
+set.seed(42)
+table(replicate(2000, next_item_rsm(theta = 0, bank, randomesque = 1)$item))
+table(replicate(2000, next_item_rsm(theta = 0, bank, randomesque = 3)$item))
+```
+
+With `randomesque = 1` the same item is chosen 2000 times out of 2000. With `randomesque = 3` the load is spread evenly over the three best-targeted items. The cost is small:
+
+```{r randomesque_cost}
+info_at_0 <- Ii_rsm(theta = 0, bank)$Ii
+c(best_item          = max(info_at_0),
+  mean_of_top_3      = mean(sort(info_at_0, decreasing = TRUE)[1:3]),
+  proportion_of_best = mean(sort(info_at_0, decreasing = TRUE)[1:3]) / max(info_at_0))
+```
+
+Spreading exposure over the three best items retains about 95% of the information of always taking the single best — the standard trade-off between measurement efficiency and item security.
+
+---
+
+## Worked example: threshold ordering
+
+The thresholds in this bank are $1.715, 0.461, -1.265, -0.687$ — **not increasing**. Disordered thresholds are common in real data and mean that some categories are never the most likely response at any ability level.
+
+```{r disordered}
+modal_category <- function(b) {
+  th <- seq(-8, 8, by = 0.02)
+  sort(unique(sapply(th, function(t) which.max(Pi_rsm(t, b)$Pi[1, ])))) - 1
+}
+
+bank_ordered <- bank
+bank_ordered[, 2:5] <- matrix(rep(sort(bank[1, 2:5]), each = 5), nrow = 5)
+
+list(disordered = modal_category(bank),
+     ordered    = modal_category(bank_ordered))
+```
+
+With the thresholds as given, only categories 0 and 4 are ever modal — the model says the middle three responses are never the single most likely answer for anybody. Sorting the thresholds into increasing order makes every category modal over some stretch of the scale:
+
+```{r ordering_plot,dev='png'}
+curves_for <- function(b, label) {
+  g <- seq(-6, 6, by = 0.05)
+  m <- t(sapply(g, function(th) Pi_rsm(th, b)$Pi[1, ]))
+  d <- data.frame(theta = g, m)
+  names(d)[-1] <- paste0("category ", 0:4)
+  out <- reshape2::melt(d, id.vars = "theta",
+                        variable.name = "category", value.name = "P")
+  out$thresholds <- label
+  out
+}
+
+both <- rbind(curves_for(bank,         "as given (disordered)"),
+              curves_for(bank_ordered, "sorted (ordered)"))
+
+ggplot(both, aes(x = theta, y = P, color = category)) +
+  geom_line(linewidth = 0.9) +
+  facet_wrap(~ thresholds) +
+  labs(title = "Category response curves, item 1",
+       subtitle = "effect of threshold ordering on whether middle categories are ever modal",
+       x = expression(theta), y = expression(P(theta)), color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+The information consequence runs the other way:
+
+```{r ordering_info}
+g <- seq(-8, 8, by = 0.02)
+c(peak_test_information_disordered = max(sapply(g, function(t) sum(Ii_rsm(t, bank)$Ii))),
+  peak_test_information_ordered    = max(sapply(g, function(t) sum(Ii_rsm(t, bank_ordered)$Ii))))
+```
+
+Disordered thresholds concentrate the scale's discriminating power into effectively fewer, wider steps, which raises peak information — the item behaves more like a sharp dichotomy than a graded scale. Ordered thresholds spread information over a broader ability range instead. Higher peak information is not automatically better here: it is bought by the middle categories doing no distinct work, which is usually a sign the response format is not being used as intended rather than a well-targeted item.
+
+---
+
+## Worked example: items with different numbers of categories
+
+Items need not all share a category count. A four-point item in a five-point bank pads its unused threshold with `NA`, and its responses are then scored 0 to 3.
+
+```{r na_padding}
+bank_mixed <- bank
+bank_mixed[5, "delta4"] <- NA
+bank_mixed
+
+round(Pi_rsm(theta = 0, bank_mixed)$Pi, 6)
+```
+
+Item 5's `cat4` is `NA` — the category does not exist — and its remaining four probabilities still sum to 1. Scoring works unchanged:
+
+```{r na_padding_eap}
+response_mixed <- c(4, 3, 2, 1, 3)   # item 5 can only be scored 0 to 3
+th <- eap_est_rsm(bank_mixed, response_mixed)
+
+c(eap_mine = th,
+  eap_catR = catR::eapEst(bank_mixed, response_mixed, model = "RSM"),
+  se_mine  = eap_se_rsm(th, bank_mixed, response_mixed),
+  se_catR  = catR::eapSem(th, bank_mixed, response_mixed, model = "RSM"))
+```
+
+---
+
+## Worked example: the numerical settings
+
+The EAP integrals are approximations, and four arguments control them. None of these is a free choice to make casually.
+
+```{r settings}
+x <- c(4, 4, 4, 4, 4)   # the hardest case for numerical integration
+
+rbind(
+  data.frame(setting = "quadrature points", value = c(11, 33, 101, 501),
+             theta = sapply(c(11, 33, 101, 501),
+                            function(n) eap_est_rsm(bank, x, nqp = n))),
+  data.frame(setting = "integration bound", value = c(3, 4, 6),
+             theta = sapply(c(3, 4, 6),
+                            function(b) eap_est_rsm(bank, x, lower = -b, upper = b))),
+  data.frame(setting = "prior SD", value = c(1, 2),
+             theta = sapply(c(1, 2),
+                            function(s) eap_est_rsm(bank, x, priorPar = c(0, s)))),
+  data.frame(setting = "metric constant D", value = c(1, 1.702),
+             theta = sapply(c(1, 1.702),
+                            function(d) eap_est_rsm(bank, x, D = d)))
+)
+```
+
+Three different kinds of effect are visible here, and they should not be confused with one another:
+
+- **Quadrature points** are pure approximation error. Moving from 11 to 33 points changes the estimate by about 0.006; beyond 101 the estimate has converged to four decimals. The default of 33 is a reasonable accuracy/speed compromise and matches `catR`.
+- **Integration bounds** are also approximation error, but of a more dangerous kind. Truncating at $\pm 3$ moves the estimate by 0.044, because for an all-maximum pattern the posterior still has real mass beyond $\theta = 3$ and cutting it off silently biases the estimate downward. Widening to $\pm 6$ changes little. Bounds must be wide enough for the *most extreme pattern the bank can produce*, not for a typical one.
+- **The prior SD and the metric constant are not approximation error at all** — they are different models. Doubling the prior SD to 2 weakens the shrinkage and moves the estimate from 1.87 to 2.57; changing $D$ rescales the whole latent metric. Both belong in the model specification and must match whatever was used to calibrate the item parameters.
+
+---
+
+## Conclusion
+
+All eight functions in `cat_eap_rsm.R` reproduce their `catR` counterparts to machine precision: the normal density, the trapezoidal integrator, RSM category probabilities and their derivatives, item information, MFI item selection, and the two integrals that define EAP scoring. Together they run a complete polytomous adaptive test in a few hundred lines of base R.
+
+Seeing it written out makes the model's character visible in a way a package call does not. The RSM's shared thresholds mean every item information curve is the same curve shifted along the ability axis — no item is more informative than any other, only better targeted, which turns adaptive item selection into a nearest-neighbour lookup. Its Rasch-family structure makes the raw score a sufficient statistic, so the response pattern contributes nothing beyond its total. And the prior does the same job here as in the dichotomous case: it keeps estimates and standard errors finite for the all-minimum and all-maximum patterns that a real rating scale produces constantly, at the cost of a known, deliberate pull toward the prior mean.
+
+---
+
+*Rendered with R `r getRversion()` · validated against catR `r as.character(packageVersion("catR"))`*

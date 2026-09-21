@@ -345,7 +345,7 @@ eap_se_rsm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 # EXAMPLES
 ##########################################################################################
 # https://dimitrios.shinyapps.io/mleirt/ check the EAP-MAP Rasch tab to see the effect of prior parameters and quadratures on estimation
-# https://dimitrios.shinyapps.io/modelsirt/ check the Rasch-$PL tab to see the ability response probability curve
+# https://dimitrios.shinyapps.io/modelsirt/ check the RSM tab to see the ability response probability curve
 ##########################################################################################
 # EXAMPLE 1
 ##########################################################################################
