@@ -79,7 +79,8 @@ integrate_cat<-function(x,y) {
 #'       derivative of a category is the same difference of two adjacent derivatives \cr
 #'       when theta is far above the thresholds both cumulative curves are close to 1 \cr
 #'       and their difference loses precision so probabilities below about 1e-11 are \cr
-#'       inaccurate and below about 1e-16 become exactly 0 \cr
+#'       inaccurate and below about 1e-16 they are rounding noise that is 0 or a \cr
+#'       multiple of 1.1e-16 and can even be slightly negative \cr
 #'       catR computes them the same way and only response patterns that contradict \cr
 #'       theta strongly on very discriminating items are affected
 #' @return Pi   category response probabilities one row per item one column per category \cr

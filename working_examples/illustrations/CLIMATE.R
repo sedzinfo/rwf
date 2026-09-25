@@ -138,7 +138,7 @@ frame_paths <- character(length(plots))
 for (i in seq_along(plots)) {
   path <- file.path(frames_dir, sprintf("frame_%04d.png", i))
   ggsave(path, plots[[i]],
-         width = 10, height = 10,
+         width = 20, height = 20,
          dpi = 600, bg = "#0D1B2A"
   )
   frame_paths[i] <- path
@@ -146,7 +146,7 @@ for (i in seq_along(plots)) {
 # ── stitch into GIF ────────────────────────────────────────────────────────────
 gifski::gifski(frame_paths,
                gif_file = "arctic_ice_animated.gif",
-               width = 800, height = 800, delay = 1
+               width = 1000, height = 1000, delay = 1
 )
 ##########################################################################################
 # SPIDER PLOT GGPLOT ANIMATE

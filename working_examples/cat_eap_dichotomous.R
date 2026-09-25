@@ -112,6 +112,156 @@ Pi<-function(theta,bank,D=1) {
   return(result)
 }
 ##########################################################################################
+# ITEM INFORMATION
+##########################################################################################
+#' @title compute item information under the 4PL model
+#' @param theta ability
+#' @param bank item parameters
+#' @param D metric constant can be 1 or 1.702
+#' @note this function should return the same result as the catR::Ii function \cr
+#'       the item information is the squared first derivative divided by the \cr
+#'       variance of the response \cr
+#'       I_j(theta)=dP_j^2/(P_j*(1-P_j)) \cr
+#'       this is the polytomous sum_k (dP_jk/dtheta)^2/P_jk with the two categories \cr
+#'       P_j and 1-P_j \cr
+#'       for the 2PL with c=0 and d=1 it becomes D^2*a^2*P_j*(1-P_j) which peaks at \cr
+#'       theta=b with a height of D^2*a^2/4 \cr
+#'       a guessing parameter c above 0 or a slipping parameter d below 1 lowers the \cr
+#'       information and with d=1 the peak moves above b to \cr
+#'       b+log((1+sqrt(1+8*c))/2)/(D*a) \cr
+#'       Pi returns 1e-10 and 1-1e-10 instead of 0 and 1 so the information stays \cr
+#'       finite when a probability rounds to 0 or 1 \cr
+#'       test information is the sum of the item informations
+#' @return Ii item information for each item
+#' @export
+#' @examples
+#' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
+#'                0,0,0,0,0,1,1,1,1,1),
+#'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
+#' catR::Ii(th=0,bank) # this will work with catR package installed
+#' Ii(theta=0,bank)
+#' sum(Ii(theta=0,bank)$Ii) # test information
+#' # for the 2PL the information is a^2*P*(1-P)
+#' P<-Pi(theta=0,bank)$Pi
+#' bank[,1]^2*P*(1-P)
+#' v<-seq(-4,4,by=.1)
+#' info<-matrix(NA,length(v),nrow(bank))
+#' for (i in 1:length(v)) info[i,]<-Ii(theta=v[i],bank)$Ii
+#' plot(x=v,y=info[,1],xlab=expression(theta),ylab="information",
+#'      main="item information curves",type="l",col="red",ylim=c(0,max(info)))
+#' lines(y=info[,2],x=v,col="green")
+#' lines(y=info[,3],x=v,col="blue")
+#' lines(y=info[,4],x=v,col="yellow")
+#' lines(y=info[,5],x=v,col="orange")
+#' plot(x=v,y=rowSums(info),xlab=expression(theta),ylab="information",
+#'      main="test information",type="l")
+#' # a guessing parameter lowers the information of item 3 and moves its peak above b
+#' bank_3pl<-bank
+#' bank_3pl[,3]<-0.2
+#' v<-seq(-4,4,by=.001)
+#' info_2pl<-sapply(v,function(t) Ii(theta=t,bank)$Ii[3])
+#' info_3pl<-sapply(v,function(t) Ii(theta=t,bank_3pl)$Ii[3])
+#' c(max(info_2pl),max(info_3pl))
+#' c(v[which.max(info_2pl)],v[which.max(info_3pl)])
+#' bank[3,2]+log((1+sqrt(1+8*0.2))/2)/bank[3,1]
+Ii<-function(theta,bank,D=1) {
+  bank<-rbind(bank)
+  prob<-Pi(theta,bank,D=D)
+  P<-prob$Pi
+  dP<-prob$dPi
+  Ii<-dP^2/(P*(1-P))
+  result<-list(Ii=Ii)
+  return(result)
+}
+##########################################################################################
+# NEXT ITEM SELECTION
+##########################################################################################
+#' @title select the next item by maximum Fisher information
+#' @param theta current ability estimate
+#' @param bank matrix of item parameters
+#' @param out vector of the indices of the items already administered
+#' @param D metric constant can be 1 or 1.702
+#' @param randomesque number of most informative items to draw at random from \cr
+#'                    1 is pure maximum information and 3 to 5 spreads item exposure
+#' @note this function should return the same result as \cr
+#'       catR::nextItem(itemBank,theta,out,criterion="MFI") when randomesque is 1 and \cr
+#'       the most informative item is unique \cr
+#'       when several items tie exactly catR draws one of them at random while this \cr
+#'       function takes the first \cr
+#'       with randomesque above 1 catR also keeps every item tied with the last one kept \cr
+#'       so it can draw from more than randomesque items \cr
+#'       when every item has the same a with c=0 and d=1 the information curves are \cr
+#'       copies of one another shifted by b and symmetric around it so the most \cr
+#'       informative item is the one whose b is closest to theta \cr
+#'       with different a c or d the curves differ in height and shape so the \cr
+#'       information of every available item has to be computed at theta
+#' @return item  index of the selected item in the bank \cr
+#'         info  information of the selected item at theta \cr
+#'         available indices of the items still available
+#' @export
+#' @examples
+#' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
+#'                0,0,0,0,0,1,1,1,1,1),
+#'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
+#' catR::nextItem(bank,theta=0,criterion="MFI") # with catR installed
+#' next_item(theta=0,bank)
+#' next_item(theta=0,bank,out=c(3))
+#' catR::nextItem(bank,theta=3,criterion="MFI") # with catR installed
+#' next_item(theta=3,bank)
+#' # a short adaptive test driven by the functions in this file
+#' responses<-c()
+#' administered<-c()
+#' theta<-0
+#' for (step in 1:4) {
+#'   item<-next_item(theta,bank,out=administered)$item
+#'   administered<-c(administered,item)
+#'   responses<-c(responses,1) # replace by the real response scored 0 or 1
+#'   theta<-eap_est(bank[administered,,drop=FALSE],responses)
+#'   cat("step",step,"item",item,"theta",round(theta,4),
+#'       "se",round(eap_se(theta,bank[administered,,drop=FALSE],responses),4),"\n")
+#' }
+next_item<-function(theta,bank,out=NULL,D=1,randomesque=1) {
+  bank<-rbind(bank)
+  available<-setdiff(1:nrow(bank),out)
+  if (length(available)==0) stop("no item left in the bank",call.=FALSE)
+  info<-Ii(theta,bank[available,,drop=FALSE],D=D)$Ii
+  k<-max(1,min(floor(randomesque),length(available)))
+  top<-order(info,decreasing=TRUE)[1:k]
+  pick<-if (k==1) top else top[sample.int(k,1)]
+  result<-list(item=available[pick],info=info[pick],available=available)
+  return(result)
+}
+##########################################################################################
+# LIKELIHOOD
+##########################################################################################
+#' @title compute the likelihood of a dichotomous response pattern
+#' @param theta ability
+#' @param bank matrix of item parameters
+#' @param x vector of item responses scored 0 or 1
+#' @param D metric constant can be 1 or 1.702
+#' @note L(theta)=prod(P^x*(1-P)^(1-x)) \cr
+#'       a correct response contributes P and a wrong response 1-P \cr
+#'       the probabilities of the observed responses are multiplied across items under \cr
+#'       the local independence assumption \cr
+#'       eap_est and eap_se compute the same product inside their own L function
+#' @export
+#' @examples
+#' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
+#'                0,0,0,0,0,1,1,1,1,1),
+#'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
+#' response<-c(1,1,1,0,0)
+#' likelihood(theta=0,bank=bank,x=response)
+#' v<-seq(-4,4,by=.1)
+#' lik<-c()
+#' for (i in 1:length(v)) lik[i]<-likelihood(theta=v[i],bank=bank,x=response)
+#' plot(x=v,y=lik,xlab=expression(theta),ylab="likelihood",
+#'      main="likelihood of the response pattern",type="l")
+likelihood<-function(theta,bank,x,D=1) {
+  P<-Pi(theta,bank,D=D)$Pi
+  result<-prod(P^x*(1-P)^(1-x))
+  return(result)
+}
+##########################################################################################
 # EAP ESTIMATION
 ##########################################################################################
 #' @title compute theta EAP estimation
