@@ -24,7 +24,7 @@ library(psych)
 library(ggplot2)
 library(reshape2)
 
-data(df_personality)
+load("data/df_personality.rda")
 
 # Factor structure
 factors <- list(

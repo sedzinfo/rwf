@@ -221,7 +221,7 @@ ice_zoom_list <- Filter(Negate(is.null), ice_zoom_list)
 ice_zoom_all  <- do.call(rbind, ice_zoom_list)
 ```
 
-```{r map-zoom, fig.width=14, fig.height=5}
+```{r map-zoom}
 ice_zoom_proj <- st_transform(ice_zoom_all, crs_polar)
 
 clip_tight <- st_buffer(

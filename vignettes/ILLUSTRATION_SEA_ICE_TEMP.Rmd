@@ -367,7 +367,7 @@ for (i in seq_along(years)) {
 
 gifski::gifski(frame_paths,
                gif_file = "climate_spiral.gif",
-               width = 1800, height = 1900,
+               width = 800, height = 800,
                delay = 0.1)
 ```
 
