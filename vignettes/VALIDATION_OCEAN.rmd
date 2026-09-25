@@ -27,7 +27,7 @@ library(psych)
 library(ggplot2)
 library(reshape2)
 
-data(df_ocean)
+load("data/df_ocean.rda")
 
 item_cols <- c(paste0("E", 1:10), paste0("N", 1:10),
                paste0("A", 1:10), paste0("C", 1:10), paste0("O", 1:10))
