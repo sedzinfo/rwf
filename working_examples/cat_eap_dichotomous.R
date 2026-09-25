@@ -131,8 +131,12 @@ Pi<-function(theta,bank,D=1) {
 #'       b+log((1+sqrt(1+8*c))/2)/(D*a) \cr
 #'       Pi returns 1e-10 and 1-1e-10 instead of 0 and 1 so the information stays \cr
 #'       finite when a probability rounds to 0 or 1 \cr
-#'       test information is the sum of the item informations
-#' @return Ii item information for each item
+#'       test information is the sum of the item informations \cr
+#'       dIi and d2Ii are the first and second derivatives of the item information \cr
+#'       with respect to theta
+#' @return Ii   item information for each item \cr
+#'         dIi  first derivative of the item information for each item \cr
+#'         d2Ii second derivative of the item information for each item
 #' @export
 #' @examples
 #' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
@@ -168,13 +172,16 @@ Ii<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   prob<-Pi(theta,bank,D=D)
   P<-prob$Pi
+  Q<-1-P
   dP<-prob$dPi
   d2P<-prob$d2Pi
-  Ii<-dP^2/(P*(1-P))
-  num<-2*dP*d2P*(P*(1-P))-dP^3*(1-2*P)
-  den<-(P*(1-P))^2
-  dIi<-num/den
-  result<-list(Ii=Ii,dIi=dIi)
+  d3P<-prob$d3Pi
+  Ii<-dP^2/(P*Q)
+  dIi<-dP*(2*P*Q*d2P-dP^2*(Q-P))/(P^2*Q^2)
+  d2Ii<-(2*P*Q*(d2P^2+dP*d3P)-2*dP^2*d2P*(Q-P))/(P^2*Q^2)-
+        (3*P^2*Q*dP^2*d2P-P*dP^4*(2*Q-P))/(P^4*Q^2)+
+        (3*P*Q^2*dP^2*d2P-Q*dP^4*(Q-2*P))/(P^2*Q^4)
+  result<-list(Ii=Ii,dIi=dIi,d2Ii=d2Ii)
   return(result)
 }
 ##########################################################################################
@@ -247,13 +254,17 @@ next_item<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'       a correct response contributes P and a wrong response 1-P \cr
 #'       the probabilities of the observed responses are multiplied across items under \cr
 #'       the local independence assumption \cr
-#'       eap_est and eap_se compute the same product inside their own L function
+#'       eap_est and eap_se compute the same product inside their own L function \cr
+#'       catR does not export a standalone likelihood function this product is the L \cr
+#'       function defined inside catR::eapEst so it is reproduced here with catR::Pi
 #' @export
 #' @examples
 #' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
 #'                0,0,0,0,0,1,1,1,1,1),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
-#' response<-c(1,1,1,0,0)
+#' response<-c(1,1,1)
+#' P<-catR::Pi(th=0,bank)$Pi # this will work with catR package installed
+#' prod(P^response*(1-P)^(1-response))
 #' likelihood(theta=0,bank=bank,x=response)
 #' v<-seq(-4,4,by=.1)
 #' lik<-c()
