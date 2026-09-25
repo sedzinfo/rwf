@@ -64,7 +64,7 @@ integrate_cat<-function(x,y) {
 #'             the graded response model \cr
 #'             an item with fewer categories than the widest item is padded with NA \cr
 #'             a mirt model fitted with itemtype="Rasch" gives the bank with the b1 to bm \cr
-#'             columns of coef(model,IRTpars=TRUE,simplify=TRUE)$items to be used with D=1 \cr
+#'             columns of mirt::coef(model,IRTpars=TRUE,simplify=TRUE)$items to be used with D=1 \cr
 #'             mirt stores a dichotomous item in column b instead of b1 so it has to be \cr
 #'             moved to the first column
 #' @param D metric constant can be 1 or 1.702
@@ -265,7 +265,8 @@ next_item_pcm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'       Pi_pcm returns a matrix so the response of item i selects the column x[i]+1 \cr
 #'       the +1 is index bookkeeping because categories start at 0 and R columns start \cr
 #'       at 1 \cr
-#'       the responses are multiplied across items under the local independence assumption \cr
+#'       the probabilities of the observed responses are multiplied across items under \cr
+#'       the local independence assumption \cr
 #'       under the partial credit model the only part of the likelihood that depends on \cr
 #'       both theta and the responses is exp(D*theta*sum(x)) \cr
 #'       the denominators depend on theta but not on the responses so two patterns with \cr
@@ -308,7 +309,7 @@ likelihood_pcm<-function(theta,bank,x,D=1) {
 #'       with the same total score on the same items give the same EAP estimate \cr
 #'       mirt estimates the variance of theta for a Rasch model so a bank taken from \cr
 #'       mirt is used with priorPar=c(0,sqrt(pars$cov)) where \cr
-#'       pars<-coef(model,IRTpars=TRUE,simplify=TRUE)
+#'       pars<-mirt::coef(model,IRTpars=TRUE,simplify=TRUE)
 #' @export
 #' @examples
 #' bank<-matrix(c(-1.853,-2.214,-0.936,-1.508,-0.412,

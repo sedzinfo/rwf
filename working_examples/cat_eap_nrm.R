@@ -51,7 +51,7 @@ integrate_cat<-function(x,y) {
 #' @param theta ability
 #' @param bank item parameters one row per item \cr
 #'             the columns come in pairs alpha_jk and c_jk for the categories 1 to m \cr
-#'             so the columns are alpha1 c1 alpha2 c2 up to alpham cm \cr
+#'             so the columns are alpha1 c1 alpha2 c2 up to alpha_m c_m \cr
 #'             alpha_jk is the slope and c_jk the intercept of category k \cr
 #'             category 0 is the reference category with slope 0 and intercept 0 so it \cr
 #'             has no columns \cr
@@ -59,16 +59,21 @@ integrate_cat<-function(x,y) {
 #'             nominal \cr
 #'             an item with fewer categories than the widest item is padded with NA pairs \cr
 #'             a mirt model fitted with itemtype="nominal" converts with \cr
-#'             pars<-coef(model,simplify=TRUE)$items \cr
+#'             pars<-mirt::coef(model,simplify=TRUE)$items \cr
+#'             m<-length(grep("^ak",colnames(pars)))-1 \cr
 #'             alpha<-pars[,"a1"]*pars[,paste("ak",1:m,sep="")] \cr
 #'             cj<-pars[,paste("d",1:m,sep="")] \cr
-#'             bank<-cbind(alpha,cj)[,order(rep(1:m,2))]
+#'             bank<-cbind(alpha,cj)[,order(rep(1:m,2))] \cr
+#'             colnames(bank)<-paste(c("alpha","c"),rep(1:m,each=2),sep="") \cr
+#'             mirt renumbers the observed categories of each item from 0 so the \cr
+#'             responses must be coded the same way
 #' @param D metric constant kept for the same interface as the other files \cr
-#'          the nominal response model has no metric constant because any constant is \cr
-#'          absorbed in the slopes so D is not used and catR ignores it too
+#'          the nominal response model has no metric constant because any constant \cr
+#'          multiplying the exponent is absorbed in the slopes and the intercepts so D \cr
+#'          is not used and catR ignores it too
 #' @note this function should return the same result as catR::Pi(model="NRM") \cr
-#'       the number of response categories is ncol(bank)/2+1 so a 5 point Likert scale \cr
-#'       scored 0 1 2 3 4 needs a bank with 8 columns \cr
+#'       the number of response categories is ncol(bank)/2+1 so 5 response categories \cr
+#'       coded 0 1 2 3 4 need a bank with 8 columns \cr
 #'       the probability of category k is \cr
 #'       P(X=k|theta)=exp(alpha_jk*theta+c_jk)/sum over all categories \cr
 #'       with alpha_j0*theta+c_j0 equal to zero \cr
@@ -76,12 +81,21 @@ integrate_cat<-function(x,y) {
 #'       probable category at theta is the category with the highest line \cr
 #'       at very high theta that is the category with the largest slope and at very low \cr
 #'       theta the category with the smallest slope \cr
-#'       a category whose line is never on top is never the most probable category \cr
-#'       the partial credit model is the nominal model with alpha_jk=k and \cr
+#'       when two categories share that slope their lines are parallel and the one \cr
+#'       with the larger intercept wins \cr
+#'       as theta grows the categories take turns being the most probable in the order \cr
+#'       of their slopes and not of their codes \cr
+#'       a category is skipped when the next category overtakes it before it overtakes \cr
+#'       the previous one and this can happen with ordered slopes too \cr
+#'       with D=1 the partial credit model is the nominal model with alpha_jk=k and \cr
 #'       c_jk=-(delta_j1+...+delta_jk) and the generalized partial credit model \cr
 #'       multiplies both by the item discrimination \cr
+#'       for a bank used with D=1.702 both are multiplied by D as well because the \cr
+#'       nominal model ignores D \cr
+#'       in the code dj holds alpha_jk*theta+c_jk and gamma holds exp(dj) for each \cr
+#'       category while v holds the slope alpha_jk \cr
 #'       the exponent of category k grows by alpha_jk when theta grows by one so the \cr
-#'       derivative uses gamma*alpha_jk and is exact
+#'       derivative of gamma is gamma*v and is exact
 #' @return Pi   category response probabilities one row per item one column per category \cr
 #'         dPi  first derivatives of the category response probabilities
 #' @export
@@ -171,7 +185,7 @@ Pi_nrm<-function(theta,bank,D=1) {
 #' # the information is the variance of the slope of the category chosen
 #' P<-Pi_nrm(theta=0,bank)$Pi
 #' slopes<-cbind(0,bank[,c(1,3,5,7)])
-#' rowSums(P*slopes^2)-rowSums(P*slopes)^2
+#' as.numeric(rowSums(P*slopes^2)-rowSums(P*slopes)^2)
 #' v<-seq(-4,4,by=.1)
 #' info<-matrix(NA,length(v),nrow(bank))
 #' for (i in 1:length(v)) info[i,]<-Ii_nrm(theta=v[i],bank)$Ii
@@ -207,6 +221,8 @@ Ii_nrm<-function(theta,bank,D=1) {
 #'       randomesque is 1 and the most informative item is unique \cr
 #'       when several items tie exactly catR draws one of them at random while this \cr
 #'       function takes the first \cr
+#'       with randomesque above 1 catR also keeps every item tied with the last one kept \cr
+#'       so it can draw from more than randomesque items \cr
 #'       every item has its own slopes and intercepts so the information curves differ \cr
 #'       in height and shape and the information of every available item has to be \cr
 #'       computed at theta
@@ -237,7 +253,7 @@ Ii_nrm<-function(theta,bank,D=1) {
 #' for (step in 1:4) {
 #'   item<-next_item_nrm(theta,bank,out=administered)$item
 #'   administered<-c(administered,item)
-#'   responses<-c(responses,3) # replace by the real response scored 0 to m
+#'   responses<-c(responses,3) # replace by the real response coded 0 to m
 #'   theta<-eap_est_nrm(bank[administered,,drop=FALSE],responses)
 #'   cat("step",step,"item",item,"theta",round(theta,4),
 #'       "se",round(eap_se_nrm(theta,bank[administered,,drop=FALSE],responses),4),"\n")
@@ -259,14 +275,15 @@ next_item_nrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' @title compute the likelihood of a polytomous response pattern
 #' @param theta ability
 #' @param bank matrix of item parameters
-#' @param x vector of item responses scored 0 to m
+#' @param x vector of item responses coded 0 to m
 #' @param D metric constant kept for the same interface as the other files and not used
 #' @note this is the polytomous counterpart of prod(Pi^x*(1-Pi)^(1-x)) used for the 4PL \cr
 #'       model \cr
 #'       Pi_nrm returns a matrix so the response of item i selects the column x[i]+1 \cr
 #'       the +1 is index bookkeeping because categories start at 0 and R columns start \cr
 #'       at 1 \cr
-#'       the responses are multiplied across items under the local independence assumption \cr
+#'       the probabilities of the observed responses are multiplied across items under \cr
+#'       the local independence assumption \cr
 #'       the codes 0 to m only label the categories and carry no order so the response \cr
 #'       enters the likelihood only through the slope and intercept of its category
 #' @export
@@ -299,7 +316,7 @@ likelihood_nrm<-function(theta,bank,x,D=1) {
 ##########################################################################################
 #' @title compute theta EAP estimation under the nominal response model
 #' @param bank matrix of item parameters
-#' @param x vector of item responses scored 0 to m
+#' @param x vector of item responses coded 0 to m
 #' @param D metric constant kept for the same interface as the other files and not used
 #' @param priorPar mean and sd for normal distribution default is mean 0 and sd 1
 #' @param lower lower bound for numerical integration
@@ -349,7 +366,7 @@ eap_est_nrm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #' @title compute standard error of theta EAP estimation under the nominal response model
 #' @param theta theta estimation
 #' @param bank matrix of item parameters
-#' @param x vector of item responses scored 0 to m
+#' @param x vector of item responses coded 0 to m
 #' @param D metric constant kept for the same interface as the other files and not used
 #' @param priorPar mean and sd for normal distribution default is mean 0 and sd 1
 #' @param lower lower bound for numerical integration
@@ -465,21 +482,27 @@ eap_est_nrm(bank,response_1,nqp=101)
 # effect of the prior
 eap_est_nrm(bank,response_1,priorPar=c(0,1))
 eap_est_nrm(bank,response_1,priorPar=c(0,2))
-# the metric constant has no effect because the slopes absorb it
+# D is not used so both calls return the same estimate
+# when a bank is calibrated any constant is absorbed in the estimated slopes and intercepts
 eap_est_nrm(bank,response_1,D=1)
 eap_est_nrm(bank,response_1,D=1.702)
 ##########################################################################################
 # EXAMPLE 3
 ##########################################################################################
 # item 4 has alpha2<alpha1 so its categories are not ordered
-# its category 1 line alpha1*theta+c1 is never on top so category 1 is never the most
-# probable category at any theta although its probability stays positive
+# as theta grows its categories take turns being the most probable in the order of their
+# slopes and its category 1 is overtaken by category 3 before it overtakes category 2
+# so category 1 is never the most probable although its probability stays positive
 v<-seq(-4,4,by=.01)
 modal<-c()
 for (i in 1:length(v)) modal[i]<-which.max(Pi_nrm(theta=v[i],bank)$Pi[4,])-1
 table(modal)
 max(sapply(v,function(t) Pi_nrm(theta=t,bank)$Pi[4,2]))
-# the partial credit model is the nominal model with alphajk=k and cjk=-(deltaj1+...+deltajk)
+# ordered slopes do not guarantee that every category is the most probable somewhere
+# item 5 has ordered slopes but its category 3 is overtaken by category 4 first
+for (i in 1:length(v)) modal[i]<-which.max(Pi_nrm(theta=v[i],bank)$Pi[5,])-1
+table(modal)
+# with D=1 the partial credit model is the nominal model with alphajk=k and cjk=-(deltaj1+...+deltajk)
 # the PCM bank of cat_eap_pcm.R gives the same probabilities and estimates through Pi_nrm
 bank_pcm<-matrix(c(-1.853,-2.214,-0.936,-1.508,-0.412,
                    -0.627,-0.504,-1.215,-0.183,0.338,

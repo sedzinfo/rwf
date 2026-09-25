@@ -48,28 +48,39 @@ integrate_cat<-function(x,y) {
 #' @description returns the category response probabilities for a given ability value and a \cr
 #'              given matrix of item parameters under Muraki modified graded response \cr
 #'              model which catR calls MGRM and mirt calls the graded rating scale model \cr
+#'              and which this file calls the generalized graded response model \cr
+#'              it is a restricted graded response model whose thresholds are b_j-c_k \cr
+#'              and not an extension of it \cr
 #'              returns the first derivatives of the category response probabilities
 #' @param theta ability
 #' @param bank item parameters one row per item \cr
 #'             column 1 holds the item discrimination alpha_j \cr
 #'             column 2 holds the item location b_j \cr
 #'             columns 3 to ncol(bank) hold the category parameters c_1 to c_m \cr
-#'             the category parameters are common to all items so those columns are \cr
-#'             identical in every row which is what separates this model from the \cr
-#'             graded response model where every item has its own thresholds \cr
+#'             the category parameters are common to the items of a block so those \cr
+#'             columns are identical in every row of the block which is what separates \cr
+#'             this model from the graded response model where every item has its own \cr
+#'             thresholds \cr
+#'             a bank with a single block has the same category parameters in every row \cr
 #'             the category parameters must be strictly decreasing so that the item \cr
 #'             thresholds b_j-c_k are strictly increasing \cr
 #'             two equal category parameters leave a category with probability zero so a \cr
 #'             response there makes the EAP NaN and an increasing pair makes a \cr
 #'             probability negative \cr
-#'             items with a different number of categories form separate blocks with \cr
-#'             their own category parameters and the shorter rows are padded with NA
+#'             items that do not share a rating scale form separate blocks with their own \cr
+#'             category parameters which is always the case for items with a different \cr
+#'             number of categories and the shorter rows are padded with NA \cr
+#'             a mirt model fitted with itemtype="grsm" converts with \cr
+#'             pars<-mirt::coef(model,simplify=TRUE)$items \cr
+#'             cbind(pars[,"a1"],-pars[,"c"],pars[,grep("^b[0-9]",colnames(pars))]) \cr
+#'             to be used with D=1 because mirt writes \cr
+#'             Pstar_jk=P(X>=k|theta)=exp(a1*(theta+c+b_k))/(1+exp(a1*(theta+c+b_k)))
 #' @param D metric constant can be 1 or 1.702
 #' @note this function should return the same result as catR::Pi(model="MGRM") \cr
 #'       the number of response categories is ncol(bank)-1 so a 5 point Likert scale \cr
 #'       scored 0 1 2 3 4 needs a bank with 6 columns \cr
 #'       the model is the graded response model with the item thresholds split into \cr
-#'       an item location and category parameters shared by all the items \cr
+#'       an item location and category parameters shared by the items of a block \cr
 #'       beta_jk=b_j-c_k \cr
 #'       Pstar_jk=P(X>=k|theta)=exp(D*alpha_j*(theta-(b_j-c_k)))/(1+exp(D*alpha_j*(theta-(b_j-c_k)))) \cr
 #'       with Pstar_j0=1 and Pstar_j(m+1)=0 \cr
@@ -83,12 +94,10 @@ integrate_cat<-function(x,y) {
 #'       inaccurate and below about 1e-16 become exactly 0 \cr
 #'       catR computes them the same way and only response patterns that contradict \cr
 #'       theta strongly on very discriminating items are affected \cr
-#'       adding the same constant to every b_j and to every c_k leaves every probability \cr
-#'       unchanged so the c_k are usually centred at zero \cr
-#'       a mirt model fitted with itemtype="grsm" converts with \cr
-#'       pars<-mirt::coef(model,simplify=TRUE)$items \cr
-#'       cbind(pars[,"a1"],-pars[,"c"],pars[,grep("^b[0-9]",colnames(pars))]) \cr
-#'       because mirt writes P*(X>=k)=exp(a1*(theta+c+b_k))/(1+exp(a1*(theta+c+b_k)))
+#'       adding the same constant to the b_j and to the c_k of a block leaves every \cr
+#'       probability unchanged so a constraint is needed \cr
+#'       Muraki centres the c_k of each block at zero while mirt sets b_j=0 for the \cr
+#'       first item of each block and both give the same probabilities
 #' @return Pi   category response probabilities one row per item one column per category \cr
 #'         dPi  first derivatives of the category response probabilities
 #' @export
@@ -144,8 +153,9 @@ Pi_ggrm<-function(theta,bank,D=1) {
 #'       the polytomous item information is the sum over categories of the squared \cr
 #'       first derivative divided by the probability \cr
 #'       I_j(theta)=sum_k (dP_jk/dtheta)^2/P_jk \cr
-#'       every item shares the same spacing of thresholds so two items with the same \cr
-#'       alpha_j have the same information curve shifted by the difference of their b_j \cr
+#'       the items of a block share the same spacing of thresholds so two items of a \cr
+#'       block with the same alpha_j have the same information curve shifted by the \cr
+#'       difference of their b_j \cr
 #'       a larger alpha_j gives a taller curve that grows roughly with alpha_j^2 and is \cr
 #'       narrower around each threshold \cr
 #'       test information is the sum of the item informations
@@ -195,9 +205,11 @@ Ii_ggrm<-function(theta,bank,D=1) {
 #'       randomesque is 1 and the most informative item is unique \cr
 #'       when several items tie exactly catR draws one of them at random while this \cr
 #'       function takes the first \cr
-#'       when every item has the same alpha_j the information curves are copies of \cr
-#'       one another so the choice depends only on where theta sits relative to each \cr
-#'       b_j \cr
+#'       with randomesque above 1 catR also keeps every item tied with the last one kept \cr
+#'       so it can draw from more than randomesque items \cr
+#'       when the items of a block have the same alpha_j their information curves are \cr
+#'       copies of one another so the choice among them depends only on where theta \cr
+#'       sits relative to each b_j \cr
 #'       with different alpha_j the curves differ in height as well so the information \cr
 #'       of every available item has to be computed at theta
 #' @return item  index of the selected item in the bank \cr
@@ -251,7 +263,8 @@ next_item_ggrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'       Pi_ggrm returns a matrix so the response of item i selects the column x[i]+1 \cr
 #'       the +1 is index bookkeeping because categories start at 0 and R columns start \cr
 #'       at 1 \cr
-#'       the responses are multiplied across items under the local independence assumption
+#'       the probabilities of the observed responses are multiplied across items under \cr
+#'       the local independence assumption
 #' @export
 #' @examples
 #' bank<-matrix(c(1.227,0.845,1.694,1.012,2.103,
@@ -375,7 +388,9 @@ eap_se_ggrm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) 
 # EXAMPLES
 ##########################################################################################
 # https://dimitrios.shinyapps.io/mleirt/ check the EAP-MAP Rasch tab to see the effect of prior parameters and quadratures on estimation
-# https://dimitrios.shinyapps.io/modelsirt/ check the GRM tab with the difficulties set to bj-ck to see the ability response probability curve
+# https://dimitrios.shinyapps.io/modelsirt/ check the GRM tab to see the ability response probability curve
+# with the discrimination set to alphaj and the difficulties set to bj-ck
+# the difficulty sliders have narrow ranges so only items 2 and 5 of example 1 fit rounded to 0.1
 ##########################################################################################
 # EXAMPLE 1
 ##########################################################################################

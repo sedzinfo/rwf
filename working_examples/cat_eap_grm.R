@@ -53,14 +53,15 @@ integrate_cat<-function(x,y) {
 #'             column 1 holds the item discrimination alpha_j \cr
 #'             columns 2 to ncat hold the item thresholds beta_j1 to beta_jm \cr
 #'             both the discrimination and the thresholds are item specific \cr
-#'             a graded model whose thresholds are shared by all the items is the \cr
+#'             a graded model whose thresholds have the same spacing for every item so \cr
+#'             that beta_jk=b_j-c_k with c_k common to the items is the \cr
 #'             modified graded response model of cat_eap_ggrm.R \cr
 #'             the thresholds of an item must be strictly increasing \cr
 #'             two equal thresholds leave a category with probability zero so a response \cr
 #'             there makes the EAP NaN and a decreasing pair makes a probability negative \cr
 #'             an item with fewer categories than the widest item is padded with NA \cr
-#'             a mirt graded model gives the bank with \cr
-#'             coef(model,IRTpars=TRUE,simplify=TRUE)$items to be used with D=1
+#'             a mirt model fitted with itemtype="graded" gives the bank with \cr
+#'             mirt::coef(model,IRTpars=TRUE,simplify=TRUE)$items to be used with D=1
 #' @param D metric constant can be 1 or 1.702
 #' @note this function should return the same result as catR::Pi(model="GRM") \cr
 #'       the number of response categories is ncol(bank) so a 5 point Likert scale \cr
@@ -201,6 +202,8 @@ Ii_grm<-function(theta,bank,D=1) {
 #'       randomesque is 1 and the most informative item is unique \cr
 #'       when several items tie exactly catR draws one of them at random while this \cr
 #'       function takes the first \cr
+#'       with randomesque above 1 catR also keeps every item tied with the last one kept \cr
+#'       so it can draw from more than randomesque items \cr
 #'       under the graded response model there is no nearest neighbour shortcut because \cr
 #'       the information curves differ in height and shape so the information of every \cr
 #'       available item has to be computed at theta \cr
@@ -260,7 +263,8 @@ next_item_grm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'       Pi_grm returns a matrix so the response of item i selects the column x[i]+1 \cr
 #'       the +1 is index bookkeeping because categories start at 0 and R columns start \cr
 #'       at 1 \cr
-#'       the responses are multiplied across items under the local independence assumption
+#'       the probabilities of the observed responses are multiplied across items under \cr
+#'       the local independence assumption
 #' @export
 #' @examples
 #' bank<-matrix(c(1.227,0.845,1.694,1.012,2.103,
