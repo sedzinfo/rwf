@@ -53,8 +53,9 @@ integrate_cat<-function(x,y) {
 #'             columns 1 to m hold the step parameters delta_j1 to delta_jm \cr
 #'             there is no discrimination column because the partial credit model is a \cr
 #'             Rasch model \cr
-#'             the steps are item specific which is what separates this model from the \cr
-#'             rating scale model where every item shares the same thresholds \cr
+#'             the steps are free for every item which is what separates this model from \cr
+#'             the rating scale model where the steps of item j are lambda_j+delta_k so \cr
+#'             all the items have the same spacing of steps and differ only by lambda_j \cr
 #'             delta_jk is the value of theta where the curves of the categories k-1 and \cr
 #'             k cross \cr
 #'             the steps do not need to be ordered \cr
@@ -63,7 +64,9 @@ integrate_cat<-function(x,y) {
 #'             the graded response model \cr
 #'             an item with fewer categories than the widest item is padded with NA \cr
 #'             a mirt model fitted with itemtype="Rasch" gives the bank with the b1 to bm \cr
-#'             columns of coef(model,IRTpars=TRUE,simplify=TRUE)$items to be used with D=1
+#'             columns of coef(model,IRTpars=TRUE,simplify=TRUE)$items to be used with D=1 \cr
+#'             mirt stores a dichotomous item in column b instead of b1 so it has to be \cr
+#'             moved to the first column
 #' @param D metric constant can be 1 or 1.702
 #' @note this function should return the same result as catR::Pi(model="PCM") \cr
 #'       the number of response categories is ncol(bank)+1 so a 5 point Likert scale \cr
@@ -72,16 +75,20 @@ integrate_cat<-function(x,y) {
 #'       P(X=k|theta)=exp(sum_t=1^k D*(theta-delta_jt))/sum over all categories \cr
 #'       with the empty sum for category 0 equal to zero \cr
 #'       the rating scale model is the partial credit model with \cr
-#'       delta_jk=lambda_j+delta_k and adding an item discrimination gives the \cr
+#'       delta_jk=lambda_j+delta_k \cr
+#'       adding an item discrimination to the partial credit model gives the \cr
 #'       generalized partial credit model \cr
+#'       in the code gamma holds exp(sum_t=1^k D*(theta-delta_jt)) for each category and \cr
+#'       v holds the category score k \cr
 #'       the exponent of category k grows by D*k when theta grows by one so the exact \cr
-#'       derivative uses gamma*D*v \cr
+#'       derivative of gamma is gamma*D*v \cr
 #'       catR uses gamma*v and so does this function to return the same result \cr
 #'       with D=1 the two are identical and with D=1.702 dPi is too small by a factor \cr
 #'       of D and the information by a factor of D^2 which leaves the item selection \cr
 #'       and the EAP estimates unchanged
 #' @return Pi   category response probabilities one row per item one column per category \cr
-#'         dPi  first derivatives of the category response probabilities
+#'         dPi  first derivatives of the category response probabilities exact when D=1 \cr
+#'              and divided by D as in catR otherwise
 #' @export
 #' @examples
 #' bank<-matrix(c(-1.853,-2.214,-0.936,-1.508,-0.412,
@@ -144,10 +151,13 @@ Pi_pcm<-function(theta,bank,D=1) {
 #'       I_j(theta)=sum_k (dP_jk/dtheta)^2/P_jk \cr
 #'       under the partial credit model this sum is the variance of the item score at \cr
 #'       theta times D^2 and with the catR derivative the D^2 is left out \cr
-#'       there is no discrimination so the height and the shape of the curve depend \cr
-#'       only on the spacing of the steps \cr
-#'       closely spaced or reversed steps give a taller and narrower curve and widely \cr
-#'       spaced steps a lower and wider curve \cr
+#'       there is no discrimination so for a given D the height and the shape of the \cr
+#'       curve depend only on the number of steps and on their spacing and the mean of \cr
+#'       the steps only moves the curve \cr
+#'       steps spread over a short range of theta or reversed give a taller curve \cr
+#'       around their mean and steps spread over a long range give a lower and wider \cr
+#'       curve that splits into one bump per step when the gaps are large \cr
+#'       the variance of a score from 0 to m is at most m^2/4 which caps the height \cr
 #'       test information is the sum of the item informations
 #' @return Ii item information for each item
 #' @export
@@ -163,7 +173,7 @@ Pi_pcm<-function(theta,bank,D=1) {
 #' sum(Ii_pcm(theta=0,bank)$Ii) # test information
 #' # the information is the variance of the item score
 #' P<-Pi_pcm(theta=0,bank)$Pi
-#' rowSums(P*(0:4)^2)-rowSums(P*(0:4))^2
+#' as.numeric(P%*%(0:4)^2-(P%*%(0:4))^2)
 #' v<-seq(-4,4,by=.1)
 #' info<-matrix(NA,length(v),nrow(bank))
 #' for (i in 1:length(v)) info[i,]<-Ii_pcm(theta=v[i],bank)$Ii
@@ -199,6 +209,8 @@ Ii_pcm<-function(theta,bank,D=1) {
 #'       randomesque is 1 and the most informative item is unique \cr
 #'       when several items tie exactly catR draws one of them at random while this \cr
 #'       function takes the first \cr
+#'       with randomesque above 1 catR also keeps every item tied with the last one kept \cr
+#'       so it can draw from more than randomesque items \cr
 #'       every item has its own steps so the information curves differ in height and \cr
 #'       shape and the information of every available item has to be computed at theta
 #' @return item  index of the selected item in the bank \cr
@@ -254,9 +266,11 @@ next_item_pcm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'       the +1 is index bookkeeping because categories start at 0 and R columns start \cr
 #'       at 1 \cr
 #'       the responses are multiplied across items under the local independence assumption \cr
-#'       under the partial credit model theta enters the likelihood only through \cr
-#'       exp(D*theta*sum(x)) so two patterns with the same total score on the same \cr
-#'       items have likelihoods that differ by a constant factor
+#'       under the partial credit model the only part of the likelihood that depends on \cr
+#'       both theta and the responses is exp(D*theta*sum(x)) \cr
+#'       the denominators depend on theta but not on the responses so two patterns with \cr
+#'       the same total score on the same items have likelihoods that differ by a \cr
+#'       constant factor
 #' @export
 #' @examples
 #' bank<-matrix(c(-1.853,-2.214,-0.936,-1.508,-0.412,
