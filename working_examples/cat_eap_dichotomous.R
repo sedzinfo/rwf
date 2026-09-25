@@ -262,7 +262,7 @@ next_item<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
 #'                0,0,0,0,0,1,1,1,1,1),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
-#' response<-c(1,1,1)
+#' response<-c(1,1,1,0,0)
 #' P<-catR::Pi(th=0,bank)$Pi # this will work with catR package installed
 #' prod(P^response*(1-P)^(1-response))
 #' likelihood(theta=0,bank=bank,x=response)
