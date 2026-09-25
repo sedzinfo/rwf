@@ -6,6 +6,7 @@ rwf_0.1.tar.gz
 /rwf.Rcheck/
 vignettes/rsconnect/
 vignettes/*_cache/
+vignettes/*_files/
 vignettes/*.html
 vignettes/*.gif
 vignettes/*.jpg
