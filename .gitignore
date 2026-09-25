@@ -4,5 +4,8 @@
 .Ruserdata
 rwf_0.1.tar.gz
 /rwf.Rcheck/
-/vignettes/EXAMPLE_TIRT_cache
-/vignettes/EXAMPLE_TIRT_files
+vignettes/*/
+vignettes/*.html
+vignettes/*.gif
+vignettes/*.jpg
+vignettes/*.png
