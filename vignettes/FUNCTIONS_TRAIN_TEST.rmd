@@ -27,7 +27,7 @@ knitr::knit_hooks$set(output=hook_output)
 ```
 
 ```{r load,include=FALSE}
-library(rwf)
+source(paste0(directory, "code_rwf.R"))
 ```
 
 ## Description

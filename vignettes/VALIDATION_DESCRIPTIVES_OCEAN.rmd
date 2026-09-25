@@ -14,13 +14,12 @@ vignette: "%\\VignetteIndexEntry{OCEAN} %\\VignetteEngine{knitr::rmarkdown} %\\V
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
-directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
+source(paste0(directory, "code_rwf.R"))
 ```
 
 ```{r load,include=FALSE}
-library(rwf)
-
 df_lookup<-data.frame(code=c(paste0("E",1:10),
                              paste0("N",1:10),
                              paste0("A",1:10),
@@ -160,7 +159,7 @@ source	How the participant came to the test. Based on HTTP Referer. 1=from anoth
 
 ## Descriprion of reponse data
 ```{r description,fig.width=10,fig.height=10,echo=TRUE,message=FALSE,warning=FALSE,results='show',dev='png',fig.retina=2}
-data(df_ocean)
+load("data/df_ocean.rda")
 df_ocean[df_ocean==0]<-NA
 cdf(df_ocean)
 ```

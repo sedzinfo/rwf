@@ -4,7 +4,8 @@
 .Ruserdata
 rwf_0.1.tar.gz
 /rwf.Rcheck/
-vignettes/*/
+vignettes/rsconnect/
+vignettes/*_cache/
 vignettes/*.html
 vignettes/*.gif
 vignettes/*.jpg

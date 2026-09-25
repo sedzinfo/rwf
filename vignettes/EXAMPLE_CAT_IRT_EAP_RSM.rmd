@@ -17,7 +17,7 @@ vignette: >
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
-directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
 
 library(ggplot2)

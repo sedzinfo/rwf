@@ -136,7 +136,7 @@ An ideal model should produce a confusion matrix where all observed variables ma
 predicted <- as.integer(predict(network, test_images) %>% k_argmax())
 observed  <- apply(test_labels, 1, which.max) - 1
 op <- data.frame(predict=predicted, observe=observed)
-rwf::confusion_matrix_percent(op$predict, op$observe)
+confusion_matrix_percent(op$predict, op$observe)
 
 cm <- as.data.frame(table(observe=observed, predict=predicted))
 library(ggplot2)
@@ -153,7 +153,7 @@ ggplot(cm, aes(x=predict, y=observe, fill=Freq)) +
 Another descriptive representation can be done using a scatterplot. In that case, all observations (observed and predicted data) should fall in the regression line.
 ```{r,out.width="100%",results="hide",cache=TRUE}
 
-rwf::plot_scatterplot(op)
+plot_scatterplot(op)
 differences<-setdiff(1:length(op$predict),which(op$predict==op$observe))
 
 ```

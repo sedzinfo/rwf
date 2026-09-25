@@ -27,7 +27,7 @@ options(future.show.progress = FALSE)
 ```
 
 ```{r load,include=FALSE}
-library(rwf)
+source(paste0(directory, "code_rwf.R"))
 ```
 
 This shows the output of several functions that may be used in NLP from rwf.  

@@ -18,14 +18,14 @@ vignette: >
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 
-directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
 
 ```
 
 
 ```{r load,include=TRUE,echo=TRUE,results=FALSE,warning=FALSE,message=FALSE}
-library(rwf)
+source(paste0(directory, "code_rwf.R"))
 ```
 
 # CFA measurement invariance
@@ -52,7 +52,7 @@ model_data[10001:20000,]$group<-"Group2"
 
 ## Data summary
 ```{r,summary}
-rwf::cdf(model_data,name_length=5)
+cdf(model_data,name_length=5)
 ```
 
 ## Model spesification

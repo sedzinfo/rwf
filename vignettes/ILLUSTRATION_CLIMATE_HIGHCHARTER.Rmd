@@ -18,7 +18,7 @@ output:
 > surface temperature data and adapted with additional chart types.
 
 ```{r setup, include=FALSE}
-directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
 ```
 
@@ -26,7 +26,7 @@ source(paste0(directory, "code_options.R"))
 
 ```{r load}
 library(highcharter)
-library(rwf)
+source(paste0(directory, "code_rwf.R"))
 
 df_nasa <- read.csv(
   "https://data.giss.nasa.gov/gistemp/tabledata_v4/GLB.Ts+dSST.csv",

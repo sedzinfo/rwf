@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
 ```
 
 ```{r load, include=FALSE}
-library(rwf)
+source(paste0(directory, "code_rwf.R"))
 library(ggplot2)
 library(MASS)
 library(car)
