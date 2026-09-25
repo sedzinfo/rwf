@@ -17,8 +17,8 @@
 #' density_function(x=0)
 #' dnorm(x=0)
 density_function<-function(x,mean=0,sd=1) {
-  e<-2.71828
-  # e<-exp(1)
+  e<-exp(1)
+  # e<-2.71828
   result<-1/(sqrt(2*pi)*sd)*e^-((x-mean)^2/(2*sd^2))
   return(result)
 }
@@ -106,9 +106,9 @@ Pi<-function(theta,bank,D=1) {
   Pi[Pi==0]<-1e-10
   Pi[Pi==1]<-1-1e-10
   dPi<-D*a*e*(d-c)/(1+e)^2
-  # d2Pi<-D^2*a^2*e*(1-e)*(d-c)/(1+e)^3
-  # d3Pi<-D^3*a^3*e*(d-c)*(e^2-4*e+1)/(1+e)^4
-  result<-list(Pi=Pi,dPi=dPi)
+  d2Pi<-D^2*a^2*e*(1-e)*(d-c)/(1+e)^3
+  d3Pi<-D^3*a^3*e*(d-c)*(e^2-4*e+1)/(1+e)^4
+  result<-list(Pi=Pi,dPi=dPi,d2Pi=d2Pi,d3Pi=d3Pi)
   return(result)
 }
 ##########################################################################################
@@ -169,8 +169,12 @@ Ii<-function(theta,bank,D=1) {
   prob<-Pi(theta,bank,D=D)
   P<-prob$Pi
   dP<-prob$dPi
+  d2P<-prob$d2Pi
   Ii<-dP^2/(P*(1-P))
-  result<-list(Ii=Ii)
+  num<-2*dP*d2P*(P*(1-P))-dP^3*(1-2*P)
+  den<-(P*(1-P))^2
+  dIi<-num/den
+  result<-list(Ii=Ii,dIi=dIi)
   return(result)
 }
 ##########################################################################################
