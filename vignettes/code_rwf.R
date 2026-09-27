@@ -4,6 +4,13 @@
 # source("code_rwf.R") replaces library(rwf) so documents deploy without the package.
 ##########################################################################################
 library(ggplot2)
+# whole-package imports are loaded as library(rwf) does, so their S3 methods are registered
+# (e.g. ggfortify provides autoplot for lm, glm, decomposed.ts)
+loadNamespace("future.apply")
+loadNamespace("ggfortify")
+loadNamespace("grid")
+loadNamespace("gtable")
+loadNamespace("openxlsx")
 if ("rwf_functions" %in% search()) detach("rwf_functions")
 .rwf_imports<-new.env(parent=globalenv())
 delayedAssign("Anova",car::`Anova`,assign.env=.rwf_imports)

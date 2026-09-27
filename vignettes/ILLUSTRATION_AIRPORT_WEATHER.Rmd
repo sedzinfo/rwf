@@ -15,6 +15,7 @@ output:
 ```{r setup, include=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
+source(paste0(directory, "code_rwf.R"))
 ```
 
 ## Overview
@@ -42,11 +43,12 @@ library(rnoaa)
 library(dplyr)
 library(lubridate)
 library(ggplot2)
+library(ggfortify)   # autoplot() for decomposed time series
 ```
 
 ```{r install, eval=FALSE}
 # remotes::install_github("ropensci/rnoaa")   # use the GitHub version
-# install.packages(c("dplyr", "lubridate", "ggplot2"))
+# install.packages(c("dplyr", "lubridate", "ggplot2", "ggfortify"))
 ```
 
 ---
@@ -166,7 +168,7 @@ head(daily[, c("date","temp_max","temp_min","wind_spd_max")], 6)
 
 `geom_ribbon` fills the area between the daily min and max. The fill colour is mapped to `temp_max` through a diverging gradient — cold days are blue, hot days are red.
 
-```{r plot_daily}
+```{r plot_daily, fig.width = 10}
 plot_daily <- ggplot(daily, aes(x = date)) +
   geom_ribbon(aes(ymin = temp_min, ymax = temp_max, fill = temp_max), alpha = 0.7) +
   scale_fill_gradientn(
@@ -181,7 +183,7 @@ plot_daily <- ggplot(daily, aes(x = date)) +
     x        = NULL, y = "Temperature (°C)",
     caption  = "Source: NOAA ISD via rnoaa"
   ) +
-  theme_minimal(base_size = 20) +
+  theme_minimal(base_size = 10) +
   theme(
     plot.background    = element_rect(fill = "white", color = NA),
     axis.text.x        = element_text(angle = 90, vjust = 0.5, hjust = 1),
@@ -195,7 +197,7 @@ plot_daily
 
 Aggregating to monthly level removes the noise and makes the seasonal pattern clearer. The max temperature gets a coloured gradient line; the min stays white.
 
-```{r plot_monthly}
+```{r plot_monthly, fig.width = 10}
 plot_monthly <- ggplot(month, aes(x = month_date)) +
   geom_ribbon(aes(ymin = temp_min, ymax = temp_max), fill = "#74add1", alpha = 0.45) +
   geom_line(aes(y = temp_max, color = temp_max), linewidth = 0.8) +
@@ -212,7 +214,7 @@ plot_monthly <- ggplot(month, aes(x = month_date)) +
     x        = NULL, y = "Temperature (°C)",
     caption  = "Source: NOAA ISD via rnoaa"
   ) +
-  theme_minimal(base_size = 20) +
+  theme_minimal(base_size = 10) +
   theme(
     plot.background    = element_rect(fill = "white", color = NA),
     axis.text.x        = element_text(angle = 90, vjust = 0.5, hjust = 1),
@@ -226,7 +228,7 @@ plot_monthly
 
 A calendar heatmap puts **year on the x-axis** and **month on the y-axis**, with temperature encoded as fill colour. This format is ideal for spotting anomalies — an unusually hot August or a cold February stands out immediately.
 
-```{r heatmaps}
+```{r heatmaps, fig.width = 10}
 month$year <- substr(month$month, 1, 4)
 month$mon  <- substr(month$month, 6, 7)
 
@@ -241,7 +243,7 @@ plot_heat_max <- ggplot(month, aes(x = year, y = mon, fill = temp_max)) +
   ) +
   labs(title = "Monthly Max Temperature", x = NULL, y = NULL,
        caption = "Source: NOAA ISD via rnoaa") +
-  theme_minimal(base_size = 20) +
+  theme_minimal(base_size = 10) +
   theme(panel.grid = element_blank(),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
@@ -256,7 +258,7 @@ plot_heat_min <- ggplot(month, aes(x = year, y = mon, fill = temp_min)) +
   ) +
   labs(title = "Monthly Min Temperature", x = NULL, y = NULL,
        caption = "Source: NOAA ISD via rnoaa") +
-  theme_minimal(base_size = 20) +
+  theme_minimal(base_size = 10) +
   theme(panel.grid = element_blank(),
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1))
 
@@ -266,7 +268,7 @@ plot_heat_min
 
 ### All four together
 
-```{r multiplot,fig.height = 20}
+```{r multiplot,fig.height = 20, fig.width = 10}
 plot_multiplot(
   plotlist = list(plot_daily, plot_monthly, plot_heat_max, plot_heat_min),
   cols = 1
@@ -285,7 +287,7 @@ plot_multiplot(
 
 The `frequency = 365` tells R the series repeats annually. `yday()` sets the correct starting position within the first year.
 
-```{r decomp}
+```{r decomp, fig.width = 10}
 ts_temp <- ts(
   daily$temp_max,
   frequency = 365,
@@ -296,7 +298,7 @@ fit <- decompose(ts_temp)
 
 autoplot(fit) +
   labs(title = paste("Seasonal decomposition —", str_aes(station), "daily max")) +
-  theme_minimal(base_size = 14)
+  theme_minimal(base_size = 10)
 ```
 
 > **Reading the decomposition:** If the trend panel slopes upward over 20+ years, that is a local warming signal. The random panel should look like white noise — large spikes indicate extreme weather events.

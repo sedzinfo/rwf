@@ -57,9 +57,11 @@ used<-package_functions[package_functions %in% used]
 attached_by_default<-c("base","stats","utils","graphics","grDevices","methods","datasets")
 namespace<-parseNamespaceFile("rwf",substr(directory,1,nchar(directory)-1))
 import_map<-c()
+whole_imports<-c()
 for (imp in namespace$imports) {
   pkg<-imp[[1]]
   if (pkg %in% attached_by_default) next
+  if (length(imp)==1) whole_imports<-c(whole_imports,pkg)
   objects<-if (length(imp)==1) getNamespaceExports(pkg) else imp[[2]]
   import_map[objects]<-pkg
 }
@@ -79,6 +81,9 @@ header<-c(
   "# source(\"code_rwf.R\") replaces library(rwf) so documents deploy without the package.",
   "##########################################################################################",
   "library(ggplot2)",
+  "# whole-package imports are loaded as library(rwf) does, so their S3 methods are registered",
+  "# (e.g. ggfortify provides autoplot for lm, glm, decomposed.ts)",
+  sprintf("loadNamespace(\"%s\")",setdiff(whole_imports,"ggplot2")),
   "if (\"rwf_functions\" %in% search()) detach(\"rwf_functions\")",
   ".rwf_imports<-new.env(parent=globalenv())")
 # delayedAssign loads a package only when a function that needs it is called
