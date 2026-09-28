@@ -19,9 +19,13 @@ vignette: >
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
-
 library(ggplot2)
 ```
+
+## Acknowledgement
+
+The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_dichotomous.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_dichotomous.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
+
 
 ## Description
 
@@ -186,10 +190,10 @@ responses <- list(
 
 results <- data.frame(
   n_correct = sapply(responses, sum),
-  theta_EAP = sapply(responses, function(x) compute_eap_dichotomous(bank, x)),
-  SE        = NA
+  theta_EAP = sapply(responses, function(x) compute_eap_dichotomous(bank,x)),
+  SE        = sapply(responses, function(x) compute_eap_se_dichotomous(compute_eap_dichotomous(bank,x),bank=bank,x=x))
 )
-results$SE <- mapply(function(x, th) compute_eap_dichotomous(th, bank, x), responses, results$theta_EAP)
+
 results
 ```
 
