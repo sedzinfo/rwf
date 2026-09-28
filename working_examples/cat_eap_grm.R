@@ -111,8 +111,15 @@ compute_pi_grm<-function(theta,bank,D=1) {
 #'       widely spaced thresholds spread the information over a wider range of theta \cr
 #'       and when the spacing is large compared with 1/alpha_j the curve shows one bump \cr
 #'       per threshold \cr
-#'       test information is the sum of the item informations
-#' @return Ii item information for each item
+#'       test information is the sum of the item informations \cr
+#'       dIi and d2Ii are the first and second derivatives of the item information \cr
+#'       with respect to theta obtained by differentiating each category term \cr
+#'       dP_jk^2/P_jk and summing over categories \cr
+#'       dIi=sum_k 2*dP*d2P/P-dP^3/P^2 \cr
+#'       d2Ii=sum_k (2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3
+#' @return Ii   item information for each item \cr
+#'         dIi  first derivative of the item information for each item \cr
+#'         d2Ii second derivative of the item information for each item
 #' @export
 #' @examples
 #' bank<-matrix(c(1.227,0.845,1.694,1.012,2.103,
@@ -122,27 +129,22 @@ compute_pi_grm<-function(theta,bank,D=1) {
 #'                1.592,2.064,1.438,1.271,1.736),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),
 #'                                   c("alphaj","betaj1","betaj2","betaj3","betaj4")))
-#' catR::Ii(th=0,bank,model="GRM") # this will work with catR package installed
-#' Ii_grm(theta=0,bank)
-#' sum(Ii_grm(theta=0,bank)$Ii) # test information
-#' v<-seq(-4,4,by=.1)
-#' info<-matrix(NA,length(v),nrow(bank))
-#' for (i in 1:length(v)) info[i,]<-Ii_grm(theta=v[i],bank)$Ii
-#' plot(x=v,y=info[,1],xlab=expression(theta),ylab="information",
-#'      main="item information curves",type="l",col="red",ylim=c(0,max(info)))
-#' lines(y=info[,2],x=v,col="green")
-#' lines(y=info[,3],x=v,col="blue")
-#' lines(y=info[,4],x=v,col="yellow")
-#' lines(y=info[,5],x=v,col="orange")
-#' plot(x=v,y=rowSums(info),xlab=expression(theta),ylab="information",
-#'      main="test information",type="l")
-Ii_grm<-function(theta,bank,D=1) {
+#' li_catr<-catR::Ii(th=0,bank,model="GRM") # this will work with catR package installed
+#' li<-compute_ii_grm(theta=0,bank)
+#' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
+#' data.frame(catr=li_catr[[2]],li=li[[2]],equal=li_catr[[2]]==li[[2]])
+#' data.frame(catr=li_catr[[3]],li=li[[3]],equal=li_catr[[3]]==li[[3]])
+compute_ii_grm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   prob<-compute_pi_grm(theta,bank,D=D)
   P<-prob$Pi
   dP<-prob$dPi
+  d2P<-prob$d2Pi
+  d3P<-prob$d3Pi
   Ii<-as.numeric(rowSums(dP^2/P,na.rm=TRUE))
-  result<-list(Ii=Ii)
+  dIi<-as.numeric(rowSums(2*dP*d2P/P-dP^3/P^2,na.rm=TRUE))
+  d2Ii<-as.numeric(rowSums((2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3,na.rm=TRUE))
+  result<-list(Ii=Ii,dIi=dIi,d2Ii=d2Ii)
   return(result)
 }
 ##########################################################################################
@@ -201,7 +203,7 @@ next_item_grm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
   bank<-rbind(bank)
   available<-setdiff(1:nrow(bank),out)
   if (length(available)==0) stop("no item left in the bank",call.=FALSE)
-  info<-Ii_grm(theta,bank[available,,drop=FALSE],D=D)$Ii
+  info<-compute_ii_grm(theta,bank[available,,drop=FALSE],D=D)$Ii
   k<-max(1,min(floor(randomesque),length(available)))
   top<-order(info,decreasing=TRUE)[1:k]
   pick<-if (k==1) top else top[sample.int(k,1)]
