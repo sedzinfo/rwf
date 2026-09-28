@@ -4,7 +4,8 @@
 #' @title compute category response probabilities and derivatives under the rating scale model
 #' @description returns the category response probabilities for a given ability value and a \cr
 #'              given matrix of item parameters under Andrich rating scale model (RSM) \cr
-#'              returns the first derivatives of the category response probabilities
+#'              returns the first second and third derivatives of the category response \cr
+#'              probabilities
 #' @param theta ability
 #' @param bank item parameters one row per item \cr
 #'             column 1 holds the item location lambda_j \cr
@@ -21,31 +22,28 @@
 #'       P(X=k|theta)=exp(sum_t=1^k D*(theta-(lambda_j+delta_t)))/sum over all categories \cr
 #'       with the empty sum for category 0 equal to zero
 #' @return Pi   category response probabilities one row per item one column per category \cr
-#'         dPi  first derivatives of the category response probabilities
+#'         dPi  first derivatives of the category response probabilities \cr
+#'         d2Pi second derivatives of the category response probabilities \cr
+#'         d3Pi third derivatives of the category response probabilities
 #' @export
 #' @examples
 #' bank<-matrix(c(-0.560,-0.230,1.559,0.071,0.129,
 #'                rep(1.715,5),rep(0.461,5),rep(-1.265,5),rep(-0.687,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
-#' catR::Pi(th=0,bank,model="RSM") # this will work with catR package installed
-#' compute_pi_rsm(theta=0,bank)
-#' v<-seq(-6,6,by=.1)
-#' y_axis_response_probability<-list()
-#' for(i in v) y_axis_response_probability[[toString(i)]]<-compute_pi_rsm(theta=i,bank)$Pi[1,]
-#' df_rp<-data.frame(x=v,
-#'                   matrix(unlist(y_axis_response_probability),
-#'                          nrow=length(y_axis_response_probability),byrow=TRUE))
-#' plot(x=df_rp$x,y=df_rp$X1,xlab=expression(theta),ylab=expression(P(theta)),
-#'      main="category response probabilities item 1",type="l",col="red",ylim=c(0,1))
-#' lines(y=df_rp$X2,x=v,col="green")
-#' lines(y=df_rp$X3,x=v,col="blue")
-#' lines(y=df_rp$X4,x=v,col="yellow")
-#' lines(y=df_rp$X5,x=v,col="orange")
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("lambdaj","delta1","delta2","delta3","delta4")))
+#' pi_cat<-catR::Pi(th=0,bank,model="RSM")
+#' pi<-compute_pi_rsm(theta=0,bank)
+#' pi_cat
+#' pi
+#' isTRUE(all.equal(pi_cat[[1]], pi[[1]]))
+#' isTRUE(all.equal(pi_cat[[2]], pi[[2]]))
+#' isTRUE(all.equal(pi_cat[[3]], pi[[3]]))
+#' isTRUE(all.equal(pi_cat[[4]], pi[[4]]))
 compute_pi_rsm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   ncat<-ncol(bank)
-  Pi<-dPi<-matrix(NA,nrow(bank),ncat)
+  Pi<-dPi<-d2Pi<-d3Pi<-matrix(NA,nrow(bank),ncat)
   for (i in 1:nrow(bank)) {
     dj<-v<-0
     for (t in 1:(ncat-1)) {
@@ -56,15 +54,25 @@ compute_pi_rsm<-function(theta,bank,D=1) {
     dj<-dj[!is.na(dj)]
     gamma<-exp(dj)
     dgamma<-gamma*v
+    d2gamma<-gamma*v^2
+    d3gamma<-gamma*v^3
     sum_gamma<-sum(gamma)
     sum_dgamma<-sum(dgamma)
+    sum_d2gamma<-sum(d2gamma)
+    sum_d3gamma<-sum(d3gamma)
     n<-length(gamma)
     Pi[i,1:n]<-gamma/sum_gamma
     dPi[i,1:n]<-dgamma/sum_gamma-gamma*sum_dgamma/sum_gamma^2
+    d2Pi[i,1:n]<-d2gamma/sum_gamma-2*dgamma*sum_dgamma/sum_gamma^2-
+      gamma*sum_d2gamma/sum_gamma^2+2*gamma*sum_dgamma^2/sum_gamma^3
+    d3Pi[i,1:n]<-d3gamma/sum_gamma-
+      (gamma*sum_d3gamma+3*dgamma*sum_d2gamma+3*d2gamma*sum_dgamma)/sum_gamma^2+
+      (6*gamma*sum_dgamma*sum_d2gamma+6*dgamma*sum_dgamma^2)/sum_gamma^3-
+      6*gamma*sum_dgamma^3/sum_gamma^4
   }
-  colnames(Pi)<-colnames(dPi)<-paste("cat",0:(ncat-1),sep="")
-  rownames(Pi)<-rownames(dPi)<-paste("Item",1:nrow(bank),sep="")
-  result<-list(Pi=Pi,dPi=dPi)
+  colnames(Pi)<-colnames(dPi)<-colnames(d2Pi)<-colnames(d3Pi)<-paste("cat",0:(ncat-1),sep="")
+  rownames(Pi)<-rownames(dPi)<-rownames(d2Pi)<-rownames(d3Pi)<-paste("Item",1:nrow(bank),sep="")
+  result<-list(Pi=Pi,dPi=dPi,d2Pi=d2Pi,d3Pi=d3Pi)
   return(result)
 }
 ##########################################################################################
@@ -84,35 +92,38 @@ compute_pi_rsm<-function(theta,bank,D=1) {
 #'       under the rating scale model every item shares the same delta thresholds so \cr
 #'       every information curve has the same shape and the same maximum and differs \cr
 #'       only by a shift of lambdaj \cr
-#'       test information is the sum of the item informations
-#' @return Ii item information for each item
+#'       test information is the sum of the item informations \cr
+#'       dIi and d2Ii are the first and second derivatives of the item information \cr
+#'       with respect to theta obtained by differentiating each category term \cr
+#'       dP_jk^2/P_jk and summing over categories \cr
+#'       dIi=sum_k 2*dP*d2P/P-dP^3/P^2 \cr
+#'       d2Ii=sum_k (2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3
+#' @return Ii   item information for each item \cr
+#'         dIi  first derivative of the item information for each item \cr
+#'         d2Ii second derivative of the item information for each item
 #' @export
 #' @examples
 #' bank<-matrix(c(-0.560,-0.230,1.559,0.071,0.129,
 #'                rep(1.715,5),rep(0.461,5),rep(-1.265,5),rep(-0.687,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
-#' catR::Ii(th=0,bank,model="RSM") # this will work with catR package installed
-#' Ii_rsm(theta=0,bank)
-#' sum(Ii_rsm(theta=0,bank)$Ii) # test information
-#' v<-seq(-4,4,by=.1)
-#' info<-matrix(NA,length(v),nrow(bank))
-#' for (i in 1:length(v)) info[i,]<-Ii_rsm(theta=v[i],bank)$Ii
-#' plot(x=v,y=info[,1],xlab=expression(theta),ylab="information",
-#'      main="item information curves",type="l",col="red",ylim=c(0,max(info)))
-#' lines(y=info[,2],x=v,col="green")
-#' lines(y=info[,3],x=v,col="blue")
-#' lines(y=info[,4],x=v,col="yellow")
-#' lines(y=info[,5],x=v,col="orange")
-#' plot(x=v,y=rowSums(info),xlab=expression(theta),ylab="information",
-#'      main="test information",type="l")
-Ii_rsm<-function(theta,bank,D=1) {
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("lambdaj","delta1","delta2","delta3","delta4")))
+#' li_catr<-catR::Ii(th=0,bank,model="RSM")
+#' li<-compute_ii_rsm(theta=0,bank)
+#' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
+#' data.frame(catr=li_catr[[2]],li=li[[2]],equal=li_catr[[2]]==li[[2]])
+#' data.frame(catr=li_catr[[3]],li=li[[3]],equal=li_catr[[3]]==li[[3]])
+compute_ii_rsm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   prob<-compute_pi_rsm(theta,bank,D=D)
   P<-prob$Pi
   dP<-prob$dPi
+  d2P<-prob$d2Pi
+  d3P<-prob$d3Pi
   Ii<-as.numeric(rowSums(dP^2/P,na.rm=TRUE))
-  result<-list(Ii=Ii)
+  dIi<-as.numeric(rowSums(2*dP*d2P/P-dP^3/P^2,na.rm=TRUE))
+  d2Ii<-as.numeric(rowSums((2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3,na.rm=TRUE))
+  result<-list(Ii=Ii,dIi=dIi,d2Ii=d2Ii)
   return(result)
 }
 ##########################################################################################
@@ -161,7 +172,7 @@ next_item_rsm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
   bank<-rbind(bank)
   available<-setdiff(1:nrow(bank),out)
   if (length(available)==0) stop("no item left in the bank",call.=FALSE)
-  info<-Ii_rsm(theta,bank[available,,drop=FALSE],D=D)$Ii
+  info<-compute_ii_rsm(theta,bank[available,,drop=FALSE],D=D)$Ii
   k<-min(randomesque,length(available))
   top<-order(info,decreasing=TRUE)[1:k]
   pick<-if (k==1) top else sample(top,1)
@@ -220,7 +231,7 @@ likelihood_rsm<-function(theta,bank,x,D=1) {
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),
 #'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
 #' response<-c(4,3,2,1,0)
-#' catR::eapEst(bank,response,model="RSM") # this will work with catR package installed
+#' catR::eapEst(bank,response,model="RSM")
 #' eap_est_rsm(bank,response)
 eap_est_rsm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(s) {
@@ -264,7 +275,7 @@ eap_est_rsm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),
 #'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
 #' response<-c(4,3,2,1,0)
-#' catR::eapSem(0,bank,response,model="RSM") # this will work with catR package installed
+#' catR::eapSem(0,bank,response,model="RSM")
 #' eap_se_rsm(theta=0,bank=bank,x=response)
 #' v<-seq(-3,3,by=.1)
 #' se<-c()
