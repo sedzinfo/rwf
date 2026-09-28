@@ -151,7 +151,7 @@ $$\hat\theta_{EAP} = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\t
 \qquad
 SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
 
-Both integrals are evaluated on `nqp` equally spaced quadrature points $X_1,\ldots,X_Q$ from `lower` to `upper` (defaults `r formals(compute_eap_rsm)$nqp` points on $[`r formals(compute_eap_rsm)$lower`, `r formals(compute_eap_rsm)$upper`]$) with the trapezoidal rule that `integrate_cat()` implements:
+Both integrals are evaluated on `nqp` equally spaced quadrature points $X_1,\ldots,X_Q$ from `lower` to `upper` (defaults `r formals(compute_eap_rsm)$nqp` points on $[`r eval(formals(compute_eap_rsm)$lower)`, `r eval(formals(compute_eap_rsm)$upper)`]$) with the trapezoidal rule that `integrate_cat()` implements:
 
 $$\int f(\theta)\,d\theta \approx \sum_{q=1}^{Q-1} \frac{X_{q+1}-X_q}{2}\,\big[f(X_q) + f(X_{q+1})\big]$$
 

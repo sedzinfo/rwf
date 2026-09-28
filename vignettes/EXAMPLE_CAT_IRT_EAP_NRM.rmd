@@ -35,7 +35,7 @@ Every other model in this series assumes that the response categories of an item
 | `integrate_cat()` | Numerical integration (trapezoidal rule) | `catR::integrate.catR()` |
 | `compute_pi_nrm()` | Category response probabilities + four derivatives | `catR::Pi(model="NRM")` |
 | `compute_ii_nrm()` | Item information + three derivatives | `catR::Ii(model="NRM")` |
-| `compute_next_item_nrm()` | Maximum Fisher information item selection | `catR::nextItem(criterion="MFI")` |
+| `compute_next_item_nrm()` | Maximum Fisher information item selection | `catR::nextItem(model="NRM", criterion="MFI")` |
 | `compute_likelihood_nrm()` | Likelihood of a nominal response pattern | *(internal to `catR`)* |
 | `compute_eap_nrm()` | EAP ability estimate | `catR::eapEst(model="NRM")` |
 | `compute_eap_se_nrm()` | EAP standard error | `catR::eapSem(model="NRM")` |
@@ -58,7 +58,7 @@ source(paste0(directory, "../working_examples/cat_eap_nrm.R"), local = knitr::kn
 source(paste0(directory, "../working_examples/cat_eap_pcm.R"), local = knitr::knit_global())
 ```
 
-`cat_eap_pcm.R` is loaded only for the worked example that recovers the Partial Credit Model from the NRM. Both model files also run some loose example code when they are sourced, and that code leaves an object called `bank` behind. The bank used in this vignette is therefore defined explicitly below, after the files have been sourced.
+`cat_eap_pcm.R` is loaded only for the worked example that recovers the Partial Credit Model from the NRM. The example code at the end of both model files is commented out, so sourcing them only defines their functions; the bank used in this vignette is defined explicitly below.
 
 ---
 
@@ -572,7 +572,7 @@ data.frame(item        = 1:5,
 fine <- seq(-8, 8, by = 0.005)
 grid_modal <- lapply(1:5, function(j)
   rle(sapply(fine, function(th) which.max(compute_pi_nrm(th, bank[j, , drop = FALSE])$Pi[1, ]) - 1))$values)
-identical(grid_modal, lapply(modal, function(m) m$modal))
+identical(lapply(grid_modal, unname), lapply(modal, function(m) unname(m$modal)))
 ```
 
 Two things are visible here.

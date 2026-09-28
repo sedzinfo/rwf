@@ -52,7 +52,7 @@ The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/
 library(catR)
 ```
 
-`cat_eap_common.R` is sourced first because the model file calls `density_function()` and `integrate_cat()`. The partial credit, rating scale and modified graded response files are sourced only for the comparisons further down. Each model file ends with loose example code that runs when the file is sourced and leaves objects such as `bank` in the workspace, so every object used in this vignette is defined afresh below.
+`cat_eap_common.R` is sourced first because the model file calls `density_function()` and `integrate_cat()`. The partial credit, rating scale and modified graded response files are sourced only for the comparisons further down. The example code at the end of each model file is commented out, so sourcing a file only defines its functions; every object used in this vignette is defined below.
 
 ```{r source_functions}
 source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
@@ -130,7 +130,7 @@ An item with a single threshold is a 2PL item, and the sum collapses to $D^2\alp
 
 ### Next-item selection
 
-An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate — the **Maximum Fisher Information (MFI)** criterion. Under the rating scale model every item information curve is one common curve shifted along the ability axis, so MFI collapses to a nearest-neighbour lookup on the item locations. Under the GRM the curves differ in height *and* in shape, so there is no such shortcut: `compute_next_item_grm()` computes the information of every available item at $\theta$ and takes the largest. Items already administered are excluded with `out`.
+An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate — the **Maximum Fisher Information (MFI)** criterion. Under the rating scale model every item information curve is one common curve shifted along the ability axis, so MFI is close to a nearest-neighbour lookup on the item locations (not exactly one, because that common curve is not symmetric about its peak; the RSM vignette shows where the two disagree). Under the GRM the curves differ in height *and* in shape, so there is not even an approximate shortcut of that kind: `compute_next_item_grm()` computes the information of every available item at $\theta$ and takes the largest. Items already administered are excluded with `out`.
 
 The function also has a `randomesque` argument: draw at random from the $k$ most informative items instead of always taking the single best. Pure MFI hands the same few items to almost everyone, and under the GRM this is sharper than under a Rasch model, because an item with a large $\alpha_j$ whose thresholds cover the current $\theta$ wins most of the comparisons. Two small differences from `catR::nextItem()` are documented in the file: when several items tie exactly, catR draws one of them at random while this function takes the first; and with `randomesque` above 1, catR also keeps every item tied with the last one kept.
 
@@ -150,7 +150,7 @@ $$\hat\theta_{EAP} = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\t
 \qquad
 SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
 
-Both integrals are evaluated on an equally spaced grid of `nqp` quadrature points (default `r formals(compute_eap_grm)$nqp`) from `lower` to `upper` (defaults `r formals(compute_eap_grm)$lower` and `r formals(compute_eap_grm)$upper`) and integrated with the trapezoidal rule of `integrate_cat()`. The normal prior guarantees both integrals converge even for a pattern in which every response sits in the lowest or the highest category, where Maximum Likelihood has no finite maximum. `compute_eap_se_grm()` takes the point $\theta$ as an argument: pass the EAP estimate to obtain the posterior standard deviation.
+Both integrals are evaluated on an equally spaced grid of `nqp` quadrature points (default `r formals(compute_eap_grm)$nqp`) from `lower` to `upper` (defaults `r eval(formals(compute_eap_grm)$lower)` and `r eval(formals(compute_eap_grm)$upper)`) and integrated with the trapezoidal rule of `integrate_cat()`. The normal prior guarantees both integrals converge even for a pattern in which every response sits in the lowest or the highest category, where Maximum Likelihood has no finite maximum. `compute_eap_se_grm()` takes the point $\theta$ as an argument: pass the EAP estimate to obtain the posterior standard deviation.
 
 ---
 
@@ -777,7 +777,7 @@ ggplot(bump_long, aes(x = theta, y = information)) +
   theme_bw(base_size = 12)
 ```
 
-At $\alpha = `r bump_alphas[1]`$ the four thresholds merge into `r lengths(bumps)[1]` broad hump; at $\alpha = `r bump_alphas[2]`$ there are `r lengths(bumps)[2]`; from $\alpha = `r bump_alphas[3]`$, where the spacing is three times $1/\alpha$, there is one bump per threshold, sitting at the thresholds themselves. A very discriminating item with widely spaced thresholds is therefore not uniformly informative: it measures sharply near each threshold and much less well in between. Adaptive selection sees this — the item it prefers can change several times as $\theta$ moves across the scale.
+At $\alpha = `r bump_alphas[1]`$ the four thresholds merge into `r lengths(bumps)[1]` broad hump; at $\alpha = `r bump_alphas[2]`$ there are `r lengths(bumps)[2]`; from $\alpha = `r bump_alphas[3]`$, where the spacing is three times $1/\alpha$, there is one bump per threshold, close to the thresholds (the outer two sit slightly inside them at $\alpha = `r bump_alphas[3]`$, and all four sit exactly on them at $\alpha = `r bump_alphas[4]`$). A very discriminating item with widely spaced thresholds is therefore not uniformly informative: it measures sharply near each threshold and much less well in between. Adaptive selection sees this — the item it prefers can change several times as $\theta$ moves across the scale.
 
 ---
 
@@ -840,7 +840,7 @@ c(eap_correct_bank = compute_eap_grm(bank, x),
 thresholds_increasing(bank_swapped)
 ```
 
-The likelihood is negative at every quadrature point, the sign cancels in the ratio of the two integrals, and the function returns a plausible-looking estimate of `r round(th_swapped, 3)` from a likelihood that is not a probability. Only the threshold check flags the problem, which is why it belongs in front of any scoring code.
+The likelihood is negative at every quadrature point, the sign cancels in the ratio of the two integrals, and the function returns a plausible-looking estimate of `r round(th_swapped, 3)` from a likelihood that is not a probability. It is in fact exactly the estimate of the correct bank: swapping $\beta_{12}$ and $\beta_{13}$ turns $P^*_{12} - P^*_{13}$ into $P^*_{13} - P^*_{12}$, so the probability of category 2 only changes sign, and so does the likelihood of any pattern that answers item 1 in category 2. Patterns that answer item 1 in category 1 or 3 do get a different, and wrong, estimate. Only the threshold check flags the problem, which is why it belongs in front of any scoring code.
 
 Two *equal* thresholds fail loudly instead. The category between them has probability exactly zero, and any pattern that uses it has a likelihood of zero everywhere, so the EAP is $0/0$:
 

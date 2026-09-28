@@ -121,7 +121,7 @@ Neither maximum-information selection nor EAP scoring uses `dIi` or `d2Ii`; they
 
 ### Next-item selection
 
-An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate — the **Maximum Fisher Information (MFI)** criterion. `compute_next_item_pcm()` evaluates `compute_ii_pcm()` for every item not listed in `out` (the items already administered) and returns the best one. Under the RSM every information curve is the same curve shifted by $\lambda_j$, so MFI reduces to a nearest-neighbour lookup on the item locations. Under the PCM the curves differ in shape and height, there is no such shortcut, and the information of every available item has to be computed at $\theta$.
+An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate — the **Maximum Fisher Information (MFI)** criterion. `compute_next_item_pcm()` evaluates `compute_ii_pcm()` for every item not listed in `out` (the items already administered) and returns the best one. Under the RSM every information curve is the same curve shifted by $\lambda_j$, so MFI is close to a nearest-neighbour lookup on the item locations (not exactly one, because that common curve is not symmetric about its peak; the RSM vignette shows where the two disagree). Under the PCM the curves differ in shape and height, there is not even an approximate shortcut of that kind, and the information of every available item has to be computed at $\theta$.
 
 The $D$ convention does not affect selection: at a given $D$ the information of every candidate is divided by the same $D^2$, and dividing all candidates by one positive constant does not change which is largest.
 

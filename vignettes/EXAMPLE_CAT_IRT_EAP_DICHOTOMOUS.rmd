@@ -19,6 +19,7 @@ vignette: >
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
+
 library(ggplot2)
 ```
 
@@ -26,22 +27,30 @@ library(ggplot2)
 
 The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_dichotomous.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_dichotomous.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
 
-
 ## Description
 
-Adaptive testing packages like `catR` score examinees using **EAP (Expected A Posteriori)** ability estimation — a Bayesian method that is more numerically stable than Maximum Likelihood when a response pattern is all-correct, all-incorrect, or otherwise perfectly separates the item bank (situations where a raw likelihood has no finite maximum).
+Adaptive testing packages like `catR` score examinees using **EAP (Expected A Posteriori)** ability estimation, a Bayesian method that stays numerically stable where Maximum Likelihood breaks down: a response pattern that is all-correct, all-incorrect, or otherwise perfectly separates the item bank has a likelihood with no finite maximum, but it always has a finite posterior mean.
 
-[`working_examples/cat_eap_dichotomous.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_dichotomous.R) reimplements the whole EAP pipeline **from scratch**, in five small functions, with no dependency on `catR` at all:
+This vignette covers **dichotomous** items, scored right/wrong, under the **four-parameter logistic (4PL)** model, which contains the 1PL, 2PL and 3PL models as special cases. [`working_examples/cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) holds the two model-free helpers, and [`working_examples/cat_eap_dichotomous.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_dichotomous.R) holds the six model-specific functions. Together they implement the full adaptive-testing pipeline in plain base R, with no runtime dependency on `catR`:
 
-| Function | Purpose | `catR` equivalent it mirrors |
-|---|---|---|
-| `density_function()` | Normal density | `stats::dnorm()` |
-| `integrate_cat()` | Numerical integration (trapezoidal rule) | `catR::integrate.catR()` |
-| `Pi()` | 4PL response probability + derivative | `catR::Pi()` |
-| `eap_est()` | EAP ability estimate | `catR::eapEst()` |
-| `eap_se()` | EAP standard error | `catR::eapSem()` |
+| Function | File | Purpose | `catR` equivalent it mirrors |
+|---|---|---|---|
+| `density_function()` | `cat_eap_common.R` | Normal density | `stats::dnorm()` |
+| `integrate_cat()` | `cat_eap_common.R` | Numerical integration (trapezoidal rule) | `catR::integrate.catR()` |
+| `compute_pi_dichotomous()` | `cat_eap_dichotomous.R` | 4PL response probabilities and their first three derivatives | `catR::Pi()` |
+| `compute_ii_dichotomous()` | `cat_eap_dichotomous.R` | Item information and its first two derivatives | `catR::Ii()` |
+| `compute_next_item_dichotomous()` | `cat_eap_dichotomous.R` | Maximum Fisher information item selection | `catR::nextItem(criterion = "MFI")` |
+| `compute_likelihood_dichotomous()` | `cat_eap_dichotomous.R` | Likelihood of a 0/1 response pattern | *(internal to `catR::eapEst()`)* |
+| `compute_eap_dichotomous()` | `cat_eap_dichotomous.R` | EAP ability estimate | `catR::eapEst()` |
+| `compute_eap_se_dichotomous()` | `cat_eap_dichotomous.R` | EAP standard error | `catR::eapSem()` |
 
-This vignette walks through the theory behind each function, then validates every one of them directly against its `catR` counterpart, and reproduces the worked examples from the script.
+In `catR` a dichotomous bank is signalled by leaving the `model` argument at its default `NULL`, so none of the `catR` calls below pass a `model`.
+
+This vignette walks through the theory behind each function, validates every one of them against its `catR` counterpart, works through what the guessing and slipping parameters and unequal discriminations do to an estimate, and then runs a small adaptive test end to end. "From scratch" in the title means that every step is written out in base R where it can be read; it does not mean the code was derived independently of `catR`, as the acknowledgement below makes clear.
+
+It is the first of six companion vignettes that build the same pipeline for different item response models: *EAP Ability Estimation From Scratch* (this one, dichotomous items), *EAP Ability Estimation From Scratch: The Rating Scale Model*, *EAP Ability Estimation From Scratch: The Partial Credit Model*, *EAP Ability Estimation From Scratch: The Graded Response Model*, *EAP Ability Estimation From Scratch: The Modified Graded Response Model* and *EAP Ability Estimation From Scratch: The Nominal Response Model*.
+
+
 
 ```{r library,message=FALSE,warning=FALSE}
 library(catR)
@@ -56,41 +65,124 @@ source(paste0(directory, "../working_examples/cat_eap_dichotomous.R"), local = k
 
 ## Theoretical Background
 
-### The 4-parameter logistic (4PL) response model
+### The four-parameter logistic (4PL) response model
 
-Every item response model gives the probability that an examinee with ability $\theta$ answers item $i$ correctly:
+Every dichotomous item response model gives the probability that an examinee with ability $\theta$ answers item $j$ correctly. The 4PL model writes it as
 
-$$P_i(\theta) = c_i + (d_i-c_i)\,\frac{e^{Da_i(\theta-b_i)}}{1+e^{Da_i(\theta-b_i)}}$$
+$$P_j(\theta) = c_j + (d_j-c_j)\,\frac{e^{Da_j(\theta-b_j)}}{1+e^{Da_j(\theta-b_j)}}$$
 
-- $a_i$ — **discrimination**: how steeply the curve rises around $b_i$
-- $b_i$ — **difficulty**: the ability level at the curve's midpoint
-- $c_i$ — **guessing (lower asymptote)**: minimum success probability for very low ability
-- $d_i$ — **inattention (upper asymptote)**: maximum success probability for very high ability
-- $D$ — a scaling constant (1, or 1.702 to make the logistic curve closely approximate the normal ogive)
+- $a_j$: **discrimination**, how steeply the curve rises around $b_j$
+- $b_j$: **difficulty**, the ability level at the curve's midpoint, where $P_j = (c_j+d_j)/2$
+- $c_j$: **guessing (lower asymptote)**, the success probability of an examinee of very low ability
+- $d_j$: **slipping or inattention (upper asymptote)**, the success probability of an examinee of very high ability
+- $D$: the metric constant, 1 for the logistic metric or 1.702 to make the logistic curve closely approximate the normal ogive
 
-Setting $c_i=0,\,d_i=1$ collapses this to a **2PL** model; additionally fixing $a_i$ to a common value across items gives the **1PL/Rasch** model. `cat_eap.R`'s `Pi()` function implements the full 4PL and its first derivative second and third derivative $P_i'(\theta)$ (needed for item selection, though not used further in this vignette).
+Setting $d_j=1$ gives Birnbaum's (1968) **3PL** model; additionally setting $c_j=0$ gives the **2PL** model; additionally fixing $a_j$ to one common value across items gives the **1PL/Rasch** model. The upper asymptote $d_j<1$ was proposed by Barton and Lord (1981) for high-ability examinees who still miss an easy item through carelessness.
+
+### The item bank layout
+
+`cat_eap_dichotomous.R` expects `bank` to be a numeric matrix with **one row per item and exactly four columns**, read by position: column 1 holds $a_j$, column 2 $b_j$, column 3 $c_j$ and column 4 $d_j$. A dichotomous item always has two response categories, so the number of columns never changes and there is no `NA` padding; a 1PL, 2PL or 3PL item is entered as a 4PL item with $c_j=0$ and/or $d_j=1$. `compute_pi_dichotomous()`, which every other function calls, begins with `bank <- rbind(bank)`, so a single item may also be passed as a plain vector `c(a, b, c, d)`.
+
+### Derivatives of the response function
+
+Writing $e_j = \exp\big(Da_j(\theta-b_j)\big)$, `compute_pi_dichotomous()` returns $P_j$ together with its first three derivatives with respect to $\theta$:
+
+$$P'_j = \frac{Da_j(d_j-c_j)\,e_j}{(1+e_j)^2}
+\qquad
+P''_j = \frac{D^2a_j^2(d_j-c_j)\,e_j(1-e_j)}{(1+e_j)^3}
+\qquad
+P'''_j = \frac{D^3a_j^3(d_j-c_j)\,e_j(e_j^2-4e_j+1)}{(1+e_j)^4}$$
+
+The metric constant only ever appears as the product $Da_j$, and the $k$-th derivative carries the factor $(Da_j)^k$. Two things follow, both checked below. First, the derivatives are correct at $D=1.702$ only if every one of them carries the right power of $D$. Second, $D$ and $a_j$ are not separately identified for this model: $D=1.702$ with discrimination $a_j$ gives exactly the same curve as $D=1$ with discrimination $1.702\,a_j$.
+
+The first derivative is what item information is built from; the second and third are what the derivatives of the information are built from. Neither maximum-information selection nor EAP scoring needs the derivatives of the information, but they are returned for parity with `catR`.
+
+### The probability floor
+
+Floating-point arithmetic cannot represent a probability arbitrarily close to 1: once $e_j/(1+e_j)$ is within half a unit in the last place of 1 it rounds to exactly 1. The code therefore replaces any $P_j$ that is exactly 0 with $10^{-10}$ and any that is exactly 1 with $1-10^{-10}$, as `catR::Pi()` does. Without this, $1-P_j$ could be exactly zero, and the item information (which divides by $P_j(1-P_j)$) would become infinite. The floor only matters for items with $c_j=0$ or $d_j=1$; any other item has asymptotes strictly inside $(0,1)$.
+
+### Item information
+
+The Fisher information of a dichotomous item is its squared slope divided by the variance of the response:
+
+$$I_j(\theta) = \frac{P'^2_j}{P_j Q_j}, \qquad Q_j = 1-P_j$$
+
+This is the polytomous formula $\sum_k (\partial P_{jk}/\partial\theta)^2/P_{jk}$ with the two categories $P_j$ and $Q_j$, whose derivatives are $P'_j$ and $-P'_j$: $P'^2_j/P_j + P'^2_j/Q_j = P'^2_j/(P_jQ_j)$. **Test information** is the sum of the item informations, and its reciprocal square root is the asymptotic standard error of a maximum-likelihood ability estimate.
+
+For the 2PL ($c_j=0$, $d_j=1$) the slope is $P'_j = Da_jP_jQ_j$, so the information reduces to $D^2a_j^2P_jQ_j$. It is symmetric around $b_j$, peaks there with height $D^2a_j^2/4$, and so is governed entirely by the discrimination: in a 2PL bank the high-$a$ items are simply better items. Guessing and slipping change both the height and the location of the peak. A guessing parameter $c_j>0$ (with $d_j=1$) lowers the information and moves its peak **above** $b_j$, to (Birnbaum, 1968)
+
+$$\theta_{\max} = b_j + \frac{1}{Da_j}\,\log\frac{1+\sqrt{1+8c_j}}{2}$$
+
+because a correct answer from an examinee just below $b_j$ may well be a lucky guess and tells the test less than it would under the 2PL. The worked example on guessing and slipping below checks this formula numerically, and also checks its mirror image for $d_j<1$.
+
+`compute_ii_dichotomous()` also returns the first two derivatives of the information. The first is
+
+$$I'_j = \frac{P'_j\,\big[\,2P_jQ_jP''_j - P'^2_j(Q_j-P_j)\,\big]}{P_j^2Q_j^2}$$
+
+and the second, written out in the same form as `catR::Ii()`, is
+
+$$I''_j = \frac{2P_jQ_j\big(P''^2_j + P'_jP'''_j\big) - 2P'^2_jP''_j(Q_j-P_j)}{P_j^2Q_j^2}
+- \frac{3P_j^2Q_jP'^2_jP''_j - P_jP'^4_j(2Q_j-P_j)}{P_j^4Q_j^2}
++ \frac{3P_jQ_j^2P'^2_jP''_j - Q_jP'^4_j(Q_j-2P_j)}{P_j^2Q_j^4}$$
+
+Both are checked against finite differences below as well as against `catR`.
+
+### Next-item selection
+
+An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate: the **Maximum Fisher Information (MFI)** criterion. `compute_next_item_dichotomous()` computes $I_j(\hat\theta)$ for every item not listed in `out`, the indices of the items already administered, and returns the index of the best one, its information, and the indices that were available.
+
+If every item had the same $a_j$ with $c_j=0$ and $d_j=1$, the information curves would be copies of one another shifted by $b_j$, and MFI would reduce to picking the item whose $b_j$ is closest to $\hat\theta$. In a 4PL bank the curves differ in height and in shape, so a highly discriminating item some distance away can beat a weak item right on target, and the information of every available item really does have to be computed. This contrasts with the Rating Scale Model vignette, where every item reaches the same maximum information and MFI is close to (though not exactly) a nearest-neighbour lookup on the item locations.
+
+The `randomesque` argument draws at random from the $k$ most informative items instead of always taking the single best. This is standard exposure control: pure MFI would give the same handful of highly discriminating items to almost everyone. Two documented differences from `catR::nextItem()` matter only for ties: when several items are exactly tied for the maximum, `catR` draws one of them at random while this function takes the first; and with `randomesque` above 1, `catR` also keeps every item tied with the last one kept.
 
 ### Likelihood of a response pattern
 
-Assuming **local independence** (conditional on $\theta$, responses to different items are independent), the likelihood of a full 0/1 response pattern $\mathbf{x}=(x_1,\ldots,x_n)$ is
+Assuming **local independence** (conditional on $\theta$, responses to different items are independent), the likelihood of a 0/1 response pattern $\mathbf{x}=(x_1,\ldots,x_n)$ is
 
-$$L(\theta) = \prod_{i=1}^{n} P_i(\theta)^{x_i}\,\big(1-P_i(\theta)\big)^{1-x_i}$$
+$$L(\theta) = \prod_{j=1}^{n} P_j(\theta)^{x_j}\,Q_j(\theta)^{1-x_j}$$
+
+The exponents act as a switch: a correct response contributes $P_j$, a wrong one $Q_j$. `catR` computes this product inside `eapEst()` and `eapSem()` without exporting it; `compute_likelihood_dichotomous()` exposes it as a function of its own, and `compute_eap_dichotomous()` and `compute_eap_se_dichotomous()` compute the same product internally.
 
 ### EAP: a Bayesian point estimate
 
-Maximum Likelihood estimation fails outright for an all-correct or all-incorrect pattern — the likelihood keeps increasing toward $\theta=\pm\infty$ with no interior maximum. EAP sidesteps this by placing a **prior** distribution $\pi(\theta)$ on ability (by default, standard normal) and reporting the **mean of the posterior distribution**:
+Maximum Likelihood fails outright for an all-correct or all-incorrect pattern, because the likelihood keeps increasing toward $\theta=\pm\infty$ with no interior maximum. EAP (Bock & Mislevy, 1982) sidesteps this by placing a **prior** $\pi(\theta)$ on ability (standard normal by default) and reporting the **mean of the posterior distribution**
 
 $$\hat\theta_{EAP} = E[\theta \mid \mathbf{x}] = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}$$
 
-and its precision as the **posterior standard deviation**:
+and its precision as the **posterior standard deviation**
 
 $$SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
 
-Both integrals are always finite because the normal prior decays to zero in the tails, regardless of how extreme the likelihood is — this is exactly what makes EAP well-behaved for perfect response patterns.
+Both integrals are always finite because the normal prior decays to zero in the tails, however extreme the likelihood is.
 
 ### Numerical integration
 
-Neither integral above has a closed-form solution, so `cat_eap.R` evaluates the integrand at a grid of **quadrature points** (`nqp`, default 33, evenly spaced between `lower` and `upper`, default $\pm4$) and integrates numerically with the **trapezoidal rule**: the area under the curve between two adjacent grid points is approximated as a trapezoid — width times the average of the two heights. `integrate_cat()` implements exactly this, summing the trapezoids across the whole grid.
+Neither integral has a closed form, so the integrands are evaluated at `nqp` **quadrature points** $\theta_1<\cdots<\theta_Q$ (default 33, evenly spaced from `lower` to `upper`, default $\pm4$) and integrated with the **trapezoidal rule**, which approximates the area between two adjacent points by a trapezoid, the width times the average of the two heights:
+
+$$\int f(\theta)\,d\theta \approx \sum_{q=1}^{Q-1} (\theta_{q+1}-\theta_q)\,\frac{f(\theta_q)+f(\theta_{q+1})}{2}$$
+
+`integrate_cat()` implements exactly this sum; `density_function()` supplies $\pi(\theta)$.
+
+### What the response pattern contributes
+
+Which feature of a response pattern the estimate depends on is a property of the model. Under the **1PL/Rasch** model the likelihood depends on the pattern only through the **number correct** $\sum_j x_j$, which is a sufficient statistic for $\theta$: two examinees with the same number correct get the same estimate whichever items they answered correctly. This is what the Rating Scale and Partial Credit Model vignettes show for their raw scores. Under the **2PL** the sufficient statistic becomes the **discrimination-weighted score** $\sum_j a_jx_j$: a correct answer to a highly discriminating item counts for more, and the item difficulties play no part at all. Under the **3PL and 4PL** there is no simple sufficient statistic, and the whole pattern matters. A worked example below demonstrates all three cases.
+
+---
+
+## The item bank
+
+The bank from the roxygen examples of `cat_eap_dichotomous.R`: five items spanning the ability range, with different discriminations, and a guessing parameter of 0.1 and an upper asymptote of 0.9 on every item.
+
+```{r bank}
+bank <- matrix(c(1.75, 1.80, 1.18, 1.54, 1.56,
+                 -2.55, -1.90, 0.18, 1.54, 2.56,
+                 0.1, 0.1, 0.1, 0.1, 0.1,
+                 0.9, 0.9, 0.9, 0.9, 0.9),
+               nrow = 5, dimnames = list(1:5, c("a", "b", "c", "d")))
+bank
+```
+
+Because $c_j = 1 - d_j$ for every item here, each curve is point-symmetric around its own $b_j$; the section on item information shows what that does to the location of the information peak.
 
 ---
 
@@ -103,17 +195,19 @@ v <- seq(-3, 3, by = 0.1)
 comparison <- data.frame(x = v, density_function = density_function(v), dnorm = dnorm(v))
 head(comparison)
 all.equal(comparison$density_function, comparison$dnorm)
+max(abs(comparison$density_function - comparison$dnorm))
 ```
 
 ```{r density_plot,dev='png'}
 ggplot(comparison, aes(x = x)) +
   geom_line(aes(y = density_function, color = "density_function()"), linewidth = 1) +
   geom_point(aes(y = dnorm, color = "dnorm()"), shape = 1) +
-  labs(title = "Hand-written normal density vs. dnorm()", x = expression(theta), y = "density", color = NULL) +
+  labs(title = "Hand-written normal density vs. dnorm()",
+       x = expression(theta), y = "density", color = NULL) +
   theme_bw(base_size = 12)
 ```
 
-The hand-written implementation overlays `dnorm()` exactly — as expected, since it's just the textbook normal density formula written out longhand.
+The function writes out the textbook normal density longhand. One detail from its documentation is worth repeating: it uses `exp(1)` rather than a hard-coded `2.71828`, which is accurate to only six significant digits and shifts the EAP estimate in the seventh decimal.
 
 ### Numerical integration
 
@@ -121,79 +215,360 @@ The hand-written implementation overlays `dnorm()` exactly — as expected, sinc
 x <- seq(from = -3, to = 3, length = 33)
 y <- round(exp(x), 2)
 c(integrate_cat = integrate_cat(x, y), integrate.catR = catR::integrate.catR(x, y))
+all.equal(integrate_cat(x, y), catR::integrate.catR(x, y))
 ```
 
-Both approximate $\int_{-3}^{3} e^x\,dx$ via the same trapezoidal grid and agree exactly.
+Both approximate $\int_{-3}^{3} e^x\,dx$ on the same 33-point trapezoidal grid and return the same number.
 
-### Response probability curves (4PL)
+### Response probabilities and derivatives
+
+At a single ability value, the whole returned list (probabilities and all three derivatives) matches `catR::Pi()`:
 
 ```{r pi_check}
-bank <- matrix(c(0.7521, 0.8083, 1.1857, 0.5481, 0.5695,
-                 -1.5521, -0.9083, 0.1857, 0.5481, 1.5695,
-                 0, 0, 0, 0, 0,
-                 1, 1, 1, 1, 1),
-               nrow = 5, dimnames = list(1:5, c("a", "b", "c", "d")))
+mine <- compute_pi_dichotomous(theta = 0, bank)
+theirs <- catR::Pi(th = 0, bank)
+round(data.frame(mine), 6)
+all.equal(mine, theirs)
+```
 
-data.frame(mine = compute_pi_dichotomous(theta = 0, bank)$Pi, catR = catR::Pi(th = 0, bank)$Pi)
+Across several ability values and both metric constants, the largest absolute difference in each element:
+
+```{r pi_check_grid}
+theta_check <- c(-3, -1.2, 0, 0.7, 2.5)
+
+pi_differences <- do.call(rbind, lapply(c(1, 1.702), function(D) {
+  do.call(rbind, lapply(theta_check, function(th) {
+    mine <- compute_pi_dichotomous(th, bank, D = D)
+    theirs <- catR::Pi(th, bank, D = D)
+    data.frame(D = D, theta = th,
+               t(sapply(names(mine), function(k) max(abs(mine[[k]] - theirs[[k]])))))
+  }))
+}))
+pi_differences
+max(pi_differences[, c("Pi", "dPi", "d2Pi", "d3Pi")])
+```
+
+Agreement with `catR` shows the code reproduces `catR`; it does not by itself show that the derivative formulas are right. A central finite difference is an independent check, and running it at $D=1.702$ confirms that each derivative carries the correct power of $D$:
+
+```{r pi_finite_differences}
+h <- 1e-5
+fd_pi <- do.call(rbind, lapply(c(1, 1.702), function(D) {
+  do.call(rbind, lapply(theta_check, function(th) {
+    p <- function(t) compute_pi_dichotomous(t, bank, D = D)
+    data.frame(D = D, theta = th,
+               dPi  = max(abs((p(th + h)$Pi   - p(th - h)$Pi)   / (2 * h) - p(th)$dPi)),
+               d2Pi = max(abs((p(th + h)$dPi  - p(th - h)$dPi)  / (2 * h) - p(th)$d2Pi)),
+               d3Pi = max(abs((p(th + h)$d2Pi - p(th - h)$d2Pi) / (2 * h) - p(th)$d3Pi)))
+  }))
+}))
+sapply(split(fd_pi[, c("dPi", "d2Pi", "d3Pi")], fd_pi$D), function(z) max(unlist(z)))
+```
+
+The discrepancies are of the size expected from the truncation and rounding error of a central difference with $h = 10^{-5}$, at both values of $D$. Since $D$ only ever enters as $Da_j$, the model at $D = 1.702$ is the model at $D = 1$ with every discrimination multiplied by 1.702:
+
+```{r pi_D_confound}
+bank_rescaled <- bank
+bank_rescaled[, "a"] <- 1.702 * bank[, "a"]
+all.equal(compute_pi_dichotomous(0.4, bank, D = 1.702),
+          compute_pi_dichotomous(0.4, bank_rescaled, D = 1))
 ```
 
 ```{r pi_plot,dev='png'}
-theta_grid <- seq(-6, 6, by = 0.1)
-prob_curves <- sapply(theta_grid, function(th) compute_pi_dichotomous(theta = th, bank)$Pi)
-df_curves <- data.frame(theta = theta_grid, t(prob_curves))
-names(df_curves)[-1] <- paste0("item_", 1:5)
-df_curves_long <- reshape2::melt(df_curves, id.vars = "theta", variable.name = "item", value.name = "P")
+theta_grid <- seq(-6, 6, by = 0.05)
+prob_curves <- t(sapply(theta_grid, function(th) compute_pi_dichotomous(theta = th, bank)$Pi))
+df_curves <- data.frame(theta = theta_grid, prob_curves)
+names(df_curves)[-1] <- paste0("item ", 1:5, " (a=", bank[, "a"], ", b=", bank[, "b"], ")")
+df_curves_long <- reshape2::melt(df_curves, id.vars = "theta",
+                                 variable.name = "item", value.name = "P")
 
 ggplot(df_curves_long, aes(x = theta, y = P, color = item)) +
+  geom_hline(yintercept = c(0.1, 0.9), linetype = "dashed", color = "grey50") +
   geom_line(linewidth = 1) +
-  labs(title = "Item response curves (5-item 2PL bank)", x = expression(theta), y = expression(P(theta)), color = NULL) +
+  labs(title = "Item response curves",
+       subtitle = "every item has lower asymptote c = 0.1 and upper asymptote d = 0.9 (dashed)",
+       x = expression(theta), y = expression(P(theta)), color = NULL) +
   theme_bw(base_size = 12)
 ```
 
-Each curve is one item's probability of a correct response as a function of ability — steeper curves (higher $a$) discriminate more sharply around their difficulty $b$; curves shifted right have higher difficulty.
+Each curve rises from the guessing floor of 0.1 to the slipping ceiling of 0.9, passing through 0.5 at its own $b_j$. Steeper curves (higher $a$) discriminate more sharply around their difficulty; curves shifted right are harder.
 
-### EAP ability estimate
+### The probability floor
 
-```{r eap_est_check}
-response_1 <- c(1, 0, 0, 0, 0)
-c(mine = compute_eap_dichotomous(bank, response_1), catR = catR::eapEst(bank, response_1))
+For a 2PL item with $a=1$, $b=0$ and $D=1$ the exponent is just $\theta$, so the floor can be located directly:
+
+```{r pi_floor}
+item_2pl <- c(a = 1, b = 0, c = 0, d = 1)
+z <- c(-746, -745, -40, 36, 37, 40)
+data.frame(exponent       = z,
+           P              = compute_pi_dichotomous(z, item_2pl)$Pi,
+           floored_at_0   = compute_pi_dichotomous(z, item_2pl)$Pi == 1e-10,
+           floored_at_1   = compute_pi_dichotomous(z, item_2pl)$Pi == 1 - 1e-10)
+
+# the smallest exponent at which e/(1+e) rounds to exactly 1
+z_grid <- seq(36, 37, by = 0.001)
+z_one <- min(z_grid[sapply(z_grid, function(z) exp(z) / (1 + exp(z)) == 1)])
+c(first_exponent_rounding_to_1 = z_one, log_2_to_the_53 = log(2^53))
 ```
 
-### EAP standard error
+The two ends of the floor are very different in practice. A probability near 0 is stored with a floating-point exponent, so $e_j/(1+e_j)$ only becomes exactly 0 when $e_j$ itself underflows, below an exponent of about $-745$. A probability near 1 is stored as $1$ minus something, with only 53 bits of mantissa, so it rounds to exactly 1 as soon as the exponent reaches about `r round(z_one, 2)`, which is $\log 2^{53}$. For a highly discriminating item with $Da_j = 4$ that happens only `r round(z_one / 4, 1)` logits above $b_j$. At that point the floor is what keeps the information finite:
 
-```{r eap_se_check}
-c(mine = compute_eap_se_dichotomous(0, bank, response_1), catR = catR::eapSem(0, bank, response_1))
+```{r pi_floor_information}
+e <- exp(40)
+unfloored <- c(P = e / (1 + e), dP = e / (1 + e)^2)
+c(unfloored_information = unname(unfloored["dP"]^2 / (unfloored["P"] * (1 - unfloored["P"]))),
+  floored_information   = unname(compute_ii_dichotomous(40, item_2pl)$Ii))
 ```
 
-Both the ability estimate and its standard error match `catR` exactly across the quadrature grid.
+The floor guards against rounding, not against overflow. Once the exponent exceeds $\log$ of the largest double, about `r round(log(.Machine$double.xmax), 2)`, $e_j$ itself is `Inf` and $e_j/(1+e_j)$ is `NaN`, in `catR` exactly as here:
+
+```{r pi_overflow}
+c(compute_pi_dichotomous = unname(compute_pi_dichotomous(800, item_2pl)$Pi),
+  catR_Pi                = unname(catR::Pi(800, item_2pl)$Pi))
+```
+
+No realistic bank and quadrature range comes near that point.
+
+### Item information
+
+```{r ii_check}
+mine <- compute_ii_dichotomous(theta = 0, bank)
+theirs <- catR::Ii(th = 0, bank)
+round(data.frame(mine), 6)
+all.equal(mine, theirs)
+```
+
+The same grid of ability values and both metric constants, for all three elements:
+
+```{r ii_check_grid}
+ii_differences <- do.call(rbind, lapply(c(1, 1.702), function(D) {
+  do.call(rbind, lapply(theta_check, function(th) {
+    mine <- compute_ii_dichotomous(th, bank, D = D)
+    theirs <- catR::Ii(th, bank, D = D)
+    data.frame(D = D, theta = th,
+               t(sapply(names(mine), function(k) max(abs(mine[[k]] - theirs[[k]])))))
+  }))
+}))
+ii_differences
+max(ii_differences[, c("Ii", "dIi", "d2Ii")])
+```
+
+The two-category form of the information, and finite-difference checks of its two derivatives at both metric constants:
+
+```{r ii_two_category}
+pr <- compute_pi_dichotomous(0.4, bank)
+all.equal(pr$dPi^2 / pr$Pi + (-pr$dPi)^2 / (1 - pr$Pi),
+          compute_ii_dichotomous(0.4, bank)$Ii)
+
+fd_ii <- do.call(rbind, lapply(c(1, 1.702), function(D) {
+  do.call(rbind, lapply(theta_check, function(th) {
+    ii <- function(t) compute_ii_dichotomous(t, bank, D = D)
+    data.frame(D = D, theta = th,
+               dIi  = max(abs((ii(th + h)$Ii  - ii(th - h)$Ii)  / (2 * h) - ii(th)$dIi)),
+               d2Ii = max(abs((ii(th + h)$dIi - ii(th - h)$dIi) / (2 * h) - ii(th)$d2Ii)))
+  }))
+}))
+sapply(split(fd_ii[, c("dIi", "d2Ii")], fd_ii$D), function(z) max(unlist(z)))
+```
+
+```{r ii_plot,dev='png'}
+info_grid <- seq(-5, 5, by = 0.02)
+info <- t(sapply(info_grid, function(th) compute_ii_dichotomous(th, bank)$Ii))
+df_info <- data.frame(theta = info_grid, info)
+names(df_info)[-1] <- paste0("item ", 1:5, " (a=", bank[, "a"], ", b=", bank[, "b"], ")")
+df_info_long <- reshape2::melt(df_info, id.vars = "theta",
+                               variable.name = "item", value.name = "information")
+
+ggplot(df_info_long, aes(x = theta, y = information, color = item)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Item information curves",
+       subtitle = "different heights and widths: the discrimination sets how useful an item can be",
+       x = expression(theta), y = "information", color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+```{r test_info_plot,dev='png'}
+df_test <- data.frame(theta = info_grid, information = rowSums(info))
+
+ggplot(df_test, aes(x = theta, y = information)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  labs(title = "Test information", x = expression(theta), y = "information") +
+  theme_bw(base_size = 12)
+```
+
+Locating each item's peak numerically shows how different this is from a Rasch-family bank:
+
+```{r info_peaks}
+peaks <- t(sapply(1:5, function(j) {
+  opt <- optimize(function(th) compute_ii_dichotomous(th, bank[j, , drop = FALSE])$Ii,
+                  interval = bank[j, "b"] + c(-4, 4), maximum = TRUE, tol = 1e-10)
+  c(peak = opt$maximum, max_information = opt$objective)
+}))
+data.frame(b = bank[, "b"], a = bank[, "a"], peaks,
+           peak_minus_b      = peaks[, "peak"] - bank[, "b"],
+           ratio_to_2PL_peak = peaks[, "max_information"] / (bank[, "a"]^2 / 4))
+```
+
+Two things stand out. The peak heights differ from item to item, from `r round(min(peaks[, "max_information"]), 3)` for item `r which.min(peaks[, "max_information"])` to `r round(max(peaks[, "max_information"]), 3)` for item `r which.max(peaks[, "max_information"])`, following the discriminations. And every peak sits at its own $b_j$, even though $c_j = 0.1 > 0$. The guessing parameter pushes the peak up and the slipping parameter pushes it down; with $c_j = 1 - d_j$ the curve is point-symmetric around $b_j$ and the two shifts cancel. The last column shows the price of the asymptotes: every item keeps the same fraction, `r round(peaks[1, "max_information"] / (bank[1, "a"]^2 / 4), 2)` $= (d_j - c_j)^2$, of the $D^2a_j^2/4$ it would reach as a 2PL item.
+
+### Next-item selection
+
+```{r next_item_check}
+mine <- compute_next_item_dichotomous(theta = 0, bank)
+theirs <- catR::nextItem(bank, theta = 0, criterion = "MFI")
+c(mine_item = mine$item, catR_item = theirs$item,
+  mine_info = unname(mine$info), catR_info = unname(theirs$info))
+```
+
+With items already administered excluded via `out`:
+
+```{r next_item_out}
+mine <- compute_next_item_dichotomous(theta = 0, bank, out = 3)
+theirs <- catR::nextItem(bank, theta = 0, out = 3, criterion = "MFI")
+c(mine_item = mine$item, catR_item = theirs$item,
+  mine_info = unname(mine$info), catR_info = unname(theirs$info))
+mine$available
+```
+
+And across the whole ability range, with and without `out`, at both metric constants:
+
+```{r next_item_grid}
+grid <- seq(-4, 4, by = 0.05)
+next_item_agreement <- do.call(rbind, lapply(c(1, 1.702), function(D) {
+  do.call(rbind, lapply(list(NULL, c(3, 4)), function(o) {
+    mine <- sapply(grid, function(th) compute_next_item_dichotomous(th, bank, out = o, D = D)$item)
+    theirs <- sapply(grid, function(th) catR::nextItem(bank, theta = th, out = o, D = D,
+                                                      criterion = "MFI")$item)
+    data.frame(D = D, out = if (is.null(o)) "none" else paste(o, collapse = ","),
+               agreements = sum(mine == theirs), grid_points = length(grid))
+  }))
+}))
+next_item_agreement
+```
+
+MFI is not the same rule as "take the item whose $b_j$ is closest to $\theta$", which `catR` offers separately as `criterion = "bOpt"`:
+
+```{r next_item_nearest_b}
+mfi <- sapply(grid, function(th) compute_next_item_dichotomous(th, bank)$item)
+nearest_b <- sapply(grid, function(th) which.min(abs(th - bank[, "b"])))
+c(agreements = sum(mfi == nearest_b), grid_points = length(grid))
+data.frame(theta = grid, MFI = mfi, nearest_b = nearest_b)[mfi != nearest_b, ]
+c(bOpt_at_0.7 = catR::nextItem(bank, theta = 0.7, criterion = "bOpt")$item,
+  MFI_at_0.7  = compute_next_item_dichotomous(0.7, bank)$item)
+```
+
+In every disagreement MFI passes over the nearest item for a more discriminating one farther away. Most of them involve item 3, the least discriminating item in the bank ($a = 1.18$): its difficulty of 0.18 is the nearest, but MFI prefers item 2 ($a = 1.80$) around $\theta = -0.8$ and item 4 ($a = 1.54$) from $\theta = 0.65$ upward. The remaining case sits just on item 1's side of the midpoint between items 1 and 2, where item 2's slightly higher discrimination (1.80 against 1.75) wins.
+
+Finally, the documented behaviour at exact ties, with a bank whose first two items are identical:
+
+```{r next_item_ties}
+bank_tied <- rbind(c(1.2, 0, 0, 1), c(1.2, 0, 0, 1), c(1, 2, 0, 1))
+set.seed(3)
+table(catR = replicate(200, catR::nextItem(bank_tied, theta = 0, criterion = "MFI")$item))
+table(compute_next_item_dichotomous = replicate(200, compute_next_item_dichotomous(0, bank_tied)$item))
+```
+
+`catR` splits the tied choice between items 1 and 2 at random; `compute_next_item_dichotomous()` always takes the first. With continuous item parameters, exact ties essentially never happen.
+
+### Likelihood
+
+`catR` has no exported likelihood function to compare against, so the check rebuilds the same product from `catR`'s own probabilities, for several patterns and ability values:
+
+```{r likelihood_check}
+response <- c(1, 1, 1, 0, 0)
+P_catR <- catR::Pi(th = 0.3, bank)$Pi
+c(compute_likelihood_dichotomous = compute_likelihood_dichotomous(theta = 0.3, bank = bank, x = response),
+  from_catR_Pi                   = prod(P_catR^response * (1 - P_catR)^(1 - response)))
+
+likelihood_patterns <- list(c(0, 0, 0, 0, 0), c(1, 1, 1, 0, 0), c(0, 1, 0, 1, 1), c(1, 1, 1, 1, 1))
+max(sapply(likelihood_patterns, function(x) sapply(theta_check, function(th) {
+  P <- catR::Pi(th, bank)$Pi
+  abs(compute_likelihood_dichotomous(th, bank, x) - prod(P^x * (1 - P)^(1 - x)))
+})))
+```
+
+```{r likelihood_plot,dev='png'}
+lik_grid <- seq(-6, 6, by = 0.05)
+df_lik <- data.frame(theta = lik_grid,
+                     "1 1 1 0 0" = sapply(lik_grid, function(th)
+                       compute_likelihood_dichotomous(th, bank, c(1, 1, 1, 0, 0))),
+                     "1 1 1 1 1" = sapply(lik_grid, function(th)
+                       compute_likelihood_dichotomous(th, bank, c(1, 1, 1, 1, 1))),
+                     check.names = FALSE)
+df_lik_long <- reshape2::melt(df_lik, id.vars = "theta",
+                              variable.name = "pattern", value.name = "likelihood")
+
+ggplot(df_lik_long, aes(x = theta, y = likelihood, color = pattern)) +
+  geom_hline(yintercept = prod(bank[, "d"]), linetype = "dashed", color = "grey50") +
+  geom_line(linewidth = 1) +
+  labs(title = "Likelihood of two response patterns",
+       subtitle = "dashed line: the product of the upper asymptotes d",
+       x = expression(theta), y = "likelihood", color = "pattern") +
+  theme_bw(base_size = 12)
+```
+
+The mixed pattern has an interior maximum. The all-correct pattern does not: its likelihood rises for ever, but with $d_j = 0.9$ it levels off at $\prod_j d_j$ rather than approaching 1:
+
+```{r likelihood_plateau}
+c(likelihood_at_theta_10 = compute_likelihood_dichotomous(10, bank, c(1, 1, 1, 1, 1)),
+  product_of_d           = prod(bank[, "d"]))
+```
+
+Maximum Likelihood has no finite answer for this pattern; EAP, below, still does.
+
+### EAP ability estimate and standard error
+
+```{r eap_check}
+patterns <- list(c(0, 0, 0, 0, 0), c(1, 0, 0, 0, 0), c(1, 1, 0, 0, 0), c(1, 1, 1, 0, 0),
+                 c(1, 1, 1, 1, 0), c(1, 1, 1, 1, 1), c(0, 0, 1, 1, 1), c(0, 1, 0, 1, 0))
+
+validation <- do.call(rbind, lapply(c(1, 1.702), function(D) {
+  do.call(rbind, lapply(patterns, function(x) {
+    th_mine <- compute_eap_dichotomous(bank, x, D = D)
+    th_catR <- catR::eapEst(bank, x, D = D)
+    data.frame(D = D,
+               pattern  = paste(x, collapse = " "),
+               eap_mine = th_mine,
+               eap_catR = th_catR,
+               se_mine  = compute_eap_se_dichotomous(th_mine, bank, x, D = D),
+               se_catR  = catR::eapSem(th_mine, bank, x, D = D))
+  }))
+}))
+validation
+
+c(max_eap_difference = max(abs(validation$eap_mine - validation$eap_catR)),
+  max_se_difference  = max(abs(validation$se_mine  - validation$se_catR)))
+all.equal(validation$eap_mine, validation$eap_catR)
+all.equal(validation$se_mine, validation$se_catR)
+```
+
+Both the point estimate and the standard error reproduce `catR` to machine precision for every pattern and both metric constants, including the all-incorrect and all-correct patterns where Maximum Likelihood fails outright.
 
 ---
 
-## Worked example: more correct responses shift and sharpen the estimate
+## Worked example: the estimate across the number-correct range
 
-Reproducing "Example 1" from the script: a fixed 5-item bank, scored against response patterns with an increasing number of correct answers (0 through 5 correct, always the *easiest* items first).
+Reproducing "Example 1" from the bottom of `cat_eap_dichotomous.R`: a 2PL bank ($c_j = 0$, $d_j = 1$) scored against response patterns with an increasing number of correct answers, always the *easiest* items first.
 
 ```{r worked_example}
-a <- c(0.7521, 0.8083, 1.1857, 0.5481, 0.5695)
-b <- c(-1.5521, -0.9083, 0.1857, 0.5481, 1.5695)
-c <- c(0, 0, 0, 0, 0)
-d <- c(1, 1, 1, 1, 1)
-bank <- matrix(c(a, b, c, d), nrow = 5, dimnames = list(1:5, c("a", "b", "c", "d")))
+a_2pl <- c(0.7521, 0.8083, 1.1857, 0.5481, 0.5695)
+b_2pl <- c(-1.5521, -0.9083, 0.1857, 0.5481, 1.5695)
+bank_2pl <- matrix(c(a_2pl, b_2pl, rep(0, 5), rep(1, 5)), nrow = 5,
+                   dimnames = list(1:5, c("a", "b", "c", "d")))
+bank_2pl
 
-responses <- list(
-  c(1, 0, 0, 0, 0),
-  c(1, 1, 0, 0, 0),
-  c(1, 1, 1, 0, 0),
-  c(1, 1, 1, 1, 0),
-  c(1, 1, 1, 1, 1)
-)
+responses <- list(c(0, 0, 0, 0, 0),
+                  c(1, 0, 0, 0, 0),
+                  c(1, 1, 0, 0, 0),
+                  c(1, 1, 1, 0, 0),
+                  c(1, 1, 1, 1, 0),
+                  c(1, 1, 1, 1, 1))
 
 results <- data.frame(
   n_correct = sapply(responses, sum),
-  theta_EAP = sapply(responses, function(x) compute_eap_dichotomous(bank,x)),
-  SE        = sapply(responses, function(x) compute_eap_se_dichotomous(compute_eap_dichotomous(bank,x),bank=bank,x=x))
+  theta_EAP = sapply(responses, function(x) compute_eap_dichotomous(bank_2pl, x))
 )
-
+results$SE <- mapply(function(x, th) compute_eap_se_dichotomous(th, bank_2pl, x),
+                     responses, results$theta_EAP)
 results
 ```
 
@@ -203,52 +578,373 @@ ggplot(results, aes(x = n_correct, y = theta_EAP)) +
   geom_line(color = "steelblue", linewidth = 1) +
   geom_point(size = 2, color = "steelblue") +
   labs(title = "EAP estimate (± 1 SE) vs. number of items correct",
-       x = "Number of items correct (out of 5)", y = expression(hat(theta)[EAP])) +
+       x = "number of items correct (out of 5)", y = expression(hat(theta)[EAP])) +
   theme_bw(base_size = 12)
 ```
 
-The estimate climbs monotonically with the number of correct responses, as expected. Notice it never reaches the extremes of the integration range ($\pm4$) even for the all-correct or all-incorrect pattern — the normal prior pulls the posterior mean back toward 0, which is exactly the regularizing behavior that makes EAP preferable to Maximum Likelihood at the edges of a response pattern.
+The estimate climbs monotonically with the number of correct responses, from `r round(results$theta_EAP[1], 3)` to `r round(results$theta_EAP[6], 3)`. It never approaches the integration bounds of $\pm4$, even for the all-incorrect and all-correct patterns: the normal prior pulls the posterior mean back toward 0. That regularisation is the reason to prefer EAP over Maximum Likelihood at the edges of the score range, and the price is a deliberate, known bias toward the prior mean.
 
-## Worked example: how standard error depends on both $\theta$ and the response pattern
+The standard error barely moves across the range, from `r round(min(results$SE), 3)` to `r round(max(results$SE), 3)`. It is smallest for `r results$n_correct[which.min(results$SE)]` correct and largest for `r results$n_correct[which.max(results$SE)]` correct: a mid-range pattern pins $\theta$ down a little more tightly against this bank than a perfect or a zero score, which is compatible with a wide range of high (or low) abilities. Five items of moderate discrimination cannot shrink a standard normal prior by much, which is why the standard error stays close to 0.8 throughout.
 
-Reproducing the three SE curves from `eap_se()`'s documentation: the same 5-item bank, scored at every $\theta$ from $-3$ to $3$, under three different response patterns.
+---
+
+## Worked example: standard error as a function of $\theta$
+
+`compute_eap_se_dichotomous()` takes `theta` as a free argument. Passing the EAP estimate returns the posterior standard deviation; passing anything else returns the posterior root mean squared deviation around that point. The same 2PL bank, evaluated at every $\theta$ from $-3$ to $3$ under three response patterns:
 
 ```{r se_curves}
-bank_se <- matrix(c(0.7521, 0.8083, 1.1857, 0.5481, 0.5695,
-                    -1.5521, -0.9083, 0.1857, 0.5481, 1.5695,
-                    0, 0, 0, 0, 0,
-                    1, 1, 1, 1, 1),
-                  nrow = 5, dimnames = list(1:5, c("a", "b", "c", "d")))
+se_grid <- seq(-3, 3, by = 0.05)
+se_patterns <- list("all incorrect (0 0 0 0 0)" = c(0, 0, 0, 0, 0),
+                    "all correct (1 1 1 1 1)"   = c(1, 1, 1, 1, 1),
+                    "2 of 5 correct (1 0 1 0 0)" = c(1, 0, 1, 0, 0))
 
-theta_grid <- seq(-3, 3, by = 0.1)
-patterns <- list(
-  "all incorrect"    = c(0, 0, 0, 0, 0),
-  "all correct"      = c(1, 1, 1, 1, 1),
-  "2 of 5 correct"   = c(1, 0, 1, 0, 0)
-)
-
-se_df <- do.call(rbind, lapply(names(patterns), function(nm) {
-  data.frame(theta = theta_grid,
-             SE = sapply(theta_grid, function(th) compute_eap_se_dichotomous(theta = th, bank = bank_se, x = patterns[[nm]])),
+se_df <- do.call(rbind, lapply(names(se_patterns), function(nm) {
+  data.frame(theta = se_grid,
+             SE = sapply(se_grid, function(th)
+               compute_eap_se_dichotomous(theta = th, bank = bank_2pl, x = se_patterns[[nm]])),
              pattern = nm)
 }))
+
+eap_points <- do.call(rbind, lapply(names(se_patterns), function(nm) {
+  th <- compute_eap_dichotomous(bank_2pl, se_patterns[[nm]])
+  data.frame(theta = th, SE = compute_eap_se_dichotomous(th, bank_2pl, se_patterns[[nm]]),
+             pattern = nm)
+}))
+eap_points
 ```
 
 ```{r se_curves_plot,dev='png'}
 ggplot(se_df, aes(x = theta, y = SE, color = pattern)) +
   geom_line(linewidth = 1) +
-  labs(title = "EAP standard error vs. assumed theta, by response pattern",
-       x = expression(theta), y = "standard error", color = "response pattern") +
+  geom_point(data = eap_points, size = 3) +
+  labs(title = "Posterior RMSD vs. evaluation point, by response pattern",
+       subtitle = "solid points mark the EAP estimate, where each curve bottoms out",
+       x = expression(theta), y = "standard error", color = NULL) +
   theme_bw(base_size = 12)
 ```
 
-The "2 of 5 correct" pattern reaches its lowest SE near $\theta=0$, where the item bank is best targeted for a mixed response pattern. The all-correct and all-incorrect curves instead keep *decreasing* toward the ends of the range they're evaluated over — consistent with those patterns being most consistent with an extreme ability level, even though the EAP point estimate itself (per the previous section) is pulled back toward 0 by the prior. This is a useful reminder that `eap_se()`'s argument `theta` is an arbitrary evaluation point for the posterior SD, not necessarily `eap_est()`'s own output — in practice you always pair them, as the earlier `eap_se(eap_est(bank, x), bank, x)` calls do.
+Each curve bottoms out at its own EAP estimate. This is not a coincidence of the bank but the defining property of a mean: the mean squared deviation of a distribution around a point $t$ is its variance plus $(t - \text{mean})^2$. The identity holds for the quadrature weights as well, to rounding error:
+
+```{r se_identity}
+sapply(names(se_patterns), function(nm) {
+  pt <- eap_points[eap_points$pattern == nm, ]
+  curve <- se_df[se_df$pattern == nm, ]
+  max(abs(curve$SE - sqrt(pt$SE^2 + (curve$theta - pt$theta)^2)))
+})
+```
+
+So the curves carry no information beyond the EAP estimate and its standard error, and the free `theta` argument is useful mainly for showing what the pairing `compute_eap_se_dichotomous(compute_eap_dichotomous(bank, x), bank, x)` is doing. In practice the two functions are always called that way.
+
+---
+
+## Worked example: guessing and slipping
+
+One item, $a = 1.3$ and $b = 0.5$, in four versions: a 2PL item, a 3PL item with guessing $c = 0.2$, an item with slipping $d = 0.8$ and no guessing, and an item with both.
+
+```{r guess_slip}
+variants <- list("2PL (c=0, d=1)"          = c(1.3, 0.5, 0,   1),
+                 "guessing (c=0.2, d=1)"   = c(1.3, 0.5, 0.2, 1),
+                 "slipping (c=0, d=0.8)"   = c(1.3, 0.5, 0,   0.8),
+                 "both (c=0.2, d=0.8)"     = c(1.3, 0.5, 0.2, 0.8))
+
+gs_grid <- seq(-4, 5, by = 0.02)
+gs_curves <- do.call(rbind, lapply(names(variants), function(nm) {
+  it <- variants[[nm]]
+  data.frame(theta = gs_grid, version = nm,
+             P = compute_pi_dichotomous(gs_grid, it)$Pi,
+             information = compute_ii_dichotomous(gs_grid, it)$Ii)
+}))
+gs_curves$version <- factor(gs_curves$version, levels = names(variants))
+gs_long <- reshape2::melt(gs_curves, id.vars = c("theta", "version"),
+                          variable.name = "curve", value.name = "value")
+```
+
+```{r guess_slip_plot,dev='png'}
+ggplot(gs_long, aes(x = theta, y = value, color = version)) +
+  geom_vline(xintercept = 0.5, linetype = "dashed", color = "grey50") +
+  geom_line(linewidth = 1) +
+  facet_wrap(~ curve, ncol = 1, scales = "free_y",
+             labeller = as_labeller(c(P = "response probability", information = "item information"))) +
+  labs(title = "What c and d do to one item (a = 1.3, b = 0.5)",
+       subtitle = "dashed line: b",
+       x = expression(theta), y = NULL, color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+Locating each information peak numerically and comparing it with the closed-form predictions from the theory section: $b + \log\big((1+\sqrt{1+8c})/2\big)/(Da)$ for guessing, its mirror image $b - \log\big((1+\sqrt{1+8(1-d)})/2\big)/(Da)$ for slipping, and $b$ itself when $c = 1-d$.
+
+```{r guess_slip_peaks}
+shift <- function(g, a, D = 1) log((1 + sqrt(1 + 8 * g)) / 2) / (D * a)
+predicted <- c(0.5, 0.5 + shift(0.2, 1.3), 0.5 - shift(1 - 0.8, 1.3), 0.5)
+
+gs_peaks <- do.call(rbind, lapply(seq_along(variants), function(i) {
+  it <- variants[[i]]
+  opt <- optimize(function(th) compute_ii_dichotomous(th, it)$Ii,
+                  interval = c(-4, 5), maximum = TRUE, tol = 1e-10)
+  data.frame(version = names(variants)[i], peak = opt$maximum, predicted = predicted[i],
+             max_information = opt$objective,
+             ratio_to_2PL_peak = opt$objective / (1.3^2 / 4))
+}))
+gs_peaks
+```
+
+The guessing item's information peaks `r round(gs_peaks$peak[2] - 0.5, 3)` above $b$ and the slipping item's the same distance below it, both where the formulas say. With both asymptotes and $c = 1 - d$ the two shifts cancel and the peak returns to $b$, just as in the item bank above. All three non-2PL versions lose information: `r round(100 * (1 - gs_peaks$ratio_to_2PL_peak[2]))`% of the 2PL peak for $c = 0.2$ or $d = 0.8$ alone, and `r round(100 * (1 - gs_peaks$ratio_to_2PL_peak[4]))`% with both, where the peak is $(d-c)^2 =$ `r round(gs_peaks$ratio_to_2PL_peak[4], 2)` of the 2PL value. Guessing and slipping of the same size cost the same amount of information, because the slipping item is the guessing item reflected through $(b, 0.5)$.
+
+The guessing formula is checked here for a range of $c$ at both metric constants, as the difference between the numerical peak and the prediction:
+
+```{r guess_formula_check}
+formula_check <- expand.grid(c = c(0.05, 0.1, 0.2, 0.25, 0.35), D = c(1, 1.702))
+formula_check$numerical_minus_formula <- mapply(function(g, D) {
+  it <- c(1.3, 0.5, g, 1)
+  optimize(function(th) compute_ii_dichotomous(th, it, D = D)$Ii,
+           interval = c(-4, 5), maximum = TRUE, tol = 1e-10)$maximum - (0.5 + shift(g, 1.3, D))
+}, formula_check$c, formula_check$D)
+formula_check
+```
+
+The differences are at the level of the optimiser's tolerance, so the formula in the roxygen note of `compute_ii_dichotomous()` holds, including its $1/D$ scaling.
+
+---
+
+## Worked example: the response pattern, not just the number correct
+
+Take every pattern with exactly two correct answers out of five (there are `r choose(5, 2)` of them) and score each under three versions of the Example 1 bank: a **1PL** version with every $a_j = 1$, the original **2PL** bank, and a **3PL** version with every $a_j = 1$ and $c_j = 0.2$.
+
+```{r pattern_models}
+pairs <- combn(5, 2)
+two_correct <- lapply(seq_len(ncol(pairs)), function(k) {
+  x <- rep(0, 5)
+  x[pairs[, k]] <- 1
+  x
+})
+
+bank_1pl <- bank_2pl
+bank_1pl[, "a"] <- 1
+bank_3pl <- bank_1pl
+bank_3pl[, "c"] <- 0.2
+
+pattern_table <- data.frame(
+  pattern        = sapply(two_correct, paste, collapse = " "),
+  weighted_score = sapply(two_correct, function(x) sum(a_2pl * x)),
+  EAP_1PL        = sapply(two_correct, function(x) compute_eap_dichotomous(bank_1pl, x)),
+  EAP_2PL        = sapply(two_correct, function(x) compute_eap_dichotomous(bank_2pl, x)),
+  EAP_3PL        = sapply(two_correct, function(x) compute_eap_dichotomous(bank_3pl, x))
+)
+pattern_table[order(pattern_table$EAP_2PL), ]
+
+c(range_1PL = diff(range(pattern_table$EAP_1PL)),
+  range_2PL = diff(range(pattern_table$EAP_2PL)),
+  range_3PL = diff(range(pattern_table$EAP_3PL)))
+identical(order(pattern_table$EAP_2PL), order(pattern_table$weighted_score))
+```
+
+Three models, three different answers to "what does the estimate depend on?":
+
+- **1PL.** All `r choose(5, 2)` patterns get the same estimate, `r sprintf("%.6f", pattern_table$EAP_1PL[1])`; the spread is at the level of rounding error. With equal discriminations and no asymptotes the number correct is sufficient, just as the raw score is in the Rating Scale and Partial Credit Model vignettes.
+- **2PL.** The estimates spread over `r round(diff(range(pattern_table$EAP_2PL)), 3)` logits, and they are ordered exactly by the weighted score $\sum_j a_jx_j$. The difficulties play no part: the two hardest items (4 and 5) give the *lowest* estimate of all, `r round(min(pattern_table$EAP_2PL), 3)`, because they are the two least discriminating items in the bank, while the highest estimate, `r round(max(pattern_table$EAP_2PL), 3)`, goes to the pattern `r pattern_table$pattern[which.max(pattern_table$EAP_2PL)]`, which includes item 3, the most discriminating one.
+- **3PL.** Even with equal discriminations the pattern matters again, now over `r round(diff(range(pattern_table$EAP_3PL)), 3)` logits, and in the opposite direction from the 2PL: the two easiest items correct gives the highest estimate (`r round(pattern_table$EAP_3PL[pattern_table$pattern == "1 1 0 0 0"], 3)`) and the two hardest the lowest (`r round(pattern_table$EAP_3PL[pattern_table$pattern == "0 0 0 1 1"], 3)`). With a guessing floor, a correct answer to an item far too hard for the examinee is better explained as a lucky guess.
+
+The 2PL claim can be made sharper. Under the 2PL two patterns with the same weighted score get the same estimate even when their numbers correct differ. With discriminations 0.5, 0.75 and 1.25 (all exactly representable in binary), getting the first two items right scores $0.5 + 0.75 = 1.25$, the same as getting only the third right:
+
+```{r weighted_score}
+bank_w <- matrix(c(0.5, 0.75, 1.25, -1, 0, 1, 0, 0, 0, 1, 1, 1), nrow = 3,
+                 dimnames = list(1:3, c("a", "b", "c", "d")))
+bank_w_3pl <- bank_w
+bank_w_3pl[, "c"] <- 0.2
+
+data.frame(pattern        = c("1 1 0", "0 0 1"),
+           n_correct      = c(2, 1),
+           weighted_score = c(sum(bank_w[, "a"] * c(1, 1, 0)), sum(bank_w[, "a"] * c(0, 0, 1))),
+           EAP_2PL        = sprintf("%.12f", c(compute_eap_dichotomous(bank_w, c(1, 1, 0)),
+                                               compute_eap_dichotomous(bank_w, c(0, 0, 1)))),
+           EAP_3PL        = sprintf("%.12f", c(compute_eap_dichotomous(bank_w_3pl, c(1, 1, 0)),
+                                               compute_eap_dichotomous(bank_w_3pl, c(0, 0, 1)))))
+```
+
+Under the 2PL two correct answers and one correct answer give identical estimates to twelve decimal places; adding a guessing parameter of 0.2 to every item separates them. This is what the discrimination parameter buys and what it costs. Better items count for more, which makes better use of the data; but the estimate can no longer be explained from the score sheet alone, and two examinees with the same number correct can legitimately receive different scores.
+
+---
+
+## Worked example: a short adaptive test
+
+Five items are too few for an adaptive test to choose anything, so this example generates a 40-item 4PL bank with discriminations between 0.8 and 2, difficulties spread around 0, guessing up to 0.25 and upper asymptotes between 0.9 and 1.
+
+```{r adaptive_bank}
+set.seed(2024)
+n_items <- 40
+bank_cat <- cbind(a = round(runif(n_items, 0.8, 2.0), 2),
+                  b = round(rnorm(n_items, 0, 1.2), 2),
+                  c = round(runif(n_items, 0, 0.25), 2),
+                  d = round(runif(n_items, 0.9, 1.0), 2))
+rownames(bank_cat) <- 1:n_items
+head(bank_cat)
+```
+
+At each step the loop picks the most informative unadministered item at the current estimate, simulates a response from an examinee with true ability 1, and rescores.
+
+```{r adaptive}
+set.seed(1)
+true_theta <- 1.0
+
+# simulate a 0/1 response to item j from an examinee at theta
+simulate_response <- function(j, theta) {
+  p <- compute_pi_dichotomous(theta, bank_cat[j, , drop = FALSE])$Pi
+  rbinom(1, 1, p)
+}
+
+theta <- 0
+administered <- integer(0)
+responses <- integer(0)
+trace <- data.frame()
+
+for (step in 1:20) {
+  sel <- compute_next_item_dichotomous(theta, bank_cat, out = administered)
+  theta_before <- theta
+  administered <- c(administered, sel$item)
+  responses <- c(responses, simulate_response(sel$item, true_theta))
+
+  sub_bank <- bank_cat[administered, , drop = FALSE]
+  theta <- compute_eap_dichotomous(sub_bank, responses)
+  se <- compute_eap_se_dichotomous(theta, sub_bank, responses)
+
+  trace <- rbind(trace, data.frame(step = step, theta_before = theta_before, item = sel$item,
+                                   a = bank_cat[sel$item, "a"], b = bank_cat[sel$item, "b"],
+                                   information = unname(sel$info),
+                                   response = tail(responses, 1),
+                                   theta_EAP = theta, SE = se))
+}
+rownames(trace) <- NULL
+trace
+```
+
+`catR::nextItem()` is then asked the same question at every step: the same estimate, the same items already given. The check runs after the loop rather than inside it because `catR::nextItem()` draws from the random-number stream even when there is nothing to draw between, and calling it inside the loop would change the simulated responses:
+
+```{r adaptive_rng}
+set.seed(1); invisible(catR::nextItem(bank_cat, theta = 0, criterion = "MFI")); after_catR <- runif(1)
+set.seed(1); untouched <- runif(1)
+c(runif_after_catR_nextItem = after_catR, runif_untouched = untouched)
+```
+
+```{r adaptive_check}
+trace$catR_item <- sapply(seq_len(nrow(trace)), function(k)
+  catR::nextItem(bank_cat, theta = trace$theta_before[k],
+                 out = administered[seq_len(k - 1)], criterion = "MFI")$item)
+all(trace$item == trace$catR_item)
+c(final_mine = theta,
+  final_catR = catR::eapEst(bank_cat[administered, ], responses),
+  se_mine    = se,
+  se_catR    = catR::eapSem(theta, bank_cat[administered, ], responses))
+```
+
+```{r adaptive_plot,dev='png'}
+ggplot(trace, aes(x = step, y = theta_EAP)) +
+  geom_hline(yintercept = true_theta, linetype = "dashed", color = "grey40") +
+  geom_ribbon(aes(ymin = theta_EAP - SE, ymax = theta_EAP + SE),
+              alpha = 0.2, fill = "steelblue") +
+  geom_line(color = "steelblue", linewidth = 1) +
+  geom_point(size = 2, color = "steelblue") +
+  annotate("text", x = 1, y = true_theta + 0.08, hjust = 0,
+           label = "true theta", color = "grey40", size = 3.5) +
+  scale_x_continuous(breaks = trace$step) +
+  labs(title = "Adaptive test: EAP estimate (± 1 SE) after each item",
+       x = "item administered", y = expression(hat(theta)[EAP])) +
+  theme_bw(base_size = 12)
+```
+
+```{r adaptive_summary}
+c(first_item_a         = trace$a[1],
+  mean_a_first_5       = mean(trace$a[1:5]),
+  mean_a_last_5        = mean(trace$a[16:20]),
+  mean_a_bank          = mean(bank_cat[, "a"]),
+  steps_where_SE_rose  = sum(diff(trace$SE) > 0))
+trace$step[c(FALSE, diff(trace$SE) > 0)]
+```
+
+`catR` picks the same item at every one of the 20 steps, and the final estimate and standard error agree with `catR`'s. After 20 items the estimate is `r round(tail(trace$theta_EAP, 1), 3)` with a standard error of `r round(tail(trace$SE, 1), 3)`, down from `r round(trace$SE[1], 3)` after the first item. The fall is not strictly monotone: the standard error rose `r sum(diff(trace$SE) > 0)` time(s), at step(s) `r paste(trace$step[c(FALSE, diff(trace$SE) > 0)], collapse = ", ")`. For dichotomous items a response that contradicts the current estimate can widen the posterior, so a posterior standard deviation, unlike the asymptotic $1/\sqrt{\text{test information}}$, need not shrink with every item.
+
+The item choices show the discrimination at work. MFI opens with the most informative item at $\theta = 0$, which has $a =$ `r trace$a[1]`, and the first five items average $a =$ `r round(mean(trace$a[1:5]), 2)` against a bank average of `r round(mean(bank_cat[, "a"]), 2)`. By the last five steps the best items near the estimate are used up and the average has fallen to `r round(mean(trace$a[16:20]), 2)`. Pure MFI spends the strongest items first.
+
+### Exposure control
+
+Pure MFI is deterministic: every examinee starting at $\theta = 0$ receives the same first item. The `randomesque` argument draws at random from the $k$ best instead.
+
+```{r randomesque}
+set.seed(42)
+exposure_1 <- table(replicate(2000, compute_next_item_dichotomous(theta = 0, bank_cat, randomesque = 1)$item))
+exposure_5 <- table(replicate(2000, compute_next_item_dichotomous(theta = 0, bank_cat, randomesque = 5)$item))
+exposure_1
+exposure_5
+```
+
+With `randomesque = 1` item `r names(exposure_1)[1]` is chosen `r max(exposure_1)` times out of 2000. With `randomesque = 5` the load is spread over `r length(exposure_5)` items, each chosen between `r min(exposure_5)` and `r max(exposure_5)` times. In a 4PL bank the price is higher than in a Rasch-family bank, because the runners-up are not just slightly off target but genuinely less informative items:
+
+```{r randomesque_cost}
+info_at_0 <- compute_ii_dichotomous(theta = 0, bank_cat)$Ii
+top_5 <- sort(info_at_0, decreasing = TRUE)[1:5]
+round(top_5, 3)
+c(best_item          = max(info_at_0),
+  mean_of_top_5      = mean(top_5),
+  proportion_of_best = mean(top_5) / max(info_at_0))
+```
+
+Spreading the first item over the five best retains on average `r round(100 * mean(top_5) / max(info_at_0))`% of the information of always taking the single best: the standard trade-off between measurement efficiency and item security, and one that is steeper when discriminations vary.
+
+---
+
+## Worked example: the numerical settings
+
+The EAP integrals are approximations, and four arguments control them. None of these is a free choice to make casually. The all-correct pattern on the item bank is the hardest case, because its likelihood never comes back down:
+
+```{r settings}
+x <- c(1, 1, 1, 1, 1)
+
+settings <- rbind(
+  data.frame(setting = "quadrature points", value = c(11, 33, 101, 501),
+             theta = sapply(c(11, 33, 101, 501),
+                            function(n) compute_eap_dichotomous(bank, x, nqp = n))),
+  data.frame(setting = "integration bound", value = c(3, 4, 6),
+             theta = sapply(c(3, 4, 6),
+                            function(b) compute_eap_dichotomous(bank, x, lower = -b, upper = b))),
+  data.frame(setting = "prior SD", value = c(1, 2),
+             theta = sapply(c(1, 2),
+                            function(s) compute_eap_dichotomous(bank, x, priorPar = c(0, s)))),
+  data.frame(setting = "metric constant D", value = c(1, 1.702),
+             theta = sapply(c(1, 1.702),
+                            function(d) compute_eap_dichotomous(bank, x, D = d)))
+)
+settings
+```
+
+```{r settings_values,echo=FALSE}
+s_q <- settings$theta[settings$setting == "quadrature points"]
+s_b <- settings$theta[settings$setting == "integration bound"]
+s_p <- settings$theta[settings$setting == "prior SD"]
+s_d <- settings$theta[settings$setting == "metric constant D"]
+```
+
+Three different kinds of effect are visible here, and they should not be confused with one another:
+
+- **Quadrature points** are pure approximation error. Moving from 11 to 33 points changes the estimate by `r sprintf("%.4f", abs(s_q[2] - s_q[1]))`, and from 101 to 501 by `r sprintf("%.5f", abs(s_q[4] - s_q[3]))`. The default of 33 is a reasonable accuracy/speed compromise and matches `catR`.
+- **Integration bounds** are also approximation error, but of a more dangerous kind. Truncating at $\pm 3$ moves the estimate from `r sprintf("%.3f", s_b[2])` to `r sprintf("%.3f", s_b[1])`, because for an all-correct pattern the posterior still has real mass beyond $\theta = 3$ and cutting it off silently biases the estimate downward. Widening to $\pm 6$ changes it by only `r sprintf("%.4f", abs(s_b[3] - s_b[2]))`. Bounds must be wide enough for the *most extreme pattern the bank can produce*, not for a typical one.
+- **The prior SD and the metric constant are not approximation error at all**: they are different models. Doubling the prior SD to 2 weakens the shrinkage and moves the estimate from `r sprintf("%.2f", s_p[1])` to `r sprintf("%.2f", s_p[2])`; with $d_j = 0.9$ the likelihood of this pattern flattens out at $\prod_j d_j$ in the upper tail (see the likelihood plot above), so out there only the prior shapes the posterior and a wider prior lets the estimate travel much further. Changing $D$ to 1.702 rescales every discrimination and moves the estimate to `r sprintf("%.2f", s_d[2])`. Both belong in the model specification and must match whatever was used to calibrate the item parameters.
 
 ---
 
 ## Conclusion
 
-Every one of `cat_eap.R`'s five functions reproduces its `catR` counterpart exactly: a hand-rolled normal density, a trapezoidal integrator, 4PL response probabilities, and the two integrals — posterior mean and posterior SD — that together define EAP scoring. Seeing the full pipeline in ~150 lines of base R, with no hidden package internals, makes it much easier to reason about *why* EAP behaves the way it does: the prior is what keeps ability estimates finite and standard errors sane even for a perfect or a zero score, at the cost of a small, deliberate bias toward the prior mean.
+All eight functions reproduce their `catR` counterparts to machine precision: the normal density and the trapezoidal integrator in `cat_eap_common.R`, and in `cat_eap_dichotomous.R` the 4PL probabilities with their three derivatives, the item information with its two derivatives, MFI item selection with and without excluded items, the likelihood, and the two integrals that define EAP scoring. Finite differences confirm the derivative formulas independently of `catR`, at both metric constants. Together the functions run a complete dichotomous adaptive test in a few hundred lines of base R.
+
+Written out, the model's character is easy to see. The discrimination sets how useful an item can be, so information curves differ in height and MFI has to compute them all rather than look for the nearest difficulty; it also makes the response pattern, not only the number correct, drive the estimate. The guessing and slipping asymptotes lower the information and pull its peak away from $b$, in opposite directions, in the amounts the closed-form expression predicts. The probability floor keeps the information finite when a probability rounds to 1. And the prior does what it does in every EAP model: it keeps estimates and standard errors finite for the all-correct and all-incorrect patterns that short tests produce routinely, at the cost of a known, deliberate pull toward the prior mean.
+
+---
+
+## References
+
+- Barton, M. A., & Lord, F. M. (1981). *An upper asymptote for the three-parameter logistic item-response model* (ETS Research Report RR-81-20). Educational Testing Service.
+- Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability. In F. M. Lord & M. R. Novick, *Statistical theories of mental test scores*. Addison-Wesley.
+- Bock, R. D., & Mislevy, R. J. (1982). Adaptive EAP estimation of ability in a microcomputer environment. *Applied Psychological Measurement, 6*(4), 431–444.
+- Magis, D., & Barrada, J. R. (2017). Computerized adaptive testing with R: Recent updates of the package catR. *Journal of Statistical Software, Code Snippets, 76*(1), 1–19. https://doi.org/10.18637/jss.v076.c01
+- Magis, D., & Raîche, G. (2012). Random generation of response patterns under computerized adaptive testing with the R package catR. *Journal of Statistical Software, 48*(8), 1–31. https://doi.org/10.18637/jss.v048.i08
 
 ---
 
