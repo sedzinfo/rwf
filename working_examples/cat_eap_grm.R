@@ -337,7 +337,8 @@ betaj1<-c(-2.183,-1.542,-1.021,-2.460,-0.812)
 betaj2<-c(-0.874,-0.415,-0.231,-1.105,0.094)
 betaj3<-c(0.316,0.783,0.652,0.047,0.881)
 betaj4<-c(1.592,2.064,1.438,1.271,1.736)
-bank<-matrix(c(alphaj,betaj1,betaj2,betaj3,betaj4),nrow=5,
+bank<-matrix(c(alphaj,betaj1,betaj2,betaj3,betaj4),
+             nrow=5,
              dimnames=list(c(1,2,3,4,5),c("alphaj","betaj1","betaj2","betaj3","betaj4")))
 response_1<-c(0,0,0,0,0)
 response_2<-c(1,1,1,1,1)
