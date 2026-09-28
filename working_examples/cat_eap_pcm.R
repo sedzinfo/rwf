@@ -52,24 +52,18 @@
 #'                -0.627,-0.504,-1.215,-0.183,0.338,
 #'                0.418,0.692,0.284,0.735,1.102,
 #'                1.636,1.927,1.405,2.118,2.285),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("deltaj1","deltaj2","deltaj3","deltaj4")))
-#' catR::Pi(th=0,bank,model="PCM") # this will work with catR package installed
-#' Pi_pcm(theta=0,bank)
-#' v<-seq(-6,6,by=.1)
-#' y_axis_response_probability<-list()
-#' for(i in v) y_axis_response_probability[[toString(i)]]<-Pi_pcm(theta=i,bank)$Pi[1,]
-#' df_rp<-data.frame(x=v,
-#'                   matrix(unlist(y_axis_response_probability),
-#'                          nrow=length(y_axis_response_probability),byrow=TRUE))
-#' plot(x=df_rp$x,y=df_rp$X1,xlab=expression(theta),ylab=expression(P(theta)),
-#'      main="category response probabilities item 1",type="l",col="red",ylim=c(0,1))
-#' lines(y=df_rp$X2,x=v,col="green")
-#' lines(y=df_rp$X3,x=v,col="blue")
-#' lines(y=df_rp$X4,x=v,col="yellow")
-#' lines(y=df_rp$X5,x=v,col="orange")
-#' abline(v=bank[1,],lty=2) # the curves of adjacent categories cross at the steps
-Pi_pcm<-function(theta,bank,D=1) {
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("deltaj1","deltaj2","deltaj3","deltaj4")))
+#' pi_cat<-catR::Pi(th=0,bank,model="PCM")
+#' pi<-compute_pi_pcm(theta=0,bank)
+#' pi_cat
+#' pi
+#' isTRUE(all.equal(pi_cat[[1]], pi[[1]]))
+#' isTRUE(all.equal(pi_cat[[2]], pi[[2]]))
+#' isTRUE(all.equal(pi_cat[[3]], pi[[3]]))
+#' isTRUE(all.equal(pi_cat[[4]], pi[[4]]))
+compute_pi_pcm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   ncat<-ncol(bank)+1
   Pi<-dPi<-d2Pi<-d3Pi<-matrix(NA,nrow(bank),ncat)
@@ -133,28 +127,19 @@ Pi_pcm<-function(theta,bank,D=1) {
 #'                -0.627,-0.504,-1.215,-0.183,0.338,
 #'                0.418,0.692,0.284,0.735,1.102,
 #'                1.636,1.927,1.405,2.118,2.285),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("deltaj1","deltaj2","deltaj3","deltaj4")))
-#' catR::Ii(th=0,bank,model="PCM") # this will work with catR package installed
-#' Ii_pcm(theta=0,bank)
-#' sum(Ii_pcm(theta=0,bank)$Ii) # test information
-#' # the information is the variance of the item score
-#' P<-Pi_pcm(theta=0,bank)$Pi
-#' as.numeric(P%*%(0:4)^2-(P%*%(0:4))^2)
-#' v<-seq(-4,4,by=.1)
-#' info<-matrix(NA,length(v),nrow(bank))
-#' for (i in 1:length(v)) info[i,]<-Ii_pcm(theta=v[i],bank)$Ii
-#' plot(x=v,y=info[,1],xlab=expression(theta),ylab="information",
-#'      main="item information curves",type="l",col="red",ylim=c(0,max(info)))
-#' lines(y=info[,2],x=v,col="green")
-#' lines(y=info[,3],x=v,col="blue")
-#' lines(y=info[,4],x=v,col="yellow")
-#' lines(y=info[,5],x=v,col="orange")
-#' plot(x=v,y=rowSums(info),xlab=expression(theta),ylab="information",
-#'      main="test information",type="l")
-Ii_pcm<-function(theta,bank,D=1) {
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("deltaj1","deltaj2","deltaj3","deltaj4")))
+#' li_catr<-catR::Ii(th=0,bank,model="PCM")
+#' li<-compute_ii_pcm(theta=0,bank)
+#' li_catr
+#' li
+#' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
+#' data.frame(catr=li_catr[[2]],li=li[[2]],equal=li_catr[[2]]==li[[2]])
+#' data.frame(catr=li_catr[[3]],li=li[[3]],equal=li_catr[[3]]==li[[3]])
+compute_ii_pcm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
-  prob<-Pi_pcm(theta,bank,D=D)
+  prob<-compute_pi_pcm(theta,bank,D=D)
   P<-prob$Pi
   dP<-prob$dPi
   d2P<-prob$d2Pi
@@ -193,30 +178,16 @@ Ii_pcm<-function(theta,bank,D=1) {
 #'                -0.627,-0.504,-1.215,-0.183,0.338,
 #'                0.418,0.692,0.284,0.735,1.102,
 #'                1.636,1.927,1.405,2.118,2.285),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("deltaj1","deltaj2","deltaj3","deltaj4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("deltaj1","deltaj2","deltaj3","deltaj4")))
 #' catR::nextItem(bank,model="PCM",theta=0,criterion="MFI") # with catR installed
-#' next_item_pcm(theta=0,bank)
-#' next_item_pcm(theta=0,bank,out=c(5))
-#' catR::nextItem(bank,model="PCM",theta=-1.5,criterion="MFI") # with catR installed
-#' next_item_pcm(theta=-1.5,bank)
-#' # a short adaptive test driven by the functions in this file
-#' responses<-c()
-#' administered<-c()
-#' theta<-0
-#' for (step in 1:4) {
-#'   item<-next_item_pcm(theta,bank,out=administered)$item
-#'   administered<-c(administered,item)
-#'   responses<-c(responses,3) # replace by the real response scored 0 to m
-#'   theta<-eap_est_pcm(bank[administered,,drop=FALSE],responses)
-#'   cat("step",step,"item",item,"theta",round(theta,4),
-#'       "se",round(eap_se_pcm(theta,bank[administered,,drop=FALSE],responses),4),"\n")
-#' }
-next_item_pcm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
+#' compute_next_item_pcm(theta=0,bank)
+compute_next_item_pcm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
   bank<-rbind(bank)
   available<-setdiff(1:nrow(bank),out)
   if (length(available)==0) stop("no item left in the bank",call.=FALSE)
-  info<-Ii_pcm(theta,bank[available,,drop=FALSE],D=D)$Ii
+  info<-compute_ii_pcm(theta,bank[available,,drop=FALSE],D=D)$Ii
   k<-max(1,min(floor(randomesque),length(available)))
   top<-order(info,decreasing=TRUE)[1:k]
   pick<-if (k==1) top else top[sample.int(k,1)]
@@ -233,7 +204,7 @@ next_item_pcm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' @param D metric constant can be 1 or 1.702
 #' @note this is the polytomous counterpart of prod(Pi^x*(1-Pi)^(1-x)) used for the 4PL \cr
 #'       model \cr
-#'       Pi_pcm returns a matrix so the response of item i selects the column x[i]+1 \cr
+#'       compute_pi_pcm returns a matrix so the response of item i selects the column x[i]+1 \cr
 #'       the +1 is index bookkeeping because categories start at 0 and R columns start \cr
 #'       at 1 \cr
 #'       the probabilities of the observed responses are multiplied across items under \cr
@@ -249,17 +220,13 @@ next_item_pcm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'                -0.627,-0.504,-1.215,-0.183,0.338,
 #'                0.418,0.692,0.284,0.735,1.102,
 #'                1.636,1.927,1.405,2.118,2.285),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("deltaj1","deltaj2","deltaj3","deltaj4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("deltaj1","deltaj2","deltaj3","deltaj4")))
 #' response<-c(4,3,2,1,0)
-#' likelihood_pcm(theta=0,bank=bank,x=response)
-#' v<-seq(-4,4,by=.1)
-#' lik<-c()
-#' for (i in 1:length(v)) lik[i]<-likelihood_pcm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=lik,xlab=expression(theta),ylab="likelihood",
-#'      main="likelihood of the response pattern",type="l")
-likelihood_pcm<-function(theta,bank,x,D=1) {
-  prob<-Pi_pcm(theta,bank,D=D)$Pi
+#' compute_likelihood_pcm(theta=0,bank=bank,x=response)
+compute_likelihood_pcm<-function(theta,bank,x,D=1) {
+  prob<-compute_pi_pcm(theta,bank,D=D)$Pi
   result<-1
   for (i in 1:length(x)) result<-result*prob[i,x[i]+1]
   return(result)
@@ -287,22 +254,23 @@ likelihood_pcm<-function(theta,bank,x,D=1) {
 #'                -0.627,-0.504,-1.215,-0.183,0.338,
 #'                0.418,0.692,0.284,0.735,1.102,
 #'                1.636,1.927,1.405,2.118,2.285),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("deltaj1","deltaj2","deltaj3","deltaj4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("deltaj1","deltaj2","deltaj3","deltaj4")))
 #' response<-c(4,3,2,1,0)
-#' catR::eapEst(bank,response,model="PCM") # this will work with catR package installed
-#' eap_est_pcm(bank,response)
-eap_est_pcm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' catR::eapEst(bank,response,model="PCM")
+#' compute_eap_pcm(bank,response)
+compute_eap_pcm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(s) {
     res<-NULL
     for (i in 1:length(s))
-      res[i]<-s[i]*density_function(s[i],priorPar[1],priorPar[2])*likelihood_pcm(s[i],bank,x,D=D)
+      res[i]<-s[i]*density_function(s[i],priorPar[1],priorPar[2])*compute_likelihood_pcm(s[i],bank,x,D=D)
     return(res)
   }
   h<-function(s) {
     res<-NULL
     for (i in 1:length(s))
-      res[i]<-density_function(s[i],priorPar[1],priorPar[2])*likelihood_pcm(s[i],bank,x,D=D)
+      res[i]<-density_function(s[i],priorPar[1],priorPar[2])*compute_likelihood_pcm(s[i],bank,x,D=D)
     return(res)
   }
   X<-seq(from=lower,to=upper,length=nqp)
@@ -333,35 +301,23 @@ eap_est_pcm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #'                -0.627,-0.504,-1.215,-0.183,0.338,
 #'                0.418,0.692,0.284,0.735,1.102,
 #'                1.636,1.927,1.405,2.118,2.285),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("deltaj1","deltaj2","deltaj3","deltaj4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("deltaj1","deltaj2","deltaj3","deltaj4")))
 #' response<-c(4,3,2,1,0)
-#' catR::eapSem(0,bank,response,model="PCM") # this will work with catR package installed
-#' eap_se_pcm(theta=0,bank=bank,x=response)
-#' v<-seq(-3,3,by=.1)
-#' se<-c()
-#' for (i in 1:length(v)) se[i]<-eap_se_pcm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error with a mixed response pattern")
-#' response<-c(0,0,0,0,0)
-#' for (i in 1:length(v)) se[i]<-eap_se_pcm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are in the lowest category")
-#' response<-c(4,4,4,4,4)
-#' for (i in 1:length(v)) se[i]<-eap_se_pcm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are in the highest category")
-eap_se_pcm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' catR::eapSem(0,bank,response,model="PCM")
+#' compute_eap_se_pcm(theta=0,bank=bank,x=response)
+compute_eap_se_pcm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(X) {
     res<-NULL
     for (i in 1:length(X))
-      res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*likelihood_pcm(X[i],bank,x,D=D)
+      res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*compute_likelihood_pcm(X[i],bank,x,D=D)
     return(res)
   }
   h<-function(X) {
     res<-NULL
     for (i in 1:length(X))
-      res[i]<-density_function(X[i],priorPar[1],priorPar[2])*likelihood_pcm(X[i],bank,x,D=D)
+      res[i]<-density_function(X[i],priorPar[1],priorPar[2])*compute_likelihood_pcm(X[i],bank,x,D=D)
     return(res)
   }
   X<-seq(from=lower,to=upper,length=nqp)
@@ -392,81 +348,24 @@ response_3<-c(2,2,2,2,2)
 response_4<-c(3,3,3,3,3)
 response_5<-c(4,4,4,4,4)
 # ABILITY ESTIMATION
-eap_est_pcm(bank,response_1)
+compute_eap_pcm(bank,response_1)
 catR::eapEst(bank,response_1,model="PCM")
-eap_est_pcm(bank,response_2)
+compute_eap_pcm(bank,response_2)
 catR::eapEst(bank,response_2,model="PCM")
-eap_est_pcm(bank,response_3)
+compute_eap_pcm(bank,response_3)
 catR::eapEst(bank,response_3,model="PCM")
-eap_est_pcm(bank,response_4)
+compute_eap_pcm(bank,response_4)
 catR::eapEst(bank,response_4,model="PCM")
-eap_est_pcm(bank,response_5)
+compute_eap_pcm(bank,response_5)
 catR::eapEst(bank,response_5,model="PCM")
 # STANDARD ERROR ESTIMATION
-eap_se_pcm(eap_est_pcm(bank,response_1),bank,response_1)
-catR::eapSem(eap_est_pcm(bank,response_1),bank,response_1,model="PCM")
-eap_se_pcm(eap_est_pcm(bank,response_2),bank,response_2)
-catR::eapSem(eap_est_pcm(bank,response_2),bank,response_2,model="PCM")
-eap_se_pcm(eap_est_pcm(bank,response_3),bank,response_3)
-catR::eapSem(eap_est_pcm(bank,response_3),bank,response_3,model="PCM")
-eap_se_pcm(eap_est_pcm(bank,response_4),bank,response_4)
-catR::eapSem(eap_est_pcm(bank,response_4),bank,response_4,model="PCM")
-eap_se_pcm(eap_est_pcm(bank,response_5),bank,response_5)
-catR::eapSem(eap_est_pcm(bank,response_5),bank,response_5,model="PCM")
-##########################################################################################
-# EXAMPLE 2
-##########################################################################################
-# effect of the integration bounds and of the number of quadrature points
-response_1<-c(4,4,4,4,4)
-eap_est_pcm(bank,response_1,lower=-4,upper=4)
-eap_est_pcm(bank,response_1,lower=-3,upper=3)
-eap_est_pcm(bank,response_1,nqp=33)
-eap_est_pcm(bank,response_1,nqp=101)
-# effect of the prior
-eap_est_pcm(bank,response_1,priorPar=c(0,1))
-eap_est_pcm(bank,response_1,priorPar=c(0,2))
-# effect of the metric constant
-eap_est_pcm(bank,response_1,D=1)
-eap_est_pcm(bank,response_1,D=1.702)
-# the total score is a sufficient statistic
-# three different patterns with a total score of 10 give the same estimate and standard error
-response_1<-c(2,2,2,2,2)
-response_2<-c(4,0,2,2,2)
-response_3<-c(0,4,4,1,1)
-eap_est_pcm(bank,response_1)
-eap_est_pcm(bank,response_2)
-eap_est_pcm(bank,response_3)
-eap_se_pcm(eap_est_pcm(bank,response_1),bank,response_1)
-eap_se_pcm(eap_est_pcm(bank,response_2),bank,response_2)
-eap_se_pcm(eap_est_pcm(bank,response_3),bank,response_3)
-##########################################################################################
-# EXAMPLE 3
-##########################################################################################
-# item 3 has reversed steps deltaj2<deltaj1 so its category 1 is never the most probable
-# category at any theta although its probability stays positive
-v<-seq(-4,4,by=.01)
-modal<-c()
-for (i in 1:length(v)) modal[i]<-which.max(Pi_pcm(theta=v[i],bank)$Pi[3,])-1
-table(modal)
-max(sapply(v,function(t) Pi_pcm(theta=t,bank)$Pi[3,2]))
-# the rating scale model is the partial credit model with deltajk=lambdaj+deltak
-# the RSM bank of cat_eap_rsm.R gives the same probabilities through Pi_pcm
-bank_rsm<-matrix(c(-0.560,-0.230,1.559,0.071,0.129,
-                   rep(1.715,5),rep(0.461,5),rep(-1.265,5),rep(-0.687,5)),nrow=5,
-                 dimnames=list(c(1,2,3,4,5),c("lambdaj","delta1","delta2","delta3","delta4")))
-bank_pcm<-bank_rsm[,1]+bank_rsm[,2:5]
-colnames(bank_pcm)<-c("deltaj1","deltaj2","deltaj3","deltaj4")
-bank_pcm
-Pi_pcm(theta=0,bank_pcm)$Pi
-catR::Pi(th=0,bank_rsm,model="RSM")$Pi
-# items do not all need the same number of categories
-# item 5 below is a 4 point item so its last step is padded with NA
-# its responses must then be scored 0 to 3
-bank<-matrix(c(deltaj1,deltaj2,deltaj3,c(deltaj4[1:4],NA)),nrow=5,
-             dimnames=list(c(1,2,3,4,5),c("deltaj1","deltaj2","deltaj3","deltaj4")))
-Pi_pcm(theta=0,bank)$Pi
-response_1<-c(4,3,2,1,3)
-eap_est_pcm(bank,response_1)
-catR::eapEst(bank,response_1,model="PCM")
-eap_se_pcm(eap_est_pcm(bank,response_1),bank,response_1)
-
+compute_eap_se_pcm(compute_eap_pcm(bank,response_1),bank,response_1)
+catR::eapSem(compute_eap_pcm(bank,response_1),bank,response_1,model="PCM")
+compute_eap_se_pcm(compute_eap_pcm(bank,response_2),bank,response_2)
+catR::eapSem(compute_eap_pcm(bank,response_2),bank,response_2,model="PCM")
+compute_eap_se_pcm(compute_eap_pcm(bank,response_3),bank,response_3)
+catR::eapSem(compute_eap_pcm(bank,response_3),bank,response_3,model="PCM")
+compute_eap_se_pcm(compute_eap_pcm(bank,response_4),bank,response_4)
+catR::eapSem(compute_eap_pcm(bank,response_4),bank,response_4,model="PCM")
+compute_eap_se_pcm(compute_eap_pcm(bank,response_5),bank,response_5)
+catR::eapSem(compute_eap_pcm(bank,response_5),bank,response_5,model="PCM")
