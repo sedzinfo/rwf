@@ -132,6 +132,8 @@ compute_pi_grm<-function(theta,bank,D=1) {
 #'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
 #' li_catr<-catR::Ii(th=0,bank,model="GRM")
 #' li<-compute_ii_grm(theta=0,bank)
+#' li_catr
+#' li
 #' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
 #' data.frame(catr=li_catr[[2]],li=li[[2]],equal=li_catr[[2]]==li[[2]])
 #' data.frame(catr=li_catr[[3]],li=li[[3]],equal=li_catr[[3]]==li[[3]])

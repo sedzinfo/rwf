@@ -8,7 +8,8 @@
 #'              and which this file calls the generalized graded response model \cr
 #'              it is a restricted graded response model whose thresholds are b_j-c_k \cr
 #'              and not an extension of it \cr
-#'              returns the first derivatives of the category response probabilities
+#'              returns the first second and third derivatives of the category response \cr
+#'              probabilities
 #' @param theta ability
 #' @param bank item parameters one row per item \cr
 #'             column 1 holds the item discrimination alpha_j \cr
@@ -42,6 +43,12 @@
 #'       Pstar_jk=P(X>=k|theta)=exp(D*alpha_j*(theta-(b_j-c_k)))/(1+exp(D*alpha_j*(theta-(b_j-c_k)))) \cr
 #'       with Pstar_j0=1 and Pstar_j(m+1)=0 \cr
 #'       P(X=k|theta)=Pstar_jk-Pstar_j(k+1) \cr
+#'       the derivatives of a category are the differences of the derivatives of two \cr
+#'       adjacent cumulative curves \cr
+#'       dPstar_jk=D*alpha_j*Pstar_jk*(1-Pstar_jk) \cr
+#'       d2Pstar_jk=D*alpha_j*dPstar_jk*(1-2*Pstar_jk) \cr
+#'       d3Pstar_jk=D*alpha_j*(d2Pstar_jk-2*dPstar_jk^2-2*Pstar_jk*d2Pstar_jk) \cr
+#'       and the boundary curves Pstar_j0=1 and Pstar_j(m+1)=0 have zero derivatives \cr
 #'       it relates to the graded response model as the rating scale model relates to \cr
 #'       the partial credit model and it keeps the item discrimination \cr
 #'       it stays a cumulative model while the rating scale model compares adjacent \cr
@@ -57,33 +64,29 @@
 #'       Muraki centres the c_k of each block at zero while mirt sets b_j=0 for the \cr
 #'       first item of each block and both give the same probabilities
 #' @return Pi   category response probabilities one row per item one column per category \cr
-#'         dPi  first derivatives of the category response probabilities
+#'         dPi  first derivatives of the category response probabilities \cr
+#'         d2Pi second derivatives of the category response probabilities \cr
+#'         d3Pi third derivatives of the category response probabilities
 #' @export
 #' @examples
 #' bank<-matrix(c(1.227,0.845,1.694,1.012,2.103,
 #'                -0.482,0.137,0.715,-0.936,0.298,
 #'                rep(1.812,5),rep(0.603,5),rep(-0.452,5),rep(-1.963,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","bj","c1","c2","c3","c4")))
-#' catR::Pi(th=0,bank,model="MGRM") # this will work with catR package installed
-#' Pi_ggrm(theta=0,bank)
-#' bank[,2]-bank[,3:6] # the item thresholds beta_jk
-#' v<-seq(-6,6,by=.1)
-#' y_axis_response_probability<-list()
-#' for(i in v) y_axis_response_probability[[toString(i)]]<-Pi_ggrm(theta=i,bank)$Pi[1,]
-#' df_rp<-data.frame(x=v,
-#'                   matrix(unlist(y_axis_response_probability),
-#'                          nrow=length(y_axis_response_probability),byrow=TRUE))
-#' plot(x=df_rp$x,y=df_rp$X1,xlab=expression(theta),ylab=expression(P(theta)),
-#'      main="category response probabilities item 1",type="l",col="red",ylim=c(0,1))
-#' lines(y=df_rp$X2,x=v,col="green")
-#' lines(y=df_rp$X3,x=v,col="blue")
-#' lines(y=df_rp$X4,x=v,col="yellow")
-#' lines(y=df_rp$X5,x=v,col="orange")
-Pi_ggrm<-function(theta,bank,D=1) {
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","bj","c1","c2","c3","c4")))
+#' pi_cat<-catR::Pi(th=0,bank,model="MGRM")
+#' pi<-compute_pi_ggrm(theta=0,bank)
+#' pi_cat
+#' pi
+#' isTRUE(all.equal(pi_cat[[1]], pi[[1]]))
+#' isTRUE(all.equal(pi_cat[[2]], pi[[2]]))
+#' isTRUE(all.equal(pi_cat[[3]], pi[[3]]))
+#' isTRUE(all.equal(pi_cat[[4]], pi[[4]]))
+compute_pi_ggrm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   ncat<-ncol(bank)-1
-  Pi<-dPi<-matrix(NA,nrow(bank),ncat)
+  Pi<-dPi<-d2Pi<-d3Pi<-matrix(NA,nrow(bank),ncat)
   for (i in 1:nrow(bank)) {
     aj<-bank[i,1]
     betaj<-bank[i,2]-bank[i,3:ncol(bank)]
@@ -91,13 +94,17 @@ Pi_ggrm<-function(theta,bank,D=1) {
     ej<-exp(D*aj*(theta-betaj))
     Pjs<-c(1,ej/(1+ej),0)
     dPjs<-D*aj*Pjs*(1-Pjs)
+    d2Pjs<-D*aj*(dPjs-2*Pjs*dPjs)
+    d3Pjs<-D*aj*(d2Pjs-2*dPjs^2-2*Pjs*d2Pjs)
     n<-length(Pjs)
     Pi[i,1:(n-1)]<-Pjs[1:(n-1)]-Pjs[2:n]
     dPi[i,1:(n-1)]<-dPjs[1:(n-1)]-dPjs[2:n]
+    d2Pi[i,1:(n-1)]<-d2Pjs[1:(n-1)]-d2Pjs[2:n]
+    d3Pi[i,1:(n-1)]<-d3Pjs[1:(n-1)]-d3Pjs[2:n]
   }
-  colnames(Pi)<-colnames(dPi)<-paste("cat",0:(ncat-1),sep="")
-  rownames(Pi)<-rownames(dPi)<-paste("Item",1:nrow(bank),sep="")
-  result<-list(Pi=Pi,dPi=dPi)
+  colnames(Pi)<-colnames(dPi)<-colnames(d2Pi)<-colnames(d3Pi)<-paste("cat",0:(ncat-1),sep="")
+  rownames(Pi)<-rownames(dPi)<-rownames(d2Pi)<-rownames(d3Pi)<-paste("Item",1:nrow(bank),sep="")
+  result<-list(Pi=Pi,dPi=dPi,d2Pi=d2Pi,d3Pi=d3Pi)
   return(result)
 }
 ##########################################################################################
@@ -116,8 +123,15 @@ Pi_ggrm<-function(theta,bank,D=1) {
 #'       difference of their b_j \cr
 #'       a larger alpha_j gives a taller curve that grows roughly with alpha_j^2 and is \cr
 #'       narrower around each threshold \cr
-#'       test information is the sum of the item informations
-#' @return Ii item information for each item
+#'       test information is the sum of the item informations \cr
+#'       dIi and d2Ii are the first and second derivatives of the item information \cr
+#'       with respect to theta obtained by differentiating each category term \cr
+#'       dP_jk^2/P_jk and summing over categories \cr
+#'       dIi=sum_k 2*dP*d2P/P-dP^3/P^2 \cr
+#'       d2Ii=sum_k (2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3
+#' @return Ii   item information for each item \cr
+#'         dIi  first derivative of the item information for each item \cr
+#'         d2Ii second derivative of the item information for each item
 #' @export
 #' @examples
 #' bank<-matrix(c(1.227,0.845,1.694,1.012,2.103,
@@ -125,27 +139,24 @@ Pi_ggrm<-function(theta,bank,D=1) {
 #'                rep(1.812,5),rep(0.603,5),rep(-0.452,5),rep(-1.963,5)),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),
 #'                                   c("alphaj","bj","c1","c2","c3","c4")))
-#' catR::Ii(th=0,bank,model="MGRM") # this will work with catR package installed
-#' Ii_ggrm(theta=0,bank)
-#' sum(Ii_ggrm(theta=0,bank)$Ii) # test information
-#' v<-seq(-4,4,by=.1)
-#' info<-matrix(NA,length(v),nrow(bank))
-#' for (i in 1:length(v)) info[i,]<-Ii_ggrm(theta=v[i],bank)$Ii
-#' plot(x=v,y=info[,1],xlab=expression(theta),ylab="information",
-#'      main="item information curves",type="l",col="red",ylim=c(0,max(info)))
-#' lines(y=info[,2],x=v,col="green")
-#' lines(y=info[,3],x=v,col="blue")
-#' lines(y=info[,4],x=v,col="yellow")
-#' lines(y=info[,5],x=v,col="orange")
-#' plot(x=v,y=rowSums(info),xlab=expression(theta),ylab="information",
-#'      main="test information",type="l")
-Ii_ggrm<-function(theta,bank,D=1) {
+#' li_catr<-catR::Ii(th=0,bank,model="MGRM")
+#' li<-compute_ii_ggrm(theta=0,bank)
+#' li_catr
+#' li
+#' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
+#' data.frame(catr=li_catr[[2]],li=li[[2]],equal=li_catr[[2]]==li[[2]])
+#' data.frame(catr=li_catr[[3]],li=li[[3]],equal=li_catr[[3]]==li[[3]])
+compute_ii_ggrm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
-  prob<-Pi_ggrm(theta,bank,D=D)
+  prob<-compute_pi_ggrm(theta,bank,D=D)
   P<-prob$Pi
   dP<-prob$dPi
+  d2P<-prob$d2Pi
+  d3P<-prob$d3Pi
   Ii<-as.numeric(rowSums(dP^2/P,na.rm=TRUE))
-  result<-list(Ii=Ii)
+  dIi<-as.numeric(rowSums(2*dP*d2P/P-dP^3/P^2,na.rm=TRUE))
+  d2Ii<-as.numeric(rowSums((2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3,na.rm=TRUE))
+  result<-list(Ii=Ii,dIi=dIi,d2Ii=d2Ii)
   return(result)
 }
 ##########################################################################################
@@ -178,30 +189,16 @@ Ii_ggrm<-function(theta,bank,D=1) {
 #' bank<-matrix(c(1.227,0.845,1.694,1.012,2.103,
 #'                -0.482,0.137,0.715,-0.936,0.298,
 #'                rep(1.812,5),rep(0.603,5),rep(-0.452,5),rep(-1.963,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","bj","c1","c2","c3","c4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","bj","c1","c2","c3","c4")))
 #' catR::nextItem(bank,model="MGRM",theta=0,criterion="MFI") # with catR installed
-#' next_item_ggrm(theta=0,bank)
-#' next_item_ggrm(theta=0,bank,out=c(5))
-#' catR::nextItem(bank,model="MGRM",theta=3,criterion="MFI") # with catR installed
-#' next_item_ggrm(theta=3,bank)
-#' # a short adaptive test driven by the functions in this file
-#' responses<-c()
-#' administered<-c()
-#' theta<-0
-#' for (step in 1:4) {
-#'   item<-next_item_ggrm(theta,bank,out=administered)$item
-#'   administered<-c(administered,item)
-#'   responses<-c(responses,3) # replace by the real response scored 0 to m
-#'   theta<-eap_est_ggrm(bank[administered,,drop=FALSE],responses)
-#'   cat("step",step,"item",item,"theta",round(theta,4),
-#'       "se",round(eap_se_ggrm(theta,bank[administered,,drop=FALSE],responses),4),"\n")
-#' }
-next_item_ggrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
+#' compute_next_item_ggrm(theta=0,bank)
+compute_next_item_ggrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
   bank<-rbind(bank)
   available<-setdiff(1:nrow(bank),out)
   if (length(available)==0) stop("no item left in the bank",call.=FALSE)
-  info<-Ii_ggrm(theta,bank[available,,drop=FALSE],D=D)$Ii
+  info<-compute_ii_ggrm(theta,bank[available,,drop=FALSE],D=D)$Ii
   k<-max(1,min(floor(randomesque),length(available)))
   top<-order(info,decreasing=TRUE)[1:k]
   pick<-if (k==1) top else top[sample.int(k,1)]
@@ -218,7 +215,7 @@ next_item_ggrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' @param D metric constant can be 1 or 1.702
 #' @note this is the polytomous counterpart of prod(Pi^x*(1-Pi)^(1-x)) used for the 4PL \cr
 #'       model \cr
-#'       Pi_ggrm returns a matrix so the response of item i selects the column x[i]+1 \cr
+#'       compute_pi_ggrm returns a matrix so the response of item i selects the column x[i]+1 \cr
 #'       the +1 is index bookkeeping because categories start at 0 and R columns start \cr
 #'       at 1 \cr
 #'       the probabilities of the observed responses are multiplied across items under \cr
@@ -228,17 +225,13 @@ next_item_ggrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' bank<-matrix(c(1.227,0.845,1.694,1.012,2.103,
 #'                -0.482,0.137,0.715,-0.936,0.298,
 #'                rep(1.812,5),rep(0.603,5),rep(-0.452,5),rep(-1.963,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","bj","c1","c2","c3","c4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","bj","c1","c2","c3","c4")))
 #' response<-c(4,3,2,1,0)
-#' likelihood_ggrm(theta=0,bank=bank,x=response)
-#' v<-seq(-4,4,by=.1)
-#' lik<-c()
-#' for (i in 1:length(v)) lik[i]<-likelihood_ggrm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=lik,xlab=expression(theta),ylab="likelihood",
-#'      main="likelihood of the response pattern",type="l")
-likelihood_ggrm<-function(theta,bank,x,D=1) {
-  prob<-Pi_ggrm(theta,bank,D=D)$Pi
+#' compute_likelihood_ggrm(theta=0,bank=bank,x=response)
+compute_likelihood_ggrm<-function(theta,bank,x,D=1) {
+  prob<-compute_pi_ggrm(theta,bank,D=D)$Pi
   result<-1
   for (i in 1:length(x)) result<-result*prob[i,x[i]+1]
   return(result)
@@ -260,22 +253,23 @@ likelihood_ggrm<-function(theta,bank,x,D=1) {
 #' bank<-matrix(c(1.227,0.845,1.694,1.012,2.103,
 #'                -0.482,0.137,0.715,-0.936,0.298,
 #'                rep(1.812,5),rep(0.603,5),rep(-0.452,5),rep(-1.963,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","bj","c1","c2","c3","c4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","bj","c1","c2","c3","c4")))
 #' response<-c(4,3,2,1,0)
-#' catR::eapEst(bank,response,model="MGRM") # this will work with catR package installed
-#' eap_est_ggrm(bank,response)
-eap_est_ggrm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' catR::eapEst(bank,response,model="MGRM")
+#' compute_eap_ggrm(bank,response)
+compute_eap_ggrm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(s) {
     res<-NULL
     for (i in 1:length(s))
-      res[i]<-s[i]*density_function(s[i],priorPar[1],priorPar[2])*likelihood_ggrm(s[i],bank,x,D=D)
+      res[i]<-s[i]*density_function(s[i],priorPar[1],priorPar[2])*compute_likelihood_ggrm(s[i],bank,x,D=D)
     return(res)
   }
   h<-function(s) {
     res<-NULL
     for (i in 1:length(s))
-      res[i]<-density_function(s[i],priorPar[1],priorPar[2])*likelihood_ggrm(s[i],bank,x,D=D)
+      res[i]<-density_function(s[i],priorPar[1],priorPar[2])*compute_likelihood_ggrm(s[i],bank,x,D=D)
     return(res)
   }
   X<-seq(from=lower,to=upper,length=nqp)
@@ -305,35 +299,23 @@ eap_est_ggrm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #' bank<-matrix(c(1.227,0.845,1.694,1.012,2.103,
 #'                -0.482,0.137,0.715,-0.936,0.298,
 #'                rep(1.812,5),rep(0.603,5),rep(-0.452,5),rep(-1.963,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","bj","c1","c2","c3","c4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","bj","c1","c2","c3","c4")))
 #' response<-c(4,3,2,1,0)
-#' catR::eapSem(0,bank,response,model="MGRM") # this will work with catR package installed
+#' catR::eapSem(0,bank,response,model="MGRM")
 #' eap_se_ggrm(theta=0,bank=bank,x=response)
-#' v<-seq(-3,3,by=.1)
-#' se<-c()
-#' for (i in 1:length(v)) se[i]<-eap_se_ggrm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error with a mixed response pattern")
-#' response<-c(0,0,0,0,0)
-#' for (i in 1:length(v)) se[i]<-eap_se_ggrm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are in the lowest category")
-#' response<-c(4,4,4,4,4)
-#' for (i in 1:length(v)) se[i]<-eap_se_ggrm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are in the highest category")
 eap_se_ggrm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(X) {
     res<-NULL
     for (i in 1:length(X))
-      res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*likelihood_ggrm(X[i],bank,x,D=D)
+      res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*compute_likelihood_ggrm(X[i],bank,x,D=D)
     return(res)
   }
   h<-function(X) {
     res<-NULL
     for (i in 1:length(X))
-      res[i]<-density_function(X[i],priorPar[1],priorPar[2])*likelihood_ggrm(X[i],bank,x,D=D)
+      res[i]<-density_function(X[i],priorPar[1],priorPar[2])*compute_likelihood_ggrm(X[i],bank,x,D=D)
     return(res)
   }
   X<-seq(from=lower,to=upper,length=nqp)
@@ -368,72 +350,25 @@ response_3<-c(2,2,2,2,2)
 response_4<-c(3,3,3,3,3)
 response_5<-c(4,4,4,4,4)
 # ABILITY ESTIMATION
-eap_est_ggrm(bank,response_1)
+compute_eap_ggrm(bank,response_1)
 catR::eapEst(bank,response_1,model="MGRM")
-eap_est_ggrm(bank,response_2)
+compute_eap_ggrm(bank,response_2)
 catR::eapEst(bank,response_2,model="MGRM")
-eap_est_ggrm(bank,response_3)
+compute_eap_ggrm(bank,response_3)
 catR::eapEst(bank,response_3,model="MGRM")
-eap_est_ggrm(bank,response_4)
+compute_eap_ggrm(bank,response_4)
 catR::eapEst(bank,response_4,model="MGRM")
-eap_est_ggrm(bank,response_5)
+compute_eap_ggrm(bank,response_5)
 catR::eapEst(bank,response_5,model="MGRM")
 # STANDARD ERROR ESTIMATION
-eap_se_ggrm(eap_est_ggrm(bank,response_1),bank,response_1)
-catR::eapSem(eap_est_ggrm(bank,response_1),bank,response_1,model="MGRM")
-eap_se_ggrm(eap_est_ggrm(bank,response_2),bank,response_2)
-catR::eapSem(eap_est_ggrm(bank,response_2),bank,response_2,model="MGRM")
-eap_se_ggrm(eap_est_ggrm(bank,response_3),bank,response_3)
-catR::eapSem(eap_est_ggrm(bank,response_3),bank,response_3,model="MGRM")
-eap_se_ggrm(eap_est_ggrm(bank,response_4),bank,response_4)
-catR::eapSem(eap_est_ggrm(bank,response_4),bank,response_4,model="MGRM")
-eap_se_ggrm(eap_est_ggrm(bank,response_5),bank,response_5)
-catR::eapSem(eap_est_ggrm(bank,response_5),bank,response_5,model="MGRM")
-##########################################################################################
-# EXAMPLE 2
-##########################################################################################
-# effect of the integration bounds and of the number of quadrature points
-response_1<-c(4,4,4,4,4)
-eap_est_ggrm(bank,response_1,lower=-4,upper=4)
-eap_est_ggrm(bank,response_1,lower=-3,upper=3)
-eap_est_ggrm(bank,response_1,nqp=33)
-eap_est_ggrm(bank,response_1,nqp=101)
-# effect of the prior
-eap_est_ggrm(bank,response_1,priorPar=c(0,1))
-eap_est_ggrm(bank,response_1,priorPar=c(0,2))
-# effect of the metric constant
-eap_est_ggrm(bank,response_1,D=1)
-eap_est_ggrm(bank,response_1,D=1.702)
-# the origin of bj and ck is arbitrary
-# adding 0.5 to every bj and to every ck gives the same thresholds and the same estimate
-response_1<-c(3,2,3,2,3)
-bank_2<-bank
-bank_2[,2:6]<-bank[,2:6]+0.5
-bank[,2]-bank[,3:6]
-bank_2[,2]-bank_2[,3:6]
-eap_est_ggrm(bank,response_1)
-eap_est_ggrm(bank_2,response_1)
-##########################################################################################
-# EXAMPLE 3
-##########################################################################################
-# the model is a graded response model whose thresholds are betajk=bj-ck
-# so the GRM probabilities of the implied thresholds are the same
-bank_grm<-cbind(alphaj,bank[,2]-bank[,3:6])
-colnames(bank_grm)<-c("alphaj","betaj1","betaj2","betaj3","betaj4")
-bank_grm
-Pi_ggrm(theta=0,bank)$Pi
-catR::Pi(th=0,bank_grm,model="GRM")$Pi
-# items do not all need the same number of categories
-# items 4 and 5 below are 4 point items so they form a second block with its own
-# category parameters c1 to c3 and their last column is padded with NA
-# their responses must then be scored 0 to 3
-bank<-rbind(bank[1:3,],
-            cbind(alphaj[4:5],bj[4:5],1.405,0.012,-1.417,NA))
-rownames(bank)<-c(1,2,3,4,5)
-bank
-Pi_ggrm(theta=0,bank)$Pi
-response_1<-c(4,3,2,1,3)
-eap_est_ggrm(bank,response_1)
-catR::eapEst(bank,response_1,model="MGRM")
-eap_se_ggrm(eap_est_ggrm(bank,response_1),bank,response_1)
+eap_se_ggrm(compute_eap_ggrm(bank,response_1),bank,response_1)
+catR::eapSem(compute_eap_ggrm(bank,response_1),bank,response_1,model="MGRM")
+eap_se_ggrm(compute_eap_ggrm(bank,response_2),bank,response_2)
+catR::eapSem(compute_eap_ggrm(bank,response_2),bank,response_2,model="MGRM")
+eap_se_ggrm(compute_eap_ggrm(bank,response_3),bank,response_3)
+catR::eapSem(compute_eap_ggrm(bank,response_3),bank,response_3,model="MGRM")
+eap_se_ggrm(compute_eap_ggrm(bank,response_4),bank,response_4)
+catR::eapSem(compute_eap_ggrm(bank,response_4),bank,response_4,model="MGRM")
+eap_se_ggrm(compute_eap_ggrm(bank,response_5),bank,response_5)
+catR::eapSem(compute_eap_ggrm(bank,response_5),bank,response_5,model="MGRM")
 
