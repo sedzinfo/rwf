@@ -16,17 +16,19 @@
 #'         d3Pi	third derivatives of the response probabilities for each item \cr
 #' @export
 #' @examples
-#' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
-#'                0,0,0,0,0,1,1,1,1,1),
+#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
+#'               -2.55,-1.90,0.18,1.54,2.56,
+#'                0.1,0.1,0.1,0.1,0.1,
+#'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' catR::Pi(th=0,bank) # this will work with catR package installed
-#' Pi(theta=0,bank)
+#' compute_pi_dichotomous(theta=0,bank)
 #' v<-seq(-6,6,by=.1)
 #' y_axis_response_probability<-y_axis_d1<-y_axis_d2<-list()
 #' for(i in v) {
-#'   y_axis_response_probability[[toString(i)]]<-Pi(theta=i,bank)$Pi
-#'   y_axis_d1[[toString(i)]]<-Pi(theta=i,bank)$dPi
-#'   y_axis_d2[[toString(i)]]<-Pi(theta=i,bank)$d2Pi
+#'   y_axis_response_probability[[toString(i)]]<-compute_pi_dichotomous(theta=i,bank)$Pi
+#'   y_axis_d1[[toString(i)]]<-compute_pi_dichotomous(theta=i,bank)$dPi
+#'   y_axis_d2[[toString(i)]]<-compute_pi_dichotomous(theta=i,bank)$d2Pi
 #' }
 #' df_rp<-data.frame(x=v,
 #'                   matrix(unlist(y_axis_response_probability),
@@ -51,7 +53,7 @@
 #' lines(y=df_rp$X3,x=v,col="blue")
 #' lines(y=df_rp$X4,x=v,col="yellow")
 #' lines(y=df_rp$X5,x=v,col="orange")
-Pi<-function(theta,bank,D=1) {
+compute_pi_dichotomous<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   a<-bank[,1]
   b<-bank[,2]
@@ -95,8 +97,10 @@ Pi<-function(theta,bank,D=1) {
 #'         d2Ii second derivative of the item information for each item
 #' @export
 #' @examples
-#' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
-#'                0,0,0,0,0,1,1,1,1,1),
+#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
+#'               -2.55,-1.90,0.18,1.54,2.56,
+#'                0.1,0.1,0.1,0.1,0.1,
+#'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' catR::Ii(th=0,bank) # this will work with catR package installed
 #' Ii(theta=0,bank)
@@ -167,8 +171,10 @@ Ii<-function(theta,bank,D=1) {
 #'         available indices of the items still available
 #' @export
 #' @examples
-#' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
-#'                0,0,0,0,0,1,1,1,1,1),
+#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
+#'               -2.55,-1.90,0.18,1.54,2.56,
+#'                0.1,0.1,0.1,0.1,0.1,
+#'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' catR::nextItem(bank,theta=0,criterion="MFI") # with catR installed
 #' next_item(theta=0,bank)
@@ -215,8 +221,10 @@ next_item<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'       function defined inside catR::eapEst so it is reproduced here with catR::Pi
 #' @export
 #' @examples
-#' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
-#'                0,0,0,0,0,1,1,1,1,1),
+#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
+#'               -2.55,-1.90,0.18,1.54,2.56,
+#'                0.1,0.1,0.1,0.1,0.1,
+#'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' response<-c(1,1,1,0,0)
 #' P<-catR::Pi(th=0,bank)$Pi # this will work with catR package installed
@@ -246,8 +254,10 @@ likelihood<-function(theta,bank,x,D=1) {
 #' @note this function should return the same result as the catR::eapEst function
 #' @export
 #' @examples
-#' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
-#'                0,0,0,0,0,1,1,1,1,1),
+#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
+#'               -2.55,-1.90,0.18,1.54,2.56,
+#'                0.1,0.1,0.1,0.1,0.1,
+#'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' response<-c(1,0,0,0,0)
 #' catR::eapEst(bank,response) # this will work with catR package installed
@@ -288,8 +298,10 @@ eap_est<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #' @note this function should return the same result as the catR::eapSem function
 #' @export
 #' @examples
-#' bank<-matrix(c(0.7521,0.8083,1.1857,0.5481,0.5695,-1.5521,-0.9083,0.1857,0.5481,1.5695,
-#'                0,0,0,0,0,1,1,1,1,1),
+#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
+#'               -2.55,-1.90,0.18,1.54,2.56,
+#'                0.1,0.1,0.1,0.1,0.1,
+#'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' response<-c(0,0,0,0,0)
 #' catR::eapSem(0,bank,response) # this will work with catR package installed
