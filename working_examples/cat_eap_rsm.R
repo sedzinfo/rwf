@@ -152,23 +152,8 @@ compute_ii_rsm<-function(theta,bank,D=1) {
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),
 #'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
 #' catR::nextItem(bank,model="RSM",theta=0,criterion="MFI") # with catR installed
-#' next_item_rsm(theta=0,bank)
-#' next_item_rsm(theta=0,bank,out=c(4))
-#' catR::nextItem(bank,model="RSM",theta=1.5,criterion="MFI") # with catR installed
-#' next_item_rsm(theta=1.5,bank,out=c(4,5))
-#' # a short adaptive test driven by the functions in this file
-#' responses<-c()
-#' administered<-c()
-#' theta<-0
-#' for (step in 1:4) {
-#'   item<-next_item_rsm(theta,bank,out=administered)$item
-#'   administered<-c(administered,item)
-#'   responses<-c(responses,4) # replace by the real response scored 0 to m
-#'   theta<-eap_est_rsm(bank[administered,,drop=FALSE],responses)
-#'   cat("step",step,"item",item,"theta",round(theta,4),
-#'       "se",round(eap_se_rsm(theta,bank[administered,,drop=FALSE],responses),4),"\n")
-#' }
-next_item_rsm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
+#' compute_next_item_rsm(theta=0,bank)
+compute_next_item_rsm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
   bank<-rbind(bank)
   available<-setdiff(1:nrow(bank),out)
   if (length(available)==0) stop("no item left in the bank",call.=FALSE)
@@ -200,13 +185,8 @@ next_item_rsm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),
 #'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
 #' response<-c(4,3,2,1,0)
-#' likelihood_rsm(theta=0,bank=bank,x=response)
-#' v<-seq(-4,4,by=.1)
-#' lik<-c()
-#' for (i in 1:length(v)) lik[i]<-likelihood_rsm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=lik,xlab=expression(theta),ylab="likelihood",
-#'      main="likelihood of the response pattern",type="l")
-likelihood_rsm<-function(theta,bank,x,D=1) {
+#' compute_likelihood_rsm(theta=0,bank=bank,x=response)
+compute_likelihood_rsm<-function(theta,bank,x,D=1) {
   prob<-compute_pi_rsm(theta,bank,D=D)$Pi
   result<-1
   for (i in 1:length(x)) result<-result*prob[i,x[i]+1]
@@ -232,23 +212,23 @@ likelihood_rsm<-function(theta,bank,x,D=1) {
 #'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
 #' response<-c(4,3,2,1,0)
 #' catR::eapEst(bank,response,model="RSM")
-#' eap_est_rsm(bank,response)
-eap_est_rsm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' compute_eap_rsm(bank=bank,x=response)
+compute_eap_rsm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(s) {
     res<-NULL
     for (i in 1:length(s))
-      res[i]<-s[i]*density_function(s[i],priorPar[1],priorPar[2])*likelihood_rsm(s[i],bank,x,D=D)
+      res[i]<-s[i]*density_function(s[i],priorPar[1],priorPar[2])*compute_likelihood_rsm(s[i],bank,x,D=D)
     return(res)
   }
   h<-function(s) {
     res<-NULL
     for (i in 1:length(s))
-      res[i]<-density_function(s[i],priorPar[1],priorPar[2])*likelihood_rsm(s[i],bank,x,D=D)
+      res[i]<-density_function(s[i],priorPar[1],priorPar[2])*compute_likelihood_rsm(s[i],bank,x,D=D)
     return(res)
   }
   X<-seq(from=lower,to=upper,length=nqp)
-  Y1<-g(X)
-  Y2<-h(X)
+  Y1<-g(s=X)
+  Y2<-h(s=X)
   result<-integrate_cat(X,Y1)/integrate_cat(X,Y2)
   return(result)
 }
@@ -276,31 +256,18 @@ eap_est_rsm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
 #' response<-c(4,3,2,1,0)
 #' catR::eapSem(0,bank,response,model="RSM")
-#' eap_se_rsm(theta=0,bank=bank,x=response)
-#' v<-seq(-3,3,by=.1)
-#' se<-c()
-#' for (i in 1:length(v)) se[i]<-eap_se_rsm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error with a mixed response pattern")
-#' response<-c(0,0,0,0,0)
-#' for (i in 1:length(v)) se[i]<-eap_se_rsm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are in the lowest category")
-#' response<-c(4,4,4,4,4)
-#' for (i in 1:length(v)) se[i]<-eap_se_rsm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are in the highest category")
-eap_se_rsm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' compute_eap_se_rsm(theta=0,bank=bank,x=response)
+compute_eap_se_rsm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(X) {
     res<-NULL
     for (i in 1:length(X))
-      res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*likelihood_rsm(X[i],bank,x,D=D)
+      res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*compute_likelihood_rsm(X[i],bank,x,D=D)
     return(res)
   }
   h<-function(X) {
     res<-NULL
     for (i in 1:length(X))
-      res[i]<-density_function(X[i],priorPar[1],priorPar[2])*likelihood_rsm(X[i],bank,x,D=D)
+      res[i]<-density_function(X[i],priorPar[1],priorPar[2])*compute_likelihood_rsm(X[i],bank,x,D=D)
     return(res)
   }
   X<-seq(from=lower,to=upper,length=nqp)
@@ -332,52 +299,24 @@ response_3<-c(2,2,2,2,2)
 response_4<-c(3,3,3,3,3)
 response_5<-c(4,4,4,4,4)
 # ABILITY ESTIMATION
-eap_est_rsm(bank,response_1)
+compute_eap_rsm(bank,response_1)
 catR::eapEst(bank,response_1,model="RSM")
-eap_est_rsm(bank,response_2)
+compute_eap_rsm(bank,response_2)
 catR::eapEst(bank,response_2,model="RSM")
-eap_est_rsm(bank,response_3)
+compute_eap_rsm(bank,response_3)
 catR::eapEst(bank,response_3,model="RSM")
-eap_est_rsm(bank,response_4)
+compute_eap_rsm(bank,response_4)
 catR::eapEst(bank,response_4,model="RSM")
-eap_est_rsm(bank,response_5)
+compute_eap_rsm(bank,response_5)
 catR::eapEst(bank,response_5,model="RSM")
 # STANDARD ERROR ESTIMATION
-eap_se_rsm(eap_est_rsm(bank,response_1),bank,response_1)
-catR::eapSem(eap_est_rsm(bank,response_1),bank,response_1,model="RSM")
-eap_se_rsm(eap_est_rsm(bank,response_2),bank,response_2)
-catR::eapSem(eap_est_rsm(bank,response_2),bank,response_2,model="RSM")
-eap_se_rsm(eap_est_rsm(bank,response_3),bank,response_3)
-catR::eapSem(eap_est_rsm(bank,response_3),bank,response_3,model="RSM")
-eap_se_rsm(eap_est_rsm(bank,response_4),bank,response_4)
-catR::eapSem(eap_est_rsm(bank,response_4),bank,response_4,model="RSM")
-eap_se_rsm(eap_est_rsm(bank,response_5),bank,response_5)
-catR::eapSem(eap_est_rsm(bank,response_5),bank,response_5,model="RSM")
-##########################################################################################
-# EXAMPLE 2
-##########################################################################################
-# effect of the integration bounds and of the number of quadrature points
-response_1<-c(4,4,4,4,4)
-eap_est_rsm(bank,response_1,lower=-4,upper=4)
-eap_est_rsm(bank,response_1,lower=-3,upper=3)
-eap_est_rsm(bank,response_1,nqp=33)
-eap_est_rsm(bank,response_1,nqp=101)
-# effect of the prior
-eap_est_rsm(bank,response_1,priorPar=c(0,1))
-eap_est_rsm(bank,response_1,priorPar=c(0,2))
-# effect of the metric constant
-eap_est_rsm(bank,response_1,D=1)
-eap_est_rsm(bank,response_1,D=1.702)
-##########################################################################################
-# EXAMPLE 3
-##########################################################################################
-# items do not all need the same number of categories
-# item 5 below is a 4 point item so its last threshold is padded with NA
-# its responses must then be scored 0 to 3
-bank<-matrix(c(lambdaj,delta1,delta2,delta3,c(delta4[1:4],NA)),nrow=5,
-             dimnames=list(c(1,2,3,4,5),c("lambdaj","delta1","delta2","delta3","delta4")))
-compute_pi_rsm(theta=0,bank)$Pi
-response_1<-c(4,3,2,1,3)
-eap_est_rsm(bank,response_1)
-eap_se_rsm(eap_est_rsm(bank,response_1),bank,response_1)
-
+compute_eap_se_rsm(compute_eap_rsm(bank,response_1),bank,response_1)
+catR::eapSem(compute_eap_rsm(bank,response_1),bank,response_1,model="RSM")
+compute_eap_se_rsm(compute_eap_rsm(bank,response_2),bank,response_2)
+catR::eapSem(compute_eap_rsm(bank,response_2),bank,response_2,model="RSM")
+compute_eap_se_rsm(compute_eap_rsm(bank,response_3),bank,response_3)
+catR::eapSem(compute_eap_rsm(bank,response_3),bank,response_3,model="RSM")
+compute_eap_se_rsm(compute_eap_rsm(bank,response_4),bank,response_4)
+catR::eapSem(compute_eap_rsm(bank,response_4),bank,response_4,model="RSM")
+compute_eap_se_rsm(compute_eap_rsm(bank,response_5),bank,response_5)
+catR::eapSem(compute_eap_rsm(bank,response_5),bank,response_5,model="RSM")
