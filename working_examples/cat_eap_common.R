@@ -1,4 +1,18 @@
 ##########################################################################################
+# CATR ACKNOWLEDGEMENT
+##########################################################################################
+# integrate_cat in this file is adapted from integrate.catR of the catR package
+# version 3.17 by David Magis Gilles Raiche and Juan Ramon Barrada
+# https://CRAN.R-project.org/package=catR
+# Magis D and Raiche G (2012) Journal of Statistical Software 48(8) 1-31
+# doi:10.18637/jss.v048.i08
+# Magis D and Barrada JR (2017) Journal of Statistical Software Code Snippets 76(1) 1-19
+# doi:10.18637/jss.v076.c01
+# catR is licensed under GPL (>= 3) and this file is distributed under the same license
+# density_function is not taken from catR it writes out the normal density that catR
+# obtains from stats::dnorm
+# modified by Dimitrios Zacharatos 2023-2026 renamed and documented
+##########################################################################################
 # DENSITY FUNCTION
 ##########################################################################################
 #' @title compute normal density function

@@ -1,4 +1,19 @@
 ##########################################################################################
+# CATR ACKNOWLEDGEMENT
+##########################################################################################
+# the response probability item information likelihood and EAP functions in this file
+# are adapted from the source code of the catR package version 3.17 by David Magis
+# Gilles Raiche and Juan Ramon Barrada and the item selection follows catR::nextItem
+# with criterion="MFI"
+# https://CRAN.R-project.org/package=catR
+# Magis D and Raiche G (2012) Journal of Statistical Software 48(8) 1-31
+# doi:10.18637/jss.v048.i08
+# Magis D and Barrada JR (2017) Journal of Statistical Software Code Snippets 76(1) 1-19
+# doi:10.18637/jss.v076.c01
+# catR is licensed under GPL (>= 3) and this file is distributed under the same license
+# modified by Dimitrios Zacharatos 2023-2026 split into one file per model with the
+# functions renamed rewritten for readability and documented
+##########################################################################################
 # RESPONSE PROBABILITIES
 ##########################################################################################
 #' @title compute response probabilities and derivatives
@@ -167,8 +182,8 @@ compute_next_item_dichotomous<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' response<-c(1,1,1,0,0)
 #' P<-catR::Pi(th=0,bank)$Pi
 #' prod(P^response*(1-P)^(1-response))
-#' likelihood(theta=0,bank=bank,x=response)
-likelihood<-function(theta,bank,x,D=1) {
+#' compute_likelihood_dichotomous(theta=0,bank=bank,x=response)
+compute_likelihood_dichotomous<-function(theta,bank,x,D=1) {
   P<-compute_pi_dichotomous(theta,bank,D=D)$Pi
   result<-prod(P^x*(1-P)^(1-x))
   return(result)

@@ -1,4 +1,19 @@
 ##########################################################################################
+# CATR ACKNOWLEDGEMENT
+##########################################################################################
+# the response probability item information likelihood and EAP functions in this file
+# are adapted from the source code of the catR package version 3.17 by David Magis
+# Gilles Raiche and Juan Ramon Barrada and the item selection follows catR::nextItem
+# with criterion="MFI"
+# https://CRAN.R-project.org/package=catR
+# Magis D and Raiche G (2012) Journal of Statistical Software 48(8) 1-31
+# doi:10.18637/jss.v048.i08
+# Magis D and Barrada JR (2017) Journal of Statistical Software Code Snippets 76(1) 1-19
+# doi:10.18637/jss.v076.c01
+# catR is licensed under GPL (>= 3) and this file is distributed under the same license
+# modified by Dimitrios Zacharatos 2026 split into one file per model with the
+# functions renamed rewritten for readability and documented
+##########################################################################################
 # RESPONSE PROBABILITIES
 ##########################################################################################
 #' @title compute category response probabilities and derivatives under the generalized graded response model
@@ -304,8 +319,8 @@ compute_eap_ggrm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) 
 #'                            c("alphaj","bj","c1","c2","c3","c4")))
 #' response<-c(4,3,2,1,0)
 #' catR::eapSem(0,bank,response,model="MGRM")
-#' eap_se_ggrm(theta=0,bank=bank,x=response)
-eap_se_ggrm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' compute_eap_se_ggrm(theta=0,bank=bank,x=response)
+compute_eap_se_ggrm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(X) {
     res<-NULL
     for (i in 1:length(X))

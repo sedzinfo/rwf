@@ -1,4 +1,19 @@
 ##########################################################################################
+# CATR ACKNOWLEDGEMENT
+##########################################################################################
+# the response probability item information likelihood and EAP functions in this file
+# are adapted from the source code of the catR package version 3.17 by David Magis
+# Gilles Raiche and Juan Ramon Barrada and the item selection follows catR::nextItem
+# with criterion="MFI"
+# https://CRAN.R-project.org/package=catR
+# Magis D and Raiche G (2012) Journal of Statistical Software 48(8) 1-31
+# doi:10.18637/jss.v048.i08
+# Magis D and Barrada JR (2017) Journal of Statistical Software Code Snippets 76(1) 1-19
+# doi:10.18637/jss.v076.c01
+# catR is licensed under GPL (>= 3) and this file is distributed under the same license
+# modified by Dimitrios Zacharatos 2026 split into one file per model with the
+# functions renamed rewritten for readability and documented
+##########################################################################################
 # RESPONSE PROBABILITIES
 ##########################################################################################
 #' @title compute category response probabilities and derivatives under the rating scale model
