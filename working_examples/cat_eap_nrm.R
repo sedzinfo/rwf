@@ -59,7 +59,9 @@
 #' @return Pi   category response probabilities one row per item one column per category \cr
 #'         dPi  first derivatives of the category response probabilities \cr
 #'         d2Pi second derivatives of the category response probabilities \cr
-#'         d3Pi third derivatives of the category response probabilities
+#'         d3Pi third derivatives of the category response probabilities \cr
+#'         d4Pi fourth derivatives of the category response probabilities which catR \cr
+#'              does not return and which the third derivative of the information needs
 #' @export
 #' @examples
 #' bank<-matrix(c(0.614,0.782,0.297,1.036,0.521,
@@ -70,8 +72,9 @@
 #'                1.264,0.517,1.936,0.793,0.186,
 #'                2.918,3.087,2.215,2.604,3.382,
 #'                0.097,-0.814,1.012,-0.296,-1.618),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
 #' pi_cat<-catR::Pi(th=0,bank,model="NRM") # this will work with catR package installed
 #' pi<-compute_pi_nrm(theta=0,bank)
 #' pi_cat
@@ -83,7 +86,7 @@
 compute_pi_nrm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   ncat<-ncol(bank)/2+1
-  Pi<-dPi<-d2Pi<-d3Pi<-matrix(NA,nrow(bank),ncat)
+  Pi<-dPi<-d2Pi<-d3Pi<-d4Pi<-matrix(NA,nrow(bank),ncat)
   for (i in 1:nrow(bank)) {
     dj<-v<-0
     for (t in 1:(ncat-1)) {
@@ -96,10 +99,12 @@ compute_pi_nrm<-function(theta,bank,D=1) {
     dgamma<-gamma*v
     d2gamma<-gamma*v^2
     d3gamma<-gamma*v^3
+    d4gamma<-gamma*v^4
     sum_gamma<-sum(gamma)
     sum_dgamma<-sum(dgamma)
     sum_d2gamma<-sum(d2gamma)
     sum_d3gamma<-sum(d3gamma)
+    sum_d4gamma<-sum(d4gamma)
     n<-length(gamma)
     Pi[i,1:n]<-gamma/sum_gamma
     dPi[i,1:n]<-dgamma/sum_gamma-gamma*sum_dgamma/sum_gamma^2
@@ -109,10 +114,16 @@ compute_pi_nrm<-function(theta,bank,D=1) {
       (gamma*sum_d3gamma+3*dgamma*sum_d2gamma+3*d2gamma*sum_dgamma)/sum_gamma^2+
       (6*gamma*sum_dgamma*sum_d2gamma+6*dgamma*sum_dgamma^2)/sum_gamma^3-
       6*gamma*sum_dgamma^3/sum_gamma^4
+    d4Pi[i,1:n]<-d4gamma/sum_gamma-
+      (gamma*sum_d4gamma+4*dgamma*sum_d3gamma+6*d2gamma*sum_d2gamma+4*d3gamma*sum_dgamma)/sum_gamma^2+
+      (12*d2gamma*sum_dgamma^2+24*dgamma*sum_dgamma*sum_d2gamma+
+         8*gamma*sum_dgamma*sum_d3gamma+6*gamma*sum_d2gamma^2)/sum_gamma^3-
+      (24*dgamma*sum_dgamma^3+36*gamma*sum_dgamma^2*sum_d2gamma)/sum_gamma^4+
+      24*gamma*sum_dgamma^4/sum_gamma^5
   }
-  colnames(Pi)<-colnames(dPi)<-colnames(d2Pi)<-colnames(d3Pi)<-paste("cat",0:(ncat-1),sep="")
-  rownames(Pi)<-rownames(dPi)<-rownames(d2Pi)<-rownames(d3Pi)<-paste("Item",1:nrow(bank),sep="")
-  result<-list(Pi=Pi,dPi=dPi,d2Pi=d2Pi,d3Pi=d3Pi)
+  colnames(Pi)<-colnames(dPi)<-colnames(d2Pi)<-colnames(d3Pi)<-colnames(d4Pi)<-paste("cat",0:(ncat-1),sep="")
+  rownames(Pi)<-rownames(dPi)<-rownames(d2Pi)<-rownames(d3Pi)<-rownames(d4Pi)<-paste("Item",1:nrow(bank),sep="")
+  result<-list(Pi=Pi,dPi=dPi,d2Pi=d2Pi,d3Pi=d3Pi,d4Pi=d4Pi)
   return(result)
 }
 ##########################################################################################
@@ -136,10 +147,14 @@ compute_pi_nrm<-function(theta,bank,D=1) {
 #'       with respect to theta obtained by differentiating each category term \cr
 #'       dP_jk^2/P_jk and summing over categories \cr
 #'       dIi=sum_k 2*dP*d2P/P-dP^3/P^2 \cr
-#'       d2Ii=sum_k (2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3
+#'       d2Ii=sum_k (2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3 \cr
+#'       d3Ii=sum_k (6*d2P*d3P+2*dP*d4P)/P-(12*dP*d2P^2+7*dP^2*d3P)/P^2+ \cr
+#'                  18*dP^3*d2P/P^3-6*dP^5/P^4 \cr
+#'       catR stops at d2Ii so d3Ii has no catR counterpart
 #' @return Ii   item information for each item \cr
 #'         dIi  first derivative of the item information for each item \cr
-#'         d2Ii second derivative of the item information for each item
+#'         d2Ii second derivative of the item information for each item \cr
+#'         d3Ii third derivative of the item information for each item
 #' @export
 #' @examples
 #' bank<-matrix(c(0.614,0.782,0.297,1.036,0.521,
@@ -150,26 +165,30 @@ compute_pi_nrm<-function(theta,bank,D=1) {
 #'                1.264,0.517,1.936,0.793,0.186,
 #'                2.918,3.087,2.215,2.604,3.382,
 #'                0.097,-0.814,1.012,-0.296,-1.618),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
 #' li_catr<-catR::Ii(th=0,bank,model="NRM") # this will work with catR package installed
-#' li<-Ii_nrm(theta=0,bank)
+#' li<-compute_ii_nrm(theta=0,bank)
 #' li_catr
 #' li
 #' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
 #' data.frame(catr=li_catr[[2]],li=li[[2]],equal=li_catr[[2]]==li[[2]])
 #' data.frame(catr=li_catr[[3]],li=li[[3]],equal=li_catr[[3]]==li[[3]])
-Ii_nrm<-function(theta,bank,D=1) {
+compute_ii_nrm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   prob<-compute_pi_nrm(theta,bank,D=D)
   P<-prob$Pi
   dP<-prob$dPi
   d2P<-prob$d2Pi
   d3P<-prob$d3Pi
+  d4P<-prob$d4Pi
   Ii<-as.numeric(rowSums(dP^2/P,na.rm=TRUE))
   dIi<-as.numeric(rowSums(2*dP*d2P/P-dP^3/P^2,na.rm=TRUE))
   d2Ii<-as.numeric(rowSums((2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3,na.rm=TRUE))
-  result<-list(Ii=Ii,dIi=dIi,d2Ii=d2Ii)
+  d3Ii<-as.numeric(rowSums((6*d2P*d3P+2*dP*d4P)/P-(12*dP*d2P^2+7*dP^2*d3P)/P^2+
+                             18*dP^3*d2P/P^3-6*dP^5/P^4,na.rm=TRUE))
+  result<-list(Ii=Ii,dIi=dIi,d2Ii=d2Ii,d3Ii=d3Ii)
   return(result)
 }
 ##########################################################################################
@@ -205,30 +224,16 @@ Ii_nrm<-function(theta,bank,D=1) {
 #'                1.264,0.517,1.936,0.793,0.186,
 #'                2.918,3.087,2.215,2.604,3.382,
 #'                0.097,-0.814,1.012,-0.296,-1.618),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
 #' catR::nextItem(bank,model="NRM",theta=0,criterion="MFI") # with catR installed
-#' next_item_nrm(theta=0,bank)
-#' next_item_nrm(theta=0,bank,out=c(2))
-#' catR::nextItem(bank,model="NRM",theta=1.5,criterion="MFI") # with catR installed
-#' next_item_nrm(theta=1.5,bank)
-#' # a short adaptive test driven by the functions in this file
-#' responses<-c()
-#' administered<-c()
-#' theta<-0
-#' for (step in 1:4) {
-#'   item<-next_item_nrm(theta,bank,out=administered)$item
-#'   administered<-c(administered,item)
-#'   responses<-c(responses,3) # replace by the real response coded 0 to m
-#'   theta<-eap_est_nrm(bank[administered,,drop=FALSE],responses)
-#'   cat("step",step,"item",item,"theta",round(theta,4),
-#'       "se",round(eap_se_nrm(theta,bank[administered,,drop=FALSE],responses),4),"\n")
-#' }
-next_item_nrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
+#' compute_next_item_nrm(theta=0,bank)
+compute_next_item_nrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
   bank<-rbind(bank)
   available<-setdiff(1:nrow(bank),out)
   if (length(available)==0) stop("no item left in the bank",call.=FALSE)
-  info<-Ii_nrm(theta,bank[available,,drop=FALSE],D=D)$Ii
+  info<-compute_ii_nrm(theta,bank[available,,drop=FALSE],D=D)$Ii
   k<-max(1,min(floor(randomesque),length(available)))
   top<-order(info,decreasing=TRUE)[1:k]
   pick<-if (k==1) top else top[sample.int(k,1)]
@@ -262,16 +267,12 @@ next_item_nrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'                1.264,0.517,1.936,0.793,0.186,
 #'                2.918,3.087,2.215,2.604,3.382,
 #'                0.097,-0.814,1.012,-0.296,-1.618),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
 #' response<-c(4,3,2,1,0)
-#' likelihood_nrm(theta=0,bank=bank,x=response)
-#' v<-seq(-4,4,by=.1)
-#' lik<-c()
-#' for (i in 1:length(v)) lik[i]<-likelihood_nrm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=lik,xlab=expression(theta),ylab="likelihood",
-#'      main="likelihood of the response pattern",type="l")
-likelihood_nrm<-function(theta,bank,x,D=1) {
+#' compute_likelihood_nrm(theta=0,bank=bank,x=response)
+compute_likelihood_nrm<-function(theta,bank,x,D=1) {
   prob<-compute_pi_nrm(theta,bank,D=D)$Pi
   result<-1
   for (i in 1:length(x)) result<-result*prob[i,x[i]+1]
@@ -302,22 +303,23 @@ likelihood_nrm<-function(theta,bank,x,D=1) {
 #'                1.264,0.517,1.936,0.793,0.186,
 #'                2.918,3.087,2.215,2.604,3.382,
 #'                0.097,-0.814,1.012,-0.296,-1.618),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
 #' response<-c(4,3,2,1,0)
 #' catR::eapEst(bank,response,model="NRM") # this will work with catR package installed
-#' eap_est_nrm(bank,response)
-eap_est_nrm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' compute_eap_nrm(bank,response)
+compute_eap_nrm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(s) {
     res<-NULL
     for (i in 1:length(s))
-      res[i]<-s[i]*density_function(s[i],priorPar[1],priorPar[2])*likelihood_nrm(s[i],bank,x,D=D)
+      res[i]<-s[i]*density_function(s[i],priorPar[1],priorPar[2])*compute_likelihood_nrm(s[i],bank,x,D=D)
     return(res)
   }
   h<-function(s) {
     res<-NULL
     for (i in 1:length(s))
-      res[i]<-density_function(s[i],priorPar[1],priorPar[2])*likelihood_nrm(s[i],bank,x,D=D)
+      res[i]<-density_function(s[i],priorPar[1],priorPar[2])*compute_likelihood_nrm(s[i],bank,x,D=D)
     return(res)
   }
   X<-seq(from=lower,to=upper,length=nqp)
@@ -352,35 +354,23 @@ eap_est_nrm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #'                1.264,0.517,1.936,0.793,0.186,
 #'                2.918,3.087,2.215,2.604,3.382,
 #'                0.097,-0.814,1.012,-0.296,-1.618),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
 #' response<-c(4,3,2,1,0)
 #' catR::eapSem(0,bank,response,model="NRM") # this will work with catR package installed
-#' eap_se_nrm(theta=0,bank=bank,x=response)
-#' v<-seq(-3,3,by=.1)
-#' se<-c()
-#' for (i in 1:length(v)) se[i]<-eap_se_nrm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error with a mixed response pattern")
-#' response<-c(0,0,0,0,0)
-#' for (i in 1:length(v)) se[i]<-eap_se_nrm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are in category 0")
-#' response<-c(4,4,4,4,4)
-#' for (i in 1:length(v)) se[i]<-eap_se_nrm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are in category 4")
-eap_se_nrm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' compute_eap_se_nrm(theta=0,bank=bank,x=response)
+compute_eap_se_nrm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(X) {
     res<-NULL
     for (i in 1:length(X))
-      res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*likelihood_nrm(X[i],bank,x,D=D)
+      res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*compute_likelihood_nrm(X[i],bank,x,D=D)
     return(res)
   }
   h<-function(X) {
     res<-NULL
     for (i in 1:length(X))
-      res[i]<-density_function(X[i],priorPar[1],priorPar[2])*likelihood_nrm(X[i],bank,x,D=D)
+      res[i]<-density_function(X[i],priorPar[1],priorPar[2])*compute_likelihood_nrm(X[i],bank,x,D=D)
     return(res)
   }
   X<-seq(from=lower,to=upper,length=nqp)
@@ -415,83 +405,24 @@ response_3<-c(2,2,2,2,2)
 response_4<-c(3,3,3,3,3)
 response_5<-c(4,4,4,4,4)
 # ABILITY ESTIMATION
-eap_est_nrm(bank,response_1)
+compute_eap_nrm(bank,response_1)
 catR::eapEst(bank,response_1,model="NRM")
-eap_est_nrm(bank,response_2)
+compute_eap_nrm(bank,response_2)
 catR::eapEst(bank,response_2,model="NRM")
-eap_est_nrm(bank,response_3)
+compute_eap_nrm(bank,response_3)
 catR::eapEst(bank,response_3,model="NRM")
-eap_est_nrm(bank,response_4)
+compute_eap_nrm(bank,response_4)
 catR::eapEst(bank,response_4,model="NRM")
-eap_est_nrm(bank,response_5)
+compute_eap_nrm(bank,response_5)
 catR::eapEst(bank,response_5,model="NRM")
 # STANDARD ERROR ESTIMATION
-eap_se_nrm(eap_est_nrm(bank,response_1),bank,response_1)
-catR::eapSem(eap_est_nrm(bank,response_1),bank,response_1,model="NRM")
-eap_se_nrm(eap_est_nrm(bank,response_2),bank,response_2)
-catR::eapSem(eap_est_nrm(bank,response_2),bank,response_2,model="NRM")
-eap_se_nrm(eap_est_nrm(bank,response_3),bank,response_3)
-catR::eapSem(eap_est_nrm(bank,response_3),bank,response_3,model="NRM")
-eap_se_nrm(eap_est_nrm(bank,response_4),bank,response_4)
-catR::eapSem(eap_est_nrm(bank,response_4),bank,response_4,model="NRM")
-eap_se_nrm(eap_est_nrm(bank,response_5),bank,response_5)
-catR::eapSem(eap_est_nrm(bank,response_5),bank,response_5,model="NRM")
-##########################################################################################
-# EXAMPLE 2
-##########################################################################################
-# effect of the integration bounds and of the number of quadrature points
-response_1<-c(4,4,4,4,4)
-eap_est_nrm(bank,response_1,lower=-4,upper=4)
-eap_est_nrm(bank,response_1,lower=-3,upper=3)
-eap_est_nrm(bank,response_1,nqp=33)
-eap_est_nrm(bank,response_1,nqp=101)
-# effect of the prior
-eap_est_nrm(bank,response_1,priorPar=c(0,1))
-eap_est_nrm(bank,response_1,priorPar=c(0,2))
-# D is not used so both calls return the same estimate
-# when a bank is calibrated any constant is absorbed in the estimated slopes and intercepts
-eap_est_nrm(bank,response_1,D=1)
-eap_est_nrm(bank,response_1,D=1.702)
-##########################################################################################
-# EXAMPLE 3
-##########################################################################################
-# item 4 has alpha2<alpha1 so its categories are not ordered
-# as theta grows its categories take turns being the most probable in the order of their
-# slopes and its category 1 is overtaken by category 3 before it overtakes category 2
-# so category 1 is never the most probable although its probability stays positive
-v<-seq(-4,4,by=.01)
-modal<-c()
-for (i in 1:length(v)) modal[i]<-which.max(compute_pi_nrm(theta=v[i],bank)$Pi[4,])-1
-table(modal)
-max(sapply(v,function(t) compute_pi_nrm(theta=t,bank)$Pi[4,2]))
-# ordered slopes do not guarantee that every category is the most probable somewhere
-# item 5 has ordered slopes but its category 3 is overtaken by category 4 first
-for (i in 1:length(v)) modal[i]<-which.max(compute_pi_nrm(theta=v[i],bank)$Pi[5,])-1
-table(modal)
-# with D=1 the partial credit model is the nominal model with alphajk=k and cjk=-(deltaj1+...+deltajk)
-# the PCM bank of cat_eap_pcm.R gives the same probabilities and estimates through compute_pi_nrm
-bank_pcm<-matrix(c(-1.853,-2.214,-0.936,-1.508,-0.412,
-                   -0.627,-0.504,-1.215,-0.183,0.338,
-                   0.418,0.692,0.284,0.735,1.102,
-                   1.636,1.927,1.405,2.118,2.285),nrow=5,
-                 dimnames=list(c(1,2,3,4,5),c("deltaj1","deltaj2","deltaj3","deltaj4")))
-bank_nrm<-cbind(1,-bank_pcm[,1],2,-rowSums(bank_pcm[,1:2]),
-                3,-rowSums(bank_pcm[,1:3]),4,-rowSums(bank_pcm[,1:4]))
-colnames(bank_nrm)<-c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")
-bank_nrm
-compute_pi_nrm(theta=0,bank_nrm)$Pi
-catR::Pi(th=0,bank_pcm,model="PCM")$Pi
-response_1<-c(4,3,2,1,0)
-eap_est_nrm(bank_nrm,response_1)
-catR::eapEst(bank_pcm,response_1,model="PCM")
-# items do not all need the same number of categories
-# item 5 below has 4 categories so its last pair is padded with NA
-# its responses must then be coded 0 to 3
-bank<-matrix(c(alpha1,c1,alpha2,c2,alpha3,c3,c(alpha4[1:4],NA),c(c4[1:4],NA)),nrow=5,
-             dimnames=list(c(1,2,3,4,5),c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
-compute_pi_nrm(theta=0,bank)$Pi
-response_1<-c(4,3,2,1,3)
-eap_est_nrm(bank,response_1)
-catR::eapEst(bank,response_1,model="NRM")
-eap_se_nrm(eap_est_nrm(bank,response_1),bank,response_1)
-
+compute_eap_se_nrm(compute_eap_nrm(bank,response_1),bank,response_1)
+catR::eapSem(compute_eap_nrm(bank,response_1),bank,response_1,model="NRM")
+compute_eap_se_nrm(compute_eap_nrm(bank,response_2),bank,response_2)
+catR::eapSem(compute_eap_nrm(bank,response_2),bank,response_2,model="NRM")
+compute_eap_se_nrm(compute_eap_nrm(bank,response_3),bank,response_3)
+catR::eapSem(compute_eap_nrm(bank,response_3),bank,response_3,model="NRM")
+compute_eap_se_nrm(compute_eap_nrm(bank,response_4),bank,response_4)
+catR::eapSem(compute_eap_nrm(bank,response_4),bank,response_4,model="NRM")
+compute_eap_se_nrm(compute_eap_nrm(bank,response_5),bank,response_5)
+catR::eapSem(compute_eap_nrm(bank,response_5),bank,response_5,model="NRM")
