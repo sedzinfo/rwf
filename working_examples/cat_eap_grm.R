@@ -127,8 +127,9 @@ compute_pi_grm<-function(theta,bank,D=1) {
 #'                -0.874,-0.415,-0.231,-1.105,0.094,
 #'                0.316,0.783,0.652,0.047,0.881,
 #'                1.592,2.064,1.438,1.271,1.736),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","betaj1","betaj2","betaj3","betaj4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
 #' li_catr<-catR::Ii(th=0,bank,model="GRM") # this will work with catR package installed
 #' li<-compute_ii_grm(theta=0,bank)
 #' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
@@ -180,26 +181,12 @@ compute_ii_grm<-function(theta,bank,D=1) {
 #'                -0.874,-0.415,-0.231,-1.105,0.094,
 #'                0.316,0.783,0.652,0.047,0.881,
 #'                1.592,2.064,1.438,1.271,1.736),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","betaj1","betaj2","betaj3","betaj4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
 #' catR::nextItem(bank,model="GRM",theta=0,criterion="MFI") # with catR installed
-#' next_item_grm(theta=0,bank)
-#' next_item_grm(theta=0,bank,out=c(5))
-#' catR::nextItem(bank,model="GRM",theta=-2.5,criterion="MFI") # with catR installed
-#' next_item_grm(theta=-2.5,bank)
-#' # a short adaptive test driven by the functions in this file
-#' responses<-c()
-#' administered<-c()
-#' theta<-0
-#' for (step in 1:4) {
-#'   item<-next_item_grm(theta,bank,out=administered)$item
-#'   administered<-c(administered,item)
-#'   responses<-c(responses,3) # replace by the real response scored 0 to m
-#'   theta<-eap_est_grm(bank[administered,,drop=FALSE],responses)
-#'   cat("step",step,"item",item,"theta",round(theta,4),
-#'       "se",round(eap_se_grm(theta,bank[administered,,drop=FALSE],responses),4),"\n")
-#' }
-next_item_grm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
+#' compute_next_item_grm(theta=0,bank)
+compute_next_item_grm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
   bank<-rbind(bank)
   available<-setdiff(1:nrow(bank),out)
   if (length(available)==0) stop("no item left in the bank",call.=FALSE)
@@ -232,16 +219,12 @@ next_item_grm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'                -0.874,-0.415,-0.231,-1.105,0.094,
 #'                0.316,0.783,0.652,0.047,0.881,
 #'                1.592,2.064,1.438,1.271,1.736),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","betaj1","betaj2","betaj3","betaj4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
 #' response<-c(4,3,2,1,0)
-#' likelihood_grm(theta=0,bank=bank,x=response)
-#' v<-seq(-4,4,by=.1)
-#' lik<-c()
-#' for (i in 1:length(v)) lik[i]<-likelihood_grm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=lik,xlab=expression(theta),ylab="likelihood",
-#'      main="likelihood of the response pattern",type="l")
-likelihood_grm<-function(theta,bank,x,D=1) {
+#' compute_likelihood_grm(theta=0,bank=bank,x=response)
+compute_likelihood_grm<-function(theta,bank,x,D=1) {
   prob<-compute_pi_grm(theta,bank,D=D)$Pi
   result<-1
   for (i in 1:length(x)) result<-result*prob[i,x[i]+1]
@@ -266,22 +249,23 @@ likelihood_grm<-function(theta,bank,x,D=1) {
 #'                -0.874,-0.415,-0.231,-1.105,0.094,
 #'                0.316,0.783,0.652,0.047,0.881,
 #'                1.592,2.064,1.438,1.271,1.736),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","betaj1","betaj2","betaj3","betaj4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
 #' response<-c(4,3,2,1,0)
 #' catR::eapEst(bank,response,model="GRM") # this will work with catR package installed
-#' eap_est_grm(bank,response)
-eap_est_grm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' compute_eap_grm(bank,response)
+compute_eap_grm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(s) {
     res<-NULL
     for (i in 1:length(s))
-      res[i]<-s[i]*density_function(s[i],priorPar[1],priorPar[2])*likelihood_grm(s[i],bank,x,D=D)
+      res[i]<-s[i]*density_function(s[i],priorPar[1],priorPar[2])*compute_likelihood_grm(s[i],bank,x,D=D)
     return(res)
   }
   h<-function(s) {
     res<-NULL
     for (i in 1:length(s))
-      res[i]<-density_function(s[i],priorPar[1],priorPar[2])*likelihood_grm(s[i],bank,x,D=D)
+      res[i]<-density_function(s[i],priorPar[1],priorPar[2])*compute_likelihood_grm(s[i],bank,x,D=D)
     return(res)
   }
   X<-seq(from=lower,to=upper,length=nqp)
@@ -313,35 +297,23 @@ eap_est_grm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #'                -0.874,-0.415,-0.231,-1.105,0.094,
 #'                0.316,0.783,0.652,0.047,0.881,
 #'                1.592,2.064,1.438,1.271,1.736),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","betaj1","betaj2","betaj3","betaj4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
 #' response<-c(4,3,2,1,0)
 #' catR::eapSem(0,bank,response,model="GRM") # this will work with catR package installed
-#' eap_se_grm(theta=0,bank=bank,x=response)
-#' v<-seq(-3,3,by=.1)
-#' se<-c()
-#' for (i in 1:length(v)) se[i]<-eap_se_grm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error with a mixed response pattern")
-#' response<-c(0,0,0,0,0)
-#' for (i in 1:length(v)) se[i]<-eap_se_grm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are in the lowest category")
-#' response<-c(4,4,4,4,4)
-#' for (i in 1:length(v)) se[i]<-eap_se_grm(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are in the highest category")
-eap_se_grm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' compute_eap_se_grm(theta=0,bank=bank,x=response)
+compute_eap_se_grm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(X) {
     res<-NULL
     for (i in 1:length(X))
-      res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*likelihood_grm(X[i],bank,x,D=D)
+      res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*compute_likelihood_grm(X[i],bank,x,D=D)
     return(res)
   }
   h<-function(X) {
     res<-NULL
     for (i in 1:length(X))
-      res[i]<-density_function(X[i],priorPar[1],priorPar[2])*likelihood_grm(X[i],bank,x,D=D)
+      res[i]<-density_function(X[i],priorPar[1],priorPar[2])*compute_likelihood_grm(X[i],bank,x,D=D)
     return(res)
   }
   X<-seq(from=lower,to=upper,length=nqp)
@@ -373,25 +345,25 @@ response_3<-c(2,2,2,2,2)
 response_4<-c(3,3,3,3,3)
 response_5<-c(4,4,4,4,4)
 # ABILITY ESTIMATION
-eap_est_grm(bank,response_1)
+compute_eap_grm(bank,response_1)
 catR::eapEst(bank,response_1,model="GRM")
-eap_est_grm(bank,response_2)
+compute_eap_grm(bank,response_2)
 catR::eapEst(bank,response_2,model="GRM")
-eap_est_grm(bank,response_3)
+compute_eap_grm(bank,response_3)
 catR::eapEst(bank,response_3,model="GRM")
-eap_est_grm(bank,response_4)
+compute_eap_grm(bank,response_4)
 catR::eapEst(bank,response_4,model="GRM")
-eap_est_grm(bank,response_5)
+compute_eap_grm(bank,response_5)
 catR::eapEst(bank,response_5,model="GRM")
 # STANDARD ERROR ESTIMATION
-eap_se_grm(eap_est_grm(bank,response_1),bank,response_1)
-catR::eapSem(eap_est_grm(bank,response_1),bank,response_1,model="GRM")
-eap_se_grm(eap_est_grm(bank,response_2),bank,response_2)
-catR::eapSem(eap_est_grm(bank,response_2),bank,response_2,model="GRM")
-eap_se_grm(eap_est_grm(bank,response_3),bank,response_3)
-catR::eapSem(eap_est_grm(bank,response_3),bank,response_3,model="GRM")
-eap_se_grm(eap_est_grm(bank,response_4),bank,response_4)
-catR::eapSem(eap_est_grm(bank,response_4),bank,response_4,model="GRM")
-eap_se_grm(eap_est_grm(bank,response_5),bank,response_5)
-catR::eapSem(eap_est_grm(bank,response_5),bank,response_5,model="GRM")
+compute_eap_se_grm(compute_eap_grm(bank,response_1),bank,response_1)
+catR::eapSem(compute_eap_grm(bank,response_1),bank,response_1,model="GRM")
+compute_eap_se_grm(compute_eap_grm(bank,response_2),bank,response_2)
+catR::eapSem(compute_eap_grm(bank,response_2),bank,response_2,model="GRM")
+compute_eap_se_grm(compute_eap_grm(bank,response_3),bank,response_3)
+catR::eapSem(compute_eap_grm(bank,response_3),bank,response_3,model="GRM")
+compute_eap_se_grm(compute_eap_grm(bank,response_4),bank,response_4)
+catR::eapSem(compute_eap_grm(bank,response_4),bank,response_4,model="GRM")
+compute_eap_se_grm(compute_eap_grm(bank,response_5),bank,response_5)
+catR::eapSem(compute_eap_grm(bank,response_5),bank,response_5,model="GRM")
 
