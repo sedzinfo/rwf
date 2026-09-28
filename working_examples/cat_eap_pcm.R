@@ -72,7 +72,7 @@
 Pi_pcm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   ncat<-ncol(bank)+1
-  Pi<-dPi<-matrix(NA,nrow(bank),ncat)
+  Pi<-dPi<-d2Pi<-d3Pi<-matrix(NA,nrow(bank),ncat)
   for (i in 1:nrow(bank)) {
     dj<-v<-0
     for (t in 1:(ncat-1)) {
@@ -84,15 +84,25 @@ Pi_pcm<-function(theta,bank,D=1) {
     gamma<-exp(dj)
     dgamma<-gamma*v
     # dgamma<-gamma*D*v
+    d2gamma<-gamma*v^2
+    d3gamma<-gamma*v^3
     sum_gamma<-sum(gamma)
     sum_dgamma<-sum(dgamma)
+    sum_d2gamma<-sum(d2gamma)
+    sum_d3gamma<-sum(d3gamma)
     n<-length(gamma)
     Pi[i,1:n]<-gamma/sum_gamma
     dPi[i,1:n]<-dgamma/sum_gamma-gamma*sum_dgamma/sum_gamma^2
+    d2Pi[i,1:n]<-d2gamma/sum_gamma-2*dgamma*sum_dgamma/sum_gamma^2-
+      gamma*sum_d2gamma/sum_gamma^2+2*gamma*sum_dgamma^2/sum_gamma^3
+    d3Pi[i,1:n]<-d3gamma/sum_gamma-
+      (gamma*sum_d3gamma+3*dgamma*sum_d2gamma+3*d2gamma*sum_dgamma)/sum_gamma^2+
+      (6*gamma*sum_dgamma*sum_d2gamma+6*dgamma*sum_dgamma^2)/sum_gamma^3-
+      6*gamma*sum_dgamma^3/sum_gamma^4
   }
-  colnames(Pi)<-colnames(dPi)<-paste("cat",0:(ncat-1),sep="")
-  rownames(Pi)<-rownames(dPi)<-paste("Item",1:nrow(bank),sep="")
-  result<-list(Pi=Pi,dPi=dPi)
+  colnames(Pi)<-colnames(dPi)<-colnames(d2Pi)<-colnames(d3Pi)<-paste("cat",0:(ncat-1),sep="")
+  rownames(Pi)<-rownames(dPi)<-rownames(d2Pi)<-rownames(d3Pi)<-paste("Item",1:nrow(bank),sep="")
+  result<-list(Pi=Pi,dPi=dPi,d2Pi=d2Pi,d3Pi=d3Pi)
   return(result)
 }
 ##########################################################################################
@@ -147,8 +157,12 @@ Ii_pcm<-function(theta,bank,D=1) {
   prob<-Pi_pcm(theta,bank,D=D)
   P<-prob$Pi
   dP<-prob$dPi
+  d2P<-prob$d2Pi
+  d3P<-prob$d3Pi
   Ii<-as.numeric(rowSums(dP^2/P,na.rm=TRUE))
-  result<-list(Ii=Ii)
+  dIi<-as.numeric(rowSums(2*dP*d2P/P-dP^3/P^2,na.rm=TRUE))
+  d2Ii<-as.numeric(rowSums((2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3,na.rm=TRUE))
+  result<-list(Ii=Ii,dIi=dIi,d2Ii=d2Ii)
   return(result)
 }
 ##########################################################################################

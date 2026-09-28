@@ -4,7 +4,8 @@
 #' @title compute category response probabilities and derivatives under the nominal response model
 #' @description returns the category response probabilities for a given ability value and a \cr
 #'              given matrix of item parameters under Bock nominal response model (NRM) \cr
-#'              returns the first derivatives of the category response probabilities
+#'              returns the first second and third derivatives of the category response \cr
+#'              probabilities
 #' @param theta ability
 #' @param bank item parameters one row per item \cr
 #'             the columns come in pairs alpha_jk and c_jk for the categories 1 to m \cr
@@ -52,9 +53,13 @@
 #'       in the code dj holds alpha_jk*theta+c_jk and gamma holds exp(dj) for each \cr
 #'       category while v holds the slope alpha_jk \cr
 #'       the exponent of category k grows by alpha_jk when theta grows by one so the \cr
-#'       derivative of gamma is gamma*v and is exact
+#'       derivative of gamma is gamma*v and is exact \cr
+#'       each further derivative multiplies by v again so gamma*v^2 and gamma*v^3 give \cr
+#'       the second and third derivatives of Pi through the quotient rule
 #' @return Pi   category response probabilities one row per item one column per category \cr
-#'         dPi  first derivatives of the category response probabilities
+#'         dPi  first derivatives of the category response probabilities \cr
+#'         d2Pi second derivatives of the category response probabilities \cr
+#'         d3Pi third derivatives of the category response probabilities
 #' @export
 #' @examples
 #' bank<-matrix(c(0.614,0.782,0.297,1.036,0.521,
@@ -67,24 +72,18 @@
 #'                0.097,-0.814,1.012,-0.296,-1.618),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),
 #'                                   c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
-#' catR::Pi(th=0,bank,model="NRM") # this will work with catR package installed
-#' Pi_nrm(theta=0,bank)
-#' v<-seq(-6,6,by=.1)
-#' y_axis_response_probability<-list()
-#' for(i in v) y_axis_response_probability[[toString(i)]]<-Pi_nrm(theta=i,bank)$Pi[1,]
-#' df_rp<-data.frame(x=v,
-#'                   matrix(unlist(y_axis_response_probability),
-#'                          nrow=length(y_axis_response_probability),byrow=TRUE))
-#' plot(x=df_rp$x,y=df_rp$X1,xlab=expression(theta),ylab=expression(P(theta)),
-#'      main="category response probabilities item 1",type="l",col="red",ylim=c(0,1))
-#' lines(y=df_rp$X2,x=v,col="green")
-#' lines(y=df_rp$X3,x=v,col="blue")
-#' lines(y=df_rp$X4,x=v,col="yellow")
-#' lines(y=df_rp$X5,x=v,col="orange")
-Pi_nrm<-function(theta,bank,D=1) {
+#' pi_cat<-catR::Pi(th=0,bank,model="NRM") # this will work with catR package installed
+#' pi<-compute_pi_nrm(theta=0,bank)
+#' pi_cat
+#' pi
+#' isTRUE(all.equal(pi_cat[[1]], pi[[1]]))
+#' isTRUE(all.equal(pi_cat[[2]], pi[[2]]))
+#' isTRUE(all.equal(pi_cat[[3]], pi[[3]]))
+#' isTRUE(all.equal(pi_cat[[4]], pi[[4]]))
+compute_pi_nrm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   ncat<-ncol(bank)/2+1
-  Pi<-dPi<-matrix(NA,nrow(bank),ncat)
+  Pi<-dPi<-d2Pi<-d3Pi<-matrix(NA,nrow(bank),ncat)
   for (i in 1:nrow(bank)) {
     dj<-v<-0
     for (t in 1:(ncat-1)) {
@@ -95,15 +94,25 @@ Pi_nrm<-function(theta,bank,D=1) {
     dj<-dj[!is.na(dj)]
     gamma<-exp(dj)
     dgamma<-gamma*v
+    d2gamma<-gamma*v^2
+    d3gamma<-gamma*v^3
     sum_gamma<-sum(gamma)
     sum_dgamma<-sum(dgamma)
+    sum_d2gamma<-sum(d2gamma)
+    sum_d3gamma<-sum(d3gamma)
     n<-length(gamma)
     Pi[i,1:n]<-gamma/sum_gamma
     dPi[i,1:n]<-dgamma/sum_gamma-gamma*sum_dgamma/sum_gamma^2
+    d2Pi[i,1:n]<-d2gamma/sum_gamma-2*dgamma*sum_dgamma/sum_gamma^2-
+      gamma*sum_d2gamma/sum_gamma^2+2*gamma*sum_dgamma^2/sum_gamma^3
+    d3Pi[i,1:n]<-d3gamma/sum_gamma-
+      (gamma*sum_d3gamma+3*dgamma*sum_d2gamma+3*d2gamma*sum_dgamma)/sum_gamma^2+
+      (6*gamma*sum_dgamma*sum_d2gamma+6*dgamma*sum_dgamma^2)/sum_gamma^3-
+      6*gamma*sum_dgamma^3/sum_gamma^4
   }
-  colnames(Pi)<-colnames(dPi)<-paste("cat",0:(ncat-1),sep="")
-  rownames(Pi)<-rownames(dPi)<-paste("Item",1:nrow(bank),sep="")
-  result<-list(Pi=Pi,dPi=dPi)
+  colnames(Pi)<-colnames(dPi)<-colnames(d2Pi)<-colnames(d3Pi)<-paste("cat",0:(ncat-1),sep="")
+  rownames(Pi)<-rownames(dPi)<-rownames(d2Pi)<-rownames(d3Pi)<-paste("Item",1:nrow(bank),sep="")
+  result<-list(Pi=Pi,dPi=dPi,d2Pi=d2Pi,d3Pi=d3Pi)
   return(result)
 }
 ##########################################################################################
@@ -122,8 +131,15 @@ Pi_nrm<-function(theta,bank,D=1) {
 #'       the information is therefore large where categories with very different \cr
 #'       slopes are both probable and it depends on the gaps between the slopes rather \cr
 #'       than on their order \cr
-#'       test information is the sum of the item informations
-#' @return Ii item information for each item
+#'       test information is the sum of the item informations \cr
+#'       dIi and d2Ii are the first and second derivatives of the item information \cr
+#'       with respect to theta obtained by differentiating each category term \cr
+#'       dP_jk^2/P_jk and summing over categories \cr
+#'       dIi=sum_k 2*dP*d2P/P-dP^3/P^2 \cr
+#'       d2Ii=sum_k (2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3
+#' @return Ii   item information for each item \cr
+#'         dIi  first derivative of the item information for each item \cr
+#'         d2Ii second derivative of the item information for each item
 #' @export
 #' @examples
 #' bank<-matrix(c(0.614,0.782,0.297,1.036,0.521,
@@ -136,31 +152,24 @@ Pi_nrm<-function(theta,bank,D=1) {
 #'                0.097,-0.814,1.012,-0.296,-1.618),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),
 #'                                   c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
-#' catR::Ii(th=0,bank,model="NRM") # this will work with catR package installed
-#' Ii_nrm(theta=0,bank)
-#' sum(Ii_nrm(theta=0,bank)$Ii) # test information
-#' # the information is the variance of the slope of the category chosen
-#' P<-Pi_nrm(theta=0,bank)$Pi
-#' slopes<-cbind(0,bank[,c(1,3,5,7)])
-#' as.numeric(rowSums(P*slopes^2)-rowSums(P*slopes)^2)
-#' v<-seq(-4,4,by=.1)
-#' info<-matrix(NA,length(v),nrow(bank))
-#' for (i in 1:length(v)) info[i,]<-Ii_nrm(theta=v[i],bank)$Ii
-#' plot(x=v,y=info[,1],xlab=expression(theta),ylab="information",
-#'      main="item information curves",type="l",col="red",ylim=c(0,max(info)))
-#' lines(y=info[,2],x=v,col="green")
-#' lines(y=info[,3],x=v,col="blue")
-#' lines(y=info[,4],x=v,col="yellow")
-#' lines(y=info[,5],x=v,col="orange")
-#' plot(x=v,y=rowSums(info),xlab=expression(theta),ylab="information",
-#'      main="test information",type="l")
+#' li_catr<-catR::Ii(th=0,bank,model="NRM") # this will work with catR package installed
+#' li<-Ii_nrm(theta=0,bank)
+#' li_catr
+#' li
+#' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
+#' data.frame(catr=li_catr[[2]],li=li[[2]],equal=li_catr[[2]]==li[[2]])
+#' data.frame(catr=li_catr[[3]],li=li[[3]],equal=li_catr[[3]]==li[[3]])
 Ii_nrm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
-  prob<-Pi_nrm(theta,bank,D=D)
+  prob<-compute_pi_nrm(theta,bank,D=D)
   P<-prob$Pi
   dP<-prob$dPi
+  d2P<-prob$d2Pi
+  d3P<-prob$d3Pi
   Ii<-as.numeric(rowSums(dP^2/P,na.rm=TRUE))
-  result<-list(Ii=Ii)
+  dIi<-as.numeric(rowSums(2*dP*d2P/P-dP^3/P^2,na.rm=TRUE))
+  d2Ii<-as.numeric(rowSums((2*d2P^2+2*dP*d3P)/P-5*dP^2*d2P/P^2+2*dP^4/P^3,na.rm=TRUE))
+  result<-list(Ii=Ii,dIi=dIi,d2Ii=d2Ii)
   return(result)
 }
 ##########################################################################################
@@ -236,7 +245,7 @@ next_item_nrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' @param D metric constant kept for the same interface as the other files and not used
 #' @note this is the polytomous counterpart of prod(Pi^x*(1-Pi)^(1-x)) used for the 4PL \cr
 #'       model \cr
-#'       Pi_nrm returns a matrix so the response of item i selects the column x[i]+1 \cr
+#'       compute_pi_nrm returns a matrix so the response of item i selects the column x[i]+1 \cr
 #'       the +1 is index bookkeeping because categories start at 0 and R columns start \cr
 #'       at 1 \cr
 #'       the probabilities of the observed responses are multiplied across items under \cr
@@ -263,7 +272,7 @@ next_item_nrm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' plot(x=v,y=lik,xlab=expression(theta),ylab="likelihood",
 #'      main="likelihood of the response pattern",type="l")
 likelihood_nrm<-function(theta,bank,x,D=1) {
-  prob<-Pi_nrm(theta,bank,D=D)$Pi
+  prob<-compute_pi_nrm(theta,bank,D=D)$Pi
   result<-1
   for (i in 1:length(x)) result<-result*prob[i,x[i]+1]
   return(result)
@@ -452,15 +461,15 @@ eap_est_nrm(bank,response_1,D=1.702)
 # so category 1 is never the most probable although its probability stays positive
 v<-seq(-4,4,by=.01)
 modal<-c()
-for (i in 1:length(v)) modal[i]<-which.max(Pi_nrm(theta=v[i],bank)$Pi[4,])-1
+for (i in 1:length(v)) modal[i]<-which.max(compute_pi_nrm(theta=v[i],bank)$Pi[4,])-1
 table(modal)
-max(sapply(v,function(t) Pi_nrm(theta=t,bank)$Pi[4,2]))
+max(sapply(v,function(t) compute_pi_nrm(theta=t,bank)$Pi[4,2]))
 # ordered slopes do not guarantee that every category is the most probable somewhere
 # item 5 has ordered slopes but its category 3 is overtaken by category 4 first
-for (i in 1:length(v)) modal[i]<-which.max(Pi_nrm(theta=v[i],bank)$Pi[5,])-1
+for (i in 1:length(v)) modal[i]<-which.max(compute_pi_nrm(theta=v[i],bank)$Pi[5,])-1
 table(modal)
 # with D=1 the partial credit model is the nominal model with alphajk=k and cjk=-(deltaj1+...+deltajk)
-# the PCM bank of cat_eap_pcm.R gives the same probabilities and estimates through Pi_nrm
+# the PCM bank of cat_eap_pcm.R gives the same probabilities and estimates through compute_pi_nrm
 bank_pcm<-matrix(c(-1.853,-2.214,-0.936,-1.508,-0.412,
                    -0.627,-0.504,-1.215,-0.183,0.338,
                    0.418,0.692,0.284,0.735,1.102,
@@ -470,7 +479,7 @@ bank_nrm<-cbind(1,-bank_pcm[,1],2,-rowSums(bank_pcm[,1:2]),
                 3,-rowSums(bank_pcm[,1:3]),4,-rowSums(bank_pcm[,1:4]))
 colnames(bank_nrm)<-c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")
 bank_nrm
-Pi_nrm(theta=0,bank_nrm)$Pi
+compute_pi_nrm(theta=0,bank_nrm)$Pi
 catR::Pi(th=0,bank_pcm,model="PCM")$Pi
 response_1<-c(4,3,2,1,0)
 eap_est_nrm(bank_nrm,response_1)
@@ -480,7 +489,7 @@ catR::eapEst(bank_pcm,response_1,model="PCM")
 # its responses must then be coded 0 to 3
 bank<-matrix(c(alpha1,c1,alpha2,c2,alpha3,c3,c(alpha4[1:4],NA),c(c4[1:4],NA)),nrow=5,
              dimnames=list(c(1,2,3,4,5),c("alpha1","c1","alpha2","c2","alpha3","c3","alpha4","c4")))
-Pi_nrm(theta=0,bank)$Pi
+compute_pi_nrm(theta=0,bank)$Pi
 response_1<-c(4,3,2,1,3)
 eap_est_nrm(bank,response_1)
 catR::eapEst(bank,response_1,model="NRM")
