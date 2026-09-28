@@ -130,8 +130,8 @@ compute_ii_dichotomous<-function(theta,bank,D=1) {
 #'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' catR::nextItem(bank,theta=0,criterion="MFI") # with catR installed
-#' next_item_dichotomous(theta=0,bank)
-next_item_dichotomous<-function(theta,bank,out=NULL,D=1,randomesque=1) {
+#' compute_next_item_dichotomous(theta=0,bank)
+compute_next_item_dichotomous<-function(theta,bank,out=NULL,D=1,randomesque=1) {
   bank<-rbind(bank)
   available<-setdiff(1:nrow(bank),out)
   if (length(available)==0) stop("no item left in the bank",call.=FALSE)
@@ -165,16 +165,11 @@ next_item_dichotomous<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' response<-c(1,1,1,0,0)
-#' P<-catR::Pi(th=0,bank)$Pi # this will work with catR package installed
+#' P<-catR::Pi(th=0,bank)$Pi
 #' prod(P^response*(1-P)^(1-response))
 #' likelihood(theta=0,bank=bank,x=response)
-#' v<-seq(-4,4,by=.1)
-#' lik<-c()
-#' for (i in 1:length(v)) lik[i]<-likelihood(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=lik,xlab=expression(theta),ylab="likelihood",
-#'      main="likelihood of the response pattern",type="l")
 likelihood<-function(theta,bank,x,D=1) {
-  P<-Pi(theta,bank,D=D)$Pi
+  P<-compute_pi_dichotomous(theta,bank,D=D)$Pi
   result<-prod(P^x*(1-P)^(1-x))
   return(result)
 }

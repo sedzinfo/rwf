@@ -29,10 +29,10 @@
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),
 #'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
 #' catR::Pi(th=0,bank,model="RSM") # this will work with catR package installed
-#' Pi_rsm(theta=0,bank)
+#' compute_pi_rsm(theta=0,bank)
 #' v<-seq(-6,6,by=.1)
 #' y_axis_response_probability<-list()
-#' for(i in v) y_axis_response_probability[[toString(i)]]<-Pi_rsm(theta=i,bank)$Pi[1,]
+#' for(i in v) y_axis_response_probability[[toString(i)]]<-compute_pi_rsm(theta=i,bank)$Pi[1,]
 #' df_rp<-data.frame(x=v,
 #'                   matrix(unlist(y_axis_response_probability),
 #'                          nrow=length(y_axis_response_probability),byrow=TRUE))
@@ -42,7 +42,7 @@
 #' lines(y=df_rp$X3,x=v,col="blue")
 #' lines(y=df_rp$X4,x=v,col="yellow")
 #' lines(y=df_rp$X5,x=v,col="orange")
-Pi_rsm<-function(theta,bank,D=1) {
+compute_pi_rsm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   ncat<-ncol(bank)
   Pi<-dPi<-matrix(NA,nrow(bank),ncat)
@@ -108,7 +108,7 @@ Pi_rsm<-function(theta,bank,D=1) {
 #'      main="test information",type="l")
 Ii_rsm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
-  prob<-Pi_rsm(theta,bank,D=D)
+  prob<-compute_pi_rsm(theta,bank,D=D)
   P<-prob$Pi
   dP<-prob$dPi
   Ii<-as.numeric(rowSums(dP^2/P,na.rm=TRUE))
@@ -178,7 +178,7 @@ next_item_rsm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' @param D metric constant can be 1 or 1.702
 #' @note this is the polytomous counterpart of prod(Pi^x*(1-Pi)^(1-x)) used for the 4PL \cr
 #'       model \cr
-#'       Pi_rsm returns a matrix so the response of item i selects the column x[i]+1 \cr
+#'       compute_pi_rsm returns a matrix so the response of item i selects the column x[i]+1 \cr
 #'       the +1 is index bookkeeping because categories start at 0 and R columns start \cr
 #'       at 1 \cr
 #'       the responses are multiplied across items under the local independence assumption
@@ -196,7 +196,7 @@ next_item_rsm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' plot(x=v,y=lik,xlab=expression(theta),ylab="likelihood",
 #'      main="likelihood of the response pattern",type="l")
 likelihood_rsm<-function(theta,bank,x,D=1) {
-  prob<-Pi_rsm(theta,bank,D=D)$Pi
+  prob<-compute_pi_rsm(theta,bank,D=D)$Pi
   result<-1
   for (i in 1:length(x)) result<-result*prob[i,x[i]+1]
   return(result)
@@ -365,7 +365,7 @@ eap_est_rsm(bank,response_1,D=1.702)
 # its responses must then be scored 0 to 3
 bank<-matrix(c(lambdaj,delta1,delta2,delta3,c(delta4[1:4],NA)),nrow=5,
              dimnames=list(c(1,2,3,4,5),c("lambdaj","delta1","delta2","delta3","delta4")))
-Pi_rsm(theta=0,bank)$Pi
+compute_pi_rsm(theta=0,bank)$Pi
 response_1<-c(4,3,2,1,3)
 eap_est_rsm(bank,response_1)
 eap_se_rsm(eap_est_rsm(bank,response_1),bank,response_1)
