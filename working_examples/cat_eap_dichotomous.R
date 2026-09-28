@@ -21,38 +21,12 @@
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
-#' catR::Pi(th=0,bank) # this will work with catR package installed
-#' compute_pi_dichotomous(theta=0,bank)
-#' v<-seq(-6,6,by=.1)
-#' y_axis_response_probability<-y_axis_d1<-y_axis_d2<-list()
-#' for(i in v) {
-#'   y_axis_response_probability[[toString(i)]]<-compute_pi_dichotomous(theta=i,bank)$Pi
-#'   y_axis_d1[[toString(i)]]<-compute_pi_dichotomous(theta=i,bank)$dPi
-#'   y_axis_d2[[toString(i)]]<-compute_pi_dichotomous(theta=i,bank)$d2Pi
-#' }
-#' df_rp<-data.frame(x=v,
-#'                   matrix(unlist(y_axis_response_probability),
-#'                          nrow=length(y_axis_response_probability),byrow=T))
-#' plot(x=df_rp$x,y=df_rp$X1,xlab=expression(theta),ylab=expression(P(theta)),
-#'      main="response probability",type="l",col="red")
-#' lines(y=df_rp$X2,x=v,col="green")
-#' lines(y=df_rp$X3,x=v,col="blue")
-#' lines(y=df_rp$X4,x=v,col="yellow")
-#' lines(y=df_rp$X5,x=v,col="orange")
-#' df_1d<-data.frame(x=v,
-#'                   matrix(unlist(y_axis_d1),
-#'                          nrow=length(y_axis_d1),byrow=T))
-#' plot(x=df_1d$x,y=df_1d$X1,xlab=expression(theta),ylab=expression(P(theta)),
-#'      main="response probabilities and first derivatives ",type="l",col="red",ylim=c(0,1))
-#' lines(y=df_1d$X2,x=v,col="green")
-#' lines(y=df_1d$X3,x=v,col="blue")
-#' lines(y=df_1d$X4,x=v,col="yellow")
-#' lines(y=df_1d$X5,x=v,col="orange")
-#' lines(y=df_rp$X1,x=v,col="red")
-#' lines(y=df_rp$X2,x=v,col="green")
-#' lines(y=df_rp$X3,x=v,col="blue")
-#' lines(y=df_rp$X4,x=v,col="yellow")
-#' lines(y=df_rp$X5,x=v,col="orange")
+#' pi_cat<-catR::Pi(th=0,bank) # this will work with catR package installed
+#' pi<-compute_pi_dichotomous(theta=0,bank)
+#' data.frame(catr=pi_cat[[1]],pi=pi[[1]],equal=pi_cat[[1]]==pi[[1]])
+#' data.frame(catr=pi_cat[[2]],pi=pi[[2]],equal=pi_cat[[2]]==pi[[2]])
+#' data.frame(catr=pi_cat[[3]],pi=pi[[3]],equal=pi_cat[[3]]==pi[[3]])
+#' data.frame(catr=pi_cat[[4]],pi=pi[[4]],equal=pi_cat[[4]]==pi[[4]])
 compute_pi_dichotomous<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   a<-bank[,1]
@@ -102,35 +76,14 @@ compute_pi_dichotomous<-function(theta,bank,D=1) {
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
-#' catR::Ii(th=0,bank) # this will work with catR package installed
-#' Ii(theta=0,bank)
-#' sum(Ii(theta=0,bank)$Ii) # test information
-#' # for the 2PL the information is a^2*P*(1-P)
-#' P<-Pi(theta=0,bank)$Pi
-#' bank[,1]^2*P*(1-P)
-#' v<-seq(-4,4,by=.1)
-#' info<-matrix(NA,length(v),nrow(bank))
-#' for (i in 1:length(v)) info[i,]<-Ii(theta=v[i],bank)$Ii
-#' plot(x=v,y=info[,1],xlab=expression(theta),ylab="information",
-#'      main="item information curves",type="l",col="red",ylim=c(0,max(info)))
-#' lines(y=info[,2],x=v,col="green")
-#' lines(y=info[,3],x=v,col="blue")
-#' lines(y=info[,4],x=v,col="yellow")
-#' lines(y=info[,5],x=v,col="orange")
-#' plot(x=v,y=rowSums(info),xlab=expression(theta),ylab="information",
-#'      main="test information",type="l")
-#' # a guessing parameter lowers the information of item 3 and moves its peak above b
-#' bank_3pl<-bank
-#' bank_3pl[,3]<-0.2
-#' v<-seq(-4,4,by=.001)
-#' info_2pl<-sapply(v,function(t) Ii(theta=t,bank)$Ii[3])
-#' info_3pl<-sapply(v,function(t) Ii(theta=t,bank_3pl)$Ii[3])
-#' c(max(info_2pl),max(info_3pl))
-#' c(v[which.max(info_2pl)],v[which.max(info_3pl)])
-#' bank[3,2]+log((1+sqrt(1+8*0.2))/2)/bank[3,1]
-Ii<-function(theta,bank,D=1) {
+#' li_catr<-catR::Ii(th=0,bank) # this will work with catR package installed
+#' li<-Ii(theta=0,bank)
+#' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
+#' data.frame(catr=li_catr[[2]],li=li[[2]],equal=li_catr[[2]]==li[[2]])
+#' data.frame(catr=li_catr[[3]],li=li[[3]],equal=li_catr[[3]]==li[[3]])
+compute_ii_dichotomous<-function(theta,bank,D=1) {
   bank<-rbind(bank)
-  prob<-Pi(theta,bank,D=D)
+  prob<-compute_pi_dichotomous(theta,bank,D=D)
   P<-prob$Pi
   Q<-1-P
   dP<-prob$dPi
@@ -139,8 +92,8 @@ Ii<-function(theta,bank,D=1) {
   Ii<-dP^2/(P*Q)
   dIi<-dP*(2*P*Q*d2P-dP^2*(Q-P))/(P^2*Q^2)
   d2Ii<-(2*P*Q*(d2P^2+dP*d3P)-2*dP^2*d2P*(Q-P))/(P^2*Q^2)-
-        (3*P^2*Q*dP^2*d2P-P*dP^4*(2*Q-P))/(P^4*Q^2)+
-        (3*P*Q^2*dP^2*d2P-Q*dP^4*(Q-2*P))/(P^2*Q^4)
+    (3*P^2*Q*dP^2*d2P-P*dP^4*(2*Q-P))/(P^4*Q^2)+
+    (3*P*Q^2*dP^2*d2P-Q*dP^4*(Q-2*P))/(P^2*Q^4)
   result<-list(Ii=Ii,dIi=dIi,d2Ii=d2Ii)
   return(result)
 }
@@ -177,27 +130,12 @@ Ii<-function(theta,bank,D=1) {
 #'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' catR::nextItem(bank,theta=0,criterion="MFI") # with catR installed
-#' next_item(theta=0,bank)
-#' next_item(theta=0,bank,out=c(3))
-#' catR::nextItem(bank,theta=3,criterion="MFI") # with catR installed
-#' next_item(theta=3,bank)
-#' # a short adaptive test driven by the functions in this file
-#' responses<-c()
-#' administered<-c()
-#' theta<-0
-#' for (step in 1:4) {
-#'   item<-next_item(theta,bank,out=administered)$item
-#'   administered<-c(administered,item)
-#'   responses<-c(responses,1) # replace by the real response scored 0 or 1
-#'   theta<-eap_est(bank[administered,,drop=FALSE],responses)
-#'   cat("step",step,"item",item,"theta",round(theta,4),
-#'       "se",round(eap_se(theta,bank[administered,,drop=FALSE],responses),4),"\n")
-#' }
-next_item<-function(theta,bank,out=NULL,D=1,randomesque=1) {
+#' next_item_dichotomous(theta=0,bank)
+next_item_dichotomous<-function(theta,bank,out=NULL,D=1,randomesque=1) {
   bank<-rbind(bank)
   available<-setdiff(1:nrow(bank),out)
   if (length(available)==0) stop("no item left in the bank",call.=FALSE)
-  info<-Ii(theta,bank[available,,drop=FALSE],D=D)$Ii
+  info<-compute_ii_dichotomous(theta,bank[available,,drop=FALSE],D=D)$Ii
   k<-max(1,min(floor(randomesque),length(available)))
   top<-order(info,decreasing=TRUE)[1:k]
   pick<-if (k==1) top else top[sample.int(k,1)]
