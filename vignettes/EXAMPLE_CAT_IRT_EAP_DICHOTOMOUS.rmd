@@ -31,7 +31,7 @@ The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/
 
 Adaptive testing packages like `catR` score examinees using **EAP (Expected A Posteriori)** ability estimation — a Bayesian method that is more numerically stable than Maximum Likelihood when a response pattern is all-correct, all-incorrect, or otherwise perfectly separates the item bank (situations where a raw likelihood has no finite maximum).
 
-[`working_examples/cat_eap.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap.R) reimplements the whole EAP pipeline **from scratch**, in five small functions, with no dependency on `catR` at all:
+[`working_examples/cat_eap_dichotomous.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_dichotomous.R) reimplements the whole EAP pipeline **from scratch**, in five small functions, with no dependency on `catR` at all:
 
 | Function | Purpose | `catR` equivalent it mirrors |
 |---|---|---|
@@ -68,7 +68,7 @@ $$P_i(\theta) = c_i + (d_i-c_i)\,\frac{e^{Da_i(\theta-b_i)}}{1+e^{Da_i(\theta-b_
 - $d_i$ — **inattention (upper asymptote)**: maximum success probability for very high ability
 - $D$ — a scaling constant (1, or 1.702 to make the logistic curve closely approximate the normal ogive)
 
-Setting $c_i=0,\,d_i=1$ collapses this to the familiar **2PL** model; additionally fixing $a_i$ to a common value across items gives the **1PL/Rasch** model. `cat_eap.R`'s `Pi()` function implements the full 4PL and its first derivative $P_i'(\theta)$ (needed for information-based item selection, though not used further in this vignette).
+Setting $c_i=0,\,d_i=1$ collapses this to a **2PL** model; additionally fixing $a_i$ to a common value across items gives the **1PL/Rasch** model. `cat_eap.R`'s `Pi()` function implements the full 4PL and its first derivative second and third derivative $P_i'(\theta)$ (needed for item selection, though not used further in this vignette).
 
 ### Likelihood of a response pattern
 
