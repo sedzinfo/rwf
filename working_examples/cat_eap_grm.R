@@ -59,7 +59,7 @@
 #'              nrow=5,
 #'              dimnames=list(c(1,2,3,4,5),
 #'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
-#' pi_cat<-catR::Pi(th=0,bank,model="GRM") # this will work with catR package installed
+#' pi_cat<-catR::Pi(th=0,bank,model="GRM")
 #' pi<-compute_pi_grm(theta=0,bank)
 #' pi_cat
 #' pi
@@ -130,7 +130,7 @@ compute_pi_grm<-function(theta,bank,D=1) {
 #'              nrow=5,
 #'              dimnames=list(c(1,2,3,4,5),
 #'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
-#' li_catr<-catR::Ii(th=0,bank,model="GRM") # this will work with catR package installed
+#' li_catr<-catR::Ii(th=0,bank,model="GRM")
 #' li<-compute_ii_grm(theta=0,bank)
 #' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
 #' data.frame(catr=li_catr[[2]],li=li[[2]],equal=li_catr[[2]]==li[[2]])
@@ -253,7 +253,7 @@ compute_likelihood_grm<-function(theta,bank,x,D=1) {
 #'              dimnames=list(c(1,2,3,4,5),
 #'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
 #' response<-c(4,3,2,1,0)
-#' catR::eapEst(bank,response,model="GRM") # this will work with catR package installed
+#' catR::eapEst(bank,response,model="GRM")
 #' compute_eap_grm(bank,response)
 compute_eap_grm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(s) {
@@ -301,7 +301,7 @@ compute_eap_grm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #'              dimnames=list(c(1,2,3,4,5),
 #'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
 #' response<-c(4,3,2,1,0)
-#' catR::eapSem(0,bank,response,model="GRM") # this will work with catR package installed
+#' catR::eapSem(0,bank,response,model="GRM")
 #' compute_eap_se_grm(theta=0,bank=bank,x=response)
 compute_eap_se_grm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   g<-function(X) {
