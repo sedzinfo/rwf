@@ -21,7 +21,7 @@
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
-#' pi_cat<-catR::Pi(th=0,bank) # this will work with catR package installed
+#' pi_cat<-catR::Pi(th=0,bank)
 #' pi<-compute_pi_dichotomous(theta=0,bank)
 #' data.frame(catr=pi_cat[[1]],pi=pi[[1]],equal=pi_cat[[1]]==pi[[1]])
 #' data.frame(catr=pi_cat[[2]],pi=pi[[2]],equal=pi_cat[[2]]==pi[[2]])
@@ -76,7 +76,7 @@ compute_pi_dichotomous<-function(theta,bank,D=1) {
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
-#' li_catr<-catR::Ii(th=0,bank) # this will work with catR package installed
+#' li_catr<-catR::Ii(th=0,bank)
 #' li<-Ii(theta=0,bank)
 #' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
 #' data.frame(catr=li_catr[[2]],li=li[[2]],equal=li_catr[[2]]==li[[2]])
@@ -129,7 +129,7 @@ compute_ii_dichotomous<-function(theta,bank,D=1) {
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
-#' catR::nextItem(bank,theta=0,criterion="MFI") # with catR installed
+#' catR::nextItem(bank,theta=0,criterion="MFI")
 #' compute_next_item_dichotomous(theta=0,bank)
 compute_next_item_dichotomous<-function(theta,bank,out=NULL,D=1,randomesque=1) {
   bank<-rbind(bank)
@@ -193,7 +193,7 @@ likelihood<-function(theta,bank,x,D=1) {
 #'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' response<-c(1,0,0,0,0)
-#' catR::eapEst(bank,response) # this will work with catR package installed
+#' catR::eapEst(bank,response)
 #' compute_eap_dichotomous(bank,response)
 compute_eap_dichotomous<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   L<-function(th,bank,x)
@@ -237,7 +237,7 @@ compute_eap_dichotomous<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,n
 #'                0.9,0.9,0.9,0.9,0.9),
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' response<-c(0,0,0,0,0)
-#' catR::eapSem(0,bank,response) # this will work with catR package installed
+#' catR::eapSem(0,bank,response)
 #' compute_eap_se_dichotomous(theta=0,bank=bank,x=response)
 compute_eap_se_dichotomous<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   L<-function(theta,bank,x) {
