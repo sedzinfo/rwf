@@ -349,38 +349,38 @@ compute_eap_se_pcm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,n
 ##########################################################################################
 # EXAMPLE 1
 ##########################################################################################
-# 5 point Likert scale scored 0 1 2 3 4
-# deltaj1 to deltaj4 are all item specific
-deltaj1<-c(-1.853,-2.214,-0.936,-1.508,-0.412)
-deltaj2<-c(-0.627,-0.504,-1.215,-0.183,0.338)
-deltaj3<-c(0.418,0.692,0.284,0.735,1.102)
-deltaj4<-c(1.636,1.927,1.405,2.118,2.285)
-bank<-matrix(c(deltaj1,deltaj2,deltaj3,deltaj4),nrow=5,
-             dimnames=list(c(1,2,3,4,5),c("deltaj1","deltaj2","deltaj3","deltaj4")))
-response_1<-c(0,0,0,0,0)
-response_2<-c(1,1,1,1,1)
-response_3<-c(2,2,2,2,2)
-response_4<-c(3,3,3,3,3)
-response_5<-c(4,4,4,4,4)
-# ABILITY ESTIMATION
-compute_eap_pcm(bank,response_1)
-catR::eapEst(bank,response_1,model="PCM")
-compute_eap_pcm(bank,response_2)
-catR::eapEst(bank,response_2,model="PCM")
-compute_eap_pcm(bank,response_3)
-catR::eapEst(bank,response_3,model="PCM")
-compute_eap_pcm(bank,response_4)
-catR::eapEst(bank,response_4,model="PCM")
-compute_eap_pcm(bank,response_5)
-catR::eapEst(bank,response_5,model="PCM")
-# STANDARD ERROR ESTIMATION
-compute_eap_se_pcm(compute_eap_pcm(bank,response_1),bank,response_1)
-catR::eapSem(compute_eap_pcm(bank,response_1),bank,response_1,model="PCM")
-compute_eap_se_pcm(compute_eap_pcm(bank,response_2),bank,response_2)
-catR::eapSem(compute_eap_pcm(bank,response_2),bank,response_2,model="PCM")
-compute_eap_se_pcm(compute_eap_pcm(bank,response_3),bank,response_3)
-catR::eapSem(compute_eap_pcm(bank,response_3),bank,response_3,model="PCM")
-compute_eap_se_pcm(compute_eap_pcm(bank,response_4),bank,response_4)
-catR::eapSem(compute_eap_pcm(bank,response_4),bank,response_4,model="PCM")
-compute_eap_se_pcm(compute_eap_pcm(bank,response_5),bank,response_5)
-catR::eapSem(compute_eap_pcm(bank,response_5),bank,response_5,model="PCM")
+# # 5 point Likert scale scored 0 1 2 3 4
+# # deltaj1 to deltaj4 are all item specific
+# deltaj1<-c(-1.853,-2.214,-0.936,-1.508,-0.412)
+# deltaj2<-c(-0.627,-0.504,-1.215,-0.183,0.338)
+# deltaj3<-c(0.418,0.692,0.284,0.735,1.102)
+# deltaj4<-c(1.636,1.927,1.405,2.118,2.285)
+# bank<-matrix(c(deltaj1,deltaj2,deltaj3,deltaj4),nrow=5,
+#              dimnames=list(c(1,2,3,4,5),c("deltaj1","deltaj2","deltaj3","deltaj4")))
+# response_1<-c(0,0,0,0,0)
+# response_2<-c(1,1,1,1,1)
+# response_3<-c(2,2,2,2,2)
+# response_4<-c(3,3,3,3,3)
+# response_5<-c(4,4,4,4,4)
+# # ABILITY ESTIMATION
+# compute_eap_pcm(bank,response_1)
+# catR::eapEst(bank,response_1,model="PCM")
+# compute_eap_pcm(bank,response_2)
+# catR::eapEst(bank,response_2,model="PCM")
+# compute_eap_pcm(bank,response_3)
+# catR::eapEst(bank,response_3,model="PCM")
+# compute_eap_pcm(bank,response_4)
+# catR::eapEst(bank,response_4,model="PCM")
+# compute_eap_pcm(bank,response_5)
+# catR::eapEst(bank,response_5,model="PCM")
+# # STANDARD ERROR ESTIMATION
+# compute_eap_se_pcm(compute_eap_pcm(bank,response_1),bank,response_1)
+# catR::eapSem(compute_eap_pcm(bank,response_1),bank,response_1,model="PCM")
+# compute_eap_se_pcm(compute_eap_pcm(bank,response_2),bank,response_2)
+# catR::eapSem(compute_eap_pcm(bank,response_2),bank,response_2,model="PCM")
+# compute_eap_se_pcm(compute_eap_pcm(bank,response_3),bank,response_3)
+# catR::eapSem(compute_eap_pcm(bank,response_3),bank,response_3,model="PCM")
+# compute_eap_se_pcm(compute_eap_pcm(bank,response_4),bank,response_4)
+# catR::eapSem(compute_eap_pcm(bank,response_4),bank,response_4,model="PCM")
+# compute_eap_se_pcm(compute_eap_pcm(bank,response_5),bank,response_5)
+# catR::eapSem(compute_eap_pcm(bank,response_5),bank,response_5,model="PCM")

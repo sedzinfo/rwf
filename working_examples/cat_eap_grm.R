@@ -347,41 +347,41 @@ compute_eap_se_grm<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,n
 ##########################################################################################
 # EXAMPLE 1
 ##########################################################################################
-# 5 point Likert scale scored 0 1 2 3 4
-# alphaj and betaj1 to betaj4 are all item specific
-alphaj<-c(1.227,0.845,1.694,1.012,2.103)
-betaj1<-c(-2.183,-1.542,-1.021,-2.460,-0.812)
-betaj2<-c(-0.874,-0.415,-0.231,-1.105,0.094)
-betaj3<-c(0.316,0.783,0.652,0.047,0.881)
-betaj4<-c(1.592,2.064,1.438,1.271,1.736)
-bank<-matrix(c(alphaj,betaj1,betaj2,betaj3,betaj4),
-             nrow=5,
-             dimnames=list(c(1,2,3,4,5),c("alphaj","betaj1","betaj2","betaj3","betaj4")))
-response_1<-c(0,0,0,0,0)
-response_2<-c(1,1,1,1,1)
-response_3<-c(2,2,2,2,2)
-response_4<-c(3,3,3,3,3)
-response_5<-c(4,4,4,4,4)
-# ABILITY ESTIMATION
-compute_eap_grm(bank,response_1)
-catR::eapEst(bank,response_1,model="GRM")
-compute_eap_grm(bank,response_2)
-catR::eapEst(bank,response_2,model="GRM")
-compute_eap_grm(bank,response_3)
-catR::eapEst(bank,response_3,model="GRM")
-compute_eap_grm(bank,response_4)
-catR::eapEst(bank,response_4,model="GRM")
-compute_eap_grm(bank,response_5)
-catR::eapEst(bank,response_5,model="GRM")
-# STANDARD ERROR ESTIMATION
-compute_eap_se_grm(compute_eap_grm(bank,response_1),bank,response_1)
-catR::eapSem(compute_eap_grm(bank,response_1),bank,response_1,model="GRM")
-compute_eap_se_grm(compute_eap_grm(bank,response_2),bank,response_2)
-catR::eapSem(compute_eap_grm(bank,response_2),bank,response_2,model="GRM")
-compute_eap_se_grm(compute_eap_grm(bank,response_3),bank,response_3)
-catR::eapSem(compute_eap_grm(bank,response_3),bank,response_3,model="GRM")
-compute_eap_se_grm(compute_eap_grm(bank,response_4),bank,response_4)
-catR::eapSem(compute_eap_grm(bank,response_4),bank,response_4,model="GRM")
-compute_eap_se_grm(compute_eap_grm(bank,response_5),bank,response_5)
-catR::eapSem(compute_eap_grm(bank,response_5),bank,response_5,model="GRM")
+# # 5 point Likert scale scored 0 1 2 3 4
+# # alphaj and betaj1 to betaj4 are all item specific
+# alphaj<-c(1.227,0.845,1.694,1.012,2.103)
+# betaj1<-c(-2.183,-1.542,-1.021,-2.460,-0.812)
+# betaj2<-c(-0.874,-0.415,-0.231,-1.105,0.094)
+# betaj3<-c(0.316,0.783,0.652,0.047,0.881)
+# betaj4<-c(1.592,2.064,1.438,1.271,1.736)
+# bank<-matrix(c(alphaj,betaj1,betaj2,betaj3,betaj4),
+#              nrow=5,
+#              dimnames=list(c(1,2,3,4,5),c("alphaj","betaj1","betaj2","betaj3","betaj4")))
+# response_1<-c(0,0,0,0,0)
+# response_2<-c(1,1,1,1,1)
+# response_3<-c(2,2,2,2,2)
+# response_4<-c(3,3,3,3,3)
+# response_5<-c(4,4,4,4,4)
+# # ABILITY ESTIMATION
+# compute_eap_grm(bank,response_1)
+# catR::eapEst(bank,response_1,model="GRM")
+# compute_eap_grm(bank,response_2)
+# catR::eapEst(bank,response_2,model="GRM")
+# compute_eap_grm(bank,response_3)
+# catR::eapEst(bank,response_3,model="GRM")
+# compute_eap_grm(bank,response_4)
+# catR::eapEst(bank,response_4,model="GRM")
+# compute_eap_grm(bank,response_5)
+# catR::eapEst(bank,response_5,model="GRM")
+# # STANDARD ERROR ESTIMATION
+# compute_eap_se_grm(compute_eap_grm(bank,response_1),bank,response_1)
+# catR::eapSem(compute_eap_grm(bank,response_1),bank,response_1,model="GRM")
+# compute_eap_se_grm(compute_eap_grm(bank,response_2),bank,response_2)
+# catR::eapSem(compute_eap_grm(bank,response_2),bank,response_2,model="GRM")
+# compute_eap_se_grm(compute_eap_grm(bank,response_3),bank,response_3)
+# catR::eapSem(compute_eap_grm(bank,response_3),bank,response_3,model="GRM")
+# compute_eap_se_grm(compute_eap_grm(bank,response_4),bank,response_4)
+# catR::eapSem(compute_eap_grm(bank,response_4),bank,response_4,model="GRM")
+# compute_eap_se_grm(compute_eap_grm(bank,response_5),bank,response_5)
+# catR::eapSem(compute_eap_grm(bank,response_5),bank,response_5,model="GRM")
 
