@@ -44,7 +44,8 @@ library(catR)
 ```
 
 ```{r source_functions}
-source(paste0(directory, "../working_examples/cat_eap.R"), local = knitr::knit_global())
+source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
+source(paste0(directory, "../working_examples/cat_eap_dichotomous.R"), local = knitr::knit_global())
 ```
 
 ---
@@ -129,12 +130,12 @@ bank <- matrix(c(0.7521, 0.8083, 1.1857, 0.5481, 0.5695,
                  1, 1, 1, 1, 1),
                nrow = 5, dimnames = list(1:5, c("a", "b", "c", "d")))
 
-data.frame(mine = Pi(theta = 0, bank)$Pi, catR = catR::Pi(th = 0, bank)$Pi)
+data.frame(mine = compute_pi_dichotomous(theta = 0, bank)$Pi, catR = catR::Pi(th = 0, bank)$Pi)
 ```
 
 ```{r pi_plot,dev='png'}
 theta_grid <- seq(-6, 6, by = 0.1)
-prob_curves <- sapply(theta_grid, function(th) Pi(theta = th, bank)$Pi)
+prob_curves <- sapply(theta_grid, function(th) compute_pi_dichotomous(theta = th, bank)$Pi)
 df_curves <- data.frame(theta = theta_grid, t(prob_curves))
 names(df_curves)[-1] <- paste0("item_", 1:5)
 df_curves_long <- reshape2::melt(df_curves, id.vars = "theta", variable.name = "item", value.name = "P")
@@ -151,13 +152,13 @@ Each curve is one item's probability of a correct response as a function of abil
 
 ```{r eap_est_check}
 response_1 <- c(1, 0, 0, 0, 0)
-c(mine = eap_est(bank, response_1), catR = catR::eapEst(bank, response_1))
+c(mine = compute_eap_dichotomous(bank, response_1), catR = catR::eapEst(bank, response_1))
 ```
 
 ### EAP standard error
 
 ```{r eap_se_check}
-c(mine = eap_se(0, bank, response_1), catR = catR::eapSem(0, bank, response_1))
+c(mine = compute_eap_se_dichotomous(0, bank, response_1), catR = catR::eapSem(0, bank, response_1))
 ```
 
 Both the ability estimate and its standard error match `catR` exactly across the quadrature grid.
@@ -185,10 +186,10 @@ responses <- list(
 
 results <- data.frame(
   n_correct = sapply(responses, sum),
-  theta_EAP = sapply(responses, function(x) eap_est(bank, x)),
+  theta_EAP = sapply(responses, function(x) compute_eap_dichotomous(bank, x)),
   SE        = NA
 )
-results$SE <- mapply(function(x, th) eap_se(th, bank, x), responses, results$theta_EAP)
+results$SE <- mapply(function(x, th) compute_eap_dichotomous(th, bank, x), responses, results$theta_EAP)
 results
 ```
 
@@ -224,7 +225,7 @@ patterns <- list(
 
 se_df <- do.call(rbind, lapply(names(patterns), function(nm) {
   data.frame(theta = theta_grid,
-             SE = sapply(theta_grid, function(th) eap_se(theta = th, bank = bank_se, x = patterns[[nm]])),
+             SE = sapply(theta_grid, function(th) compute_eap_se_dichotomous(theta = th, bank = bank_se, x = patterns[[nm]])),
              pattern = nm)
 }))
 ```
