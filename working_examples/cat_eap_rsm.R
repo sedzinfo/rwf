@@ -149,8 +149,9 @@ compute_ii_rsm<-function(theta,bank,D=1) {
 #' @examples
 #' bank<-matrix(c(-0.560,-0.230,1.559,0.071,0.129,
 #'                rep(1.715,5),rep(0.461,5),rep(-1.265,5),rep(-0.687,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("lambdaj","delta1","delta2","delta3","delta4")))
 #' catR::nextItem(bank,model="RSM",theta=0,criterion="MFI") # with catR installed
 #' compute_next_item_rsm(theta=0,bank)
 compute_next_item_rsm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
@@ -182,8 +183,9 @@ compute_next_item_rsm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' @examples
 #' bank<-matrix(c(-0.560,-0.230,1.559,0.071,0.129,
 #'                rep(1.715,5),rep(0.461,5),rep(-1.265,5),rep(-0.687,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("lambdaj","delta1","delta2","delta3","delta4")))
 #' response<-c(4,3,2,1,0)
 #' compute_likelihood_rsm(theta=0,bank=bank,x=response)
 compute_likelihood_rsm<-function(theta,bank,x,D=1) {
@@ -208,8 +210,9 @@ compute_likelihood_rsm<-function(theta,bank,x,D=1) {
 #' @examples
 #' bank<-matrix(c(-0.560,-0.230,1.559,0.071,0.129,
 #'                rep(1.715,5),rep(0.461,5),rep(-1.265,5),rep(-0.687,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("lambdaj","delta1","delta2","delta3","delta4")))
 #' response<-c(4,3,2,1,0)
 #' catR::eapEst(bank,response,model="RSM")
 #' compute_eap_rsm(bank=bank,x=response)
@@ -252,8 +255,9 @@ compute_eap_rsm<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #' @examples
 #' bank<-matrix(c(-0.560,-0.230,1.559,0.071,0.129,
 #'                rep(1.715,5),rep(0.461,5),rep(-1.265,5),rep(-0.687,5)),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("lambdaj","delta1","delta2","delta3","delta4")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("lambdaj","delta1","delta2","delta3","delta4")))
 #' response<-c(4,3,2,1,0)
 #' catR::eapSem(0,bank,response,model="RSM")
 #' compute_eap_se_rsm(theta=0,bank=bank,x=response)

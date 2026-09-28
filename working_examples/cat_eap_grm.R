@@ -4,7 +4,8 @@
 #' @title compute category response probabilities and derivatives under the graded response model
 #' @description returns the category response probabilities for a given ability value and a \cr
 #'              given matrix of item parameters under Samejima graded response model (GRM) \cr
-#'              returns the first derivatives of the category response probabilities
+#'              returns the first second and third derivatives of the category response \cr
+#'              probabilities
 #' @param theta ability
 #' @param bank item parameters one row per item \cr
 #'             column 1 holds the item discrimination alpha_j \cr
@@ -34,6 +35,10 @@
 #'       compare adjacent categories and divide by a total \cr
 #'       the derivative of a 2PL curve is D*alpha_j*Pstar_jk*(1-Pstar_jk) so the \cr
 #'       derivative of a category is the same difference of two adjacent derivatives \cr
+#'       differentiating again gives D*alpha_j*dPstar_jk*(1-2*Pstar_jk) for the second \cr
+#'       derivative and D*alpha_j*(d2Pstar_jk-2*dPstar_jk^2-2*Pstar_jk*d2Pstar_jk) for \cr
+#'       the third and the boundary curves Pstar_j0=1 and Pstar_j(m+1)=0 have zero \cr
+#'       derivatives of every order \cr
 #'       when theta is far above the thresholds both cumulative curves are close to 1 \cr
 #'       and their difference loses precision so probabilities below about 1e-11 are \cr
 #'       inaccurate and below about 1e-16 they are rounding noise that is 0 or a \cr
@@ -41,7 +46,9 @@
 #'       catR computes them the same way and only response patterns that contradict \cr
 #'       theta strongly on very discriminating items are affected
 #' @return Pi   category response probabilities one row per item one column per category \cr
-#'         dPi  first derivatives of the category response probabilities
+#'         dPi  first derivatives of the category response probabilities \cr
+#'         d2Pi second derivatives of the category response probabilities \cr
+#'         d3Pi third derivatives of the category response probabilities
 #' @export
 #' @examples
 #' bank<-matrix(c(1.227,0.845,1.694,1.012,2.103,
@@ -49,32 +56,21 @@
 #'                -0.874,-0.415,-0.231,-1.105,0.094,
 #'                0.316,0.783,0.652,0.047,0.881,
 #'                1.592,2.064,1.438,1.271,1.736),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),
-#'                                   c("alphaj","betaj1","betaj2","betaj3","betaj4")))
-#' catR::Pi(th=0,bank,model="GRM") # this will work with catR package installed
-#' Pi_grm(theta=0,bank)
-#' v<-seq(-6,6,by=.1)
-#' y_axis_response_probability<-list()
-#' for(i in v) y_axis_response_probability[[toString(i)]]<-Pi_grm(theta=i,bank)$Pi[1,]
-#' df_rp<-data.frame(x=v,
-#'                   matrix(unlist(y_axis_response_probability),
-#'                          nrow=length(y_axis_response_probability),byrow=TRUE))
-#' plot(x=df_rp$x,y=df_rp$X1,xlab=expression(theta),ylab=expression(P(theta)),
-#'      main="category response probabilities item 1",type="l",col="red",ylim=c(0,1))
-#' lines(y=df_rp$X2,x=v,col="green")
-#' lines(y=df_rp$X3,x=v,col="blue")
-#' lines(y=df_rp$X4,x=v,col="yellow")
-#' lines(y=df_rp$X5,x=v,col="orange")
-#' # the cumulative curves Pstar_jk=P(X>=k) are the sums of the category probabilities from k up
-#' plot(x=v,y=rowSums(df_rp[,3:6]),xlab=expression(theta),ylab=expression(P^"*"*(theta)),
-#'      main="cumulative response probabilities item 1",type="l",col="green",ylim=c(0,1))
-#' lines(y=rowSums(df_rp[,4:6]),x=v,col="blue")
-#' lines(y=rowSums(df_rp[,5:6]),x=v,col="yellow")
-#' lines(y=df_rp$X5,x=v,col="orange")
-Pi_grm<-function(theta,bank,D=1) {
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("alphaj","betaj1","betaj2","betaj3","betaj4")))
+#' pi_cat<-catR::Pi(th=0,bank,model="GRM") # this will work with catR package installed
+#' pi<-compute_pi_grm(theta=0,bank)
+#' pi_cat
+#' pi
+#' isTRUE(all.equal(pi_cat[[1]], pi[[1]]))
+#' isTRUE(all.equal(pi_cat[[2]], pi[[2]]))
+#' isTRUE(all.equal(pi_cat[[3]], pi[[3]]))
+#' isTRUE(all.equal(pi_cat[[4]], pi[[4]]))
+compute_pi_grm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
   ncat<-ncol(bank)
-  Pi<-dPi<-matrix(NA,nrow(bank),ncat)
+  Pi<-dPi<-d2Pi<-d3Pi<-matrix(NA,nrow(bank),ncat)
   for (i in 1:nrow(bank)) {
     aj<-bank[i,1]
     bj<-bank[i,2:ncat]
@@ -82,13 +78,17 @@ Pi_grm<-function(theta,bank,D=1) {
     ej<-exp(D*aj*(theta-bj))
     Pjs<-c(1,ej/(1+ej),0)
     dPjs<-D*aj*Pjs*(1-Pjs)
+    d2Pjs<-D*aj*(dPjs-2*Pjs*dPjs)
+    d3Pjs<-D*aj*(d2Pjs-2*dPjs^2-2*Pjs*d2Pjs)
     n<-length(Pjs)
     Pi[i,1:(n-1)]<-Pjs[1:(n-1)]-Pjs[2:n]
     dPi[i,1:(n-1)]<-dPjs[1:(n-1)]-dPjs[2:n]
+    d2Pi[i,1:(n-1)]<-d2Pjs[1:(n-1)]-d2Pjs[2:n]
+    d3Pi[i,1:(n-1)]<-d3Pjs[1:(n-1)]-d3Pjs[2:n]
   }
-  colnames(Pi)<-colnames(dPi)<-paste("cat",0:(ncat-1),sep="")
-  rownames(Pi)<-rownames(dPi)<-paste("Item",1:nrow(bank),sep="")
-  result<-list(Pi=Pi,dPi=dPi)
+  colnames(Pi)<-colnames(dPi)<-colnames(d2Pi)<-colnames(d3Pi)<-paste("cat",0:(ncat-1),sep="")
+  rownames(Pi)<-rownames(dPi)<-rownames(d2Pi)<-rownames(d3Pi)<-paste("Item",1:nrow(bank),sep="")
+  result<-list(Pi=Pi,dPi=dPi,d2Pi=d2Pi,d3Pi=d3Pi)
   return(result)
 }
 ##########################################################################################
@@ -138,7 +138,7 @@ Pi_grm<-function(theta,bank,D=1) {
 #'      main="test information",type="l")
 Ii_grm<-function(theta,bank,D=1) {
   bank<-rbind(bank)
-  prob<-Pi_grm(theta,bank,D=D)
+  prob<-compute_pi_grm(theta,bank,D=D)
   P<-prob$Pi
   dP<-prob$dPi
   Ii<-as.numeric(rowSums(dP^2/P,na.rm=TRUE))
@@ -218,7 +218,7 @@ next_item_grm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' @param D metric constant can be 1 or 1.702
 #' @note this is the polytomous counterpart of prod(Pi^x*(1-Pi)^(1-x)) used for the 4PL \cr
 #'       model \cr
-#'       Pi_grm returns a matrix so the response of item i selects the column x[i]+1 \cr
+#'       compute_pi_grm returns a matrix so the response of item i selects the column x[i]+1 \cr
 #'       the +1 is index bookkeeping because categories start at 0 and R columns start \cr
 #'       at 1 \cr
 #'       the probabilities of the observed responses are multiplied across items under \cr
@@ -240,7 +240,7 @@ next_item_grm<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #' plot(x=v,y=lik,xlab=expression(theta),ylab="likelihood",
 #'      main="likelihood of the response pattern",type="l")
 likelihood_grm<-function(theta,bank,x,D=1) {
-  prob<-Pi_grm(theta,bank,D=D)$Pi
+  prob<-compute_pi_grm(theta,bank,D=D)$Pi
   result<-1
   for (i in 1:length(x)) result<-result*prob[i,x[i]+1]
   return(result)
@@ -392,43 +392,4 @@ eap_se_grm(eap_est_grm(bank,response_4),bank,response_4)
 catR::eapSem(eap_est_grm(bank,response_4),bank,response_4,model="GRM")
 eap_se_grm(eap_est_grm(bank,response_5),bank,response_5)
 catR::eapSem(eap_est_grm(bank,response_5),bank,response_5,model="GRM")
-##########################################################################################
-# EXAMPLE 2
-##########################################################################################
-# effect of the integration bounds and of the number of quadrature points
-response_1<-c(4,4,4,4,4)
-eap_est_grm(bank,response_1,lower=-4,upper=4)
-eap_est_grm(bank,response_1,lower=-3,upper=3)
-eap_est_grm(bank,response_1,nqp=33)
-eap_est_grm(bank,response_1,nqp=101)
-# effect of the prior
-eap_est_grm(bank,response_1,priorPar=c(0,1))
-eap_est_grm(bank,response_1,priorPar=c(0,2))
-# effect of the metric constant
-eap_est_grm(bank,response_1,D=1)
-eap_est_grm(bank,response_1,D=1.702)
-# effect of the discrimination
-# the same thresholds with every alphaj doubled give a smaller standard error
-response_1<-c(3,2,3,2,3)
-bank_2<-bank
-bank_2[,1]<-2*bank[,1]
-eap_se_grm(eap_est_grm(bank,response_1),bank,response_1)
-eap_se_grm(eap_est_grm(bank_2,response_1),bank_2,response_1)
-##########################################################################################
-# EXAMPLE 3
-##########################################################################################
-# items do not all need the same number of categories
-# item 5 below is a 4 point item so its last threshold is padded with NA
-# its responses must then be scored 0 to 3
-bank<-matrix(c(alphaj,betaj1,betaj2,betaj3,c(betaj4[1:4],NA)),nrow=5,
-             dimnames=list(c(1,2,3,4,5),c("alphaj","betaj1","betaj2","betaj3","betaj4")))
-Pi_grm(theta=0,bank)$Pi
-response_1<-c(4,3,2,1,3)
-eap_est_grm(bank,response_1)
-eap_se_grm(eap_est_grm(bank,response_1),bank,response_1)
-# an item with a single threshold is a 2PL item
-# the probability of category 1 is the 2PL probability of a correct response
-bank<-matrix(c(alphaj,betaj1),nrow=5,dimnames=list(c(1,2,3,4,5),c("alphaj","betaj1")))
-Pi_grm(theta=0,bank)$Pi[,2]
-catR::Pi(th=0,cbind(alphaj,betaj1,0,1))$Pi
 
