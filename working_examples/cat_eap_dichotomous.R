@@ -194,10 +194,10 @@ likelihood<-function(theta,bank,x,D=1) {
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' response<-c(1,0,0,0,0)
 #' catR::eapEst(bank,response) # this will work with catR package installed
-#' eap_est(bank,response)
-eap_est<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' compute_eap_dichotomous(bank,response)
+compute_eap_dichotomous<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   L<-function(th,bank,x)
-    prod(Pi(th,bank,D=D)$Pi^x*(1-Pi(th,bank,D=D)$Pi)^(1-x))
+    prod(compute_pi_dichotomous(th,bank,D=D)$Pi^x*(1-compute_pi_dichotomous(th,bank,D=D)$Pi)^(1-x))
   g<-function(s) {
     res<-NULL
     for (i in 1:length(s))
@@ -238,27 +238,11 @@ eap_est<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
 #'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
 #' response<-c(0,0,0,0,0)
 #' catR::eapSem(0,bank,response) # this will work with catR package installed
-#' eap_se(theta=0,bank=bank,x=response)
-#' v<-seq(-3,3,by=.1)
-#' se<-c()
-#' for (i in 1:length(v))
-#'   se[i]<-eap_se(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are wrong")
-#' response<-c(1,1,1,1,1)
-#' for (i in 1:length(v))
-#'   se[i]<-eap_se(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error when all responses are correct")
-#' response<-c(1,0,1,0,0)
-#' for (i in 1:length(v))
-#'   se[i]<-eap_se(theta=v[i],bank=bank,x=response)
-#' plot(x=v,y=se,xlab=expression(theta),ylab="standard error",
-#'      main="standard error with 2 correct responses")
-eap_se<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
+#' compute_eap_se_dichotomous(theta=0,bank=bank,x=response)
+compute_eap_se_dichotomous<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33) {
   L<-function(theta,bank,x) {
     res<-NULL
-    res<-Pi(theta,bank,D=D)$Pi
+    res<-compute_pi_dichotomous(theta,bank,D=D)$Pi
     prod(res^x*(1-res)^(1-x))
   }
   g<-function(X) {
