@@ -1,0 +1,968 @@
+---
+title: "EAP Ability Estimation From Scratch: The Nominal Response Model"
+author: ""
+output:
+  html_document:
+    css: styles.css
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+    code_folding: show
+    self_contained: true
+vignette: >
+  %\VignetteIndexEntry{EAP Ability Estimation From Scratch: The Nominal Response Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
+source(paste0(directory, "code_options.R"))
+
+library(ggplot2)
+```
+
+## Description
+
+Every other model in this series assumes that the response categories of an item are **ordered**: a higher code means more of the trait. Bock's **Nominal Response Model (NRM)** drops that assumption (Bock, 1972). Each category gets its own slope and its own intercept, and the data decide how the categories line up along the ability scale. This is the natural model for a multiple-choice item scored by *which* option was chosen, not only whether it was the key, because the distractors may carry information about ability. It is equally useful for a rating item whose category order you would rather check than impose. The ordered-category Rasch models come out as special cases, as one of the worked examples below shows.
+
+[`working_examples/cat_eap_nrm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_nrm.R), together with the two shared helpers in [`working_examples/cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R), implements the full pipeline in eight small functions. They are written in base R and have no runtime dependency on `catR`:
+
+| Function | Purpose | `catR` equivalent it mirrors |
+|---|---|---|
+| `density_function()` | Normal density | `stats::dnorm()` |
+| `integrate_cat()` | Numerical integration (trapezoidal rule) | `catR::integrate.catR()` |
+| `compute_pi_nrm()` | Category response probabilities + four derivatives | `catR::Pi(model="NRM")` |
+| `compute_ii_nrm()` | Item information + three derivatives | `catR::Ii(model="NRM")` |
+| `compute_next_item_nrm()` | Maximum Fisher information item selection | `catR::nextItem(criterion="MFI")` |
+| `compute_likelihood_nrm()` | Likelihood of a nominal response pattern | *(internal to `catR`)* |
+| `compute_eap_nrm()` | EAP ability estimate | `catR::eapEst(model="NRM")` |
+| `compute_eap_se_nrm()` | EAP standard error | `catR::eapSem(model="NRM")` |
+
+Two of the outputs go beyond `catR`. `compute_pi_nrm()` also returns the **fourth** derivative of the category probabilities (`d4Pi`), and `compute_ii_nrm()` returns the **third** derivative of the item information (`d3Ii`). `catR` stops one order earlier in both cases, so these two are checked with finite differences and with an exact identity instead of against the package.
+
+This vignette is one of six companions that build the same pipeline for different item response models: *EAP Ability Estimation From Scratch* (dichotomous items under the 4PL model), *EAP Ability Estimation From Scratch: The Rating Scale Model*, *EAP Ability Estimation From Scratch: The Partial Credit Model*, *EAP Ability Estimation From Scratch: The Graded Response Model*, *EAP Ability Estimation From Scratch: The Modified Graded Response Model*, and this one, *EAP Ability Estimation From Scratch: The Nominal Response Model*.
+
+## Acknowledgement
+
+The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_nrm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_nrm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
+
+```{r library,message=FALSE,warning=FALSE}
+library(catR)
+```
+
+```{r source_functions}
+source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
+source(paste0(directory, "../working_examples/cat_eap_nrm.R"), local = knitr::knit_global())
+source(paste0(directory, "../working_examples/cat_eap_pcm.R"), local = knitr::knit_global())
+```
+
+`cat_eap_pcm.R` is loaded only for the worked example that recovers the Partial Credit Model from the NRM. Both model files also run some loose example code when they are sourced, and that code leaves an object called `bank` behind. The bank used in this vignette is therefore defined explicitly below, after the files have been sourced.
+
+---
+
+## Theoretical Background
+
+### From ordered steps to unordered categories
+
+An item with categories $0,1,\ldots,m$ needs $m+1$ curves that sum to 1 at every ability level. The NRM builds them with a multinomial logit. Every category $k$ has its own linear predictor $\alpha_{jk}\theta + c_{jk}$:
+
+$$P(X_j = k \mid \theta) = \frac{\exp\left(\alpha_{jk}\,\theta + c_{jk}\right)}{\sum_{h=0}^{m}\exp\left(\alpha_{jh}\,\theta + c_{jh}\right)}, \qquad \alpha_{j0} = c_{j0} = 0 .$$
+
+- $\alpha_{jk}$, the **category slope**, is how fast the log-odds of category $k$ against category 0 grow with ability.
+- $c_{jk}$, the **category intercept**, is that log-odds at $\theta = 0$.
+- Category 0 is the **reference category**. Adding the same constant to every slope, or to every intercept, cancels between numerator and denominator, so one category has to be pinned at zero for the parameters to be identified.
+
+The key to reading the model is that the log-odds against the reference category form a straight line in $\theta$:
+
+$$\log\frac{P(X_j=k\mid\theta)}{P(X_j=0\mid\theta)} = \alpha_{jk}\,\theta + c_{jk}.$$
+
+The **most probable (modal) category** at any $\theta$ is the one whose line is highest. Far out to the right that is the line with the largest slope, and far out to the left the one with the smallest slope. In between, the categories take turns on top in the order of their **slopes**, not of their codes. A category whose line never reaches the upper envelope is never modal at all. The codes $0,\ldots,m$ are only labels, and that is what "nominal" means.
+
+### The bank layout
+
+`cat_eap_nrm.R` expects one row per item and the parameters in **pairs**, one pair for each non-reference category:
+
+| column | 1 | 2 | 3 | 4 | $\cdots$ | $2m-1$ | $2m$ |
+|---|---|---|---|---|---|---|---|
+| holds | $\alpha_{j1}$ | $c_{j1}$ | $\alpha_{j2}$ | $c_{j2}$ | $\cdots$ | $\alpha_{jm}$ | $c_{jm}$ |
+
+Category 0 has no columns because its slope and intercept are fixed at zero. A bank with $2m$ columns therefore describes items with $m+1$ categories, which the code computes as `ncol(bank)/2 + 1`. Five categories coded 0 to 4 need eight columns. An item with fewer categories than the widest item is padded with `NA` pairs **at the end of its row**. A worked check below shows what happens when the gap is left in the middle instead.
+
+### Response probabilities and their derivatives
+
+Write $\gamma_{jk} = \exp(\alpha_{jk}\theta + c_{jk})$ and $S_j = \sum_h \gamma_{jh}$, so that $P_{jk} = \gamma_{jk}/S_j$. Each derivative of $\gamma_{jk}$ just multiplies it by its slope again:
+
+$$\frac{d^n\gamma_{jk}}{d\theta^n} = \alpha_{jk}^{\,n}\,\gamma_{jk}.$$
+
+In the code `gamma`, `dgamma`, `d2gamma`, `d3gamma` and `d4gamma` hold $\gamma\alpha^0,\ldots,\gamma\alpha^4$. The derivatives of $P_{jk}$ then follow from the quotient rule applied to $\gamma_{jk}/S_j$. The first one has a particularly clean form:
+
+$$\frac{dP_{jk}}{d\theta} = P_{jk}\,\big(\alpha_{jk} - \bar\alpha_j(\theta)\big), \qquad \bar\alpha_j(\theta) = \sum_h P_{jh}\,\alpha_{jh}.$$
+
+A category's probability rises with $\theta$ exactly when its slope is above the current average slope. `compute_pi_nrm()` returns `Pi`, `dPi`, `d2Pi`, `d3Pi` and `d4Pi`, each with one row per item and one column per category. The first four match `catR::Pi()`. `d4Pi` has no `catR` counterpart; this file needs it for the third derivative of the information.
+
+**The metric constant.** The NRM has no $D$. A constant multiplying the exponent would just be absorbed into the slopes and intercepts. Every function in the file still accepts `D` so that it has the same interface as the other model files, but ignores it, as `catR` does. This is checked below.
+
+### Item information and its derivatives
+
+The polytomous Fisher information of an item is
+
+$$I_j(\theta) = \sum_{k=0}^{m} \frac{\big[dP_{jk}(\theta)/d\theta\big]^2}{P_{jk}(\theta)}.$$
+
+Substituting $dP_{jk}/d\theta = P_{jk}(\alpha_{jk}-\bar\alpha_j)$ gives
+
+$$I_j(\theta) = \sum_{k} P_{jk}\,\big(\alpha_{jk}-\bar\alpha_j\big)^2 = \operatorname{Var}_\theta\!\left(\alpha_{j,X_j}\right).$$
+
+The **information is the variance of the slope of the category the examinee chooses**. It is large where categories with very different slopes are both probable, and it depends on the spread of the slopes, not on the category codes. Because a variance of a quantity confined to an interval of length $r$ can never exceed $r^2/4$, an item's information can never exceed $(\max_k\alpha_{jk}-\min_k\alpha_{jk})^2/4$.
+
+The derivatives follow from the same idea. Moving from $\theta$ to $\theta + t$ reweights every category by $e^{t\alpha_{jk}}$. So the cumulant generating function of the chosen slope is $\log S_j(\theta+t) - \log S_j(\theta)$, and its cumulants are the $\theta$-derivatives of $\log S_j$:
+
+$$\kappa_n(\theta) = \frac{d^n}{d\theta^n}\log S_j(\theta), \qquad \frac{d\kappa_n}{d\theta} = \kappa_{n+1}.$$
+
+$\kappa_1 = \bar\alpha_j$ and $\kappa_2 = I_j$. So `Ii`, `dIi`, `d2Ii` and `d3Ii` are the **second to fifth cumulants** of the chosen slope. In terms of its central moments $\mu_r$:
+
+$$I_j = \kappa_2 = \mu_2,\quad I_j' = \kappa_3 = \mu_3,\quad I_j'' = \kappa_4 = \mu_4 - 3\mu_2^2,\quad I_j''' = \kappa_5 = \mu_5 - 10\,\mu_3\,\mu_2.$$
+
+`compute_ii_nrm()` does not use this identity. It differentiates each category term $P'^2/P$ directly, with the same formulas as `catR::Ii()` for the first three quantities and one more order for `d3Ii`. The identity is an independent way to check them.
+
+### Next-item selection
+
+An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate. This is the **Maximum Fisher Information (MFI)** criterion. Items already given are excluded through `out`. Each NRM item has its own slopes and intercepts, so the information curves differ in both height and shape, and the information of every available item has to be computed at $\theta$.
+
+`compute_next_item_nrm()` also has a `randomesque` argument. It draws at random from the $k$ most informative items instead of always taking the single best, which is standard exposure control. The file's documentation notes two deliberate differences from `catR::nextItem()` that only matter in edge cases. When several items tie exactly, `catR` draws one of them at random and this function takes the first. With `randomesque` above 1, `catR` also keeps every item tied with the last one kept.
+
+### Likelihood of a response pattern
+
+Under local independence the likelihood of a pattern $\mathbf{x} = (x_1,\ldots,x_n)$ is
+
+$$L(\theta) = \prod_{i=1}^{n} P_{i,x_i}(\theta).$$
+
+The response of item $i$ selects column `x[i]+1` of the probability matrix; the `+1` is there because categories start at 0 and R columns start at 1. Writing the product out shows what the response pattern actually contributes:
+
+$$L(\theta) = \frac{\exp\!\Big(\theta\sum_i \alpha_{i,x_i} + \sum_i c_{i,x_i}\Big)}{\prod_i S_i(\theta)}.$$
+
+The denominator depends on $\theta$ but not on the responses, and the intercept sum is a constant. The pattern reaches $\theta$ **only through the sum of the slopes of the chosen categories**, $\sum_i\alpha_{i,x_i}$. That sum is a sufficient statistic for $\theta$ (for known item parameters). The raw sum of the category codes is not, because the codes carry no order.
+
+The same formula shows where Maximum Likelihood breaks down. If every response falls in the category with the largest slope on its item, each factor $P_{i,x_i}$ keeps rising with $\theta$ and the likelihood has no finite maximum. The same holds at the other end for the smallest slopes.
+
+### EAP and its standard error
+
+As in the other models, a **prior** $\pi(\theta)$ on ability (standard normal by default) turns the likelihood into a posterior. EAP reports the posterior mean and standard deviation (Bock & Mislevy, 1982):
+
+$$\hat\theta_{EAP} = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}
+\qquad
+SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
+
+Both integrals are evaluated on `nqp` equally spaced quadrature points (default 33) from `lower` to `upper` (default $\pm 4$), with the trapezoidal rule. The prior keeps both integrals finite for the patterns where Maximum Likelihood has no answer. `compute_eap_se_nrm()` takes `theta` as a free argument. Passing the EAP estimate gives the posterior standard deviation; any other value gives the root mean squared deviation around that value.
+
+---
+
+## The item bank
+
+This is the five-item, five-category bank from the file's documentation. Categories are coded 0 to 4, so there are $4 \times 2 = 8$ columns.
+
+```{r bank}
+bank <- matrix(c(0.614,  0.782, 0.297,  1.036,  0.521,
+                 1.187,  0.906, 1.523,  0.418,  0.694,
+                 1.395,  1.487, 1.103,  0.688,  1.214,
+                 1.812,  1.093, 2.176,  1.407,  1.032,
+                 2.106,  2.391, 1.724,  2.012,  1.873,
+                 1.264,  0.517, 1.936,  0.793,  0.186,
+                 2.918,  3.087, 2.215,  2.604,  3.382,
+                 0.097, -0.814, 1.012, -0.296, -1.618),
+               nrow = 5,
+               dimnames = list(1:5, c("alpha1", "c1", "alpha2", "c2",
+                                      "alpha3", "c3", "alpha4", "c4")))
+bank
+c(columns = ncol(bank), categories = ncol(bank) / 2 + 1)
+```
+
+Slopes and intercepts are easier to read with the reference category put back in as a column of zeros:
+
+```{r bank_slopes}
+slopes     <- cbind(0, bank[, c("alpha1", "alpha2", "alpha3", "alpha4")])
+intercepts <- cbind(0, bank[, c("c1", "c2", "c3", "c4")])
+colnames(slopes) <- colnames(intercepts) <- paste0("cat", 0:4)
+
+data.frame(slopes, slopes_increase_with_code = apply(slopes, 1, function(s) !is.unsorted(s)))
+```
+
+In four of the five items the slopes happen to increase with the category code. Item 4 is the exception: its category 1 has a steeper slope ($`r slopes[4, "cat1"]`$) than its category 2 ($`r slopes[4, "cat2"]`$). A model for ordered categories could not represent this item.
+
+---
+
+## Validating each piece against `catR`
+
+### Normal density
+
+```{r density_check}
+v <- seq(-3, 3, by = 0.1)
+comparison <- data.frame(x = v, density_function = density_function(v), dnorm = dnorm(v))
+head(comparison)
+all.equal(comparison$density_function, comparison$dnorm)
+```
+
+```{r density_plot,dev='png'}
+ggplot(comparison, aes(x = x)) +
+  geom_line(aes(y = density_function, color = "density_function()"), linewidth = 1) +
+  geom_point(aes(y = dnorm, color = "dnorm()"), shape = 1) +
+  labs(title = "Hand-written normal density vs. dnorm()",
+       x = expression(theta), y = "density", color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+The function writes out the textbook normal density longhand. It uses `exp(1)` instead of a hard-coded `2.71828`; the documentation notes that the literal is accurate to only six significant digits and shifts the EAP estimate in the seventh decimal.
+
+### Numerical integration
+
+```{r integration_check}
+x <- seq(from = -3, to = 3, length = 33)
+y <- round(exp(x), 2)
+c(integrate_cat = integrate_cat(x, y), integrate.catR = catR::integrate.catR(x, y))
+all.equal(integrate_cat(x, y), catR::integrate.catR(x, y))
+```
+
+### Category response probabilities and derivatives
+
+```{r pi_check}
+mine   <- compute_pi_nrm(theta = 0, bank)
+theirs <- catR::Pi(th = 0, bank, model = "NRM")
+
+round(mine$Pi, 6)
+names(mine)
+names(theirs)
+sapply(names(theirs), function(nm) isTRUE(all.equal(mine[[nm]], theirs[[nm]])))
+```
+
+`catR` returns four matrices and `compute_pi_nrm()` returns five; the four they share agree. One ability value is a thin test, so the next chunk repeats the comparison at five values of $\theta$ and at both values of $D$. It reports the largest absolute difference for each matrix:
+
+```{r pi_check_grid}
+theta_check <- c(-3, -1.2, 0, 0.7, 2.5)
+
+pi_diff <- do.call(rbind, lapply(c(1, 1.702), function(d) do.call(rbind, lapply(theta_check, function(th) {
+  ours <- compute_pi_nrm(th, bank, D = d)
+  ref  <- catR::Pi(th, bank, model = "NRM", D = d)
+  data.frame(D = d, theta = th,
+             t(sapply(names(ref), function(nm) max(abs(ours[[nm]] - ref[[nm]])))))
+}))))
+pi_diff
+max(pi_diff[, c("Pi", "dPi", "d2Pi", "d3Pi")])
+```
+
+The two implementations run the same arithmetic in the same order, so the results are identical and not merely close. $D$ has no effect in either one:
+
+```{r pi_check_D}
+c(compute_pi_nrm = identical(compute_pi_nrm(0.7, bank, D = 1.702), compute_pi_nrm(0.7, bank, D = 1)),
+  catR_Pi        = identical(catR::Pi(0.7, bank, model = "NRM", D = 1.702),
+                             catR::Pi(0.7, bank, model = "NRM", D = 1)))
+```
+
+```{r pi_plot,dev='png'}
+theta_grid <- seq(-6, 6, by = 0.1)
+curves <- t(sapply(theta_grid, function(th) compute_pi_nrm(theta = th, bank)$Pi[1, ]))
+range(rowSums(curves))
+
+df_curves <- data.frame(theta = theta_grid, curves)
+names(df_curves)[-1] <- paste0("category ", 0:4)
+df_long <- reshape2::melt(df_curves, id.vars = "theta",
+                          variable.name = "category", value.name = "P")
+
+ggplot(df_long, aes(x = theta, y = P, color = category)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Category response curves, item 1",
+       subtitle = "probability of each of the five response categories as a function of ability",
+       x = expression(theta), y = expression(P(theta)), color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+The five curves sum to 1 at every $\theta$ on the grid. For item 1 the slopes increase with the code, so the curves look like those of an ordered model: category 0 at the bottom of the scale, category 4 at the top, the others in order in between. The worked example on nominal categories below looks at items where that picture breaks.
+
+### The fourth derivative, which `catR` does not have
+
+There is nothing in `catR` to compare `d4Pi` with, so it is checked in two independent ways. The first is a **central finite difference** of the analytic derivative one order lower, $\big(f(\theta+h)-f(\theta-h)\big)/2h$ with $h = 10^{-4}$. Its error is of order $h^2$, around $10^{-8}$ here, and that is the best agreement it can show. The same check is run on all four derivatives:
+
+```{r d4pi_fd}
+h <- 1e-4
+fd_pi <- do.call(rbind, lapply(theta_check, function(th) {
+  up <- compute_pi_nrm(th + h, bank)
+  dn <- compute_pi_nrm(th - h, bank)
+  at <- compute_pi_nrm(th, bank)
+  data.frame(theta = th,
+             dPi  = max(abs((up$Pi   - dn$Pi)   / (2 * h) - at$dPi)),
+             d2Pi = max(abs((up$dPi  - dn$dPi)  / (2 * h) - at$d2Pi)),
+             d3Pi = max(abs((up$d2Pi - dn$d2Pi) / (2 * h) - at$d3Pi)),
+             d4Pi = max(abs((up$d3Pi - dn$d3Pi) / (2 * h) - at$d4Pi)),
+             largest_abs_d4Pi = max(abs(at$d4Pi)))
+}))
+fd_pi
+```
+
+The second check is exact. The probabilities of an item always sum to 1, so their fourth derivatives must sum to 0. The slope-weighted sum $\sum_k\alpha_{jk}P_{jk}$ is the mean slope $\kappa_1$, so its fourth derivative $\sum_k \alpha_{jk}\,P_{jk}^{(4)}$ must equal $\kappa_5$. The helper below computes the cumulants of the chosen slope directly from the probabilities and central moments, without using any derivative:
+
+```{r cumulants}
+slope_cumulants <- function(theta, b) {
+  P  <- compute_pi_nrm(theta, b)$Pi
+  a  <- cbind(0, b[, seq(1, ncol(b), by = 2), drop = FALSE])
+  mu <- rowSums(P * a, na.rm = TRUE)
+  cm <- function(r) rowSums(P * (a - mu)^r, na.rm = TRUE)
+  cbind(k1 = mu, k2 = cm(2), k3 = cm(3),
+        k4 = cm(4) - 3 * cm(2)^2,
+        k5 = cm(5) - 10 * cm(3) * cm(2))
+}
+
+id_pi <- do.call(rbind, lapply(theta_check, function(th) {
+  at <- compute_pi_nrm(th, bank)
+  k  <- slope_cumulants(th, bank)
+  data.frame(theta = th,
+             sum_d4Pi                 = max(abs(rowSums(at$d4Pi))),
+             slope_weighted_d4Pi_vs_k5 = max(abs(rowSums(slopes * at$d4Pi) - k[, "k5"])))
+}))
+id_pi
+```
+
+The finite differences agree to the order of their own truncation error, and both exact identities hold to rounding error.
+
+### Item information
+
+```{r ii_check}
+mine_ii   <- compute_ii_nrm(theta = 0, bank)
+theirs_ii <- catR::Ii(th = 0, bank, model = "NRM")
+data.frame(Ii_ours  = mine_ii$Ii,  Ii_catR  = theirs_ii$Ii,
+           dIi_ours = mine_ii$dIi, dIi_catR = theirs_ii$dIi,
+           d2Ii_ours = mine_ii$d2Ii, d2Ii_catR = theirs_ii$d2Ii)
+names(mine_ii)
+```
+
+```{r ii_check_grid}
+ii_diff <- do.call(rbind, lapply(c(1, 1.702), function(d) do.call(rbind, lapply(theta_check, function(th) {
+  ours <- compute_ii_nrm(th, bank, D = d)
+  ref  <- catR::Ii(th, bank, model = "NRM", D = d)
+  data.frame(D = d, theta = th,
+             t(sapply(names(ref), function(nm) max(abs(ours[[nm]] - ref[[nm]])))))
+}))))
+ii_diff
+```
+
+The documentation's claim that information is the variance of the chosen category's slope can be checked in two lines:
+
+```{r ii_variance}
+P0 <- compute_pi_nrm(0, bank)$Pi
+mean_slope <- rowSums(P0 * slopes)
+data.frame(Ii = compute_ii_nrm(0, bank)$Ii,
+           variance_of_chosen_slope = rowSums(P0 * slopes^2) - mean_slope^2)
+all.equal(compute_ii_nrm(0, bank)$Ii, as.numeric(rowSums(P0 * slopes^2) - mean_slope^2))
+```
+
+```{r ii_plot,dev='png'}
+info_grid <- seq(-4, 4, by = 0.05)
+info <- t(sapply(info_grid, function(th) compute_ii_nrm(th, bank)$Ii))
+df_info <- data.frame(theta = info_grid, info)
+names(df_info)[-1] <- paste0("item ", 1:5)
+df_info_long <- reshape2::melt(df_info, id.vars = "theta",
+                               variable.name = "item", value.name = "information")
+
+ggplot(df_info_long, aes(x = theta, y = information, color = item)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Item information curves",
+       subtitle = "each item has its own height and shape",
+       x = expression(theta), y = "information", color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+```{r test_info_plot,dev='png'}
+df_test <- data.frame(theta = info_grid, information = rowSums(info))
+
+ggplot(df_test, aes(x = theta, y = information)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  labs(title = "Test information", x = expression(theta), y = "information") +
+  theme_bw(base_size = 12)
+```
+
+### The third derivative of the information, which `catR` does not have
+
+`d3Ii` is checked the same way as `d4Pi`: finite differences of the analytic derivative one order lower, and the cumulant identity $I, I', I'', I''' = \kappa_2,\kappa_3,\kappa_4,\kappa_5$. The cumulants come from `slope_cumulants()`, which uses only the probabilities.
+
+```{r d3ii_check}
+id_ii <- do.call(rbind, lapply(theta_check, function(th) {
+  up <- compute_ii_nrm(th + h, bank)
+  dn <- compute_ii_nrm(th - h, bank)
+  at <- compute_ii_nrm(th, bank)
+  k  <- slope_cumulants(th, bank)
+  data.frame(theta = th,
+             fd_dIi   = max(abs((up$Ii   - dn$Ii)   / (2 * h) - at$dIi)),
+             fd_d2Ii  = max(abs((up$dIi  - dn$dIi)  / (2 * h) - at$d2Ii)),
+             fd_d3Ii  = max(abs((up$d2Ii - dn$d2Ii) / (2 * h) - at$d3Ii)),
+             k2_vs_Ii   = max(abs(k[, "k2"] - at$Ii)),
+             k3_vs_dIi  = max(abs(k[, "k3"] - at$dIi)),
+             k4_vs_d2Ii = max(abs(k[, "k4"] - at$d2Ii)),
+             k5_vs_d3Ii = max(abs(k[, "k5"] - at$d3Ii)))
+}))
+id_ii
+c(largest_finite_difference_gap = max(id_ii[, 2:4]),
+  largest_cumulant_gap          = max(id_ii[, 5:8]))
+```
+
+The cumulant identity holds to rounding error for every derivative, including the one `catR` does not compute. The finite differences agree to about $10^{-8}$, the size of their own truncation error.
+
+### Next-item selection
+
+```{r next_item_check}
+mine   <- compute_next_item_nrm(theta = 0, bank)
+theirs <- catR::nextItem(bank, model = "NRM", theta = 0, criterion = "MFI")
+c(mine_item = mine$item, catR_item = theirs$item,
+  mine_info = mine$info, catR_info = theirs$info)
+```
+
+With items already administered excluded via `out`:
+
+```{r next_item_out}
+c(mine = compute_next_item_nrm(theta = 1.5, bank, out = c(2, 5))$item,
+  catR = catR::nextItem(bank, model = "NRM", theta = 1.5, out = c(2, 5),
+                        criterion = "MFI")$item)
+```
+
+And across the whole ability range, with and without an `out` set:
+
+```{r next_item_grid}
+grid <- seq(-4, 4, by = 0.05)
+agreements <- function(out) sum(sapply(grid, function(th)
+  compute_next_item_nrm(th, bank, out = out)$item ==
+    catR::nextItem(bank, model = "NRM", theta = th, out = out, criterion = "MFI")$item))
+
+c(without_out = agreements(NULL), with_out_2_5 = agreements(c(2, 5)), grid_points = length(grid))
+```
+
+### Likelihood
+
+`catR` has no exported likelihood function to compare against, so the check rebuilds the same product from `catR`'s own probability matrix:
+
+```{r likelihood_check}
+response <- c(4, 3, 2, 1, 0)
+P_catR <- catR::Pi(th = 0.3, bank, model = "NRM")$Pi
+manual <- prod(sapply(1:5, function(i) P_catR[i, response[i] + 1]))
+
+c(compute_likelihood_nrm = compute_likelihood_nrm(theta = 0.3, bank = bank, x = response),
+  from_catR_Pi           = manual)
+all.equal(compute_likelihood_nrm(theta = 0.3, bank = bank, x = response), manual)
+```
+
+```{r likelihood_plot,dev='png'}
+lik_grid <- seq(-4, 4, by = 0.05)
+df_lik <- data.frame(theta = lik_grid,
+                     likelihood = sapply(lik_grid, function(th)
+                       compute_likelihood_nrm(th, bank, response)))
+
+ggplot(df_lik, aes(x = theta, y = likelihood)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  labs(title = "Likelihood of the response pattern (4, 3, 2, 1, 0)",
+       x = expression(theta), y = "likelihood") +
+  theme_bw(base_size = 12)
+```
+
+In this bank category 4 has the largest slope and category 0 the smallest on every item, so the all-4 and all-0 patterns are the extreme ones. Their likelihoods never turn over on the grid:
+
+```{r likelihood_extreme}
+c(all_4_strictly_increasing = all(diff(sapply(lik_grid, function(th)
+    compute_likelihood_nrm(th, bank, c(4, 4, 4, 4, 4)))) > 0),
+  all_0_strictly_decreasing = all(diff(sapply(lik_grid, function(th)
+    compute_likelihood_nrm(th, bank, c(0, 0, 0, 0, 0)))) < 0),
+  category_4_steepest_on_every_item = all(apply(slopes, 1, which.max) == 5),
+  category_0_flattest_on_every_item = all(apply(slopes, 1, which.min) == 1))
+```
+
+### EAP ability estimate and standard error
+
+```{r eap_check}
+patterns <- list(c(0, 0, 0, 0, 0), c(1, 1, 1, 1, 1), c(2, 2, 2, 2, 2),
+                 c(3, 3, 3, 3, 3), c(4, 4, 4, 4, 4), c(4, 3, 2, 1, 0),
+                 c(0, 1, 2, 3, 4), c(1, 0, 1, 0, 1))
+
+validation <- do.call(rbind, lapply(c(1, 1.702), function(d) do.call(rbind, lapply(patterns, function(x) {
+  th_mine <- compute_eap_nrm(bank, x, D = d)
+  th_catR <- catR::eapEst(bank, x, model = "NRM", D = d)
+  data.frame(D        = d,
+             pattern  = paste(x, collapse = " "),
+             eap_mine = th_mine,
+             eap_catR = th_catR,
+             se_mine  = compute_eap_se_nrm(th_mine, bank, x, D = d),
+             se_catR  = catR::eapSem(th_mine, bank, x, model = "NRM", D = d))
+}))))
+validation
+
+c(max_eap_difference = max(abs(validation$eap_mine - validation$eap_catR)),
+  max_se_difference  = max(abs(validation$se_mine  - validation$se_catR)))
+```
+
+Both the point estimate and the standard error reproduce `catR` to machine precision for every pattern, including the all-0 and all-4 patterns where Maximum Likelihood would have no finite answer. The rows for $D = 1.702$ repeat the rows for $D = 1$ exactly, in both implementations.
+
+### Items with fewer categories
+
+A four-category item in a five-category bank puts `NA` in its last pair and is scored 0 to 3:
+
+```{r na_padding}
+bank_mixed <- bank
+bank_mixed[5, c("alpha4", "c4")] <- NA
+round(compute_pi_nrm(theta = 0, bank_mixed)$Pi, 6)
+
+c(Pi = isTRUE(all.equal(compute_pi_nrm(0, bank_mixed)[1:4], catR::Pi(0, bank_mixed, model = "NRM"))),
+  Ii = isTRUE(all.equal(compute_ii_nrm(0, bank_mixed)[1:3], catR::Ii(0, bank_mixed, model = "NRM"))))
+
+response_mixed <- c(4, 3, 2, 1, 3)   # item 5 can only be scored 0 to 3
+th <- compute_eap_nrm(bank_mixed, response_mixed)
+c(eap_mine = th,
+  eap_catR = catR::eapEst(bank_mixed, response_mixed, model = "NRM"),
+  se_mine  = compute_eap_se_nrm(th, bank_mixed, response_mixed),
+  se_catR  = catR::eapSem(th, bank_mixed, response_mixed, model = "NRM"))
+```
+
+The padding has to go at the **end** of the row. Both implementations drop `NA` pairs and then fill the remaining categories from the left. A gap left in the middle therefore does not remove the category it seems to remove; it shifts every later category down one code:
+
+```{r na_gap}
+bank_gap <- bank
+bank_gap[5, c("alpha2", "c2")] <- NA                     # meant: item 5 has no category 2
+
+bank_shifted <- bank
+bank_shifted[5, ] <- c(bank[5, c("alpha1", "c1", "alpha3", "c3", "alpha4", "c4")], NA, NA)
+
+round(compute_pi_nrm(0, bank_gap)$Pi[5, ], 6)
+c(same_as_catR               = isTRUE(all.equal(compute_pi_nrm(0, bank_gap)[1:4],
+                                                catR::Pi(0, bank_gap, model = "NRM"))),
+  same_as_left_shifted_bank  = identical(compute_pi_nrm(0, bank_gap), compute_pi_nrm(0, bank_shifted)))
+```
+
+Item 5's missing column comes out as `cat4`, not `cat2`. A response coded 3 on that item is read as the category whose parameters sit in the fourth pair. Responses have to be renumbered from 0 without gaps, as `mirt` does, so that they match.
+
+---
+
+## Worked example: the categories are nominal
+
+### The slopes decide which category is modal
+
+The modal category is the top line of $\alpha_{jk}\theta + c_{jk}$, so the sequence of modal categories can be computed exactly. Start from the flattest line (on the far left it is on top) and repeatedly move to the steeper line that overtakes the current one first. Line $h$ overtakes line $k$ at $\theta = (c_{jk}-c_{jh})/(\alpha_{jh}-\alpha_{jk})$.
+
+```{r modal_path}
+modal_path <- function(a, cc) {
+  current <- order(a, -cc)[1]          # flattest line; on a slope tie the higher intercept wins
+  path <- current - 1
+  switch_at <- numeric(0)
+  repeat {
+    steeper <- which(a > a[current])
+    if (length(steeper) == 0) break
+    cross <- (cc[current] - cc[steeper]) / (a[steeper] - a[current])
+    nxt <- steeper[cross == min(cross)]
+    nxt <- nxt[which.max(a[nxt])]
+    path <- c(path, nxt - 1)
+    switch_at <- c(switch_at, min(cross))
+    current <- nxt
+  }
+  list(modal = path, switch_at = switch_at)
+}
+
+modal <- lapply(1:5, function(j) modal_path(slopes[j, ], intercepts[j, ]))
+data.frame(item        = 1:5,
+           slope_order = sapply(1:5, function(j) paste(order(slopes[j, ]) - 1, collapse = " ")),
+           modal_order = sapply(modal, function(m) paste(m$modal, collapse = " ")),
+           switch_at   = sapply(modal, function(m) paste(sprintf("%.3f", m$switch_at), collapse = ", ")))
+```
+
+`slope_order` lists the category codes from the flattest to the steepest slope, and `modal_order` lists the categories that are ever modal, from left to right. A brute-force scan of a fine grid gives the same sequences:
+
+```{r modal_grid}
+fine <- seq(-8, 8, by = 0.005)
+grid_modal <- lapply(1:5, function(j)
+  rle(sapply(fine, function(th) which.max(compute_pi_nrm(th, bank[j, , drop = FALSE])$Pi[1, ]) - 1))$values)
+identical(grid_modal, lapply(modal, function(m) m$modal))
+```
+
+Two things are visible here.
+
+- **Item 4:** the modal categories follow the slopes, not the codes. Its slopes put category 2 below category 1. As ability grows the modal response goes 0, 2, 3, 4, and category 1 is never the most likely answer.
+- **Item 5:** a category can be skipped even when the slopes are in code order. Category 3 overtakes category 2 at $\theta = `r sprintf("%.3f", (intercepts[5, "cat2"] - intercepts[5, "cat3"]) / (slopes[5, "cat3"] - slopes[5, "cat2"]))`$, but category 4 has already overtaken category 3 at $\theta = `r sprintf("%.3f", (intercepts[5, "cat3"] - intercepts[5, "cat4"]) / (slopes[5, "cat4"] - slopes[5, "cat3"]))`$. The top line goes straight from category 2 to category 4.
+
+A skipped category is not an impossible one. It is simply never the single most likely response:
+
+```{r skipped_max}
+peak_prob <- function(j, k) {
+  o <- optimize(function(th) compute_pi_nrm(th, bank[j, , drop = FALSE])$Pi[1, k + 1],
+                interval = c(-6, 6), maximum = TRUE)
+  c(item = j, category = k, at_theta = o$maximum, highest_probability = o$objective)
+}
+rbind(peak_prob(4, 1), peak_prob(5, 3))
+```
+
+```{r nominal_plot,dev='png'}
+curves_for <- function(j) {
+  g <- seq(-5, 5, by = 0.02)
+  m <- t(sapply(g, function(th) compute_pi_nrm(th, bank[j, , drop = FALSE])$Pi[1, ]))
+  d <- data.frame(theta = g, m)
+  names(d)[-1] <- paste0("category ", 0:4)
+  out <- reshape2::melt(d, id.vars = "theta", variable.name = "category", value.name = "P")
+  out$item <- paste0("item ", j, "  (slopes ", paste(slopes[j, ], collapse = ", "), ")")
+  out
+}
+both <- rbind(curves_for(4), curves_for(5))
+switches <- data.frame(item = unique(both$item)[c(rep(1, length(modal[[4]]$switch_at)),
+                                                  rep(2, length(modal[[5]]$switch_at)))],
+                       theta = c(modal[[4]]$switch_at, modal[[5]]$switch_at))
+
+ggplot(both, aes(x = theta, y = P, color = category)) +
+  geom_vline(data = switches, aes(xintercept = theta), linetype = "dashed", color = "grey60") +
+  geom_line(linewidth = 0.9) +
+  facet_wrap(~ item, ncol = 1) +
+  labs(title = "Category response curves of items 4 and 5",
+       subtitle = "dashed lines: where the modal category changes",
+       x = expression(theta), y = expression(P(theta)), color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+### The codes are only labels
+
+If the codes carry no order, relabelling the categories of an item, and recoding its responses to match, must change nothing. The next chunk swaps categories 1 and 2 of item 4, so that its codes now follow its slopes:
+
+```{r relabel}
+bank_relabel <- bank
+bank_relabel[4, c("alpha1", "c1", "alpha2", "c2")] <- bank[4, c("alpha2", "c2", "alpha1", "c1")]
+recode <- c(0, 2, 1, 3, 4)                   # old code -> new code on item 4
+
+x_old <- c(4, 3, 2, 1, 0)
+x_new <- x_old
+x_new[4] <- recode[x_old[4] + 1]
+
+c(same_probabilities = isTRUE(all.equal(compute_pi_nrm(0.3, bank)$Pi[4, c(1, 3, 2, 4, 5)],
+                                        compute_pi_nrm(0.3, bank_relabel)$Pi[4, ],
+                                        check.attributes = FALSE)),
+  same_information   = isTRUE(all.equal(compute_ii_nrm(0.3, bank)$Ii,
+                                        compute_ii_nrm(0.3, bank_relabel)$Ii)),
+  same_eap           = isTRUE(all.equal(compute_eap_nrm(bank, x_old),
+                                        compute_eap_nrm(bank_relabel, x_new))))
+```
+
+Probabilities, information and the EAP estimate come out the same. Under an ordered model, swapping two category codes would be a different model.
+
+---
+
+## Worked example: the partial credit model inside the nominal model
+
+The Partial Credit Model (Masters, 1982) with $D = 1$ gives category $k$ the exponent $\sum_{t=1}^{k}(\theta - \delta_{jt}) = k\,\theta - (\delta_{j1}+\cdots+\delta_{jk})$. That is an NRM exponent with
+
+$$\alpha_{jk} = k, \qquad c_{jk} = -(\delta_{j1}+\cdots+\delta_{jk}).$$
+
+The PCM is an NRM whose slopes are fixed to the category codes. The chunk below builds that NRM bank from the PCM bank in the documentation of `cat_eap_pcm.R`:
+
+```{r pcm_bank}
+pcm_bank <- matrix(c(-1.853, -2.214, -0.936, -1.508, -0.412,
+                     -0.627, -0.504, -1.215, -0.183,  0.338,
+                      0.418,  0.692,  0.284,  0.735,  1.102,
+                      1.636,  1.927,  1.405,  2.118,  2.285),
+                   nrow = 5, dimnames = list(1:5, c("deltaj1", "deltaj2", "deltaj3", "deltaj4")))
+
+m      <- ncol(pcm_bank)
+alpha  <- matrix(rep(1:m, each = nrow(pcm_bank)), nrow = nrow(pcm_bank))
+cj     <- -t(apply(pcm_bank, 1, cumsum))
+nrm_from_pcm <- cbind(alpha, cj)[, order(rep(1:m, 2))]
+dimnames(nrm_from_pcm) <- list(1:5, paste0(c("alpha", "c"), rep(1:m, each = 2)))
+nrm_from_pcm
+```
+
+The two parameterisations give the same probabilities, derivatives and information:
+
+```{r pcm_equal}
+pcm_diff <- do.call(rbind, lapply(theta_check, function(th) {
+  a <- compute_pi_nrm(th, nrm_from_pcm)
+  b <- compute_pi_pcm(th, pcm_bank)
+  data.frame(theta = th,
+             t(sapply(names(b), function(nm) max(abs(a[[nm]] - b[[nm]])))),
+             Ii = max(abs(compute_ii_nrm(th, nrm_from_pcm)$Ii - compute_ii_pcm(th, pcm_bank)$Ii)))
+}))
+pcm_diff
+```
+
+EAP estimates match too, whether the PCM side is scored by `cat_eap_pcm.R` or by `catR` itself:
+
+```{r pcm_eap}
+pcm_patterns <- list(c(0, 0, 0, 0, 0), c(4, 3, 2, 1, 0), c(2, 2, 2, 2, 2),
+                     c(0, 1, 2, 3, 4), c(4, 4, 2, 0, 0), c(4, 4, 4, 4, 4))
+
+pcm_eap <- data.frame(pattern  = sapply(pcm_patterns, paste, collapse = " "),
+                      raw_score = sapply(pcm_patterns, sum),
+                      as_nrm   = sprintf("%.12f", sapply(pcm_patterns, function(x) compute_eap_nrm(nrm_from_pcm, x))),
+                      as_pcm   = sprintf("%.12f", sapply(pcm_patterns, function(x) compute_eap_pcm(pcm_bank, x))),
+                      catR_pcm = sprintf("%.12f", sapply(pcm_patterns, function(x) catR::eapEst(pcm_bank, x, model = "PCM"))))
+pcm_eap
+```
+
+This table also shows where the PCM's famous property comes from. The four patterns with a raw score of 10 get the same estimate to twelve decimals. That is not an extra assumption. The sufficient statistic of the NRM is the sum of the chosen slopes, and when the slopes *are* the codes, that sum is the raw score.
+
+**With $D = 1.702$.** A PCM bank calibrated with $D = 1.702$ carries $D$ in its exponent: $D\,k\,\theta - D(\delta_{j1}+\cdots+\delta_{jk})$. The NRM ignores $D$, so both the slopes and the intercepts have to be multiplied by $D$:
+
+```{r pcm_D}
+d <- 1.702
+nrm_from_pcm_D <- nrm_from_pcm * d
+
+c(Pi_difference  = max(abs(compute_pi_nrm(0.4, nrm_from_pcm_D)$Pi - compute_pi_pcm(0.4, pcm_bank, D = d)$Pi)),
+  EAP_difference = max(sapply(pcm_patterns, function(x)
+    abs(compute_eap_nrm(nrm_from_pcm_D, x) - compute_eap_pcm(pcm_bank, x, D = d)))),
+  dPi_ratio      = unique(round(compute_pi_nrm(0.4, nrm_from_pcm_D)$dPi /
+                                  compute_pi_pcm(0.4, pcm_bank, D = d)$dPi, 10)),
+  Ii_ratio       = unique(round(compute_ii_nrm(0.4, nrm_from_pcm_D)$Ii /
+                                  compute_ii_pcm(0.4, pcm_bank, D = d)$Ii, 10)),
+  D_squared      = d^2)
+```
+
+Probabilities and EAP estimates agree. The derivatives do not: the NRM's `dPi` is $D$ times larger and its information $D^2$ times larger. `cat_eap_pcm.R` follows `catR`'s convention of leaving $D$ out of the PCM derivative, which its documentation points out. The NRM derivative has no such convention to follow, because the NRM has no $D$, so it is the exact derivative of the same curve. Rescaling every item's information by the same constant changes neither item selection nor the EAP estimate.
+
+---
+
+## Worked example: the sum of the chosen slopes is the score
+
+Under the PCM the raw score is sufficient. Under the NRM the raw score means nothing, since the codes are labels, and the sufficient statistic is $\sum_i\alpha_{i,x_i}$. Slopes given to three decimals repeat their sums quite often, so the example bank contains distinct patterns with exactly the same slope sum. Here are four of them:
+
+```{r slope_sum}
+slope_sum <- function(x, a = slopes) sum(a[cbind(seq_along(x), x + 1)])
+
+same_sum <- list(c(3, 0, 2, 2, 1), c(0, 1, 2, 3, 1), c(1, 2, 2, 0, 2), c(0, 0, 0, 1, 4))
+data.frame(pattern   = sapply(same_sum, paste, collapse = " "),
+           raw_score = sapply(same_sum, sum),
+           slope_sum = sprintf("%.3f", sapply(same_sum, slope_sum)),
+           theta_EAP = sprintf("%.12f", sapply(same_sum, function(x) compute_eap_nrm(bank, x))))
+```
+
+The raw scores range from 5 to 8, and the four estimates are identical to twelve decimals.
+
+The mechanism is visible in the likelihood itself. For any two patterns, $\log L(\theta\mid\mathbf{x}) - \log L(\theta\mid\mathbf{y})$ should be a straight line in $\theta$. Its slope should be the difference of their slope sums, and its intercept the difference of their intercept sums:
+
+```{r loglik_ratio}
+intercept_sum <- function(x) sum(intercepts[cbind(seq_along(x), x + 1)])
+xa <- c(4, 3, 2, 1, 0)
+xb <- c(1, 0, 4, 2, 3)
+tg <- seq(-4, 4, by = 0.25)
+log_ratio <- sapply(tg, function(th)
+  log(compute_likelihood_nrm(th, bank, xa)) - log(compute_likelihood_nrm(th, bank, xb)))
+fit <- lm(log_ratio ~ tg)
+
+c(fitted_slope             = unname(coef(fit)[2]),
+  slope_sum_difference     = slope_sum(xa) - slope_sum(xb),
+  fitted_intercept         = unname(coef(fit)[1]),
+  intercept_sum_difference = intercept_sum(xa) - intercept_sum(xb),
+  largest_residual         = max(abs(resid(fit))))
+```
+
+The intercept difference is a constant factor in the likelihood and cancels from the EAP ratio. Only the slope sum is left to move the posterior. Scoring all $5^5 = 3125$ possible patterns shows the whole picture:
+
+```{r all_patterns}
+all_patterns <- as.matrix(expand.grid(rep(list(0:4), 5)))
+all_eap <- data.frame(raw_score = rowSums(all_patterns),
+                      slope_sum = apply(all_patterns, 1, slope_sum),
+                      theta_EAP = apply(all_patterns, 1, function(x) compute_eap_nrm(bank, x)))
+
+o <- order(all_eap$slope_sum)
+spread_by_raw <- tapply(all_eap$theta_EAP, all_eap$raw_score, function(v) diff(range(v)))
+c(patterns                          = nrow(all_eap),
+  distinct_slope_sums               = length(unique(round(all_eap$slope_sum, 9))),
+  eap_nondecreasing_in_slope_sum    = all(diff(all_eap$theta_EAP[o]) > -1e-12),
+  largest_eap_spread_at_one_raw_score = max(spread_by_raw),
+  raw_score_with_that_spread        = as.numeric(names(which.max(spread_by_raw))))
+```
+
+```{r all_patterns_plot,dev='png'}
+all_long <- reshape2::melt(all_eap, id.vars = "theta_EAP",
+                           variable.name = "statistic", value.name = "value")
+all_long$statistic <- factor(all_long$statistic, levels = c("slope_sum", "raw_score"),
+                             labels = c("sum of the chosen slopes", "raw sum of the category codes"))
+
+ggplot(all_long, aes(x = value, y = theta_EAP)) +
+  geom_point(alpha = 0.25, size = 0.8, color = "steelblue") +
+  facet_wrap(~ statistic, scales = "free_x") +
+  labs(title = "EAP estimates of all 3125 response patterns",
+       subtitle = "one curve against the slope sum, a wide band against the raw score",
+       x = NULL, y = expression(hat(theta)[EAP])) +
+  theme_bw(base_size = 12)
+```
+
+Against the slope sum, all `r nrow(all_eap)` estimates fall on a single non-decreasing curve. Against the raw score they spread out: patterns with the same raw score differ by up to `r sprintf("%.3f", max(spread_by_raw))` logits. Adding up category codes is the wrong way to score a nominal item.
+
+---
+
+## Worked example: information is the spread of the slopes
+
+Under the Rating Scale Model every item has the same maximum information. Under the NRM each item has its own. Because information is a variance of slopes, no item can exceed $(\text{slope range})^2/4$:
+
+```{r info_peaks}
+peaks <- t(sapply(1:5, function(j) {
+  o <- optimize(function(th) compute_ii_nrm(th, bank[j, , drop = FALSE])$Ii,
+                interval = c(-6, 6), maximum = TRUE)
+  c(peak_theta = o$maximum, max_information = o$objective)
+}))
+slope_range <- apply(slopes, 1, function(s) diff(range(s)))
+info_table <- data.frame(item = 1:5, peaks, slope_range = slope_range,
+                         bound = slope_range^2 / 4,
+                         share_of_bound = peaks[, "max_information"] / (slope_range^2 / 4))
+info_table
+all(info_table$max_information < info_table$bound)
+```
+
+Item `r which.max(info_table$max_information)` has the widest slope range and the highest peak. The ranking is not a simple function of the range, though. Item 4 has a narrower range than item 1 but a higher peak, because the variance also depends on how much probability the steep and the flat categories share at the same $\theta$. No item gets close to the bound: the largest share is `r sprintf("%.2f", max(info_table$share_of_bound))`. The bound would be reached only if the flattest and the steepest category each had probability one half and every other category had none.
+
+Different heights have a direct consequence for adaptive testing. Some items are never the best choice anywhere on the scale:
+
+```{r mfi_winners}
+winner_grid <- seq(-4, 4, by = 0.01)
+table(most_informative_item = sapply(winner_grid, function(th) which.max(compute_ii_nrm(th, bank)$Ii)))
+```
+
+On this grid, items `r paste(setdiff(1:5, unique(sapply(winner_grid, function(th) which.max(compute_ii_nrm(th, bank)$Ii)))), collapse = " and ")` are never the most informative. Pure MFI would give them only after better items had been used up. This is one of the reasons for the exposure control shown below.
+
+---
+
+## Worked example: a short adaptive test
+
+Everything above fits into an adaptive loop. At each step the loop picks the most informative unadministered item at the current estimate, collects a response, rescores and repeats. Responses are simulated from an examinee with a known true ability.
+
+```{r adaptive}
+set.seed(1)
+true_theta <- 1.0
+
+# simulate a response to item j from an examinee at true_theta
+simulate_response <- function(j, theta) {
+  p <- compute_pi_nrm(theta, bank[j, , drop = FALSE])$Pi[1, ]
+  p <- p[!is.na(p)]
+  sample(0:(length(p) - 1), size = 1, prob = p)
+}
+
+theta <- 0
+administered <- integer(0)
+responses <- integer(0)
+trace <- data.frame()
+
+for (step in 1:5) {
+  sel <- compute_next_item_nrm(theta, bank, out = administered)
+  administered <- c(administered, sel$item)
+  responses <- c(responses, simulate_response(sel$item, true_theta))
+
+  sub_bank <- bank[administered, , drop = FALSE]
+  theta <- compute_eap_nrm(sub_bank, responses)
+  se <- compute_eap_se_nrm(theta, sub_bank, responses)
+
+  trace <- rbind(trace, data.frame(step = step, item = sel$item,
+                                   information = sel$info,
+                                   response = tail(responses, 1),
+                                   chosen_slope = slopes[sel$item, tail(responses, 1) + 1],
+                                   theta_EAP = theta, SE = se))
+}
+trace
+c(se_decreases_every_step = all(diff(trace$SE) < 0))
+```
+
+```{r adaptive_plot,dev='png'}
+ggplot(trace, aes(x = step, y = theta_EAP)) +
+  geom_hline(yintercept = true_theta, linetype = "dashed", color = "grey40") +
+  geom_ribbon(aes(ymin = theta_EAP - SE, ymax = theta_EAP + SE),
+              alpha = 0.2, fill = "steelblue") +
+  geom_line(color = "steelblue", linewidth = 1) +
+  geom_point(size = 2, color = "steelblue") +
+  annotate("text", x = 1, y = true_theta + 0.08, hjust = 0,
+           label = "true theta", color = "grey40", size = 3.5) +
+  scale_x_continuous(breaks = trace$step) +
+  labs(title = "Adaptive test: EAP estimate (± 1 SE) after each item",
+       x = "item administered", y = expression(hat(theta)[EAP])) +
+  theme_bw(base_size = 12)
+```
+
+The test opens with item `r trace$item[1]`, the most informative item at $\theta = 0$. The standard error falls with every item, from `r sprintf("%.3f", trace$SE[1])` to `r sprintf("%.3f", tail(trace$SE, 1))`. After five items the estimate is `r sprintf("%.3f", tail(trace$theta_EAP, 1))` for a true ability of `r true_theta`. With a five-item bank the loop has to use every item, so adaptivity only decides the order. The final EAP depends only on the five responses, not on the order in which they were collected. The `chosen_slope` column is what actually moves the estimate, since the slope sum is the sufficient statistic.
+
+### Exposure control
+
+Pure MFI is deterministic: every examinee starting at $\theta = 0$ receives the same first item. The `randomesque` argument draws at random from the $k$ best instead.
+
+```{r randomesque}
+set.seed(42)
+table(replicate(2000, compute_next_item_nrm(theta = 0, bank, randomesque = 1)$item))
+table(replicate(2000, compute_next_item_nrm(theta = 0, bank, randomesque = 3)$item))
+```
+
+With `randomesque = 1` item `r compute_next_item_nrm(0, bank)$item` is chosen 2000 times out of 2000. With `randomesque = 3` the first item is spread roughly evenly over the three most informative items at $\theta = 0$. One of them is item 4, which pure MFI never picks first anywhere on the grid above. The cost:
+
+```{r randomesque_cost}
+info_at_0 <- compute_ii_nrm(theta = 0, bank)$Ii
+c(best_item          = max(info_at_0),
+  mean_of_top_3      = mean(sort(info_at_0, decreasing = TRUE)[1:3]),
+  proportion_of_best = mean(sort(info_at_0, decreasing = TRUE)[1:3]) / max(info_at_0))
+```
+
+On average the randomesque first item keeps about `r round(100 * mean(sort(info_at_0, decreasing = TRUE)[1:3]) / max(info_at_0))`% of the information of the single best item. This is the usual trade-off between measurement efficiency and item security. In this bank the price is higher than in the Rating Scale Model vignette, because NRM items differ in height as well as location.
+
+---
+
+## Worked example: the numerical settings
+
+The EAP integrals are approximations, and four arguments control them. The all-4 pattern is used because it is the hardest case for the integration in this bank, since its posterior sits furthest from the prior mean.
+
+```{r settings}
+x <- c(4, 4, 4, 4, 4)
+
+settings <- rbind(
+  data.frame(setting = "quadrature points", value = c(11, 33, 101, 501),
+             theta = sapply(c(11, 33, 101, 501),
+                            function(n) compute_eap_nrm(bank, x, nqp = n))),
+  data.frame(setting = "integration bound (33 points)", value = c(3, 4, 6, 8),
+             theta = sapply(c(3, 4, 6, 8),
+                            function(b) compute_eap_nrm(bank, x, lower = -b, upper = b))),
+  data.frame(setting = "integration bound (1001 points)", value = c(3, 4, 6, 8),
+             theta = sapply(c(3, 4, 6, 8),
+                            function(b) compute_eap_nrm(bank, x, lower = -b, upper = b, nqp = 1001))),
+  data.frame(setting = "prior SD", value = c(1, 2),
+             theta = sapply(c(1, 2),
+                            function(s) compute_eap_nrm(bank, x, priorPar = c(0, s)))),
+  data.frame(setting = "metric constant D", value = c(1, 1.702),
+             theta = sapply(c(1, 1.702),
+                            function(d) compute_eap_nrm(bank, x, D = d)))
+)
+settings
+```
+
+How much posterior mass lies beyond the default upper bound? A fine grid over $\pm 8$ answers it with the file's own pieces:
+
+```{r settings_mass}
+wide <- seq(-8, 8, length = 3201)
+post <- sapply(wide, function(th) density_function(th) * compute_likelihood_nrm(th, bank, x))
+c(posterior_mass_above_4 = integrate_cat(wide[wide >= 4], post[wide >= 4]) / integrate_cat(wide, post))
+```
+
+```{r settings_numbers,echo=FALSE}
+s_q  <- settings$theta[settings$setting == "quadrature points"]
+s_b  <- settings$theta[settings$setting == "integration bound (33 points)"]
+s_bf <- settings$theta[settings$setting == "integration bound (1001 points)"]
+s_p  <- settings$theta[settings$setting == "prior SD"]
+s_d  <- settings$theta[settings$setting == "metric constant D"]
+mass_above_4 <- integrate_cat(wide[wide >= 4], post[wide >= 4]) / integrate_cat(wide, post)
+```
+
+Three different kinds of effect are visible here, and they should be kept apart.
+
+- **Quadrature points** are pure approximation error. Moving from 11 to 33 points changes the estimate by `r sprintf("%.4f", s_q[2] - s_q[1])`. Moving from 101 to 501 changes it by only `r sprintf("%.5f", s_q[4] - s_q[3])`. The default of 33 matches `catR`.
+- **Integration bounds** are also approximation error, but a more dangerous kind, because more quadrature points do not fix them. Truncating at $\pm 3$ lowers the estimate by `r sprintf("%.3f", s_b[2] - s_b[1])` compared with the default. Even the default $\pm 4$ is `r sprintf("%.3f", s_bf[4] - s_bf[2])` below the value reached with wide bounds and 1001 points (`r sprintf("%.4f", s_bf[4])`), because `r sprintf("%.1f", 100 * mass_above_4)`% of this posterior lies above $\theta = 4$. Between $\pm 6$ and $\pm 8$ nothing changes at this precision. The bounds must be wide enough for the *most extreme pattern the bank can produce*, and a bank of steep NRM items can push that pattern's posterior close to the default edge.
+- **The prior SD is not approximation error at all**; it changes the model. Doubling it to 2 weakens the shrinkage and moves the estimate from `r sprintf("%.2f", s_p[1])` to `r sprintf("%.2f", s_p[2])`. It must match the ability distribution assumed when the items were calibrated.
+- **$D$** does nothing here: both values give `r sprintf("%.6f", s_d[1])` and `r sprintf("%.6f", s_d[2])`. The NRM has no metric constant to set. A bank converted from a model that used $D = 1.702$ must already have $D$ multiplied into its slopes and intercepts, as in the partial credit example above.
+
+---
+
+## Conclusion
+
+All eight functions used here reproduce their `catR` counterparts for the Nominal Response Model: the normal density, the trapezoidal integrator, the category probabilities and their first three derivatives, the item information and its first two derivatives, MFI item selection with and without exclusions, and the two integrals that define EAP scoring. The probabilities and the information are identical to `catR`'s, not merely close. The two quantities `catR` does not compute, `d4Pi` and `d3Ii`, pass both a finite-difference check and an exact cumulant identity.
+
+Writing the model out makes its character plain. The codes are labels. Each category's log-odds against the reference is a straight line, and the categories become modal in the order of their slopes; some are never modal at all. The information of an item is the variance of the slope of the category chosen, and its derivatives are the higher cumulants of that slope. The sum of the chosen slopes is the sufficient statistic, so patterns with different raw scores can earn identical estimates, and the raw score says little on its own. The Partial Credit Model is the special case where the slopes equal the codes, which is why its raw score is sufficient. And, as in every other model in the series, the prior keeps estimates finite for the extreme patterns, as long as the integration bounds are wide enough to contain the posterior.
+
+---
+
+## References
+
+- Bock, R. D. (1972). Estimating item parameters and latent ability when responses are scored in two or more nominal categories. *Psychometrika, 37*(1), 29–51.
+- Bock, R. D., & Mislevy, R. J. (1982). Adaptive EAP estimation of ability in a microcomputer environment. *Applied Psychological Measurement, 6*(4), 431–444.
+- Magis, D., & Barrada, J. R. (2017). Computerized adaptive testing with R: Recent updates of the package catR. *Journal of Statistical Software, Code Snippets, 76*(1), 1–19. https://doi.org/10.18637/jss.v076.c01
+- Magis, D., & Raîche, G. (2012). Random generation of response patterns under computerized adaptive testing with the R package catR. *Journal of Statistical Software, 48*(8), 1–31. https://doi.org/10.18637/jss.v048.i08
+- Masters, G. N. (1982). A Rasch model for partial credit scoring. *Psychometrika, 47*(2), 149–174.
+
+---
+
+*Rendered with R `r getRversion()` · validated against catR `r as.character(packageVersion("catR"))`*

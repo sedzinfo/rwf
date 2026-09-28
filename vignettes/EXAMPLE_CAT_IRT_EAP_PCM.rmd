@@ -1,0 +1,977 @@
+---
+title: "EAP Ability Estimation From Scratch: The Partial Credit Model"
+author: ""
+output:
+  html_document:
+    css: styles.css
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+    code_folding: show
+    self_contained: true
+vignette: >
+  %\VignetteIndexEntry{EAP Ability Estimation From Scratch: The Partial Credit Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
+source(paste0(directory, "code_options.R"))
+
+library(ggplot2)
+```
+
+## Description
+
+The **Partial Credit Model (PCM)** of Masters (1982) is a Rasch model for items scored in ordered categories $0, 1, \ldots, m_j$, where each item has its **own** set of step parameters. It was designed for tasks that award partial credit — a multi-step problem scored by the number of steps completed, a rubric-scored essay — and it is equally usable for rating-scale items whose response options cannot be assumed to work the same way on every item. That last point is what separates it from the Rating Scale Model (RSM), in which every item shares one set of category thresholds. The PCM keeps the Rasch-family properties of the RSM — no discrimination parameter, and a raw score that is a sufficient statistic for ability — while letting each item have its own category curves and its own information curve.
+
+[`working_examples/cat_eap_pcm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_pcm.R) implements the EAP pipeline for the PCM in six functions, which call the two general helpers in [`working_examples/cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R). Everything is plain base R, with no runtime dependency on `catR`:
+
+| Function | File | Purpose | `catR` equivalent it mirrors |
+|---|---|---|---|
+| `density_function()` | `cat_eap_common.R` | Normal density | `stats::dnorm()` |
+| `integrate_cat()` | `cat_eap_common.R` | Numerical integration (trapezoidal rule) | `catR::integrate.catR()` |
+| `compute_pi_pcm()` | `cat_eap_pcm.R` | Category response probabilities and their first three derivatives | `catR::Pi(model="PCM")` |
+| `compute_ii_pcm()` | `cat_eap_pcm.R` | Item information and its first two derivatives | `catR::Ii(model="PCM")` |
+| `compute_next_item_pcm()` | `cat_eap_pcm.R` | Maximum Fisher information item selection, with optional randomesque exposure control | `catR::nextItem(model="PCM", criterion="MFI")` |
+| `compute_likelihood_pcm()` | `cat_eap_pcm.R` | Likelihood of a polytomous response pattern | *(internal to `catR::eapEst()`)* |
+| `compute_eap_pcm()` | `cat_eap_pcm.R` | EAP ability estimate | `catR::eapEst(model="PCM")` |
+| `compute_eap_se_pcm()` | `cat_eap_pcm.R` | EAP standard error | `catR::eapSem(model="PCM")` |
+
+This vignette is one of six that build the same pipeline for different item response models: *EAP Ability Estimation From Scratch* (dichotomous items under the 4PL model), *EAP Ability Estimation From Scratch: The Rating Scale Model*, *EAP Ability Estimation From Scratch: The Partial Credit Model* (this one), *EAP Ability Estimation From Scratch: The Graded Response Model*, *EAP Ability Estimation From Scratch: The Modified Graded Response Model* and *EAP Ability Estimation From Scratch: The Nominal Response Model*. The sections below walk through the theory behind each function, validate every one of them against its `catR` counterpart, work through the features that set the PCM apart, and finally run a small adaptive test.
+
+## Acknowledgement
+
+The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_pcm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_pcm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
+
+```{r library,message=FALSE,warning=FALSE}
+library(catR)
+```
+
+`cat_eap_common.R` is sourced first because the PCM functions call `density_function()` and `integrate_cat()`. `cat_eap_rsm.R` is only needed for the comparison with the Rating Scale Model further down.
+
+```{r source_functions}
+source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
+source(paste0(directory, "../working_examples/cat_eap_pcm.R"), local = knitr::knit_global())
+source(paste0(directory, "../working_examples/cat_eap_rsm.R"), local = knitr::knit_global())
+```
+
+---
+
+## Theoretical Background
+
+### From steps to categories
+
+A polytomous item scored $0,1,\ldots,m_j$ needs $m_j+1$ category response curves that sum to 1 at every ability level. The PCM builds them from $m_j$ **steps**: to reach category $k$ a respondent has to complete steps $1$ to $k$, and step $t$ of item $j$ has its own difficulty $\delta_{jt}$.
+
+$$P(X_j = k \mid \theta) = \frac{\exp\left[\sum_{t=1}^{k} D(\theta - \delta_{jt})\right]}{\sum_{h=0}^{m_j}\exp\left[\sum_{t=1}^{h} D(\theta - \delta_{jt})\right]}, \qquad k = 0, 1, \ldots, m_j$$
+
+with the empty sum for $k=0$ taken to be zero.
+
+- $\delta_{jk}$ — the **step parameter** of step $k$ of item $j$. Every item has its own set, and nothing forces them to increase with $k$.
+- $m_j$ — the number of steps of item $j$, one fewer than its number of categories. Items in the same bank may have different $m_j$.
+- $D$ — the usual metric constant (1, or 1.702 for the normal-ogive metric).
+
+There is no discrimination parameter: every step of every item has the same slope $D$, which is what makes the PCM a Rasch model.
+
+The meaning of a step parameter is clearest in the ratio of two adjacent categories, where the common denominator cancels:
+
+$$\log\frac{P(X_j = k \mid \theta)}{P(X_j = k-1 \mid \theta)} = D(\theta - \delta_{jk})$$
+
+Given that the response is either $k-1$ or $k$, the item behaves like a dichotomous Rasch item with difficulty $\delta_{jk}$. In particular the curves of categories $k-1$ and $k$ **cross at $\theta = \delta_{jk}$**, which is checked numerically in the worked example on threshold ordering.
+
+The **Rating Scale Model** is the special case $\delta_{jk} = \lambda_j + \delta_k$: one location per item plus one set of thresholds shared by the whole bank (Andrich, 1978). A bank of $n$ items with $m$ steps each needs $n \times m$ step parameters under the PCM and $n + m$ under the RSM. Adding an item-specific discrimination to the PCM gives the generalised partial credit model, which is not covered here.
+
+### The bank layout
+
+`cat_eap_pcm.R` expects one row per item and one column per step:
+
+- columns 1 to $m$ hold $\delta_{j1},\ldots,\delta_{jm}$, where $m$ is the largest number of steps in the bank;
+- there is no location column and no discrimination column, so a bank with $m$ columns describes items with $m+1$ categories: a five-point Likert item scored 0 to 4 needs **four** columns (the RSM layout needs five, because its first column holds $\lambda_j$);
+- an item with fewer categories is padded with `NA` in its **last** columns. The code builds the cumulative sums $\sum_{t \le k}$ one step at a time and drops every category whose sum is `NA`, so an `NA` in the middle of a row does not skip one step — it removes every category above it (shown below);
+- responses are scored $0, 1, \ldots, m_j$.
+
+### Derivatives and the metric constant
+
+Differentiating the category probability gives the standard Rasch-family result
+
+$$\frac{\partial P_{jk}(\theta)}{\partial\theta} = D\,P_{jk}(\theta)\big[k - E(X_j\mid\theta)\big], \qquad E(X_j\mid\theta)=\sum_{h=0}^{m_j} h\,P_{jh}(\theta)$$
+
+`compute_pi_pcm()` returns the probabilities `Pi` together with their first three derivatives `dPi`, `d2Pi` and `d3Pi`. It writes the numerator of category $k$ as $\gamma_{jk} = \exp\big[\sum_{t\le k} D(\theta-\delta_{jt})\big]$ and differentiates it as $\gamma_{jk}\,k$, exactly as `catR::Pi()` does, where the exact derivative is $\gamma_{jk}\,D\,k$ (the exact line is left commented out in the source). With $D = 1$ the two coincide. With $D = 1.702$ the probabilities are still exact, but `dPi` is the true slope divided by $D$, and each higher derivative loses one more factor of $D$. The function keeps catR's convention on purpose so that the two return the same numbers. The section on the metric constant below demonstrates the factor against finite differences; the next two subsections explain why it changes neither item selection nor EAP scoring.
+
+### Item information
+
+$$I_j(\theta) = \sum_{k=0}^{m_j} \frac{\big[\partial P_{jk}(\theta)/\partial\theta\big]^2}{P_{jk}(\theta)} = D^2\,\mathrm{Var}(X_j\mid\theta)$$
+
+The second equality follows from substituting the derivative above and is specific to the Rasch family: the information of a PCM item is its conditional score variance, scaled by $D^2$. Because `compute_ii_pcm()` builds the sum from catR's derivative, it returns $\mathrm{Var}(X_j\mid\theta)$ itself — the exact information at $D=1$, and the exact information divided by $D^2$ at $D=1.702$. Three consequences, all checked below:
+
+1. With no discrimination parameter, the height and the shape of an information curve depend only on the number of steps and their spacing. Adding the same constant to every step of an item only moves its curve.
+2. The variance of a score on $0,\ldots,m$ is at most $m^2/4$, so the returned information of an item with $m$ steps can never exceed $m^2/4$ — 4 for a five-category item.
+3. Items with different spacings have differently shaped curves, so — unlike in the RSM — items in a PCM bank differ in *how much* information they can deliver, not only in *where*.
+
+`compute_ii_pcm()` also returns the first two derivatives of the information, obtained by differentiating each term $\dot P_{jk}^2/P_{jk}$ and summing over categories:
+
+$$\frac{\partial I_j}{\partial\theta} = \sum_{k} \left[\frac{2\dot P_{jk}\ddot P_{jk}}{P_{jk}} - \frac{\dot P_{jk}^3}{P_{jk}^2}\right]
+\qquad
+\frac{\partial^2 I_j}{\partial\theta^2} = \sum_{k} \left[\frac{2\ddot P_{jk}^2 + 2\dot P_{jk}\dddot P_{jk}}{P_{jk}} - \frac{5\dot P_{jk}^2\ddot P_{jk}}{P_{jk}^2} + \frac{2\dot P_{jk}^4}{P_{jk}^3}\right]$$
+
+Neither maximum-information selection nor EAP scoring uses `dIi` or `d2Ii`; they are returned because `catR::Ii()` returns them. **Test information** is the sum of the item informations.
+
+### Next-item selection
+
+An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate — the **Maximum Fisher Information (MFI)** criterion. `compute_next_item_pcm()` evaluates `compute_ii_pcm()` for every item not listed in `out` (the items already administered) and returns the best one. Under the RSM every information curve is the same curve shifted by $\lambda_j$, so MFI reduces to a nearest-neighbour lookup on the item locations. Under the PCM the curves differ in shape and height, there is no such shortcut, and the information of every available item has to be computed at $\theta$.
+
+The $D$ convention does not affect selection: at a given $D$ the information of every candidate is divided by the same $D^2$, and dividing all candidates by one positive constant does not change which is largest.
+
+The `randomesque` argument draws at random from the $k$ most informative available items instead of always taking the single best, which is standard exposure control. Two edge cases are documented in the source: when several items tie exactly for the maximum, `catR` draws one of them at random whereas `compute_next_item_pcm()` takes the first; and with `randomesque` above 1 `catR` also keeps every item tied with the last one kept, so it can draw from more than $k$ items.
+
+### Likelihood of a response pattern
+
+Under **local independence**, the likelihood of a response pattern $\mathbf{x} = (x_1,\ldots,x_n)$, with each $x_i \in \{0,\ldots,m_i\}$, is
+
+$$L(\theta) = \prod_{i=1}^{n} P_{i,x_i}(\theta)$$
+
+`compute_pi_pcm()` returns one row per item and one column per category, so the response to item $i$ selects column `x[i]+1`; the `+1` is index bookkeeping, because categories start at 0 and R columns start at 1.
+
+### EAP and its standard error
+
+A **prior** $\pi(\theta)$ on ability — normal with `priorPar = c(mean, sd)`, standard normal by default — turns the likelihood into a posterior, and EAP (Bock & Mislevy, 1982) reports its mean and standard deviation:
+
+$$\hat\theta_{EAP} = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}
+\qquad
+SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
+
+Both integrals are evaluated on a grid of `nqp` quadrature points (default 33) spanning `lower` to `upper` (default $\pm 4$) and integrated with the trapezoidal rule of `integrate_cat()`. Only the probabilities enter the integrals, never their derivatives, so the $D$ convention above has no effect on the estimate or its standard error. Maximum likelihood has no finite estimate for a pattern with every response in the lowest or in the highest category; the prior keeps both integrals finite for every pattern.
+
+`compute_eap_se_pcm()` takes the evaluation point `theta` as a free argument. Passing the EAP estimate returns the posterior standard deviation; any other value returns the posterior root mean squared deviation around that point, which is larger.
+
+### A Rasch-family consequence: the raw score is sufficient
+
+Writing out the likelihood of a PCM response pattern,
+
+$$L(\theta) = \frac{\exp\left(D\,\theta \sum_{i} x_i \;-\; D \sum_{i} \sum_{t=1}^{x_i}\delta_{it}\right)}{\prod_{i} \sum_{h=0}^{m_i}\exp\left[\sum_{t=1}^{h} D(\theta-\delta_{it})\right]}$$
+
+The denominator depends on $\theta$ and on the items but not on the responses, and the second term of the numerator depends on the responses but not on $\theta$. The pattern therefore touches the $\theta$-dependent part of the likelihood only through the **total score** $\sum_i x_i$. For two patterns with the same total on the same items, the likelihood ratio is the constant $\exp\left[-D(S_1 - S_2)\right]$, where $S = \sum_i \sum_{t \le x_i} \delta_{it}$ is the sum of the step parameters each pattern has passed. The constant cancels from both EAP ratios, so the two patterns get identical estimates and standard errors: the raw score is a **sufficient statistic** for $\theta$ (Masters, 1982).
+
+---
+
+## The item bank
+
+The bank from the roxygen examples of `cat_eap_pcm.R`: five items, four steps each, so five categories scored 0 to 4.
+
+```{r bank}
+deltaj1 <- c(-1.853, -2.214, -0.936, -1.508, -0.412)
+deltaj2 <- c(-0.627, -0.504, -1.215, -0.183,  0.338)
+deltaj3 <- c( 0.418,  0.692,  0.284,  0.735,  1.102)
+deltaj4 <- c( 1.636,  1.927,  1.405,  2.118,  2.285)
+
+bank <- matrix(c(deltaj1, deltaj2, deltaj3, deltaj4), nrow = 5,
+               dimnames = list(1:5, c("deltaj1", "deltaj2", "deltaj3", "deltaj4")))
+bank
+```
+
+Unlike the RSM bank, no column is constant: every item has its own steps. A few per-item summaries show how they differ:
+
+```{r bank_summary}
+bank_summary <- data.frame(mean_step = rowMeans(bank),
+                           spread    = apply(bank, 1, function(b) diff(range(b))),
+                           ordered   = !apply(bank, 1, is.unsorted))
+bank_summary
+```
+
+The items differ both in where their steps sit and in how widely they are spaced. Item `r which(!bank_summary$ordered)` has its first two steps reversed ($\delta_{31}$ = `r bank[3, 1]`, $\delta_{32}$ = `r bank[3, 2]`), which the PCM allows; the worked example on threshold ordering shows what that does.
+
+---
+
+## Validating each piece against `catR`
+
+### Normal density
+
+```{r density_check}
+v <- seq(-3, 3, by = 0.1)
+comparison <- data.frame(x = v, density_function = density_function(v), dnorm = dnorm(v))
+head(comparison)
+all.equal(comparison$density_function, comparison$dnorm)
+```
+
+```{r density_plot,dev='png'}
+ggplot(comparison, aes(x = x)) +
+  geom_line(aes(y = density_function, color = "density_function()"), linewidth = 1) +
+  geom_point(aes(y = dnorm, color = "dnorm()"), shape = 1) +
+  labs(title = "Hand-written normal density vs. dnorm()",
+       x = expression(theta), y = "density", color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+The function writes out the textbook normal density longhand. It uses `exp(1)` rather than a hard-coded `2.71828`, which is accurate to only six significant digits and, according to its documentation, shifts the EAP estimate in the seventh decimal.
+
+### Numerical integration
+
+```{r integration_check}
+x <- seq(from = -3, to = 3, length = 33)
+y <- round(exp(x), 2)
+c(integrate_cat = integrate_cat(x, y), integrate.catR = catR::integrate.catR(x, y))
+all.equal(integrate_cat(x, y), catR::integrate.catR(x, y))
+```
+
+### Category response probabilities and their derivatives
+
+```{r pi_check}
+mine   <- compute_pi_pcm(theta = 0, bank)
+theirs <- catR::Pi(th = 0, bank, model = "PCM")
+
+round(mine$Pi, 6)
+rowSums(mine$Pi)
+sapply(c("Pi", "dPi", "d2Pi", "d3Pi"), function(k) isTRUE(all.equal(mine[[k]], theirs[[k]])))
+```
+
+All four elements agree at $\theta = 0$. The same comparison over a range of abilities and at both values of the metric constant, reporting the largest absolute difference in each element:
+
+```{r pi_check_grid}
+settings <- expand.grid(theta = c(-3, -1, 0, 0.7, 2.5), D = c(1, 1.702))
+
+pi_diff <- t(mapply(function(th, d) {
+  a <- compute_pi_pcm(th, bank, D = d)
+  b <- catR::Pi(th, bank, model = "PCM", D = d)
+  sapply(c("Pi", "dPi", "d2Pi", "d3Pi"), function(k) max(abs(a[[k]] - b[[k]])))
+}, settings$theta, settings$D))
+
+cbind(settings, pi_diff)
+c(max_abs_difference = max(pi_diff))
+```
+
+The largest difference over every element, ability and metric constant is `r if (max(pi_diff) == 0) "exactly zero" else signif(max(pi_diff), 3)`: the two functions perform the same arithmetic in the same order.
+
+```{r pi_plot,dev='png',fig.height=8}
+theta_grid <- seq(-5, 5, by = 0.05)
+df_curves <- do.call(rbind, lapply(1:5, function(j) {
+  p <- t(sapply(theta_grid, function(th) compute_pi_pcm(th, bank[j, , drop = FALSE])$Pi[1, ]))
+  d <- data.frame(theta = theta_grid, p)
+  names(d)[-1] <- paste0("category ", 0:4)
+  out <- reshape2::melt(d, id.vars = "theta", variable.name = "category", value.name = "P")
+  out$item <- paste("item", j)
+  out
+}))
+df_steps <- data.frame(item = paste("item", rep(1:5, times = 4)), step = as.vector(bank))
+
+ggplot(df_curves, aes(x = theta, y = P, color = category)) +
+  geom_vline(data = df_steps, aes(xintercept = step), linetype = "dashed", color = "grey60") +
+  geom_line(linewidth = 0.9) +
+  facet_wrap(~ item, ncol = 2) +
+  labs(title = "Category response curves, all five items",
+       subtitle = "dashed lines mark the step parameters of each item",
+       x = expression(theta), y = expression(P(theta)), color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+Each panel has its own set of curves, and each dashed line — one step parameter — passes through the crossing point of two adjacent category curves. In item 3 the first two dashed lines are in reverse order, and category 1 is squeezed between its neighbours.
+
+### The metric constant and the derivatives
+
+The derivatives are checked two ways at $\theta = 0.3$: against the closed form $P_{jk}\big[k - E(X_j\mid\theta)\big]$, and against central finite differences. Each column of ratios divides a finite-difference slope by the derivative the function returns for it.
+
+```{r d_convention}
+th  <- 0.3
+eps <- 1e-5
+slope <- function(f) (f(th + eps) - f(th - eps)) / (2 * eps)
+
+derivative_check <- t(sapply(c(1, 1.702), function(d) {
+  r <- compute_pi_pcm(th, bank, D = d)
+  expected <- as.vector(r$Pi %*% (0:4))
+  closed_form <- r$Pi * (matrix(0:4, 5, 5, byrow = TRUE) - expected)
+  s1 <- slope(function(t) compute_pi_pcm(t, bank, D = d)$Pi)
+  s2 <- slope(function(t) compute_pi_pcm(t, bank, D = d)$dPi)
+  s3 <- slope(function(t) compute_pi_pcm(t, bank, D = d)$d2Pi)
+  c(D = d,
+    max_abs_dPi_minus_closed_form = max(abs(r$dPi - closed_form)),
+    slope_Pi_over_dPi_min   = min(s1 / r$dPi),  slope_Pi_over_dPi_max   = max(s1 / r$dPi),
+    slope_dPi_over_d2Pi_min = min(s2 / r$d2Pi), slope_dPi_over_d2Pi_max = max(s2 / r$d2Pi),
+    slope_d2Pi_over_d3Pi_min = min(s3 / r$d3Pi), slope_d2Pi_over_d3Pi_max = max(s3 / r$d3Pi))
+}))
+round(derivative_check, 6)
+```
+
+At $D = 1$ every ratio is 1: `dPi`, `d2Pi` and `d3Pi` are the exact first, second and third derivatives. At $D = 1.702$ every ratio is `r round(derivative_check[2, "slope_Pi_over_dPi_min"], 6)`: the slope of `Pi` is $D$ times `dPi`, the slope of `dPi` is $D$ times `d2Pi`, and the slope of `d2Pi` is $D$ times `d3Pi`. So `dPi`, `d2Pi` and `d3Pi` are the exact derivatives divided by $D$, $D^2$ and $D^3$. At both values `dPi` equals the closed form $P_{jk}\big[k - E(X_j\mid\theta)\big]$ without the factor $D$.
+
+The information inherits the convention. The exact information is computed below from finite-difference slopes of the probabilities, and the score variance directly from the probabilities:
+
+```{r d_convention_info}
+information_check <- t(sapply(c(1, 1.702), function(d) {
+  p <- compute_pi_pcm(th, bank, D = d)$Pi
+  exact_information <- rowSums(slope(function(t) compute_pi_pcm(t, bank, D = d)$Pi)^2 / p)
+  score_variance <- as.vector(p %*% (0:4)^2) - as.vector(p %*% (0:4))^2
+  ii <- compute_ii_pcm(th, bank, D = d)
+  s1 <- slope(function(t) compute_ii_pcm(t, bank, D = d)$Ii)
+  s2 <- (compute_ii_pcm(th + 1e-4, bank, D = d)$Ii - 2 * ii$Ii +
+         compute_ii_pcm(th - 1e-4, bank, D = d)$Ii) / 1e-4^2
+  c(D = d,
+    max_abs_Ii_minus_variance = max(abs(ii$Ii - score_variance)),
+    exact_over_Ii        = mean(exact_information / ii$Ii),
+    slope_Ii_over_dIi    = mean(s1 / ii$dIi),
+    curvature_Ii_over_d2Ii = mean(s2 / ii$d2Ii))
+}))
+round(information_check, 5)
+c(D_squared = 1.702^2)
+```
+
+At both values of $D$ the returned `Ii` is the conditional score variance. At $D = 1$ that *is* the information, and `dIi` and `d2Ii` are its exact first and second derivatives. At $D = 1.702$ the exact information is `r round(information_check[2, "exact_over_Ii"], 4)` times the returned value, which is $D^2$. The returned `dIi` and `d2Ii` are built from the scaled probability derivatives, so they are not even the derivatives of the returned `Ii`: its slope is $D$ times `dIi` and its curvature $D^2$ times `d2Ii`.
+
+None of this reaches item selection. Ranking the items by the exact information (again from finite-difference slopes, now at each grid point) and by the returned one gives the same choice at every ability on a fine grid:
+
+```{r d_selection}
+grid <- seq(-4, 4, by = 0.05)
+same_choice <- sapply(grid, function(t) {
+  p <- compute_pi_pcm(t, bank, D = 1.702)$Pi
+  s <- (compute_pi_pcm(t + eps, bank, D = 1.702)$Pi - compute_pi_pcm(t - eps, bank, D = 1.702)$Pi) / (2 * eps)
+  which.max(rowSums(s^2 / p)) == which.max(compute_ii_pcm(t, bank, D = 1.702)$Ii)
+})
+c(same_choice = sum(same_choice), grid_points = length(grid))
+```
+
+EAP is untouched for a simpler reason — it uses only `Pi` — and the EAP validation below includes $D = 1.702$. The convention only matters where the absolute size of the derivatives or of the information is used: a slope read off `dPi`, or a maximum-likelihood standard error computed as $1/\sqrt{\sum_j I_j}$ from the returned information, which at $D = 1.702$ would first have to be multiplied by $D^2$.
+
+### Item information
+
+```{r ii_check}
+mine   <- compute_ii_pcm(theta = 0, bank)
+theirs <- catR::Ii(th = 0, bank, model = "PCM")
+
+data.frame(Ii   = mine$Ii,   Ii_catR   = theirs$Ii,
+           dIi  = mine$dIi,  dIi_catR  = theirs$dIi,
+           d2Ii = mine$d2Ii, d2Ii_catR = theirs$d2Ii)
+sapply(c("Ii", "dIi", "d2Ii"), function(k) isTRUE(all.equal(mine[[k]], theirs[[k]])))
+```
+
+```{r ii_check_grid}
+ii_diff <- t(mapply(function(th, d) {
+  a <- compute_ii_pcm(th, bank, D = d)
+  b <- catR::Ii(th, bank, model = "PCM", D = d)
+  sapply(c("Ii", "dIi", "d2Ii"), function(k) max(abs(a[[k]] - b[[k]])))
+}, settings$theta, settings$D))
+
+cbind(settings, ii_diff)
+c(max_abs_difference = max(ii_diff))
+```
+
+```{r ii_plot,dev='png'}
+info_grid <- seq(-4, 4, by = 0.05)
+info <- t(sapply(info_grid, function(th) compute_ii_pcm(th, bank)$Ii))
+df_info <- data.frame(theta = info_grid, info)
+names(df_info)[-1] <- paste0("item ", 1:5)
+df_info_long <- reshape2::melt(df_info, id.vars = "theta",
+                               variable.name = "item", value.name = "information")
+
+ggplot(df_info_long, aes(x = theta, y = information, color = item)) +
+  geom_line(linewidth = 1) +
+  labs(title = "Item information curves",
+       subtitle = "each item has its own steps, so each curve has its own height and shape",
+       x = expression(theta), y = "information", color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+```{r test_info_plot,dev='png'}
+df_test <- data.frame(theta = info_grid, information = rowSums(info))
+
+ggplot(df_test, aes(x = theta, y = information)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  labs(title = "Test information", x = expression(theta), y = "information") +
+  theme_bw(base_size = 12)
+```
+
+The item curves differ in height as well as in location; the first worked example below measures by how much.
+
+### Next-item selection
+
+```{r next_item_check}
+mine   <- compute_next_item_pcm(theta = 0, bank)
+theirs <- catR::nextItem(bank, model = "PCM", theta = 0, criterion = "MFI")
+c(mine_item = mine$item, catR_item = theirs$item,
+  mine_info = mine$info, catR_info = theirs$info)
+```
+
+With items already administered excluded via `out`, at several abilities:
+
+```{r next_item_out}
+out_sets <- list(NULL, 5, c(5, 3), c(5, 3, 1), c(1, 2, 3, 5))
+out_check <- do.call(rbind, lapply(out_sets, function(o) {
+  do.call(rbind, lapply(c(-1, 0, 1.5), function(th) {
+    data.frame(theta = th,
+               out   = if (is.null(o)) "none" else paste(o, collapse = ","),
+               mine  = compute_next_item_pcm(th, bank, out = o)$item,
+               catR  = catR::nextItem(bank, model = "PCM", theta = th, out = o,
+                                      criterion = "MFI")$item)
+  }))
+}))
+out_check
+all(out_check$mine == out_check$catR)
+```
+
+And across the whole ability range, without `out`:
+
+```{r next_item_grid}
+agree <- sapply(grid, function(th)
+  compute_next_item_pcm(th, bank)$item ==
+    catR::nextItem(bank, model = "PCM", theta = th, criterion = "MFI")$item)
+c(agreements = sum(agree), grid_points = length(grid))
+```
+
+With `randomesque` above 1 both functions draw at random, so they can only be compared under the same seed. Both rank the candidates by decreasing information and make one draw from the same random-number stream:
+
+```{r next_randomesque}
+same_pick <- sapply(1:200, function(s) {
+  set.seed(s)
+  a <- catR::nextItem(bank, model = "PCM", theta = 0.4, out = 2, randomesque = 3)$item
+  set.seed(s)
+  b <- compute_next_item_pcm(theta = 0.4, bank, out = 2, randomesque = 3)$item
+  a == b
+})
+table(same_pick)
+```
+
+The same item is drawn under all `r length(same_pick)` seeds. This bank has no exact ties in information; with ties, the two functions would differ in the way described in the theory section.
+
+### Items with fewer categories
+
+Items need not share a category count. Here item 2 becomes a three-category item (scored 0 to 2) and item 5 a four-category item (scored 0 to 3), each padded with `NA` at the end of its row:
+
+```{r na_padding}
+bank_na <- bank
+bank_na[2, c("deltaj3", "deltaj4")] <- NA
+bank_na[5, "deltaj4"] <- NA
+bank_na
+
+round(compute_pi_pcm(theta = 0, bank_na)$Pi, 6)
+rowSums(compute_pi_pcm(theta = 0, bank_na)$Pi, na.rm = TRUE)
+```
+
+The categories that do not exist are `NA`, and the remaining probabilities of each item still sum to 1. Probabilities, derivatives, information and scoring all still agree with `catR`:
+
+```{r na_padding_check}
+p_mine <- compute_pi_pcm(0.4, bank_na)
+p_catR <- catR::Pi(0.4, bank_na, model = "PCM")
+i_mine <- compute_ii_pcm(0.4, bank_na)
+i_catR <- catR::Ii(0.4, bank_na, model = "PCM")
+c(sapply(c("Pi", "dPi", "d2Pi", "d3Pi"), function(k) isTRUE(all.equal(p_mine[[k]], p_catR[[k]]))),
+  sapply(c("Ii", "dIi", "d2Ii"), function(k) isTRUE(all.equal(i_mine[[k]], i_catR[[k]]))))
+
+response_na <- c(4, 2, 3, 1, 3)   # item 2 is scored 0 to 2, item 5 is scored 0 to 3
+th_na <- compute_eap_pcm(bank_na, response_na)
+c(eap_mine = th_na,
+  eap_catR = catR::eapEst(bank_na, response_na, model = "PCM"),
+  se_mine  = compute_eap_se_pcm(th_na, bank_na, response_na),
+  se_catR  = catR::eapSem(th_na, bank_na, response_na, model = "PCM"))
+```
+
+The padding has to go at the **end** of the row. An `NA` in the middle does not skip a step, because every later cumulative sum inherits it:
+
+```{r na_middle}
+item_gap <- rbind(c(-1, NA, 0.5, 1.5))
+compute_pi_pcm(theta = 0, item_gap)$Pi
+catR::Pi(th = 0, item_gap, model = "PCM")$Pi
+```
+
+The `NA` in the second column removes categories 2, 3 and 4 and leaves a dichotomous item, in `catR` as well.
+
+### Likelihood
+
+`catR` has no exported likelihood function to compare against, so the check reconstructs the same product from `catR`'s own probability matrix, at both values of $D$:
+
+```{r likelihood_check}
+response <- c(4, 3, 2, 1, 0)
+sapply(c(1, 1.702), function(d) {
+  P_catR <- catR::Pi(th = 0.3, bank, model = "PCM", D = d)$Pi
+  c(D = d,
+    compute_likelihood_pcm = compute_likelihood_pcm(theta = 0.3, bank = bank, x = response, D = d),
+    from_catR_Pi = prod(sapply(1:5, function(i) P_catR[i, response[i] + 1])))
+})
+```
+
+```{r likelihood_plot,dev='png'}
+lik_grid <- seq(-4, 4, by = 0.05)
+df_lik <- data.frame(theta = lik_grid,
+                     likelihood = sapply(lik_grid, function(th)
+                       compute_likelihood_pcm(th, bank, response)))
+
+ggplot(df_lik, aes(x = theta, y = likelihood)) +
+  geom_line(linewidth = 1, color = "steelblue") +
+  labs(title = "Likelihood of the response pattern (4, 3, 2, 1, 0)",
+       x = expression(theta), y = "likelihood") +
+  theme_bw(base_size = 12)
+```
+
+### EAP ability estimate and standard error
+
+Eight patterns, including the two extreme ones for which maximum likelihood has no finite estimate, at both values of the metric constant:
+
+```{r eap_check}
+patterns <- list(c(0, 0, 0, 0, 0), c(1, 1, 1, 1, 1), c(2, 2, 2, 2, 2), c(3, 3, 3, 3, 3),
+                 c(4, 4, 4, 4, 4), c(4, 3, 2, 1, 0), c(0, 4, 0, 4, 0), c(4, 4, 4, 4, 3))
+
+validation <- do.call(rbind, lapply(c(1, 1.702), function(d) {
+  do.call(rbind, lapply(patterns, function(x) {
+    th_mine <- compute_eap_pcm(bank, x, D = d)
+    data.frame(D        = d,
+               pattern  = paste(x, collapse = " "),
+               eap_mine = th_mine,
+               eap_catR = catR::eapEst(bank, x, model = "PCM", D = d),
+               se_mine  = compute_eap_se_pcm(th_mine, bank, x, D = d),
+               se_catR  = catR::eapSem(th_mine, bank, x, model = "PCM", D = d))
+  }))
+}))
+validation
+
+c(eap = all.equal(validation$eap_mine, validation$eap_catR),
+  se  = all.equal(validation$se_mine,  validation$se_catR))
+c(max_eap_difference = max(abs(validation$eap_mine - validation$eap_catR)),
+  max_se_difference  = max(abs(validation$se_mine  - validation$se_catR)))
+```
+
+Both the estimate and its standard error reproduce `catR` to within `r signif(max(abs(c(validation$eap_mine - validation$eap_catR, validation$se_mine - validation$se_catR))), 2)` across all sixteen combinations, including the all-lowest and all-highest patterns and $D = 1.702$.
+
+---
+
+## Worked example: the rating scale model is a constrained partial credit model
+
+The RSM writes every step as $\lambda_j + \delta_k$. Any RSM bank is therefore also a PCM bank, with step matrix $\delta_{jk} = \lambda_j + \delta_k$. Take the RSM bank from the companion vignette and rewrite it:
+
+```{r rsm_as_pcm}
+lambdaj <- c(-0.560, -0.230, 1.559, 0.071, 0.129)
+deltak  <- c(1.715, 0.461, -1.265, -0.687)
+
+bank_rsm <- matrix(c(lambdaj, rep(deltak, each = 5)), nrow = 5,
+                   dimnames = list(1:5, c("lambdaj", paste0("delta", 1:4))))
+bank_from_rsm <- outer(lambdaj, deltak, "+")
+dimnames(bank_from_rsm) <- list(1:5, paste0("deltaj", 1:4))
+
+bank_rsm
+bank_from_rsm
+```
+
+The RSM layout has five columns (location plus four thresholds); the PCM layout of the same items has four. The two parameterisations give the same probabilities, derivatives and information, whether computed with `compute_pi_rsm()` or with `compute_pi_pcm()`, and both agree with `catR::Pi(model = "RSM")`:
+
+```{r rsm_as_pcm_check}
+rsm_pcm_diff <- t(mapply(function(th, d) {
+  a <- compute_pi_rsm(th, bank_rsm, D = d)
+  b <- compute_pi_pcm(th, bank_from_rsm, D = d)
+  c(sapply(c("Pi", "dPi", "d2Pi", "d3Pi"), function(k) max(abs(a[[k]] - b[[k]]))),
+    Ii = max(abs(compute_ii_rsm(th, bank_rsm, D = d)$Ii - compute_ii_pcm(th, bank_from_rsm, D = d)$Ii)),
+    Pi_vs_catR_RSM = max(abs(catR::Pi(th, bank_rsm, model = "RSM", D = d)$Pi - b$Pi)))
+}, settings$theta, settings$D))
+cbind(settings, rsm_pcm_diff)
+```
+
+And the same EAP estimates:
+
+```{r rsm_as_pcm_eap}
+rsm_patterns <- list(c(0, 0, 0, 0, 0), c(4, 3, 2, 1, 0), c(2, 2, 2, 2, 2), c(4, 4, 4, 4, 4))
+rsm_eap <- do.call(rbind, lapply(rsm_patterns, function(x) {
+  data.frame(pattern      = paste(x, collapse = " "),
+             eap_rsm      = compute_eap_rsm(bank_rsm, x),
+             eap_pcm      = compute_eap_pcm(bank_from_rsm, x),
+             eap_catR_RSM = catR::eapEst(bank_rsm, x, model = "RSM"),
+             eap_catR_PCM = catR::eapEst(bank_from_rsm, x, model = "PCM"))
+}))
+rsm_eap
+c(max_abs_difference = max(abs(as.matrix(rsm_eap[, -1]) - rsm_eap$eap_rsm)))
+```
+
+The converse does not hold. A PCM bank can be written as an RSM bank only if, after removing each item's mean step, every row is left with the same thresholds. The rewritten RSM bank passes that test by construction; the PCM bank of this vignette does not:
+
+```{r pcm_not_rsm}
+round(bank_from_rsm - rowMeans(bank_from_rsm), 3)
+round(bank - rowMeans(bank), 3)
+```
+
+In the first matrix every row is the same; in the second no two rows are. The RSM spends 9 parameters on this five-item, five-category bank ($n + m$) where the PCM spends 20 ($n \times m$); the PCM's extra freedom is what the next example is about.
+
+---
+
+## Worked example: every item has its own information curve
+
+Locate each item's information peak numerically, in the PCM bank and in the RSM bank rewritten above:
+
+```{r info_peaks}
+item_peaks <- function(b) {
+  t(sapply(1:nrow(b), function(j) {
+    opt <- optimize(function(th) compute_ii_pcm(th, b[j, , drop = FALSE])$Ii,
+                    interval = c(-6, 6), maximum = TRUE)
+    c(peak = opt$maximum, max_information = opt$objective)
+  }))
+}
+peaks     <- item_peaks(bank)
+peaks_rsm <- item_peaks(bank_from_rsm)
+
+data.frame(bank_summary[, c("mean_step", "spread")], peaks,
+           offset = peaks[, "peak"] - bank_summary$mean_step)
+data.frame(mean_step = rowMeans(bank_from_rsm), peaks_rsm,
+           offset = peaks_rsm[, "peak"] - rowMeans(bank_from_rsm))
+```
+
+In the rewritten RSM bank every item reaches the same maximum information (to `r signif(diff(range(peaks_rsm[, "max_information"])), 2)`) at the same offset from its mean step: one curve, shifted. In the PCM bank the maximum ranges from `r round(min(peaks[, "max_information"]), 3)` (item `r which.min(peaks[, "max_information"])`) to `r round(max(peaks[, "max_information"]), 3)` (item `r which.max(peaks[, "max_information"])`), and the peak sits anywhere from `r round(min(peaks[, "peak"] - bank_summary$mean_step), 3)` to `r round(max(peaks[, "peak"] - bank_summary$mean_step), 3)` away from the item's mean step. The two tallest curves belong to the two items with the narrowest spread of steps, and the lowest curve to the item with the widest spread.
+
+Because heights differ, an item can be beaten everywhere. Comparing MFI with the rule "take the item whose mean step is closest to $\theta$" across the ability range:
+
+```{r mfi_vs_location}
+mfi     <- sapply(grid, function(th) compute_next_item_pcm(th, bank)$item)
+nearest <- sapply(grid, function(th) which.min(abs(th - bank_summary$mean_step)))
+c(agreements = sum(mfi == nearest), grid_points = length(grid))
+table(MFI_choice = factor(mfi, levels = 1:5))
+```
+
+The location rule agrees with MFI at only `r sum(mfi == nearest)` of `r length(grid)` points. Item `r paste(setdiff(1:5, mfi), collapse = ", ")` is never the most informative item anywhere between $-4$ and $4$, although its mean step (`r round(bank_summary$mean_step[setdiff(1:5, mfi)], 3)`) sits well inside the range of the bank: at every ability, some other item is more informative. It would still be administered once better items had been used up, which is why `compute_next_item_pcm()` evaluates every available item rather than looking up locations.
+
+### What shapes the curve
+
+With the height and shape set by the spacing of the steps alone, synthetic items make the pattern easy to see. All have four steps, so the returned information cannot exceed $m^2/4 = 4$:
+
+```{r info_shapes}
+shapes <- rbind("equal (0, 0, 0, 0)"          = c(0, 0, 0, 0),
+                "narrow (-0.75 ... 0.75)"     = c(-0.75, -0.25, 0.25, 0.75),
+                "moderate (-1.5 ... 1.5)"     = c(-1.5, -0.5, 0.5, 1.5),
+                "moderate shifted by +2"      = c(-1.5, -0.5, 0.5, 1.5) + 2,
+                "wide (-4.5 ... 4.5)"         = c(-4.5, -1.5, 1.5, 4.5),
+                "reversed (0.75 ... -0.75)"   = c(0.75, 0.25, -0.25, -0.75),
+                "strongly reversed (6 ... -6)" = c(6, 2, -2, -6))
+
+shape_grid <- seq(-8, 8, by = 0.01)
+shape_info <- sapply(1:nrow(shapes), function(j)
+  sapply(shape_grid, function(th) compute_ii_pcm(th, shapes[j, , drop = FALSE])$Ii))
+colnames(shape_info) <- rownames(shapes)
+
+shape_summary <- data.frame(max_information = apply(shape_info, 2, max),
+                            local_maxima    = apply(shape_info, 2, function(v) sum(diff(sign(diff(v))) == -2)))
+shape_summary
+
+# the shifted item is the moderate item moved by exactly 2
+shifted <- sapply(shape_grid, function(th)
+  compute_ii_pcm(th + 2, shapes["moderate shifted by +2", , drop = FALSE])$Ii)
+c(max_abs_difference_after_undoing_the_shift = max(abs(shifted - shape_info[, "moderate (-1.5 ... 1.5)"])))
+```
+
+```{r info_shapes_plot,dev='png'}
+df_shapes <- data.frame(theta = shape_grid, shape_info, check.names = FALSE)
+df_shapes_long <- reshape2::melt(df_shapes, id.vars = "theta",
+                                 variable.name = "steps", value.name = "information")
+
+ggplot(df_shapes_long, aes(x = theta, y = information, color = steps)) +
+  geom_hline(yintercept = 4, linetype = "dashed", color = "grey40") +
+  geom_line(linewidth = 0.9) +
+  labs(title = "Information curves of synthetic four-step PCM items",
+       subtitle = "dashed line: the ceiling m^2/4 = 4",
+       x = expression(theta), y = "information", color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+Spreading the steps lowers and widens the curve — from `r round(shape_summary["narrow (-0.75 ... 0.75)", "max_information"], 3)` for the narrow item to `r round(shape_summary["moderate (-1.5 ... 1.5)", "max_information"], 3)` for the moderate one and `r round(shape_summary["wide (-4.5 ... 4.5)", "max_information"], 3)` for the wide one, which splits into `r shape_summary["wide (-4.5 ... 4.5)", "local_maxima"]` bumps, one per step. Bringing the steps together and then past each other does the opposite: `r round(shape_summary["equal (0, 0, 0, 0)", "max_information"], 3)` with all four steps equal, `r round(shape_summary["reversed (0.75 ... -0.75)", "max_information"], 3)` with mildly reversed steps and `r round(shape_summary["strongly reversed (6 ... -6)", "max_information"], 3)` with strongly reversed ones, close to the ceiling of 4 but not above it. Moving every step by 2 moves the curve by exactly 2 and changes nothing else. The real bank fits the same pattern: item 3, whose steps are the most compressed and partly reversed, has the tallest curve.
+
+A tall, narrow curve is not simply a better item. With strongly reversed steps the middle categories almost never occur, and the item behaves like a sharp dichotomy between 0 and 4 at a single point on the scale; the next-but-one example looks at that from the category side.
+
+---
+
+## Worked example: the raw score is all that matters
+
+Five response patterns, all summing to 10, spread over the items in completely different ways:
+
+```{r sufficiency}
+same_total <- list(c(2, 2, 2, 2, 2), c(4, 3, 2, 1, 0), c(0, 1, 2, 3, 4),
+                   c(4, 4, 2, 0, 0), c(3, 3, 2, 1, 1))
+
+sufficiency <- data.frame(pattern   = sapply(same_total, paste, collapse = " "),
+                          raw_score = sapply(same_total, sum),
+                          theta_EAP = sapply(same_total, function(x) compute_eap_pcm(bank, x)))
+sufficiency$SE <- mapply(function(x, th) compute_eap_se_pcm(th, bank, x),
+                         same_total, sufficiency$theta_EAP)
+data.frame(sufficiency[, 1:2],
+           theta_EAP = sprintf("%.12f", sufficiency$theta_EAP),
+           SE        = sprintf("%.12f", sufficiency$SE))
+c(eap_range = diff(range(sufficiency$theta_EAP)), se_range = diff(range(sufficiency$SE)))
+```
+
+The estimates and the standard errors are identical to twelve decimal places. The theory section says why: for two patterns with the same total, the likelihood ratio is a constant, $\exp\left[-D(S_1 - S_2)\right]$. That constant can be computed from the steps each pattern has passed and compared with the ratio of the two likelihoods across $\theta$:
+
+```{r sufficiency_ratio}
+steps_passed <- function(x) sum(sapply(seq_along(x), function(i) sum(bank[i, seq_len(x[i])])))
+
+x1 <- c(4, 3, 2, 1, 0)
+x2 <- c(0, 1, 2, 3, 4)
+ratio_theta <- seq(-3, 3, by = 1)
+rbind(theta            = ratio_theta,
+      likelihood_ratio = sapply(ratio_theta, function(th)
+        compute_likelihood_pcm(th, bank, x1) / compute_likelihood_pcm(th, bank, x2)))
+c(closed_form = exp(-(steps_passed(x1) - steps_passed(x2))))
+```
+
+The ratio is the same at every $\theta$ and equals the closed form. The two likelihoods have the same shape and differ only in height, so after normalisation the two posteriors are the same distribution.
+
+Sufficiency means that, for a fixed set of items, the whole scoring procedure collapses into a **raw-score conversion table**: one EAP estimate and one standard error per possible total. Any pattern with the right total will do to compute it:
+
+```{r score_table}
+pattern_for_total <- function(total, m = rep(4, 5)) {
+  x <- integer(length(m))
+  for (i in seq_along(m)) { x[i] <- min(m[i], total); total <- total - x[i] }
+  x
+}
+
+score_table <- data.frame(raw_score = 0:20)
+score_table$pattern   <- sapply(score_table$raw_score, function(s) paste(pattern_for_total(s), collapse = " "))
+score_table$theta_EAP <- sapply(score_table$raw_score, function(s) compute_eap_pcm(bank, pattern_for_total(s)))
+score_table$SE        <- mapply(function(s, th) compute_eap_se_pcm(th, bank, pattern_for_total(s)),
+                                score_table$raw_score, score_table$theta_EAP)
+score_table
+```
+
+```{r score_table_plot,dev='png'}
+ggplot(score_table, aes(x = raw_score, y = theta_EAP)) +
+  geom_ribbon(aes(ymin = theta_EAP - SE, ymax = theta_EAP + SE),
+              alpha = 0.2, fill = "steelblue") +
+  geom_line(color = "steelblue", linewidth = 1) +
+  geom_point(size = 2, color = "steelblue") +
+  labs(title = "Raw-score conversion table: EAP estimate (± 1 SE)",
+       x = "raw score (out of 20)", y = expression(hat(theta)[EAP])) +
+  theme_bw(base_size = 12)
+```
+
+The estimate `r if (all(diff(score_table$theta_EAP) > 0)) "rises strictly" else "does not rise strictly"` with the raw score, from `r round(score_table$theta_EAP[1], 3)` at 0 to `r round(score_table$theta_EAP[21], 3)` at 20, well inside the integration bounds of $\pm 4$: the prior pulls the posterior mean of the extreme patterns back towards zero. The standard error is largest at raw score `r paste(score_table$raw_score[order(score_table$SE, decreasing = TRUE)[1:2]], collapse = " and ")` and smallest at `r score_table$raw_score[which.min(score_table$SE)]`, because a zero or a perfect score is compatible with a wide range of low or high abilities.
+
+The table belongs to these five items. In an adaptive test different examinees answer different items, so two examinees with the same raw score generally have different estimates; the raw score is sufficient only given the items that were administered.
+
+---
+
+## Worked example: threshold ordering and modal categories
+
+In item 3 the second step is easier than the first ($\delta_{32}$ = `r bank[3, 2]` < $\delta_{31}$ = `r bank[3, 1]`). Such **reversed** steps are allowed by the PCM and are common in real data. The first check is that adjacent curves really do cross at the step parameters:
+
+```{r crossing}
+t(sapply(1:4, function(k) {
+  p <- compute_pi_pcm(theta = bank[3, k], bank[3, ])$Pi[1, ]
+  c(step = k, theta = unname(bank[3, k]), P_lower_category = unname(p[k]), P_upper_category = unname(p[k + 1]))
+}))
+```
+
+At $\theta = \delta_{3k}$ categories $k-1$ and $k$ have exactly the same probability, for every $k$, whether or not the steps are ordered. Next, which categories are ever the single most likely response, for each item, on a fine grid from $-8$ to $8$:
+
+```{r modal}
+modal_categories <- function(b, th = seq(-8, 8, by = 0.01)) {
+  sort(unique(sapply(th, function(t) which.max(compute_pi_pcm(t, b)$Pi[1, ])))) - 1
+}
+sapply(1:5, function(j) paste(modal_categories(bank[j, ]), collapse = " "))
+
+max_p_item3 <- apply(t(sapply(seq(-8, 8, by = 0.01), function(t) compute_pi_pcm(t, bank[3, ])$Pi[1, ])), 2, max)
+round(max_p_item3, 3)
+```
+
+Every category is modal somewhere for items 1, 2, 4 and 5. For item 3, category 1 never is: its probability never rises above `r round(max_p_item3["cat1"], 3)`. Once $\theta$ is high enough for step 1 to be more likely passed than failed, step 2 — which is easier — is also more likely passed, so the response moves straight from category 0 to category 2. Sorting the steps into increasing order restores category 1 as a modal response:
+
+```{r ordering}
+item3_sorted <- sort(bank[3, ])
+rbind(as_given = bank[3, ], sorted = item3_sorted)
+list(as_given = modal_categories(bank[3, ]), sorted = modal_categories(item3_sorted))
+```
+
+```{r ordering_plot,dev='png'}
+curves_for <- function(b, label) {
+  g <- seq(-5, 5, by = 0.05)
+  m <- t(sapply(g, function(th) compute_pi_pcm(th, b)$Pi[1, ]))
+  d <- data.frame(theta = g, m)
+  names(d)[-1] <- paste0("category ", 0:4)
+  out <- reshape2::melt(d, id.vars = "theta", variable.name = "category", value.name = "P")
+  out$steps <- label
+  out
+}
+
+both <- rbind(curves_for(bank[3, ],    "as given (steps 1 and 2 reversed)"),
+              curves_for(item3_sorted, "sorted (ordered)"))
+
+ggplot(both, aes(x = theta, y = P, color = category)) +
+  geom_line(linewidth = 0.9) +
+  facet_wrap(~ steps) +
+  labs(title = "Category response curves, item 3",
+       subtitle = "effect of step ordering on whether category 1 is ever modal",
+       x = expression(theta), y = expression(P(theta)), color = NULL) +
+  theme_bw(base_size = 12)
+```
+
+The information consequence:
+
+```{r ordering_info}
+peak_information <- function(b) optimize(function(th) compute_ii_pcm(th, b)$Ii,
+                                         interval = c(-6, 6), maximum = TRUE)$objective
+c(as_given = peak_information(bank[3, ]), sorted = peak_information(item3_sorted))
+```
+
+With the steps as given, item 3 peaks at `r round(peak_information(bank[3, ]), 3)`; with sorted steps, at `r round(peak_information(item3_sorted), 3)`. Only the first step and the probability of category 1 change when the two steps are swapped — the cumulative sum for category 2 and above is the same — so the difference is modest here, but it runs in the direction of the synthetic items above: reversed steps give a taller curve. As with the synthetic items, that extra information comes from a category that does no distinct work, which is usually read as a sign that the response format is not being used as intended rather than as a well-functioning item.
+
+Every category probability stays positive whatever the order of the steps, because each is an exponential divided by a sum of exponentials. That is a real difference from cumulative-boundary models such as the graded response model, whose boundaries must be ordered for all category probabilities to be non-negative.
+
+---
+
+## Worked example: a short adaptive test
+
+A five-item bank is too small to show adaptivity — any five-item test uses all five items — so this section simulates a 40-item PCM bank: each item gets a location between $-2.5$ and $2.5$, four steps spaced roughly one unit apart around it, and some noise in each step.
+
+```{r big_bank}
+set.seed(2024)
+n_items  <- 40
+location <- runif(n_items, -2.5, 2.5)
+jitter   <- matrix(rnorm(4 * n_items, 0, 0.4), n_items)
+big_bank <- round(location + matrix(c(-1.5, -0.5, 0.5, 1.5), n_items, 4, byrow = TRUE) + jitter, 3)
+colnames(big_bank) <- paste0("deltaj", 1:4)
+
+head(big_bank)
+c(items = nrow(big_bank), items_with_reversed_steps = sum(apply(big_bank, 1, is.unsorted)))
+```
+
+At each step the loop picks the most informative unadministered item at the current estimate, simulates a response from an examinee at the true ability, and rescores on the items given so far:
+
+```{r adaptive}
+# simulate a response to item j from an examinee at theta
+simulate_response <- function(j, theta, b) {
+  p <- compute_pi_pcm(theta, b[j, , drop = FALSE])$Pi[1, ]
+  p <- p[!is.na(p)]
+  sample(0:(length(p) - 1), size = 1, prob = p)
+}
+
+run_cat <- function(true_theta, b, test_length = 10, randomesque = 1) {
+  theta <- 0
+  administered <- integer(0)
+  responses <- integer(0)
+  trace <- data.frame()
+  for (step in 1:test_length) {
+    sel <- compute_next_item_pcm(theta, b, out = administered, randomesque = randomesque)
+    administered <- c(administered, sel$item)
+    responses <- c(responses, simulate_response(sel$item, true_theta, b))
+
+    sub_bank <- b[administered, , drop = FALSE]
+    theta <- compute_eap_pcm(sub_bank, responses)
+    se <- compute_eap_se_pcm(theta, sub_bank, responses)
+
+    trace <- rbind(trace, data.frame(step = step, item = sel$item,
+                                     mean_step = mean(b[sel$item, ]),
+                                     information = sel$info,
+                                     response = tail(responses, 1),
+                                     theta_EAP = theta, SE = se))
+  }
+  trace
+}
+
+set.seed(1)
+true_theta <- 1.0
+trace <- run_cat(true_theta, big_bank)
+trace
+```
+
+```{r adaptive_plot,dev='png'}
+ggplot(trace, aes(x = step, y = theta_EAP)) +
+  geom_hline(yintercept = true_theta, linetype = "dashed", color = "grey40") +
+  geom_ribbon(aes(ymin = theta_EAP - SE, ymax = theta_EAP + SE),
+              alpha = 0.2, fill = "steelblue") +
+  geom_line(color = "steelblue", linewidth = 1) +
+  geom_point(size = 2, color = "steelblue") +
+  annotate("text", x = 1, y = true_theta + 0.08, hjust = 0,
+           label = "true theta", color = "grey40", size = 3.5) +
+  scale_x_continuous(breaks = trace$step) +
+  labs(title = "Adaptive test: EAP estimate (± 1 SE) after each item",
+       x = "item administered", y = expression(hat(theta)[EAP])) +
+  theme_bw(base_size = 12)
+```
+
+The standard error falls `r if (all(diff(trace$SE) < 0)) "at every step" else "overall"`, from `r round(trace$SE[1], 3)` after the first item to `r round(trace$SE[nrow(trace)], 3)` after the `r nrow(trace)`th, and the final estimate is `r round(trace$theta_EAP[nrow(trace)], 3)` for a true ability of `r true_theta`. The first item is chosen at $\theta = 0$; once the estimate moves up, the mean steps of the items chosen move up with it (`r round(trace$mean_step[1], 3)` for the first item, `r round(mean(trace$mean_step[-1]), 3)` on average for the other `r nrow(trace) - 1`). The information column also shows that the chosen items differ in how much they deliver at the moment they are chosen.
+
+### Exposure control
+
+Pure MFI is deterministic: every examinee starting at $\theta = 0$ receives the same first item. The `randomesque` argument draws at random from the $k$ best instead:
+
+```{r randomesque}
+set.seed(42)
+table(replicate(2000, compute_next_item_pcm(theta = 0, big_bank, randomesque = 1)$item))
+table(replicate(2000, compute_next_item_pcm(theta = 0, big_bank, randomesque = 3)$item))
+
+info_at_0 <- sort(compute_ii_pcm(theta = 0, big_bank)$Ii, decreasing = TRUE)
+c(best_item = info_at_0[1], mean_of_top_3 = mean(info_at_0[1:3]),
+  proportion_of_best = mean(info_at_0[1:3]) / info_at_0[1])
+```
+
+With `randomesque = 1` one item is the first item of every test; with `randomesque = 3` the first item is spread over three, at an average cost of `r round(100 * (1 - mean(info_at_0[1:3]) / info_at_0[1]), 1)`% of the information of the best one. The first item is only part of the story, so the whole adaptive test is repeated for 100 simulated examinees, with and without randomesque:
+
+```{r exposure_sim}
+set.seed(7)
+examinees <- rnorm(100)
+sims <- lapply(c(1, 3), function(r) lapply(examinees, function(t) run_cat(t, big_bank, 10, r)))
+
+exposure_summary <- do.call(rbind, lapply(1:2, function(i) {
+  runs  <- sims[[i]]
+  rate  <- tabulate(unlist(lapply(runs, function(d) d$item)), nbins = nrow(big_bank)) / length(examinees)
+  final <- sapply(runs, function(d) tail(d$theta_EAP, 1))
+  data.frame(randomesque      = c(1, 3)[i],
+             max_exposure     = max(rate),
+             items_never_used = sum(rate == 0),
+             mean_final_SE    = mean(sapply(runs, function(d) tail(d$SE, 1))),
+             RMSE             = sqrt(mean((final - examinees)^2)))
+}))
+exposure_summary
+```
+
+Randomesque lowers the highest exposure rate from `r exposure_summary$max_exposure[1]` to `r exposure_summary$max_exposure[2]` and the number of never-used items from `r exposure_summary$items_never_used[1]` to `r exposure_summary$items_never_used[2]`, while the mean final standard error moves from `r round(exposure_summary$mean_final_SE[1], 3)` to `r round(exposure_summary$mean_final_SE[2], 3)`. The RMSE against the true abilities is `r round(exposure_summary$RMSE[1], 3)` and `r round(exposure_summary$RMSE[2], 3)`; with 100 simulated examinees a difference of this size should not be over-read. Even with randomesque, the most-used item appears in `r round(100 * exposure_summary$max_exposure[2])`% of the tests: drawing among the three best items spreads the load only so far when a few items are clearly better than the rest over a wide ability range.
+
+---
+
+## Worked example: the numerical settings
+
+The EAP integrals are approximations, and four arguments control them. None of these is a free choice to make casually.
+
+```{r settings}
+x <- c(4, 4, 4, 4, 4)   # the hardest case for numerical integration
+
+numerical <- rbind(
+  data.frame(setting = "quadrature points", value = c(11, 33, 101, 501),
+             theta = sapply(c(11, 33, 101, 501),
+                            function(n) compute_eap_pcm(bank, x, nqp = n))),
+  data.frame(setting = "integration bound", value = c(3, 4, 6),
+             theta = sapply(c(3, 4, 6),
+                            function(b) compute_eap_pcm(bank, x, lower = -b, upper = b))),
+  data.frame(setting = "prior SD", value = c(1, 2),
+             theta = sapply(c(1, 2),
+                            function(s) compute_eap_pcm(bank, x, priorPar = c(0, s)))),
+  data.frame(setting = "metric constant D", value = c(1, 1.702),
+             theta = sapply(c(1, 1.702),
+                            function(d) compute_eap_pcm(bank, x, D = d)))
+)
+numerical
+```
+
+```{r settings_values,include=FALSE}
+nq  <- numerical$theta[numerical$setting == "quadrature points"]
+bnd <- numerical$theta[numerical$setting == "integration bound"]
+psd <- numerical$theta[numerical$setting == "prior SD"]
+dd  <- numerical$theta[numerical$setting == "metric constant D"]
+```
+
+Three different kinds of effect are visible here, and they should not be confused with one another:
+
+- **Quadrature points** are pure approximation error. Moving from 11 to 33 points changes the estimate by `r signif(abs(nq[2] - nq[1]), 2)`; from 101 to 501 it changes by `r signif(abs(nq[4] - nq[3]), 2)`. The default of 33 is a reasonable accuracy/speed compromise and matches `catR`.
+- **Integration bounds** are also approximation error, but of a more dangerous kind. Truncating at $\pm 3$ moves the estimate by `r signif(bnd[2] - bnd[1], 2)` downwards, because for an all-maximum pattern the posterior still has real mass beyond $\theta = 3$ and cutting it off silently biases the estimate. Widening to $\pm 6$ changes it by `r signif(abs(bnd[3] - bnd[2]), 2)`. Bounds must be wide enough for the *most extreme pattern the bank can produce*, not for a typical one.
+- **The prior SD and the metric constant are not approximation error at all** — they are different models. Doubling the prior SD to 2 weakens the shrinkage and moves the estimate from `r round(psd[1], 3)` to `r round(psd[2], 3)`; changing $D$ to 1.702 rescales the whole latent metric and moves it to `r round(dd[2], 3)`. Both belong in the model specification and must match whatever was used to calibrate the step parameters.
+
+---
+
+## Conclusion
+
+The six PCM functions in `cat_eap_pcm.R`, together with the two helpers in `cat_eap_common.R`, reproduce their `catR` counterparts: the normal density, the trapezoidal integrator, the PCM category probabilities and all three of their derivatives, the item information and its two derivatives, MFI item selection with and without `out` and with randomesque under a common seed, and the two integrals that define EAP scoring, at $D = 1$ and at $D = 1.702$, for full and `NA`-padded banks.
+
+Written out, the model's character is easy to see. Each item has its own steps, so each item has its own category curves and its own information curve: items differ in how much they can measure and not only where, one item in this small bank is never the best choice anywhere, and adaptive selection has to evaluate every available item. The Rating Scale Model is the special case with a common step pattern, and rewriting an RSM bank as a PCM bank changes nothing. Steps may be reversed without breaking the model, but a reversed pair leaves a category that is never the most likely response. The PCM is still a Rasch model, so the raw score is a sufficient statistic, and the returned information is simply the conditional score variance. Finally, the functions share catR's convention of leaving $D$ out of the derivatives: exact at $D = 1$, scaled by powers of $D$ at $D = 1.702$, and harmless for both maximum-information selection and EAP scoring.
+
+---
+
+## References
+
+- Andrich, D. (1978). A rating formulation for ordered response categories. *Psychometrika, 43*(4), 561–573.
+- Bock, R. D., & Mislevy, R. J. (1982). Adaptive EAP estimation of ability in a microcomputer environment. *Applied Psychological Measurement, 6*(4), 431–444.
+- Magis, D., & Barrada, J. R. (2017). Computerized adaptive testing with R: Recent updates of the package catR. *Journal of Statistical Software, Code Snippets, 76*(1), 1–19. https://doi.org/10.18637/jss.v076.c01
+- Magis, D., & Raîche, G. (2012). Random generation of response patterns under computerized adaptive testing with the R package catR. *Journal of Statistical Software, 48*(8), 1–31. https://doi.org/10.18637/jss.v048.i08
+- Masters, G. N. (1982). A Rasch model for partial credit scoring. *Psychometrika, 47*(2), 149–174.
+
+---
+
+*Rendered with R `r getRversion()` · validated against catR `r as.character(packageVersion("catR"))`*
