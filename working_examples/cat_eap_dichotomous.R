@@ -262,7 +262,7 @@ compute_eap_se_dichotomous<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,u
   }
   g<-function(X) {
     res<-NULL
-    for (i in 1:length(X)) 
+    for (i in 1:length(X))
       res[i]<-(X[i]-theta)^2*density_function(X[i],priorPar[1],priorPar[2])*L(X[i],bank,x)
     return(res)
   }

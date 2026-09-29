@@ -19,7 +19,7 @@ vignette: >
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
-knitr::opts_chunk$set(out.width = "50%")
+knitr::opts_chunk$set(out.width = "60%")
 library(ggplot2)
 ```
 
@@ -138,11 +138,42 @@ Maximum Likelihood fails outright for an all-correct or all-incorrect pattern, b
 
 $$\hat\theta_{EAP} = E[\theta \mid \mathbf{x}] = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}$$
 
-and its precision as the **posterior standard deviation**
+For a response pattern $\mathbf{x}=(x_1,\ldots,x_n)$, the likelihood and the two integrands are
+
+$$
+\begin{aligned}
+L(s) &= \prod_{j=1}^{n} P_j(s)^{x_j}\,[1-P_j(s)]^{1-x_j},\\
+g(s) &= s\,\pi(s)\,L(s),\\
+h(s) &= \pi(s)\,L(s).
+\end{aligned}
+$$
+
+On the quadrature grid $X=(\theta_1,\ldots,\theta_Q)$, where $Q=\texttt{nqp}$ and $\theta_q=\texttt{lower}+(q-1)(\texttt{upper}-\texttt{lower})/(Q-1)$, the estimate is approximated by
+
+$$
+\hat\theta_{EAP} \approx \frac{\operatorname{Trap}(X,\,g(X))}{\operatorname{Trap}(X,\,h(X))},
+$$
+
+where $g(X)=(g(\theta_1),\ldots,g(\theta_Q))$ and $h(X)=(h(\theta_1),\ldots,h(\theta_Q))$. `Trap` denotes the trapezoidal integration implemented by `integrate_cat()` below.
 
 $$SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
 
-Both integrals are always finite because the normal prior decays to zero in the tails, however extreme the likelihood is.
+For this calculation, the numerator integrand is the squared distance from the EAP estimate times the posterior weight; the denominator is the same posterior weight used above:
+
+$$
+\begin{aligned}
+g_{SE}(s) &= (s-\hat\theta_{EAP})^2\,\pi(s)\,L(s),\\
+h(s) &= \pi(s)\,L(s).
+\end{aligned}
+$$
+
+Using the same quadrature grid $X$ as above, the numerical estimate is
+
+$$
+SE(\hat\theta_{EAP}) \approx \sqrt{\frac{\operatorname{Trap}(X,\,g_{SE}(X))}{\operatorname{Trap}(X,\,h(X))}}.
+$$
+
+All four integrals are finite, and both denominators are positive, for every response pattern: $0<L(\theta)\le 1$ and the normal prior has a finite mean and variance. This is what rescues the all-correct and all-incorrect patterns, whose likelihood never shrinks to zero in one tail and so cannot be integrated on its own.
 
 ### Numerical integration
 
@@ -167,7 +198,8 @@ bank <- matrix(c(1.75, 1.80, 1.18, 1.54, 1.56,
                  -2.55, -1.90, 0.18, 1.54, 2.56,
                  0.1, 0.1, 0.1, 0.1, 0.1,
                  0.9, 0.9, 0.9, 0.9, 0.9),
-               nrow = 5, dimnames = list(1:5, c("a", "b", "c", "d")))
+               nrow = 5, 
+               dimnames = list(1:5, c("a", "b", "c", "d")))
 bank
 ```
 
