@@ -23,6 +23,10 @@ source(paste0(directory, "code_options.R"))
 library(ggplot2)
 ```
 
+## Acknowledgement
+
+The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_rsm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_rsm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
+
 ## Description
 
 Andrich's **Rating Scale Model (RSM)** is the Rasch-family model for questionnaires in which every item shares one ordered response format: a Likert scale with categories such as "strongly disagree" … "strongly agree", scored $0, 1, \ldots, m$. Each item has its own location on the latent trait, but the thresholds between adjacent categories are common to the whole scale, so the model assumes the response format works the same way for every item (Andrich, 1978). That makes it the natural model for attitude, personality and satisfaction scales, and the most economical of the polytomous models in this series.
@@ -41,12 +45,6 @@ Andrich's **Rating Scale Model (RSM)** is the Rasch-family model for questionnai
 | `compute_eap_se_rsm()` | `cat_eap_rsm.R` | EAP standard error | `catR::eapSem(model = "RSM")` |
 
 This vignette explains the theory behind each function, checks every one of them against its `catR` counterpart, and then uses them to run a small adaptive test end to end.
-
-It is one of six companion vignettes that build the same pipeline for different item response models: *EAP Ability Estimation From Scratch* (dichotomous items), *EAP Ability Estimation From Scratch: The Rating Scale Model* (this one), *EAP Ability Estimation From Scratch: The Partial Credit Model*, *EAP Ability Estimation From Scratch: The Graded Response Model*, *EAP Ability Estimation From Scratch: The Modified Graded Response Model* and *EAP Ability Estimation From Scratch: The Nominal Response Model*.
-
-## Acknowledgement
-
-The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_rsm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_rsm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
 
 ```{r library,message=FALSE,warning=FALSE}
 library(catR)
@@ -90,19 +88,53 @@ so the number of response categories is `ncol(bank)`: a five-point scale scored 
 
 ### Derivatives of the category probabilities and the role of $D$
 
-Item information and the more advanced item-selection rules need the derivatives of $P_{jk}$ with respect to $\theta$. Write $E_j(\theta) = \sum_h h\,P_{jh}$ for the expected score on item $j$, and $V_j(\theta)$ and $M_j(\theta)$ for the second and third central moments of the score. The exponent of category $k$ grows by $Dk$ when $\theta$ grows by one, so $\partial\gamma_{jk}/\partial\theta = Dk\,\gamma_{jk}$, and the exact derivatives are
+For item $j$ with categories $k = 0, 1, \ldots, m$, the code builds
 
-$$\frac{\partial P_{jk}}{\partial\theta} = D\,P_{jk}\,(k-E_j),\qquad
-\frac{\partial^2 P_{jk}}{\partial\theta^2} = D^2 P_{jk}\big[(k-E_j)^2 - V_j\big],\qquad
-\frac{\partial^3 P_{jk}}{\partial\theta^3} = D^3 P_{jk}\big[(k-E_j)^3 - 3V_j(k-E_j) - M_j\big].$$
+$$
+z_{jk} = \sum_{t=1}^{k} D\big(\theta - (\lambda_j + \delta_t)\big), \quad z_{j0} = 0,
+\qquad
+\gamma_{jk} = e^{z_{jk}},
+\qquad
+\gamma^{(r)}_{jk} = k^r\,\gamma_{jk}, \quad r = 1, 2, 3
+$$
 
-`compute_pi_rsm()` computes the same quantities with catR's quotient-rule formulas in terms of the sums $\sum\gamma$, $\sum k\gamma$, $\sum k^2\gamma$ and $\sum k^3\gamma$, and returns them as `Pi`, `dPi`, `d2Pi` and `d3Pi`. It also keeps catR's convention for $D$: the vector `v` that multiplies $\gamma$ holds the category scores $k$, not $Dk$. With $D=1$ nothing changes. With any other $D$ the probabilities are still exact, but the returned derivatives are the exact ones without their factor of $D$:
+and the four sums over the categories of the item
 
-$$\texttt{dPi} = \frac{1}{D}\,\frac{\partial P_{jk}}{\partial\theta},\qquad
-\texttt{d2Pi} = \frac{1}{D^2}\,\frac{\partial^2 P_{jk}}{\partial\theta^2},\qquad
-\texttt{d3Pi} = \frac{1}{D^3}\,\frac{\partial^3 P_{jk}}{\partial\theta^3}.$$
+$$
+S_r = \sum_{h=0}^{m} h^r\,\gamma_{jh}, \qquad r = 0, 1, 2, 3 .
+$$
 
-This is inherited from `catR` on purpose, so that every output matches the reference implementation; its consequences are worked out and demonstrated in the validation section below.
+The probability and its first three derivatives are then
+
+$$
+\begin{aligned}
+P_{jk} &= \frac{\gamma_{jk}}{S_0} \\[6pt]
+P'_{jk} &= \frac{\gamma'_{jk}}{S_0} - \frac{\gamma_{jk}\,S_1}{S_0^2} \\[6pt]
+P''_{jk} &= \frac{\gamma''_{jk}}{S_0} - \frac{2\,\gamma'_{jk}\,S_1}{S_0^2} - \frac{\gamma_{jk}\,S_2}{S_0^2} + \frac{2\,\gamma_{jk}\,S_1^2}{S_0^3} \\[6pt]
+P'''_{jk} &= \frac{\gamma'''_{jk}}{S_0}
+ - \frac{\gamma_{jk}\,S_3 + 3\,\gamma'_{jk}\,S_2 + 3\,\gamma''_{jk}\,S_1}{S_0^2}
+ + \frac{6\,\gamma_{jk}\,S_1 S_2 + 6\,\gamma'_{jk}\,S_1^2}{S_0^3}
+ - \frac{6\,\gamma_{jk}\,S_1^3}{S_0^4}
+\end{aligned}
+$$
+
+| Symbol | Code |
+|---|---|
+| $z_{jk}$ | `dj` |
+| $k$ | `v` |
+| $\gamma_{jk}$, $\gamma'_{jk}$, $\gamma''_{jk}$, $\gamma'''_{jk}$ | `gamma`, `dgamma`, `d2gamma`, `d3gamma` |
+| $S_0$, $S_1$, $S_2$, $S_3$ | `sum_gamma`, `sum_dgamma`, `sum_d2gamma`, `sum_d3gamma` |
+| $P$, $P'$, $P''$, $P'''$ | `Pi`, `dPi`, `d2Pi`, `d3Pi` |
+
+Because $\gamma'_{jk}/S_0 = k\,P_{jk}$, the same derivatives can be written with the item's expected score $E_j = \sum_h h\,P_{jh}$ and the central moments $V_j = \sum_h (h - E_j)^2 P_{jh}$ and $M_j = \sum_h (h - E_j)^3 P_{jh}$:
+
+$$
+P'_{jk} = P_{jk}\,(k - E_j), \qquad
+P''_{jk} = P_{jk}\big[(k - E_j)^2 - V_j\big], \qquad
+P'''_{jk} = P_{jk}\big[(k - E_j)^3 - 3V_j\,(k - E_j) - M_j\big].
+$$
+
+**The metric constant.** The true derivative of $\gamma_{jk}$ is $D\,k\,\gamma_{jk}$, but the code follows catR and uses $k\,\gamma_{jk}$. With $D = 1$ the formulas above are exact. With any other $D$, the exact derivatives are $D\,P'$, $D^2 P''$ and $D^3 P'''$.
 
 ### Item information and its derivatives
 
