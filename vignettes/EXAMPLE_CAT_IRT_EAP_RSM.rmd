@@ -19,7 +19,7 @@ vignette: >
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
-library(catR)
+knitr::opts_chunk$set(out.width = "60%")
 ```
 
 ## Acknowledgement
@@ -47,6 +47,7 @@ This vignette explains the theory behind each function, checks every one of them
 
 ```{r source,message=FALSE,warning=FALSE}
 library(ggplot2)
+library(catR)
 source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
 source(paste0(directory, "../working_examples/cat_eap_rsm.R"), local = knitr::knit_global())
 ```

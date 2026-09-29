@@ -1,5 +1,5 @@
 ---
-title: "EAP Ability Estimation From Scratch: The Nominal Response Model"
+title: "EAP NRM Ability Estimation in base R"
 author: ""
 output:
   html_document:
@@ -11,7 +11,7 @@ output:
     code_folding: show
     self_contained: true
 vignette: >
-  %\VignetteIndexEntry{EAP Ability Estimation From Scratch: The Nominal Response Model}
+  %\VignetteIndexEntry{EAP NRM Ability Estimation in base R}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,9 +19,13 @@ vignette: >
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
+knitr::opts_chunk$set(out.width = "60%")
 
-library(ggplot2)
 ```
+
+## Acknowledgement
+
+The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_nrm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_nrm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
 
 ## Description
 
@@ -42,17 +46,9 @@ Every other model in this series assumes that the response categories of an item
 
 Two of the outputs go beyond `catR`. `compute_pi_nrm()` also returns the **fourth** derivative of the category probabilities (`d4Pi`), and `compute_ii_nrm()` returns the **third** derivative of the item information (`d3Ii`). `catR` stops one order earlier in both cases, so these two are checked with finite differences and with an exact identity instead of against the package.
 
-This vignette is one of six companions that build the same pipeline for different item response models: *EAP Ability Estimation From Scratch* (dichotomous items under the 4PL model), *EAP Ability Estimation From Scratch: The Rating Scale Model*, *EAP Ability Estimation From Scratch: The Partial Credit Model*, *EAP Ability Estimation From Scratch: The Graded Response Model*, *EAP Ability Estimation From Scratch: The Modified Graded Response Model*, and this one, *EAP Ability Estimation From Scratch: The Nominal Response Model*.
-
-## Acknowledgement
-
-The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_nrm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_nrm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
-
-```{r library,message=FALSE,warning=FALSE}
+```{r source_functions,message=FALSE,warning=FALSE}
+library(ggplot2)
 library(catR)
-```
-
-```{r source_functions}
 source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
 source(paste0(directory, "../working_examples/cat_eap_nrm.R"), local = knitr::knit_global())
 source(paste0(directory, "../working_examples/cat_eap_pcm.R"), local = knitr::knit_global())

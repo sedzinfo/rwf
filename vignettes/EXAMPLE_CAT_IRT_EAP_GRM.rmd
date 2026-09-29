@@ -19,7 +19,8 @@ vignette: >
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
-library(ggplot2)
+knitr::opts_chunk$set(out.width = "60%")
+
 ```
 
 ## Acknowledgement
@@ -48,6 +49,7 @@ This vignette walks through the theory behind each function, validates every one
 `cat_eap_common.R` is sourced first because the model file calls `density_function()` and `integrate_cat()`. The partial credit, rating scale and modified graded response files are sourced only for the comparisons further down. The example code at the end of each model file is commented out, so sourcing a file only defines its functions; every object used in this vignette is defined below.
 
 ```{r source_functions,message=FALSE,warning=FALSE}
+library(ggplot2)
 library(catR)
 source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
 source(paste0(directory, "../working_examples/cat_eap_grm.R"), local = knitr::knit_global())

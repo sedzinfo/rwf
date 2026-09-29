@@ -19,8 +19,8 @@ vignette: >
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
+knitr::opts_chunk$set(out.width = "60%")
 
-library(ggplot2)
 ```
 
 ## Acknowledgement
@@ -49,6 +49,7 @@ The model goes by several names, so it is worth fixing them once. Muraki (1990) 
 The sections below walk through the theory behind each function, validate every one of them against its `catR` counterpart, work through four properties that follow from the model's restricted form, and then run a small adaptive test end to end.
 
 ```{r source,message=FALSE,warning=FALSE}
+library(ggplot2)
 library(catR)
 source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
 source(paste0(directory, "../working_examples/cat_eap_ggrm.R"), local = knitr::knit_global())
