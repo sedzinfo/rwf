@@ -22,6 +22,8 @@ source(paste0(directory, "code_options.R"))
 knitr::opts_chunk$set(out.width = "60%")
 ```
 
+# Background
+
 ## Acknowledgement
 
 The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_dichotomous.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_dichotomous.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
@@ -188,6 +190,8 @@ $$\int f(\theta)\,d\theta \approx \sum_{q=1}^{Q-1} (\theta_{q+1}-\theta_q)\,\fra
 Which feature of a response pattern the estimate depends on is a property of the model. Under the **1PL/Rasch** model the likelihood depends on the pattern only through the **number correct** $\sum_j x_j$, which is a sufficient statistic for $\theta$: two examinees with the same number correct get the same estimate whichever items they answered correctly. This is what the Rating Scale and Partial Credit Model vignettes show for their raw scores. Under the **2PL** the sufficient statistic becomes the **discrimination-weighted score** $\sum_j a_jx_j$: a correct answer to a highly discriminating item counts for more, and the item difficulties play no part at all. Under the **3PL and 4PL** there is no simple sufficient statistic, and the whole pattern matters. A worked example below demonstrates all three cases.
 
 ---
+
+# Validation
 
 ## The item bank
 
@@ -565,6 +569,8 @@ all.equal(validation$se_mine, validation$se_catR)
 Both the point estimate and the standard error reproduce `catR` to machine precision for every pattern and both metric constants, including the all-incorrect and all-correct patterns where Maximum Likelihood fails outright.
 
 ---
+
+# Examples
 
 ## Worked example: the estimate across the number-correct range
 
@@ -951,7 +957,7 @@ Three different kinds of effect are visible here, and they should not be confuse
 
 ---
 
-## Conclusion
+# Conclusion
 
 All eight functions reproduce their `catR` counterparts to machine precision: the normal density and the trapezoidal integrator in `cat_eap_common.R`, and in `cat_eap_dichotomous.R` the 4PL probabilities with their three derivatives, the item information with its two derivatives, MFI item selection with and without excluded items, the likelihood, and the two integrals that define EAP scoring. Finite differences confirm the derivative formulas independently of `catR`, at both metric constants. Together the functions run a complete dichotomous adaptive test in a few hundred lines of base R.
 
@@ -959,7 +965,7 @@ Written out, the model's character is easy to see. The discrimination sets how u
 
 ---
 
-## References
+# References
 
 - Barton, M. A., & Lord, F. M. (1981). *An upper asymptote for the three-parameter logistic item-response model* (ETS Research Report RR-81-20). Educational Testing Service.
 - Birnbaum, A. (1968). Some latent trait models and their use in inferring an examinee's ability. In F. M. Lord & M. R. Novick, *Statistical theories of mental test scores*. Addison-Wesley.
