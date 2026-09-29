@@ -1,5 +1,5 @@
 ---
-title: "EAP Ability Estimation From Scratch"
+title: "EAP Dihcotomous Ability Estimation in base R"
 author: ""
 output:
   html_document:
@@ -11,7 +11,7 @@ output:
     code_folding: show
     self_contained: true
 vignette: >
-  %\VignetteIndexEntry{EAP Ability Estimation From Scratch}
+  %\VignetteIndexEntry{EAP Dihcotomous Ability Estimation in base R}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -29,7 +29,7 @@ The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/
 
 ## Description
 
-Adaptive testing packages like `catR` score examinees using **EAP (Expected A Posteriori)** ability estimation, a Bayesian method that stays numerically stable where Maximum Likelihood breaks down: a response pattern that is all-correct, all-incorrect, or otherwise perfectly separates the item bank has a likelihood with no finite maximum, but it always has a finite posterior mean.
+Adaptive testing packages like `catR` score examinees using **EAP (Expected A Posteriori)** ability estimation, a Bayesian method that stays numerically stable where Maximum Likelihood breaks down: a response pattern that is all-correct, all-incorrect, or otherwise perfectly separates the item bank has a likelihood with no finite maximum.
 
 This vignette covers **dichotomous** items, scored right/wrong, under the **four-parameter logistic (4PL)** model, which contains the 1PL, 2PL and 3PL models as special cases. [`working_examples/cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) holds the two model-free helpers, and [`working_examples/cat_eap_dichotomous.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_dichotomous.R) holds the six model-specific functions. Together they implement the full adaptive-testing pipeline in plain base R, with no runtime dependency on `catR`:
 
@@ -44,13 +44,7 @@ This vignette covers **dichotomous** items, scored right/wrong, under the **four
 | `compute_eap_dichotomous()` | `cat_eap_dichotomous.R` | EAP ability estimate | `catR::eapEst()` |
 | `compute_eap_se_dichotomous()` | `cat_eap_dichotomous.R` | EAP standard error | `catR::eapSem()` |
 
-In `catR` a dichotomous bank is signalled by leaving the `model` argument at its default `NULL`, so none of the `catR` calls below pass a `model`.
-
-This vignette walks through the theory behind each function, validates every one of them against its `catR` counterpart, works through what the guessing and slipping parameters and unequal discriminations do to an estimate, and then runs a small adaptive test end to end. "From scratch" in the title means that every step is written out in base R where it can be read; it does not mean the code was derived independently of `catR`, as the acknowledgement below makes clear.
-
-It is the first of six companion vignettes that build the same pipeline for different item response models: *EAP Ability Estimation From Scratch* (this one, dichotomous items), *EAP Ability Estimation From Scratch: The Rating Scale Model*, *EAP Ability Estimation From Scratch: The Partial Credit Model*, *EAP Ability Estimation From Scratch: The Graded Response Model*, *EAP Ability Estimation From Scratch: The Modified Graded Response Model* and *EAP Ability Estimation From Scratch: The Nominal Response Model*.
-
-
+This vignette walks through the theory behind each function, validates every one of them against its `catR` counterpart, works through what the guessing and slipping parameters and unequal discriminations do to an estimate, and then runs a small adaptive test end to end.
 
 ```{r library,message=FALSE,warning=FALSE}
 library(catR)
@@ -92,8 +86,6 @@ $$P'_j = \frac{Da_j(d_j-c_j)\,e_j}{(1+e_j)^2}
 P''_j = \frac{D^2a_j^2(d_j-c_j)\,e_j(1-e_j)}{(1+e_j)^3}
 \qquad
 P'''_j = \frac{D^3a_j^3(d_j-c_j)\,e_j(e_j^2-4e_j+1)}{(1+e_j)^4}$$
-
-The metric constant only ever appears as the product $Da_j$, and the $k$-th derivative carries the factor $(Da_j)^k$. Two things follow, both checked below. First, the derivatives are correct at $D=1.702$ only if every one of them carries the right power of $D$. Second, $D$ and $a_j$ are not separately identified for this model: $D=1.702$ with discrimination $a_j$ gives exactly the same curve as $D=1$ with discrimination $1.702\,a_j$.
 
 The first derivative is what item information is built from; the second and third are what the derivatives of the information are built from. Neither maximum-information selection nor EAP scoring needs the derivatives of the information, but they are returned for parity with `catR`.
 
