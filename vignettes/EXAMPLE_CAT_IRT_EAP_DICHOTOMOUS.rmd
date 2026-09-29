@@ -19,7 +19,7 @@ vignette: >
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
-
+knitr::opts_chunk$set(out.width = "50%")
 library(ggplot2)
 ```
 
@@ -46,11 +46,8 @@ This vignette covers **dichotomous** items, scored right/wrong, under the **four
 
 This vignette walks through the theory behind each function, validates every one of them against its `catR` counterpart, works through what the guessing and slipping parameters and unequal discriminations do to an estimate, and then runs a small adaptive test end to end.
 
-```{r library,message=FALSE,warning=FALSE}
+```{r source,message=FALSE,warning=FALSE}
 library(catR)
-```
-
-```{r source_functions}
 source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
 source(paste0(directory, "../working_examples/cat_eap_dichotomous.R"), local = knitr::knit_global())
 ```

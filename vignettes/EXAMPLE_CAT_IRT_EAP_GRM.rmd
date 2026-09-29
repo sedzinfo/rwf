@@ -1,5 +1,5 @@
 ---
-title: "EAP Ability Estimation From Scratch: The Graded Response Model"
+title: "EAP GRM Ability Estimation in base R"
 author: ""
 output:
   html_document:
@@ -11,7 +11,7 @@ output:
     code_folding: show
     self_contained: true
 vignette: >
-  %\VignetteIndexEntry{EAP Ability Estimation From Scratch: The Graded Response Model}
+  %\VignetteIndexEntry{EAP GRM Ability Estimation in base R}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,9 +19,12 @@ vignette: >
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
-
 library(ggplot2)
 ```
+
+## Acknowledgement
+
+The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_grm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_grm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
 
 ## Description
 
@@ -42,19 +45,10 @@ The rating scale and partial credit models treat a Likert item as a member of th
 
 This vignette walks through the theory behind each function, validates every one of them against its `catR` counterpart (and the probabilities against `mirt` as well), works through what is specific to the graded model, and then runs a small adaptive test end to end.
 
-It is one of six companion vignettes: *EAP Ability Estimation From Scratch* (dichotomous items under the 4PL), *EAP Ability Estimation From Scratch: The Rating Scale Model*, *EAP Ability Estimation From Scratch: The Partial Credit Model*, *EAP Ability Estimation From Scratch: The Graded Response Model* (this one), *EAP Ability Estimation From Scratch: The Modified Graded Response Model* and *EAP Ability Estimation From Scratch: The Nominal Response Model*. The rating scale and partial credit vignettes cover the adjacent-category models this one is contrasted with; the modified graded response vignette covers the restricted GRM in which the items share one set of category parameters.
-
-## Acknowledgement
-
-The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_grm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_grm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
-
-```{r library,message=FALSE,warning=FALSE}
-library(catR)
-```
-
 `cat_eap_common.R` is sourced first because the model file calls `density_function()` and `integrate_cat()`. The partial credit, rating scale and modified graded response files are sourced only for the comparisons further down. The example code at the end of each model file is commented out, so sourcing a file only defines its functions; every object used in this vignette is defined below.
 
-```{r source_functions}
+```{r source_functions,message=FALSE,warning=FALSE}
+library(catR)
 source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
 source(paste0(directory, "../working_examples/cat_eap_grm.R"), local = knitr::knit_global())
 source(paste0(directory, "../working_examples/cat_eap_pcm.R"), local = knitr::knit_global())

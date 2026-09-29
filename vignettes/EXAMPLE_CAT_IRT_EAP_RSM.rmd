@@ -1,5 +1,5 @@
 ---
-title: "EAP Ability Estimation From Scratch: The Rating Scale Model"
+title: "EAP RSM Ability Estimation in base R"
 author: ""
 output:
   html_document:
@@ -11,7 +11,7 @@ output:
     code_folding: show
     self_contained: true
 vignette: >
-  %\VignetteIndexEntry{EAP Ability Estimation From Scratch: The Rating Scale Model}
+  %\VignetteIndexEntry{EAP RSM Ability Estimation in base R}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -19,8 +19,7 @@ vignette: >
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "code_options.R"))
-
-library(ggplot2)
+library(catR)
 ```
 
 ## Acknowledgement
@@ -46,11 +45,8 @@ Andrich's **Rating Scale Model (RSM)** is the Rasch-family model for questionnai
 
 This vignette explains the theory behind each function, checks every one of them against its `catR` counterpart, and then uses them to run a small adaptive test end to end.
 
-```{r library,message=FALSE,warning=FALSE}
-library(catR)
-```
-
-```{r source_functions}
+```{r source,message=FALSE,warning=FALSE}
+library(ggplot2)
 source(paste0(directory, "../working_examples/cat_eap_common.R"), local = knitr::knit_global())
 source(paste0(directory, "../working_examples/cat_eap_rsm.R"), local = knitr::knit_global())
 ```
@@ -179,9 +175,11 @@ This is the polytomous counterpart of $\prod P_i^{x_i}(1-P_i)^{1-x_i}$. The dich
 
 A **prior** $\pi(\theta)$ on ability, normal with mean and SD `priorPar` (standard normal by default), turns the likelihood into a posterior, and EAP reports its mean and standard deviation (Bock & Mislevy, 1982):
 
-$$\hat\theta_{EAP} = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}
-\qquad
-SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
+$$\hat\theta_{EAP} = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}$$
+
+and its precision as the **posterior standard deviation**
+
+$$SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
 
 Both integrals are evaluated on `nqp` equally spaced quadrature points $X_1,\ldots,X_Q$ from `lower` to `upper` (defaults `r formals(compute_eap_rsm)$nqp` points on $[`r eval(formals(compute_eap_rsm)$lower)`, `r eval(formals(compute_eap_rsm)$upper)`]$) with the trapezoidal rule that `integrate_cat()` implements:
 
