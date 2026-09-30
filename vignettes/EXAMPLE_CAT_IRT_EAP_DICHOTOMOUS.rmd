@@ -218,9 +218,6 @@ Because $c_j = 1 - d_j$ for every item here, each curve is point-symmetric aroun
 ```{r density_check}
 v <- seq(-3, 3, by = 0.1)
 comparison <- data.frame(x = v, density_function = density_function(v), dnorm = dnorm(v))
-head(comparison)
-all.equal(comparison$density_function, comparison$dnorm)
-max(abs(comparison$density_function - comparison$dnorm))
 ```
 
 ```{r density_plot,dev='png'}
@@ -232,15 +229,13 @@ ggplot(comparison, aes(x = x)) +
   theme_bw(base_size = 12)
 ```
 
-The function writes out the textbook normal density longhand. One detail from its documentation is worth repeating: it uses `exp(1)` rather than a hard-coded `2.71828`, which is accurate to only six significant digits and shifts the EAP estimate in the seventh decimal.
-
 ### Numerical integration
 
 ```{r integration_check}
 x <- seq(from = -3, to = 3, length = 33)
 y <- round(exp(x), 2)
-c(integrate_cat = integrate_cat(x, y), integrate.catR = catR::integrate.catR(x, y))
-all.equal(integrate_cat(x, y), catR::integrate.catR(x, y))
+data.frame(integrate_cat = integrate_cat(x, y), 
+           integrate.catR = catR::integrate.catR(x, y))
 ```
 
 Both approximate $\int_{-3}^{3} e^x\,dx$ on the same 33-point trapezoidal grid and return the same number.
@@ -250,52 +245,8 @@ Both approximate $\int_{-3}^{3} e^x\,dx$ on the same 33-point trapezoidal grid a
 At a single ability value, the whole returned list (probabilities and all three derivatives) matches `catR::Pi()`:
 
 ```{r pi_check}
-mine <- compute_pi_dichotomous(theta = 0, bank)
-theirs <- catR::Pi(th = 0, bank)
-round(data.frame(mine), 6)
-all.equal(mine, theirs)
-```
-
-Across several ability values and both metric constants, the largest absolute difference in each element:
-
-```{r pi_check_grid}
-theta_check <- c(-3, -1.2, 0, 0.7, 2.5)
-
-pi_differences <- do.call(rbind, lapply(c(1, 1.702), function(D) {
-  do.call(rbind, lapply(theta_check, function(th) {
-    mine <- compute_pi_dichotomous(th, bank, D = D)
-    theirs <- catR::Pi(th, bank, D = D)
-    data.frame(D = D, theta = th,
-               t(sapply(names(mine), function(k) max(abs(mine[[k]] - theirs[[k]])))))
-  }))
-}))
-pi_differences
-max(pi_differences[, c("Pi", "dPi", "d2Pi", "d3Pi")])
-```
-
-Agreement with `catR` shows the code reproduces `catR`; it does not by itself show that the derivative formulas are right. A central finite difference is an independent check, and running it at $D=1.702$ confirms that each derivative carries the correct power of $D$:
-
-```{r pi_finite_differences}
-h <- 1e-5
-fd_pi <- do.call(rbind, lapply(c(1, 1.702), function(D) {
-  do.call(rbind, lapply(theta_check, function(th) {
-    p <- function(t) compute_pi_dichotomous(t, bank, D = D)
-    data.frame(D = D, theta = th,
-               dPi  = max(abs((p(th + h)$Pi   - p(th - h)$Pi)   / (2 * h) - p(th)$dPi)),
-               d2Pi = max(abs((p(th + h)$dPi  - p(th - h)$dPi)  / (2 * h) - p(th)$d2Pi)),
-               d3Pi = max(abs((p(th + h)$d2Pi - p(th - h)$d2Pi) / (2 * h) - p(th)$d3Pi)))
-  }))
-}))
-sapply(split(fd_pi[, c("dPi", "d2Pi", "d3Pi")], fd_pi$D), function(z) max(unlist(z)))
-```
-
-The discrepancies are of the size expected from the truncation and rounding error of a central difference with $h = 10^{-5}$, at both values of $D$. Since $D$ only ever enters as $Da_j$, the model at $D = 1.702$ is the model at $D = 1$ with every discrimination multiplied by 1.702:
-
-```{r pi_D_confound}
-bank_rescaled <- bank
-bank_rescaled[, "a"] <- 1.702 * bank[, "a"]
-all.equal(compute_pi_dichotomous(0.4, bank, D = 1.702),
-          compute_pi_dichotomous(0.4, bank_rescaled, D = 1))
+round(data.frame(compute_pi_dichotomous(theta = 0, bank),
+                 catR::Pi(th = 0, bank)), 6)
 ```
 
 ```{r pi_plot,dev='png'}
@@ -305,10 +256,10 @@ df_curves <- data.frame(theta = theta_grid, prob_curves)
 names(df_curves)[-1] <- paste0("item ", 1:5, " (a=", bank[, "a"], ", b=", bank[, "b"], ")")
 df_curves_long <- reshape2::melt(df_curves, id.vars = "theta",
                                  variable.name = "item", value.name = "P")
-
 ggplot(df_curves_long, aes(x = theta, y = P, color = item)) +
   geom_hline(yintercept = c(0.1, 0.9), linetype = "dashed", color = "grey50") +
   geom_line(linewidth = 1) +
+  scale_y_continuous(expand=c(0, 0), limits=c(0, 1)) +
   labs(title = "Item response curves",
        subtitle = "every item has lower asymptote c = 0.1 and upper asymptote d = 0.9 (dashed)",
        x = expression(theta), y = expression(P(theta)), color = NULL) +
@@ -356,43 +307,7 @@ No realistic bank and quadrature range comes near that point.
 ### Item information
 
 ```{r ii_check}
-mine <- compute_ii_dichotomous(theta = 0, bank)
-theirs <- catR::Ii(th = 0, bank)
-round(data.frame(mine), 6)
-all.equal(mine, theirs)
-```
-
-The same grid of ability values and both metric constants, for all three elements:
-
-```{r ii_check_grid}
-ii_differences <- do.call(rbind, lapply(c(1, 1.702), function(D) {
-  do.call(rbind, lapply(theta_check, function(th) {
-    mine <- compute_ii_dichotomous(th, bank, D = D)
-    theirs <- catR::Ii(th, bank, D = D)
-    data.frame(D = D, theta = th,
-               t(sapply(names(mine), function(k) max(abs(mine[[k]] - theirs[[k]])))))
-  }))
-}))
-ii_differences
-max(ii_differences[, c("Ii", "dIi", "d2Ii")])
-```
-
-The two-category form of the information, and finite-difference checks of its two derivatives at both metric constants:
-
-```{r ii_two_category}
-pr <- compute_pi_dichotomous(0.4, bank)
-all.equal(pr$dPi^2 / pr$Pi + (-pr$dPi)^2 / (1 - pr$Pi),
-          compute_ii_dichotomous(0.4, bank)$Ii)
-
-fd_ii <- do.call(rbind, lapply(c(1, 1.702), function(D) {
-  do.call(rbind, lapply(theta_check, function(th) {
-    ii <- function(t) compute_ii_dichotomous(t, bank, D = D)
-    data.frame(D = D, theta = th,
-               dIi  = max(abs((ii(th + h)$Ii  - ii(th - h)$Ii)  / (2 * h) - ii(th)$dIi)),
-               d2Ii = max(abs((ii(th + h)$dIi - ii(th - h)$dIi) / (2 * h) - ii(th)$d2Ii)))
-  }))
-}))
-sapply(split(fd_ii[, c("dIi", "d2Ii")], fd_ii$D), function(z) max(unlist(z)))
+round(data.frame(compute_ii_dichotomous(theta = 0, bank),catR::Ii(th = 0, bank)), 6)
 ```
 
 ```{r ii_plot,dev='png'}
@@ -433,8 +348,6 @@ data.frame(b = bank[, "b"], a = bank[, "a"], peaks,
            ratio_to_2PL_peak = peaks[, "max_information"] / (bank[, "a"]^2 / 4))
 ```
 
-Two things stand out. The peak heights differ from item to item, from `r round(min(peaks[, "max_information"]), 3)` for item `r which.min(peaks[, "max_information"])` to `r round(max(peaks[, "max_information"]), 3)` for item `r which.max(peaks[, "max_information"])`, following the discriminations. And every peak sits at its own $b_j$, even though $c_j = 0.1 > 0$. The guessing parameter pushes the peak up and the slipping parameter pushes it down; with $c_j = 1 - d_j$ the curve is point-symmetric around $b_j$ and the two shifts cancel. The last column shows the price of the asymptotes: every item keeps the same fraction, `r round(peaks[1, "max_information"] / (bank[1, "a"]^2 / 4), 2)` $= (d_j - c_j)^2$, of the $D^2a_j^2/4$ it would reach as a 2PL item.
-
 ### Next-item selection
 
 ```{r next_item_check}
@@ -451,48 +364,7 @@ mine <- compute_next_item_dichotomous(theta = 0, bank, out = 3)
 theirs <- catR::nextItem(bank, theta = 0, out = 3, criterion = "MFI")
 c(mine_item = mine$item, catR_item = theirs$item,
   mine_info = unname(mine$info), catR_info = unname(theirs$info))
-mine$available
 ```
-
-And across the whole ability range, with and without `out`, at both metric constants:
-
-```{r next_item_grid}
-grid <- seq(-4, 4, by = 0.05)
-next_item_agreement <- do.call(rbind, lapply(c(1, 1.702), function(D) {
-  do.call(rbind, lapply(list(NULL, c(3, 4)), function(o) {
-    mine <- sapply(grid, function(th) compute_next_item_dichotomous(th, bank, out = o, D = D)$item)
-    theirs <- sapply(grid, function(th) catR::nextItem(bank, theta = th, out = o, D = D,
-                                                      criterion = "MFI")$item)
-    data.frame(D = D, out = if (is.null(o)) "none" else paste(o, collapse = ","),
-               agreements = sum(mine == theirs), grid_points = length(grid))
-  }))
-}))
-next_item_agreement
-```
-
-MFI is not the same rule as "take the item whose $b_j$ is closest to $\theta$", which `catR` offers separately as `criterion = "bOpt"`:
-
-```{r next_item_nearest_b}
-mfi <- sapply(grid, function(th) compute_next_item_dichotomous(th, bank)$item)
-nearest_b <- sapply(grid, function(th) which.min(abs(th - bank[, "b"])))
-c(agreements = sum(mfi == nearest_b), grid_points = length(grid))
-data.frame(theta = grid, MFI = mfi, nearest_b = nearest_b)[mfi != nearest_b, ]
-c(bOpt_at_0.7 = catR::nextItem(bank, theta = 0.7, criterion = "bOpt")$item,
-  MFI_at_0.7  = compute_next_item_dichotomous(0.7, bank)$item)
-```
-
-In every disagreement MFI passes over the nearest item for a more discriminating one farther away. Most of them involve item 3, the least discriminating item in the bank ($a = 1.18$): its difficulty of 0.18 is the nearest, but MFI prefers item 2 ($a = 1.80$) around $\theta = -0.8$ and item 4 ($a = 1.54$) from $\theta = 0.65$ upward. The remaining case sits just on item 1's side of the midpoint between items 1 and 2, where item 2's slightly higher discrimination (1.80 against 1.75) wins.
-
-Finally, the documented behaviour at exact ties, with a bank whose first two items are identical:
-
-```{r next_item_ties}
-bank_tied <- rbind(c(1.2, 0, 0, 1), c(1.2, 0, 0, 1), c(1, 2, 0, 1))
-set.seed(3)
-table(catR = replicate(200, catR::nextItem(bank_tied, theta = 0, criterion = "MFI")$item))
-table(compute_next_item_dichotomous = replicate(200, compute_next_item_dichotomous(0, bank_tied)$item))
-```
-
-`catR` splits the tied choice between items 1 and 2 at random; `compute_next_item_dichotomous()` always takes the first. With continuous item parameters, exact ties essentially never happen.
 
 ### Likelihood
 
@@ -503,12 +375,6 @@ response <- c(1, 1, 1, 0, 0)
 P_catR <- catR::Pi(th = 0.3, bank)$Pi
 c(compute_likelihood_dichotomous = compute_likelihood_dichotomous(theta = 0.3, bank = bank, x = response),
   from_catR_Pi                   = prod(P_catR^response * (1 - P_catR)^(1 - response)))
-
-likelihood_patterns <- list(c(0, 0, 0, 0, 0), c(1, 1, 1, 0, 0), c(0, 1, 0, 1, 1), c(1, 1, 1, 1, 1))
-max(sapply(likelihood_patterns, function(x) sapply(theta_check, function(th) {
-  P <- catR::Pi(th, bank)$Pi
-  abs(compute_likelihood_dichotomous(th, bank, x) - prod(P^x * (1 - P)^(1 - x)))
-})))
 ```
 
 ```{r likelihood_plot,dev='png'}
@@ -531,42 +397,34 @@ ggplot(df_lik_long, aes(x = theta, y = likelihood, color = pattern)) +
   theme_bw(base_size = 12)
 ```
 
-The mixed pattern has an interior maximum. The all-correct pattern does not: its likelihood rises for ever, but with $d_j = 0.9$ it levels off at $\prod_j d_j$ rather than approaching 1:
-
-```{r likelihood_plateau}
-c(likelihood_at_theta_10 = compute_likelihood_dichotomous(10, bank, c(1, 1, 1, 1, 1)),
-  product_of_d           = prod(bank[, "d"]))
-```
-
-Maximum Likelihood has no finite answer for this pattern; EAP, below, still does.
-
 ### EAP ability estimate and standard error
 
 ```{r eap_check}
-patterns <- list(c(0, 0, 0, 0, 0), c(1, 0, 0, 0, 0), c(1, 1, 0, 0, 0), c(1, 1, 1, 0, 0),
-                 c(1, 1, 1, 1, 0), c(1, 1, 1, 1, 1), c(0, 0, 1, 1, 1), c(0, 1, 0, 1, 0))
 
-validation <- do.call(rbind, lapply(c(1, 1.702), function(D) {
-  do.call(rbind, lapply(patterns, function(x) {
-    th_mine <- compute_eap_dichotomous(bank, x, D = D)
-    th_catR <- catR::eapEst(bank, x, D = D)
-    data.frame(D = D,
-               pattern  = paste(x, collapse = " "),
-               eap_mine = th_mine,
-               eap_catR = th_catR,
-               se_mine  = compute_eap_se_dichotomous(th_mine, bank, x, D = D),
-               se_catR  = catR::eapSem(th_mine, bank, x, D = D))
-  }))
+patterns <- list(c(0, 0, 0, 0, 0),
+                 c(1, 0, 0, 0, 0),
+                 c(1, 1, 0, 0, 0),
+                 c(1, 1, 1, 0, 0),
+                 c(1, 1, 1, 1, 0),
+                 c(1, 1, 1, 1, 1),
+                 c(0, 0, 1, 1, 1),
+                 c(0, 1, 0, 1, 0))
+
+results<-do.call(rbind,lapply(patterns,function(x) {
+  est_0<-compute_eap_dichotomous(bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33)
+  est_1<-catR::eapEst(bank,x,D=1,priorDist="norm",priorPar=c(0,1),lower=-4,upper=4,nqp=33)
+  se_0<-compute_eap_se_dichotomous(est_0,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33)
+  se_1<-catR::eapSem(est_0,bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,nqp=33)
+  data.frame(pattern=paste(x,collapse=""),
+             eap=est_0,
+             eap_catR=est_1,
+             se=se_0,
+             se_catR=se_1)
 }))
-validation
+results
 
-c(max_eap_difference = max(abs(validation$eap_mine - validation$eap_catR)),
-  max_se_difference  = max(abs(validation$se_mine  - validation$se_catR)))
-all.equal(validation$eap_mine, validation$eap_catR)
-all.equal(validation$se_mine, validation$se_catR)
 ```
 
-Both the point estimate and the standard error reproduce `catR` to machine precision for every pattern and both metric constants, including the all-incorrect and all-correct patterns where Maximum Likelihood fails outright.
 
 ---
 

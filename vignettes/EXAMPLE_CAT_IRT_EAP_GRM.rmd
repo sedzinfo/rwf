@@ -23,6 +23,8 @@ knitr::opts_chunk$set(out.width = "60%")
 
 ```
 
+# Background
+
 ## Acknowledgement
 
 The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_grm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_grm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
@@ -149,6 +151,8 @@ SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2
 Both integrals are evaluated on an equally spaced grid of `nqp` quadrature points (default `r formals(compute_eap_grm)$nqp`) from `lower` to `upper` (defaults `r eval(formals(compute_eap_grm)$lower)` and `r eval(formals(compute_eap_grm)$upper)`) and integrated with the trapezoidal rule of `integrate_cat()`. The normal prior guarantees both integrals converge even for a pattern in which every response sits in the lowest or the highest category, where Maximum Likelihood has no finite maximum. `compute_eap_se_grm()` takes the point $\theta$ as an argument: pass the EAP estimate to obtain the posterior standard deviation.
 
 ---
+
+# Validation
 
 ## The item bank
 
@@ -582,6 +586,8 @@ A plain weighted sum of `compute_likelihood_grm()` over the 61 points reproduces
 
 ---
 
+# Examples
+
 ## Worked example: two steps, cumulative then difference
 
 The first step of the model can be read back out of `compute_pi_grm()`'s output. Summing the category probabilities from $k$ upwards gives $P(X \ge k)$, which must be a 2PL curve with the item's discrimination and the $k$-th threshold:
@@ -981,7 +987,7 @@ Three different kinds of effect are visible here, and they should not be confuse
 
 ---
 
-## Conclusion
+# Conclusion
 
 All eight functions reproduce their `catR` counterparts: the normal density and the trapezoidal integrator from `cat_eap_common.R`, and from `cat_eap_grm.R` the graded category probabilities with their first three derivatives, the item information with its first two derivatives, MFI item selection with and without excluded items, and the EAP estimate and its standard error at both values of the metric constant. The probabilities also match `mirt`'s for a bank calibrated there and converted with the documented recipe, and a plain weighted sum of the likelihood reproduces mirt's EAP scores.
 
@@ -989,7 +995,7 @@ Seeing the model written out makes its character visible. The GRM builds categor
 
 ---
 
-## References
+# References
 
 - Andrich, D. (1978). A rating formulation for ordered response categories. *Psychometrika, 43*(4), 561–573.
 - Bock, R. D., & Mislevy, R. J. (1982). Adaptive EAP estimation of ability in a microcomputer environment. *Applied Psychological Measurement, 6*(4), 431–444.

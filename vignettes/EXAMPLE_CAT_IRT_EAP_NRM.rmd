@@ -23,6 +23,8 @@ knitr::opts_chunk$set(out.width = "60%")
 
 ```
 
+# Background
+
 ## Acknowledgement
 
 The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_nrm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_nrm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
@@ -153,6 +155,8 @@ SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2
 Both integrals are evaluated on `nqp` equally spaced quadrature points (default 33) from `lower` to `upper` (default $\pm 4$), with the trapezoidal rule. The prior keeps both integrals finite for the patterns where Maximum Likelihood has no answer. `compute_eap_se_nrm()` takes `theta` as a free argument. Passing the EAP estimate gives the posterior standard deviation; any other value gives the root mean squared deviation around that value.
 
 ---
+
+# Validation
 
 ## The item bank
 
@@ -530,6 +534,8 @@ c(same_as_catR               = isTRUE(all.equal(compute_pi_nrm(0, bank_gap)[1:4]
 Item 5's missing column comes out as `cat4`, not `cat2`. A response coded 3 on that item is read as the category whose parameters sit in the fourth pair. Responses have to be renumbered from 0 without gaps, as `mirt` does, so that they match.
 
 ---
+
+# Examples
 
 ## Worked example: the categories are nominal
 
@@ -943,7 +949,7 @@ Three different kinds of effect are visible here, and they should be kept apart.
 
 ---
 
-## Conclusion
+# Conclusion
 
 All eight functions used here reproduce their `catR` counterparts for the Nominal Response Model: the normal density, the trapezoidal integrator, the category probabilities and their first three derivatives, the item information and its first two derivatives, MFI item selection with and without exclusions, and the two integrals that define EAP scoring. The probabilities and the information are identical to `catR`'s, not merely close. The two quantities `catR` does not compute, `d4Pi` and `d3Ii`, pass both a finite-difference check and an exact cumulant identity.
 
@@ -951,7 +957,7 @@ Writing the model out makes its character plain. The codes are labels. Each cate
 
 ---
 
-## References
+# References
 
 - Bock, R. D. (1972). Estimating item parameters and latent ability when responses are scored in two or more nominal categories. *Psychometrika, 37*(1), 29–51.
 - Bock, R. D., & Mislevy, R. J. (1982). Adaptive EAP estimation of ability in a microcomputer environment. *Applied Psychological Measurement, 6*(4), 431–444.

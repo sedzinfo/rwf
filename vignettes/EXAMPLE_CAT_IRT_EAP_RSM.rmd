@@ -22,6 +22,8 @@ source(paste0(directory, "code_options.R"))
 knitr::opts_chunk$set(out.width = "60%")
 ```
 
+# Background
+
 ## Acknowledgement
 
 The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_rsm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_rsm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
@@ -197,6 +199,8 @@ $$L(\theta) = \frac{\exp\left[D\,\theta\sum_i x_i \;-\; D\sum_i \sum_{t=1}^{x_i}
 the denominator does not depend on the responses, and in the numerator $\theta$ meets the responses only through $D\,\theta \sum_i x_i$. Two patterns with the same **total score** on the same items therefore have likelihoods that differ by a constant factor, which cancels from the EAP ratio: the raw score is a **sufficient statistic** for $\theta$, and the EAP estimate and its standard error depend on the pattern only through its sum. Differing discriminations are exactly what makes the pattern itself informative in the 2PL and its relatives; the RSM gives that up by design.
 
 ---
+
+# Validation
 
 ## The item bank
 
@@ -669,6 +673,8 @@ Both the point estimate and the standard error reproduce `catR` across all `r nr
 
 ---
 
+# Examples
+
 ## Worked example: the raw score is all that matters
 
 Five response patterns, all with a total of 10, spread over the items in completely different ways:
@@ -1055,7 +1061,7 @@ Three different kinds of effect are visible here, and they should not be confuse
 
 ---
 
-## Conclusion
+# Conclusion
 
 All eight functions reproduce their `catR` counterparts: the normal density, the trapezoidal integrator, the RSM category probabilities with all three derivatives, the item information with both derivatives, MFI item selection with and without excluded items, the likelihood, and the two integrals that define EAP scoring, at both $D = 1$ and $D = 1.702$ and for extreme as well as ordinary patterns. Together they run a complete polytomous adaptive test in a few hundred lines of base R.
 
@@ -1063,7 +1069,7 @@ Writing the model out makes its character visible in a way a package call does n
 
 ---
 
-## References
+# References
 
 - Andrich, D. (1978). A rating formulation for ordered response categories. *Psychometrika, 43*(4), 561–573.
 - Bock, R. D., & Mislevy, R. J. (1982). Adaptive EAP estimation of ability in a microcomputer environment. *Applied Psychological Measurement, 6*(4), 431–444.

@@ -22,6 +22,8 @@ source(paste0(directory, "code_options.R"))
 knitr::opts_chunk$set(out.width = "60%")
 ```
 
+# Background
+
 ## Acknowledgement
 
 The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) and [`cat_eap_pcm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_pcm.R) are adapted from the source code of the **catR** package by David Magis, Gilles Raîche and Juan Ramón Barrada (Magis & Raîche, 2012; Magis & Barrada, 2017). The model parameterisations, the formulas for the response probabilities and their derivatives, the item information, maximum-information item selection and the trapezoidal EAP integration all follow catR's `Pi()`, `Ii()`, `nextItem()`, `eapEst()`, `eapSem()` and `integrate.catR()`, and much of the code keeps catR's structure line for line. The purpose of the rewrite is teaching, not replacement: every step is written out in plain base R so that it can be read, and catR remains the reference implementation that every function is checked against below. catR is free software distributed under the GNU General Public License (version 3 or later).
@@ -151,6 +153,8 @@ $$L(\theta) = \frac{\exp\left(D\,\theta \sum_{i} x_i \;-\; D \sum_{i} \sum_{t=1}
 The denominator depends on $\theta$ and on the items but not on the responses, and the second term of the numerator depends on the responses but not on $\theta$. The pattern therefore touches the $\theta$-dependent part of the likelihood only through the **total score** $\sum_i x_i$. For two patterns with the same total on the same items, the likelihood ratio is the constant $\exp\left[-D(S_1 - S_2)\right]$, where $S = \sum_i \sum_{t \le x_i} \delta_{it}$ is the sum of the step parameters each pattern has passed. The constant cancels from both EAP ratios, so the two patterns get identical estimates and standard errors: the raw score is a **sufficient statistic** for $\theta$ (Masters, 1982).
 
 ---
+
+# Validation
 
 ## The item bank
 
@@ -526,6 +530,8 @@ c(max_eap_difference = max(abs(validation$eap_mine - validation$eap_catR)),
 Both the estimate and its standard error reproduce `catR` to within `r signif(max(abs(c(validation$eap_mine - validation$eap_catR, validation$se_mine - validation$se_catR))), 2)` across all sixteen combinations, including the all-lowest and all-highest patterns and $D = 1.702$.
 
 ---
+
+# Examples
 
 ## Worked example: the rating scale model is a constrained partial credit model
 
@@ -951,7 +957,7 @@ Three different kinds of effect are visible here, and they should not be confuse
 
 ---
 
-## Conclusion
+# Conclusion
 
 The six PCM functions in `cat_eap_pcm.R`, together with the two helpers in `cat_eap_common.R`, reproduce their `catR` counterparts: the normal density, the trapezoidal integrator, the PCM category probabilities and all three of their derivatives, the item information and its two derivatives, MFI item selection with and without `out` and with randomesque under a common seed, and the two integrals that define EAP scoring, at $D = 1$ and at $D = 1.702$, for full and `NA`-padded banks.
 
@@ -959,7 +965,7 @@ Written out, the model's character is easy to see. Each item has its own steps, 
 
 ---
 
-## References
+# References
 
 - Andrich, D. (1978). A rating formulation for ordered response categories. *Psychometrika, 43*(4), 561–573.
 - Bock, R. D., & Mislevy, R. J. (1982). Adaptive EAP estimation of ability in a microcomputer environment. *Applied Psychological Measurement, 6*(4), 431–444.
