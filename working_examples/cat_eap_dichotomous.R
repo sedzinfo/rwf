@@ -31,11 +31,13 @@
 #'         d3Pi	third derivatives of the response probabilities for each item \cr
 #' @export
 #' @examples
-#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
-#'               -2.55,-1.90,0.18,1.54,2.56,
+#' bank<-matrix(c(1.75,1.80,1.85,1.90,1.95,
+#'               -3,-2,0,2,3,
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("a","b","c","d")))
 #' pi_cat<-catR::Pi(th=0,bank)
 #' pi<-compute_pi_dichotomous(theta=0,bank)
 #' data.frame(catr=pi_cat[[1]],pi=pi[[1]],equal=pi_cat[[1]]==pi[[1]])
@@ -86,11 +88,13 @@ compute_pi_dichotomous<-function(theta,bank,D=1) {
 #'         d2Ii second derivative of the item information for each item
 #' @export
 #' @examples
-#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
-#'               -2.55,-1.90,0.18,1.54,2.56,
+#' bank<-matrix(c(1.75,1.80,1.85,1.90,1.95,
+#'               -3,-2,0,2,3,
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("a","b","c","d")))
 #' li_catr<-catR::Ii(th=0,bank)
 #' li<-Ii(theta=0,bank)
 #' data.frame(catr=li_catr[[1]],li=li[[1]],equal=li_catr[[1]]==li[[1]])
@@ -139,11 +143,13 @@ compute_ii_dichotomous<-function(theta,bank,D=1) {
 #'         available indices of the items still available
 #' @export
 #' @examples
-#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
-#'               -2.55,-1.90,0.18,1.54,2.56,
+#' bank<-matrix(c(1.75,1.80,1.85,1.90,1.95,
+#'               -3,-2,0,2,3,
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("a","b","c","d")))
 #' catR::nextItem(bank,theta=0,criterion="MFI")
 #' compute_next_item_dichotomous(theta=0,bank)
 compute_next_item_dichotomous<-function(theta,bank,out=NULL,D=1,randomesque=1) {
@@ -174,11 +180,13 @@ compute_next_item_dichotomous<-function(theta,bank,out=NULL,D=1,randomesque=1) {
 #'       function defined inside catR::eapEst so it is reproduced here with catR::Pi
 #' @export
 #' @examples
-#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
-#'               -2.55,-1.90,0.18,1.54,2.56,
+#' bank<-matrix(c(1.75,1.80,1.85,1.90,1.95,
+#'               -3,-2,0,2,3,
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("a","b","c","d")))
 #' response<-c(1,1,1,0,0)
 #' P<-catR::Pi(th=0,bank)$Pi
 #' prod(P^response*(1-P)^(1-response))
@@ -202,11 +210,13 @@ compute_likelihood_dichotomous<-function(theta,bank,x,D=1) {
 #' @note this function should return the same result as the catR::eapEst function
 #' @export
 #' @examples
-#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
-#'               -2.55,-1.90,0.18,1.54,2.56,
+#' bank<-matrix(c(1.75,1.80,1.85,1.90,1.95,
+#'               -3,-2,0,2,3,
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("a","b","c","d")))
 #' response<-c(1,0,0,0,0)
 #' catR::eapEst(bank,response)
 #' compute_eap_dichotomous(bank,response)
@@ -246,11 +256,13 @@ compute_eap_dichotomous<-function (bank,x,D=1,priorPar=c(0,1),lower=-4,upper=4,n
 #' @note this function should return the same result as the catR::eapSem function
 #' @export
 #' @examples
-#' bank<-matrix(c(1.75,1.80,1.18,1.54,1.56,
-#'               -2.55,-1.90,0.18,1.54,2.56,
+#' bank<-matrix(c(1.75,1.80,1.85,1.90,1.95,
+#'               -3,-2,0,2,3,
 #'                0.1,0.1,0.1,0.1,0.1,
 #'                0.9,0.9,0.9,0.9,0.9),
-#'              nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
+#'              nrow=5,
+#'              dimnames=list(c(1,2,3,4,5),
+#'                            c("a","b","c","d")))
 #' response<-c(0,0,0,0,0)
 #' catR::eapSem(0,bank,response)
 #' compute_eap_se_dichotomous(theta=0,bank=bank,x=response)
@@ -286,11 +298,13 @@ compute_eap_se_dichotomous<-function(theta,bank,x,D=1,priorPar=c(0,1),lower=-4,u
 ##########################################################################################
 # EXAMPLE 1
 ##########################################################################################
-# a<-c(0.7521,0.8083,1.1857,0.5481,0.5695)
-# b<-c(-1.5521,-0.9083,0.1857,0.5481,1.5695)
-# c<-c(0,0,0,0,0)
-# d<-c(1,1,1,1,1)
-# bank<-matrix(c(a,b,c,d),nrow=5,dimnames=list(c(1,2,3,4,5),c("a","b","c","d")))
+# bank<-matrix(c(1.75,1.80,1.85,1.90,1.95,
+#               -3,-2,0,2,3,
+#                0.1,0.1,0.1,0.1,0.1,
+#                0.9,0.9,0.9,0.9,0.9),
+#              nrow=5,
+#              dimnames=list(c(1,2,3,4,5),
+#                            c("a","b","c","d")))
 # response_1<-c(1,0,0,0,0)
 # response_2<-c(1,1,0,0,0)
 # response_3<-c(1,1,1,0,0)
