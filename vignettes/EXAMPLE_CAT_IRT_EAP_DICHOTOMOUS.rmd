@@ -198,12 +198,13 @@ Which feature of a response pattern the estimate depends on is a property of the
 The bank from the roxygen examples of `cat_eap_dichotomous.R`: five items spanning the ability range, with different discriminations, and a guessing parameter of 0.1 and an upper asymptote of 0.9 on every item.
 
 ```{r bank}
-bank <- matrix(c(1.75, 1.80, 1.18, 1.54, 1.56,
-                 -2.55, -1.90, 0.18, 1.54, 2.56,
-                 0.1, 0.1, 0.1, 0.1, 0.1,
-                 0.9, 0.9, 0.9, 0.9, 0.9),
-               nrow = 5, 
-               dimnames = list(1:5, c("a", "b", "c", "d")))
+bank<-matrix(c(1.75,1.80,1.85,1.90,1.95,
+              -3,-2,0,2,3,
+               0.1,0.1,0.1,0.1,0.1,
+               0.9,0.9,0.9,0.9,0.9),
+             nrow=5,
+             dimnames=list(c(1,2,3,4,5),
+                           c("a","b","c","d")))
 bank
 ```
 
@@ -245,8 +246,8 @@ Both approximate $\int_{-3}^{3} e^x\,dx$ on the same 33-point trapezoidal grid a
 At a single ability value, the whole returned list (probabilities and all three derivatives) matches `catR::Pi()`:
 
 ```{r pi_check}
-round(data.frame(compute_pi_dichotomous(theta = 0, bank),
-                 catR::Pi(th = 0, bank)), 6)
+data.frame(compute_pi_dichotomous(theta = 0, bank),
+           catR::Pi(th = 0, bank))
 ```
 
 ```{r pi_plot,dev='png'}
