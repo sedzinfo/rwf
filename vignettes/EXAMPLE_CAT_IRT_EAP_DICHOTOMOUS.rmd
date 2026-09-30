@@ -246,12 +246,12 @@ Both approximate $\int_{-3}^{3} e^x\,dx$ on the same 33-point trapezoidal grid a
 At a single ability value, the whole returned list (probabilities and all three derivatives) matches `catR::Pi()`:
 
 ```{r pi_check}
-data.frame(compute_pi_dichotomous(theta = 0, bank),
-           catR::Pi(th = 0, bank))
+data.frame(catR=catR::Pi(th = 0, bank),
+           compute_pi_dichotomous(theta = 0, bank))
 ```
 
 ```{r pi_plot,dev='png'}
-theta_grid <- seq(-6, 6, by = 0.05)
+theta_grid <- seq(-6, 6, by = 0.01)
 prob_curves <- t(sapply(theta_grid, function(th) compute_pi_dichotomous(theta = th, bank)$Pi))
 df_curves <- data.frame(theta = theta_grid, prob_curves)
 names(df_curves)[-1] <- paste0("item ", 1:5, " (a=", bank[, "a"], ", b=", bank[, "b"], ")")
@@ -261,54 +261,20 @@ ggplot(df_curves_long, aes(x = theta, y = P, color = item)) +
   geom_hline(yintercept = c(0.1, 0.9), linetype = "dashed", color = "grey50") +
   geom_line(linewidth = 1) +
   scale_y_continuous(expand=c(0, 0), limits=c(0, 1)) +
-  labs(title = "Item response curves",
+  labs(title = "ICF",
        subtitle = "every item has lower asymptote c = 0.1 and upper asymptote d = 0.9 (dashed)",
-       x = expression(theta), y = expression(P(theta)), color = NULL) +
+       x = expression(theta),
+       y = expression(P(theta)),
+       color = NULL) +
   theme_bw(base_size = 12)
 ```
 
 Each curve rises from the guessing floor of 0.1 to the slipping ceiling of 0.9, passing through 0.5 at its own $b_j$. Steeper curves (higher $a$) discriminate more sharply around their difficulty; curves shifted right are harder.
 
-### The probability floor
-
-For a 2PL item with $a=1$, $b=0$ and $D=1$ the exponent is just $\theta$, so the floor can be located directly:
-
-```{r pi_floor}
-item_2pl <- c(a = 1, b = 0, c = 0, d = 1)
-z <- c(-746, -745, -40, 36, 37, 40)
-data.frame(exponent       = z,
-           P              = compute_pi_dichotomous(z, item_2pl)$Pi,
-           floored_at_0   = compute_pi_dichotomous(z, item_2pl)$Pi == 1e-10,
-           floored_at_1   = compute_pi_dichotomous(z, item_2pl)$Pi == 1 - 1e-10)
-
-# the smallest exponent at which e/(1+e) rounds to exactly 1
-z_grid <- seq(36, 37, by = 0.001)
-z_one <- min(z_grid[sapply(z_grid, function(z) exp(z) / (1 + exp(z)) == 1)])
-c(first_exponent_rounding_to_1 = z_one, log_2_to_the_53 = log(2^53))
-```
-
-The two ends of the floor are very different in practice. A probability near 0 is stored with a floating-point exponent, so $e_j/(1+e_j)$ only becomes exactly 0 when $e_j$ itself underflows, below an exponent of about $-745$. A probability near 1 is stored as $1$ minus something, with only 53 bits of mantissa, so it rounds to exactly 1 as soon as the exponent reaches about `r round(z_one, 2)`, which is $\log 2^{53}$. For a highly discriminating item with $Da_j = 4$ that happens only `r round(z_one / 4, 1)` logits above $b_j$. At that point the floor is what keeps the information finite:
-
-```{r pi_floor_information}
-e <- exp(40)
-unfloored <- c(P = e / (1 + e), dP = e / (1 + e)^2)
-c(unfloored_information = unname(unfloored["dP"]^2 / (unfloored["P"] * (1 - unfloored["P"]))),
-  floored_information   = unname(compute_ii_dichotomous(40, item_2pl)$Ii))
-```
-
-The floor guards against rounding, not against overflow. Once the exponent exceeds $\log$ of the largest double, about `r round(log(.Machine$double.xmax), 2)`, $e_j$ itself is `Inf` and $e_j/(1+e_j)$ is `NaN`, in `catR` exactly as here:
-
-```{r pi_overflow}
-c(compute_pi_dichotomous = unname(compute_pi_dichotomous(800, item_2pl)$Pi),
-  catR_Pi                = unname(catR::Pi(800, item_2pl)$Pi))
-```
-
-No realistic bank and quadrature range comes near that point.
-
 ### Item information
 
 ```{r ii_check}
-round(data.frame(compute_ii_dichotomous(theta = 0, bank),catR::Ii(th = 0, bank)), 6)
+data.frame(catR=catR::Ii(th = 0, bank),compute_ii_dichotomous(theta = 0, bank))
 ```
 
 ```{r ii_plot,dev='png'}
