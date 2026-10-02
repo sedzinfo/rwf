@@ -35,18 +35,18 @@ Every other model in this series assumes that the response categories of an item
 
 [`working_examples/cat_eap_nrm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_nrm.R), together with the two shared helpers in [`working_examples/cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R), implements the full pipeline in eight small functions. They are written in base R and have no runtime dependency on `catR`:
 
-| Function | Purpose | `catR` equivalent it mirrors |
-|---|---|---|
-| `density_function()` | Normal density | `stats::dnorm()` |
-| `integrate_cat()` | Numerical integration (trapezoidal rule) | `catR::integrate.catR()` |
-| `compute_pi_nrm()` | Category response probabilities + four derivatives | `catR::Pi(model="NRM")` |
-| `compute_ii_nrm()` | Item information + three derivatives | `catR::Ii(model="NRM")` |
-| `compute_next_item_nrm()` | Maximum Fisher information item selection | `catR::nextItem(model="NRM", criterion="MFI")` |
-| `compute_likelihood_nrm()` | Likelihood of a nominal response pattern | *(internal to `catR`)* |
-| `compute_eap_nrm()` | EAP ability estimate | `catR::eapEst(model="NRM")` |
-| `compute_eap_se_nrm()` | EAP standard error | `catR::eapSem(model="NRM")` |
+| Function | File | Purpose | `catR` equivalent it mirrors |
+|---|---|---|---|
+| `density_function()` | `cat_eap_common.R` | Normal density | `stats::dnorm()` |
+| `integrate_cat()` | `cat_eap_common.R` | Numerical integration (trapezoidal rule) | `catR::integrate.catR()` |
+| `compute_pi_nrm()` | `cat_eap_nrm.R` | Category response probabilities and their first four derivatives | `catR::Pi(model="NRM")` |
+| `compute_ii_nrm()` | `cat_eap_nrm.R` | Item information and its first three derivatives | `catR::Ii(model="NRM")` |
+| `compute_next_item_nrm()` | `cat_eap_nrm.R` | Maximum Fisher information item selection | `catR::nextItem(model="NRM", criterion="MFI")` |
+| `compute_likelihood_nrm()` | `cat_eap_nrm.R` | Likelihood of a nominal response pattern | *(internal to `catR::eapEst()`)* |
+| `compute_eap_nrm()` | `cat_eap_nrm.R` | EAP ability estimate | `catR::eapEst(model="NRM")` |
+| `compute_eap_se_nrm()` | `cat_eap_nrm.R` | EAP standard error | `catR::eapSem(model="NRM")` |
 
-Two of the outputs go beyond `catR`. `compute_pi_nrm()` also returns the **fourth** derivative of the category probabilities (`d4Pi`), and `compute_ii_nrm()` returns the **third** derivative of the item information (`d3Ii`). `catR` stops one order earlier in both cases, so these two are checked with finite differences and with an exact identity instead of against the package.
+Two of the outputs go beyond `catR`. `compute_pi_nrm()` also returns the **fourth** derivative of the category probabilities (`d4Pi`), and `compute_ii_nrm()` returns the **third** derivative of the item information (`d3Ii`). `catR` stops one order earlier in both cases, so these two are checked against central finite differences instead of against the package, and `d3Ii` also against an exact identity derived below.
 
 ```{r source_functions,message=FALSE,warning=FALSE}
 library(ggplot2)
@@ -64,19 +64,20 @@ source(paste0(directory, "../working_examples/cat_eap_pcm.R"), local = knitr::kn
 
 ### From ordered steps to unordered categories
 
-An item with categories $0,1,\ldots,m$ needs $m+1$ curves that sum to 1 at every ability level. The NRM builds them with a multinomial logit. Every category $k$ has its own linear predictor $\alpha_{jk}\theta + c_{jk}$:
+An item $j$ with categories $0,1,\ldots,m_j$ needs $m_j+1$ curves that sum to 1 at every ability level. The NRM builds them with a multinomial logit. Every category $k$ has its own linear predictor $\alpha_{jk}\theta + c_{jk}$:
 
-$$P(X_j = k \mid \theta) = \frac{\exp\left(\alpha_{jk}\,\theta + c_{jk}\right)}{\sum_{h=0}^{m}\exp\left(\alpha_{jh}\,\theta + c_{jh}\right)}, \qquad \alpha_{j0} = c_{j0} = 0 .$$
+$$P_{jk}(\theta) = P(X_j = k \mid \theta) = \frac{\exp\left(\alpha_{jk}\,\theta + c_{jk}\right)}{\sum_{h=0}^{m_j}\exp\left(\alpha_{jh}\,\theta + c_{jh}\right)}, \qquad k = 0,1,\ldots,m_j, \qquad \alpha_{j0} = c_{j0} = 0 .$$
 
 - $\alpha_{jk}$, the **category slope**, is how fast the log-odds of category $k$ against category 0 grow with ability.
 - $c_{jk}$, the **category intercept**, is that log-odds at $\theta = 0$.
+- $m_j$, the highest category of item $j$. Items in the same bank may have different $m_j$.
 - Category 0 is the **reference category**. Adding the same constant to every slope, or to every intercept, cancels between numerator and denominator, so one category has to be pinned at zero for the parameters to be identified.
 
 The key to reading the model is that the log-odds against the reference category form a straight line in $\theta$:
 
 $$\log\frac{P(X_j=k\mid\theta)}{P(X_j=0\mid\theta)} = \alpha_{jk}\,\theta + c_{jk}.$$
 
-The **most probable (modal) category** at any $\theta$ is the one whose line is highest. Far out to the right that is the line with the largest slope, and far out to the left the one with the smallest slope. In between, the categories take turns on top in the order of their **slopes**, not of their codes. A category whose line never reaches the upper envelope is never modal at all. The codes $0,\ldots,m$ are only labels, and that is what "nominal" means.
+The **most probable (modal) category** at any $\theta$ is the one whose line is highest. Far out to the right that is the line with the largest slope, and far out to the left the one with the smallest slope. In between, the categories take turns on top in the order of their **slopes**, not of their codes. A category whose line never reaches the upper envelope is never modal at all. The codes $0,\ldots,m_j$ are only labels, and that is what "nominal" means.
 
 ### The bank layout
 
@@ -86,19 +87,41 @@ The **most probable (modal) category** at any $\theta$ is the one whose line is 
 |---|---|---|---|---|---|---|---|
 | holds | $\alpha_{j1}$ | $c_{j1}$ | $\alpha_{j2}$ | $c_{j2}$ | $\cdots$ | $\alpha_{jm}$ | $c_{jm}$ |
 
-Category 0 has no columns because its slope and intercept are fixed at zero. A bank with $2m$ columns therefore describes items with $m+1$ categories, which the code computes as `ncol(bank)/2 + 1`. Five categories coded 0 to 4 need eight columns. An item with fewer categories than the widest item is padded with `NA` pairs **at the end of its row**. A worked check below shows what happens when the gap is left in the middle instead.
+Category 0 has no columns because its slope and intercept are fixed at zero. A bank with $2m$ columns therefore describes items with up to $m+1$ categories, where $m$ is the largest $m_j$ in the bank; the code computes $m+1$ as `ncol(bank)/2 + 1`. Five categories coded 0 to 4 need eight columns. `compute_pi_nrm()`, which every other function calls, begins with `bank <- rbind(bank)`, so a single item may also be passed as a plain vector.
+
+An item with fewer categories than the widest item ($m_j < m$) is padded with `NA` pairs **at the end of its row**. The exact rule the code applies is this: every pair in which $\alpha_{jk}$ or $c_{jk}$ is `NA` is dropped, the pairs that remain become categories $1,\ldots,m_j$ in their left-to-right order, and their probabilities fill columns 1 to $m_j+1$ of the item's row, with `NA` in the rest. A worked example below shows what happens when the gap is left in the middle instead.
+
+A `mirt` model fitted with `itemtype = "nominal"` writes the exponent of category $k$ as $\texttt{a1}_j\,\texttt{ak}_{jk}\,\theta + \texttt{d}_{jk}$, with $\texttt{ak}_{j0} = \texttt{d}_{j0} = 0$. The roxygen documentation of `compute_pi_nrm()` converts it with
+
+$$\alpha_{jk} = \texttt{a1}_j\,\texttt{ak}_{jk}, \qquad c_{jk} = \texttt{d}_{jk}, \qquad k = 1,\ldots,m_j .$$
+
+`mirt` numbers the observed categories of each item from 0, and the responses passed to these functions must be coded the same way.
 
 ### Response probabilities and their derivatives
 
-Write $\gamma_{jk} = \exp(\alpha_{jk}\theta + c_{jk})$ and $S_j = \sum_h \gamma_{jh}$, so that $P_{jk} = \gamma_{jk}/S_j$. Each derivative of $\gamma_{jk}$ just multiplies it by its slope again:
+Write $\gamma_{jk} = \exp(\alpha_{jk}\theta + c_{jk})$ and $S_j = \sum_{h=0}^{m_j} \gamma_{jh}$, so that $P_{jk} = \gamma_{jk}/S_j$. Each derivative of $\gamma_{jk}$ just multiplies it by its slope again, so each derivative of $S_j$ is a slope-weighted sum:
 
-$$\frac{d^n\gamma_{jk}}{d\theta^n} = \alpha_{jk}^{\,n}\,\gamma_{jk}.$$
+$$\gamma^{(r)}_{jk} = \frac{d^r\gamma_{jk}}{d\theta^r} = \alpha_{jk}^{\,r}\,\gamma_{jk}, \qquad S^{(r)}_j = \frac{d^rS_j}{d\theta^r} = \sum_{h=0}^{m_j}\alpha_{jh}^{\,r}\,\gamma_{jh}.$$
 
-In the code `gamma`, `dgamma`, `d2gamma`, `d3gamma` and `d4gamma` hold $\gamma\alpha^0,\ldots,\gamma\alpha^4$. The derivatives of $P_{jk}$ then follow from the quotient rule applied to $\gamma_{jk}/S_j$. The first one has a particularly clean form:
+In the code `gamma`, `dgamma`, `d2gamma`, `d3gamma` and `d4gamma` hold $\gamma\alpha^0,\ldots,\gamma\alpha^4$, and `sum_gamma` to `sum_d4gamma` hold $S_j,\ldots,S^{(4)}_j$. The derivatives of $P_{jk}$ then follow from the quotient rule applied to $\gamma_{jk}/S_j$. With primes for derivatives with respect to $\theta$ ($\gamma'_{jk} = \gamma^{(1)}_{jk}$, $S''_j = S^{(2)}_j$, and so on), `compute_pi_nrm()` computes
 
-$$\frac{dP_{jk}}{d\theta} = P_{jk}\,\big(\alpha_{jk} - \bar\alpha_j(\theta)\big), \qquad \bar\alpha_j(\theta) = \sum_h P_{jh}\,\alpha_{jh}.$$
+$$
+\begin{aligned}
+P'_{jk} &= \frac{\gamma'_{jk}}{S_j} - \frac{\gamma_{jk}S'_j}{S_j^2},\\
+P''_{jk} &= \frac{\gamma''_{jk}}{S_j} - \frac{2\gamma'_{jk}S'_j + \gamma_{jk}S''_j}{S_j^2} + \frac{2\gamma_{jk}S'^2_j}{S_j^3},\\
+P'''_{jk} &= \frac{\gamma'''_{jk}}{S_j} - \frac{\gamma_{jk}S'''_j + 3\gamma'_{jk}S''_j + 3\gamma''_{jk}S'_j}{S_j^2} + \frac{6\gamma_{jk}S'_jS''_j + 6\gamma'_{jk}S'^2_j}{S_j^3} - \frac{6\gamma_{jk}S'^3_j}{S_j^4},\\
+P^{(4)}_{jk} &= \frac{\gamma^{(4)}_{jk}}{S_j} - \frac{\gamma_{jk}S^{(4)}_j + 4\gamma'_{jk}S'''_j + 6\gamma''_{jk}S''_j + 4\gamma'''_{jk}S'_j}{S_j^2} + \frac{12\gamma''_{jk}S'^2_j + 24\gamma'_{jk}S'_jS''_j + 8\gamma_{jk}S'_jS'''_j + 6\gamma_{jk}S''^2_j}{S_j^3}\\
+&\qquad - \frac{24\gamma'_{jk}S'^3_j + 36\gamma_{jk}S'^2_jS''_j}{S_j^4} + \frac{24\gamma_{jk}S'^4_j}{S_j^5}.
+\end{aligned}
+$$
 
-A category's probability rises with $\theta$ exactly when its slope is above the current average slope. `compute_pi_nrm()` returns `Pi`, `dPi`, `d2Pi`, `d3Pi` and `d4Pi`, each with one row per item and one column per category. The first four match `catR::Pi()`. `d4Pi` has no `catR` counterpart; this file needs it for the third derivative of the information.
+The first one has a particularly clean form:
+
+$$P'_{jk} = P_{jk}\,\big(\alpha_{jk} - \bar\alpha_j(\theta)\big), \qquad \bar\alpha_j(\theta) = \sum_{h=0}^{m_j} P_{jh}\,\alpha_{jh}.$$
+
+A category's probability rises with $\theta$ exactly when its slope is above the current average slope. `compute_pi_nrm()` returns `Pi`, `dPi`, `d2Pi`, `d3Pi` and `d4Pi`, each with one row per item and one column per category, and `NA` in the columns a padded item does not have. The first four match `catR::Pi()`. `d4Pi` has no `catR` counterpart; this file needs it for the third derivative of the information.
+
+**No probability floor.** The dichotomous branch of `catR::Pi()` replaces a probability of exactly 0 or 1 with $10^{-10}$ or $1-10^{-10}$. The NRM branch does not, and neither does `compute_pi_nrm()`. None is needed: the information below divides by $P_{jk}$ but never by $1-P_{jk}$, so a probability that rounds to 1 does no harm, and $P_{jk}$, a ratio of positive exponentials, stays positive until `exp()` underflows or overflows, which for the example bank below happens only beyond $|\theta| \approx 200$.
 
 **The metric constant.** The NRM has no $D$. A constant multiplying the exponent would just be absorbed into the slopes and intercepts. Every function in the file still accepts `D` so that it has the same interface as the other model files, but ignores it, as `catR` does. This is checked below.
 
@@ -106,53 +129,105 @@ A category's probability rises with $\theta$ exactly when its slope is above the
 
 The polytomous Fisher information of an item is
 
-$$I_j(\theta) = \sum_{k=0}^{m} \frac{\big[dP_{jk}(\theta)/d\theta\big]^2}{P_{jk}(\theta)}.$$
+$$I_j(\theta) = \sum_{k=0}^{m_j} \frac{P'^2_{jk}(\theta)}{P_{jk}(\theta)}.$$
 
-Substituting $dP_{jk}/d\theta = P_{jk}(\alpha_{jk}-\bar\alpha_j)$ gives
+`compute_ii_nrm()` computes exactly this sum, skipping the `NA` cells of padded items (`rowSums(..., na.rm = TRUE)`). **Test information** is the sum of the item informations over the $n$ items of a test, and its reciprocal square root is the asymptotic standard error of a maximum-likelihood ability estimate:
 
-$$I_j(\theta) = \sum_{k} P_{jk}\,\big(\alpha_{jk}-\bar\alpha_j\big)^2 = \operatorname{Var}_\theta\!\left(\alpha_{j,X_j}\right).$$
+$$I(\theta) = \sum_{j=1}^{n} I_j(\theta).$$
 
-The **information is the variance of the slope of the category the examinee chooses**. It is large where categories with very different slopes are both probable, and it depends on the spread of the slopes, not on the category codes. Because a variance of a quantity confined to an interval of length $r$ can never exceed $r^2/4$, an item's information can never exceed $(\max_k\alpha_{jk}-\min_k\alpha_{jk})^2/4$.
+Substituting $P'_{jk} = P_{jk}(\alpha_{jk}-\bar\alpha_j)$ gives
+
+$$I_j(\theta) = \sum_{k=0}^{m_j} P_{jk}\,\big(\alpha_{jk}-\bar\alpha_j\big)^2 = \operatorname{Var}_\theta\!\left(\alpha_{j,X_j}\right).$$
+
+The **information is the variance of the slope of the category the examinee chooses**. It is large where categories with very different slopes are both probable, and it depends on the spread of the slopes, not on the category codes. Because the variance of a quantity confined to an interval can never exceed a quarter of the squared length of the interval, an item's information can never exceed $(\max_k\alpha_{jk}-\min_k\alpha_{jk})^2/4$.
 
 The derivatives follow from the same idea. Moving from $\theta$ to $\theta + t$ reweights every category by $e^{t\alpha_{jk}}$. So the cumulant generating function of the chosen slope is $\log S_j(\theta+t) - \log S_j(\theta)$, and its cumulants are the $\theta$-derivatives of $\log S_j$:
 
-$$\kappa_n(\theta) = \frac{d^n}{d\theta^n}\log S_j(\theta), \qquad \frac{d\kappa_n}{d\theta} = \kappa_{n+1}.$$
+$$\kappa_r(\theta) = \frac{d^r}{d\theta^r}\log S_j(\theta), \qquad \frac{d\kappa_r}{d\theta} = \kappa_{r+1}.$$
 
-$\kappa_1 = \bar\alpha_j$ and $\kappa_2 = I_j$. So `Ii`, `dIi`, `d2Ii` and `d3Ii` are the **second to fifth cumulants** of the chosen slope. In terms of its central moments $\mu_r$:
+$\kappa_1 = \bar\alpha_j$ and $\kappa_2 = I_j$. So `Ii`, `dIi`, `d2Ii` and `d3Ii` are the **second to fifth cumulants** of the chosen slope. In terms of its central moments $\mu_r = \sum_k P_{jk}(\alpha_{jk}-\bar\alpha_j)^r$:
 
 $$I_j = \kappa_2 = \mu_2,\quad I_j' = \kappa_3 = \mu_3,\quad I_j'' = \kappa_4 = \mu_4 - 3\mu_2^2,\quad I_j''' = \kappa_5 = \mu_5 - 10\,\mu_3\,\mu_2.$$
 
-`compute_ii_nrm()` does not use this identity. It differentiates each category term $P'^2/P$ directly, with the same formulas as `catR::Ii()` for the first three quantities and one more order for `d3Ii`. The identity is an independent way to check them.
+`compute_ii_nrm()` does not use this identity. It differentiates each category term $P'^2_{jk}/P_{jk}$ directly and sums over the categories, with the same formulas as `catR::Ii()` for the first three quantities and one more order for `d3Ii`:
+
+$$I'_j = \sum_{k=0}^{m_j}\left(\frac{2P'_{jk}P''_{jk}}{P_{jk}} - \frac{P'^3_{jk}}{P^2_{jk}}\right)
+\qquad
+I''_j = \sum_{k=0}^{m_j}\left(\frac{2P''^2_{jk} + 2P'_{jk}P'''_{jk}}{P_{jk}} - \frac{5P'^2_{jk}P''_{jk}}{P^2_{jk}} + \frac{2P'^4_{jk}}{P^3_{jk}}\right)$$
+
+$$I'''_j = \sum_{k=0}^{m_j}\left(\frac{6P''_{jk}P'''_{jk} + 2P'_{jk}P^{(4)}_{jk}}{P_{jk}} - \frac{12P'_{jk}P''^2_{jk} + 7P'^2_{jk}P'''_{jk}}{P^2_{jk}} + \frac{18P'^3_{jk}P''_{jk}}{P^3_{jk}} - \frac{6P'^5_{jk}}{P^4_{jk}}\right)$$
+
+The identity is an independent way to check them.
 
 ### Next-item selection
 
-An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate. This is the **Maximum Fisher Information (MFI)** criterion. Items already given are excluded through `out`. Each NRM item has its own slopes and intercepts, so the information curves differ in both height and shape, and the information of every available item has to be computed at $\theta$.
+An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate. This is the **Maximum Fisher Information (MFI)** criterion. `compute_next_item_nrm()` computes $I_j(\hat\theta)$ for every item not listed in `out`, the indices of the items already administered, and returns the index of the best one, its information, and the indices that were available:
 
-`compute_next_item_nrm()` also has a `randomesque` argument. It draws at random from the $k$ most informative items instead of always taking the single best, which is standard exposure control. The file's documentation notes two deliberate differences from `catR::nextItem()` that only matter in edge cases. When several items tie exactly, `catR` draws one of them at random and this function takes the first. With `randomesque` above 1, `catR` also keeps every item tied with the last one kept.
+$$j^{*} = \arg\max_{j\notin\texttt{out}} I_j(\hat\theta)$$
+
+Each NRM item has its own slopes and intercepts, so the information curves differ in both height and shape, and the information of every available item has to be computed at $\hat\theta$.
+
+`compute_next_item_nrm()` also has a `randomesque` argument, which is standard exposure control. With
+
+$$K = \max\big(1,\ \min(\lfloor\texttt{randomesque}\rfloor,\ \text{number of available items})\big),$$
+
+the next item is drawn uniformly at random from the $K$ available items with the largest $I_j(\hat\theta)$, instead of always taking the single best; ties in that ranking are broken by item order, as `order()` does. The file's documentation notes two deliberate differences from `catR::nextItem()` that only matter in edge cases. When several items tie exactly, `catR` draws one of them at random and this function takes the first. With `randomesque` above 1, `catR` also keeps every item tied with the last one kept.
 
 ### Likelihood of a response pattern
 
-Under local independence the likelihood of a pattern $\mathbf{x} = (x_1,\ldots,x_n)$ is
+Under local independence the likelihood of a pattern $\mathbf{x} = (x_1,\ldots,x_n)$, with each $x_j$ coded $0,\ldots,m_j$, is
 
-$$L(\theta) = \prod_{i=1}^{n} P_{i,x_i}(\theta).$$
+$$L(\theta) = \prod_{j=1}^{n} P_{j,x_j}(\theta).$$
 
-The response of item $i$ selects column `x[i]+1` of the probability matrix; the `+1` is there because categories start at 0 and R columns start at 1. Writing the product out shows what the response pattern actually contributes:
+The response $x_j$ of item $j$ selects column $x_j+1$ of the probability matrix (`prob[i, x[i] + 1]` in the code); the `+1` is there because categories start at 0 and R columns start at 1. `catR` computes this product inside `eapEst()` and `eapSem()` without exporting it; `compute_likelihood_nrm()` exposes it as a function of its own, and the two EAP functions call it. Writing the product out shows what the response pattern actually contributes:
 
-$$L(\theta) = \frac{\exp\!\Big(\theta\sum_i \alpha_{i,x_i} + \sum_i c_{i,x_i}\Big)}{\prod_i S_i(\theta)}.$$
+$$L(\theta) = \frac{\exp\!\Big(\theta\sum_j \alpha_{j,x_j} + \sum_j c_{j,x_j}\Big)}{\prod_j S_j(\theta)}.$$
 
-The denominator depends on $\theta$ but not on the responses, and the intercept sum is a constant. The pattern reaches $\theta$ **only through the sum of the slopes of the chosen categories**, $\sum_i\alpha_{i,x_i}$. That sum is a sufficient statistic for $\theta$ (for known item parameters). The raw sum of the category codes is not, because the codes carry no order.
+The denominator depends on $\theta$ but not on the responses, and the intercept sum is a constant. The pattern reaches $\theta$ **only through the sum of the slopes of the chosen categories**, $\sum_j\alpha_{j,x_j}$. That sum is a sufficient statistic for $\theta$ (for known item parameters). The raw sum of the category codes is not, because the codes carry no order; it becomes sufficient only when every slope is its category code times one constant shared by the whole bank, as in the Partial Credit Model of the worked example below.
 
-The same formula shows where Maximum Likelihood breaks down. If every response falls in the category with the largest slope on its item, each factor $P_{i,x_i}$ keeps rising with $\theta$ and the likelihood has no finite maximum. The same holds at the other end for the smallest slopes.
+The same formula shows where Maximum Likelihood breaks down. If every response falls in the category with the largest slope on its item, each factor $P_{j,x_j}$ keeps rising with $\theta$ and the likelihood has no finite maximum. The same holds at the other end for the smallest slopes.
 
 ### EAP and its standard error
 
-As in the other models, a **prior** $\pi(\theta)$ on ability (standard normal by default) turns the likelihood into a posterior. EAP reports the posterior mean and standard deviation (Bock & Mislevy, 1982):
+As in the other models, a **prior** $\pi(\theta)$ on ability turns the likelihood into a posterior. The prior is the normal density that `density_function()` writes out, standard normal by default:
+
+$$\pi(\theta) = \frac{1}{\sigma\sqrt{2\pi}}\exp\!\left(-\frac{(\theta-\mu)^2}{2\sigma^2}\right), \qquad (\mu,\sigma) = \texttt{priorPar}$$
+
+EAP reports the posterior mean and standard deviation (Bock & Mislevy, 1982):
 
 $$\hat\theta_{EAP} = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}
 \qquad
 SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
 
-Both integrals are evaluated on `nqp` equally spaced quadrature points (default 33) from `lower` to `upper` (default $\pm 4$), with the trapezoidal rule. The prior keeps both integrals finite for the patterns where Maximum Likelihood has no answer. `compute_eap_se_nrm()` takes `theta` as a free argument. Passing the EAP estimate gives the posterior standard deviation; any other value gives the root mean squared deviation around that value.
+For a response pattern $\mathbf{x}$, with the likelihood $L$ above, the integrands of the two numerators and of the common denominator are
+
+$$
+\begin{aligned}
+g(s) &= s\,\pi(s)\,L(s),\\
+g_{SE}(s) &= (s-\hat\theta_{EAP})^2\,\pi(s)\,L(s),\\
+h(s) &= \pi(s)\,L(s).
+\end{aligned}
+$$
+
+On the quadrature grid $X=(\theta_1,\ldots,\theta_Q)$, where $Q=\texttt{nqp}$ and $\theta_q=\texttt{lower}+(q-1)(\texttt{upper}-\texttt{lower})/(Q-1)$, the two are approximated by
+
+$$
+\hat\theta_{EAP} \approx \frac{\operatorname{Trap}(X,\,g(X))}{\operatorname{Trap}(X,\,h(X))}
+\qquad
+SE(\hat\theta_{EAP}) \approx \sqrt{\frac{\operatorname{Trap}(X,\,g_{SE}(X))}{\operatorname{Trap}(X,\,h(X))}},
+$$
+
+where $g(X)=(g(\theta_1),\ldots,g(\theta_Q))$, and likewise for $g_{SE}$ and $h$. `Trap` denotes the trapezoidal integration implemented by `integrate_cat()` below. The defaults are 33 points from $-4$ to $4$, as in `catR`.
+
+All four integrals are finite, and both denominators are positive, for every response pattern: $0<L(\theta)\le 1$ and the normal prior has a finite mean and variance. This is what rescues the patterns where Maximum Likelihood has no answer, whose likelihood never shrinks to zero in one tail and so cannot be integrated on its own. `compute_eap_se_nrm()` takes `theta` as a free argument, the value used for $\hat\theta_{EAP}$ in $g_{SE}$. Passing the EAP estimate gives the posterior standard deviation; any other value gives the root mean squared deviation around that value.
+
+### Numerical integration
+
+None of these integrals has a closed form, so the integrands are evaluated at the `nqp` **quadrature points** $\theta_1<\cdots<\theta_Q$ and integrated with the **trapezoidal rule**, which approximates the area between two adjacent points by a trapezoid, the width times the average of the two heights:
+
+$$\int_{\texttt{lower}}^{\texttt{upper}} f(\theta)\,d\theta \approx \operatorname{Trap}(X,\,f(X)) = \sum_{q=1}^{Q-1} (\theta_{q+1}-\theta_q)\,\frac{f(\theta_q)+f(\theta_{q+1})}{2}$$
+
+`integrate_cat()` implements exactly this sum; `density_function()` supplies $\pi(\theta)$. Cutting the integrals off at `lower` and `upper` is a second approximation, which the worked example on the numerical settings measures.
 
 ---
 
@@ -160,7 +235,7 @@ Both integrals are evaluated on `nqp` equally spaced quadrature points (default 
 
 ## The item bank
 
-This is the five-item, five-category bank from the file's documentation. Categories are coded 0 to 4, so there are $4 \times 2 = 8$ columns.
+This is the five-item, five-category bank from the roxygen examples of `cat_eap_nrm.R`. Categories are coded 0 to 4, so there are $4 \times 2 = 8$ columns.
 
 ```{r bank}
 bank <- matrix(c(0.614,  0.782, 0.297,  1.036,  0.521,
@@ -178,17 +253,7 @@ bank
 c(columns = ncol(bank), categories = ncol(bank) / 2 + 1)
 ```
 
-Slopes and intercepts are easier to read with the reference category put back in as a column of zeros:
-
-```{r bank_slopes}
-slopes     <- cbind(0, bank[, c("alpha1", "alpha2", "alpha3", "alpha4")])
-intercepts <- cbind(0, bank[, c("c1", "c2", "c3", "c4")])
-colnames(slopes) <- colnames(intercepts) <- paste0("cat", 0:4)
-
-data.frame(slopes, slopes_increase_with_code = apply(slopes, 1, function(s) !is.unsorted(s)))
-```
-
-In four of the five items the slopes happen to increase with the category code. Item 4 is the exception: its category 1 has a steeper slope ($`r slopes[4, "cat1"]`$) than its category 2 ($`r slopes[4, "cat2"]`$). A model for ordered categories could not represent this item.
+Every slope is positive, so the reference category 0 has the smallest slope on every item, and `alpha4` is the largest slope in every row.
 
 ---
 
@@ -199,8 +264,7 @@ In four of the five items the slopes happen to increase with the category code. 
 ```{r density_check}
 v <- seq(-3, 3, by = 0.1)
 comparison <- data.frame(x = v, density_function = density_function(v), dnorm = dnorm(v))
-head(comparison)
-all.equal(comparison$density_function, comparison$dnorm)
+max(abs(comparison$density_function - comparison$dnorm))
 ```
 
 ```{r density_plot,dev='png'}
@@ -219,43 +283,57 @@ The function writes out the textbook normal density longhand. It uses `exp(1)` i
 ```{r integration_check}
 x <- seq(from = -3, to = 3, length = 33)
 y <- round(exp(x), 2)
-c(integrate_cat = integrate_cat(x, y), integrate.catR = catR::integrate.catR(x, y))
-all.equal(integrate_cat(x, y), catR::integrate.catR(x, y))
+c(integrate_cat  = integrate_cat(x, y),
+  integrate.catR = catR::integrate.catR(x, y),
+  difference     = integrate_cat(x, y) - catR::integrate.catR(x, y))
 ```
 
-### Category response probabilities and derivatives
+Both approximate $\int_{-3}^{3} e^x\,dx$, with the heights rounded to two decimals, on the same 33-point trapezoidal grid and return the same number.
+
+### Response probabilities and derivatives
+
+`catR` returns four matrices and `compute_pi_nrm()` returns five. The four they share are compared at seven values of $\theta$, out to $\pm 6$, and at both values of $D$, as the largest absolute difference for each matrix. `D_ignored` checks that both functions return the same output for $D = 1.702$ as for $D = 1$:
 
 ```{r pi_check}
-mine   <- compute_pi_nrm(theta = 0, bank)
-theirs <- catR::Pi(th = 0, bank, model = "NRM")
-
-round(mine$Pi, 6)
-names(mine)
-names(theirs)
-sapply(names(theirs), function(nm) isTRUE(all.equal(mine[[nm]], theirs[[nm]])))
-```
-
-`catR` returns four matrices and `compute_pi_nrm()` returns five; the four they share agree. One ability value is a thin test, so the next chunk repeats the comparison at five values of $\theta$ and at both values of $D$. It reports the largest absolute difference for each matrix:
-
-```{r pi_check_grid}
-theta_check <- c(-3, -1.2, 0, 0.7, 2.5)
+theta_check <- c(-6, -3, -1.2, 0, 0.7, 2.5, 6)
 
 pi_diff <- do.call(rbind, lapply(c(1, 1.702), function(d) do.call(rbind, lapply(theta_check, function(th) {
   ours <- compute_pi_nrm(th, bank, D = d)
   ref  <- catR::Pi(th, bank, model = "NRM", D = d)
   data.frame(D = d, theta = th,
-             t(sapply(names(ref), function(nm) max(abs(ours[[nm]] - ref[[nm]])))))
+             t(sapply(names(ref), function(nm) max(abs(ours[[nm]] - ref[[nm]])))),
+             D_ignored = identical(ours, compute_pi_nrm(th, bank)) &&
+                         identical(ref, catR::Pi(th, bank, model = "NRM")))
 }))))
 pi_diff
-max(pi_diff[, c("Pi", "dPi", "d2Pi", "d3Pi")])
 ```
 
-The two implementations run the same arithmetic in the same order, so the results are identical and not merely close. $D$ has no effect in either one:
+The two implementations run the same arithmetic in the same order, so the results are identical and not merely close, and $D$ has no effect in either one.
 
-```{r pi_check_D}
-c(compute_pi_nrm = identical(compute_pi_nrm(0.7, bank, D = 1.702), compute_pi_nrm(0.7, bank, D = 1)),
-  catR_Pi        = identical(catR::Pi(0.7, bank, model = "NRM", D = 1.702),
-                             catR::Pi(0.7, bank, model = "NRM", D = 1)))
+`catR` has no fourth derivative to compare `d4Pi` with, so it is checked against a central finite difference of `d3Pi`, $\big(f(\theta+\varepsilon)-f(\theta-\varepsilon)\big)/2\varepsilon$ with $\varepsilon = 10^{-4}$, whose own error is of order $\varepsilon^2$:
+
+```{r d4pi_check}
+eps <- 1e-4
+data.frame(theta = theta_check,
+           fd_gap_d4Pi = sapply(theta_check, function(th)
+             max(abs((compute_pi_nrm(th + eps, bank)$d3Pi - compute_pi_nrm(th - eps, bank)$d3Pi) / (2 * eps) -
+                       compute_pi_nrm(th, bank)$d4Pi))),
+           largest_abs_d4Pi = sapply(theta_check, function(th) max(abs(compute_pi_nrm(th, bank)$d4Pi))))
+```
+
+The gaps are $10^{-8}$ or smaller, the size of the finite difference's own error, against fourth derivatives of order 0.01 to 1.
+
+A four-category item in a five-category bank puts `NA` in its last pair and is scored 0 to 3. With item 5 padded this way, both implementations still return identical probabilities, and identical information, at every $\theta$ above:
+
+```{r na_padding}
+bank_mixed <- bank
+bank_mixed[5, c("alpha4", "c4")] <- NA
+round(compute_pi_nrm(theta = 0, bank_mixed)$Pi, 6)
+
+c(Pi = all(sapply(theta_check, function(th)
+    identical(compute_pi_nrm(th, bank_mixed)[1:4], catR::Pi(th, bank_mixed, model = "NRM")))),
+  Ii = all(sapply(theta_check, function(th)
+    identical(compute_ii_nrm(th, bank_mixed)[1:3], catR::Ii(th, bank_mixed, model = "NRM")))))
 ```
 
 ```{r pi_plot,dev='png'}
@@ -278,63 +356,11 @@ ggplot(df_long, aes(x = theta, y = P, color = category)) +
 
 The five curves sum to 1 at every $\theta$ on the grid. For item 1 the slopes increase with the code, so the curves look like those of an ordered model: category 0 at the bottom of the scale, category 4 at the top, the others in order in between. The worked example on nominal categories below looks at items where that picture breaks.
 
-### The fourth derivative, which `catR` does not have
-
-There is nothing in `catR` to compare `d4Pi` with, so it is checked in two independent ways. The first is a **central finite difference** of the analytic derivative one order lower, $\big(f(\theta+h)-f(\theta-h)\big)/2h$ with $h = 10^{-4}$. Its error is of order $h^2$, around $10^{-8}$ here, and that is the best agreement it can show. The same check is run on all four derivatives:
-
-```{r d4pi_fd}
-h <- 1e-4
-fd_pi <- do.call(rbind, lapply(theta_check, function(th) {
-  up <- compute_pi_nrm(th + h, bank)
-  dn <- compute_pi_nrm(th - h, bank)
-  at <- compute_pi_nrm(th, bank)
-  data.frame(theta = th,
-             dPi  = max(abs((up$Pi   - dn$Pi)   / (2 * h) - at$dPi)),
-             d2Pi = max(abs((up$dPi  - dn$dPi)  / (2 * h) - at$d2Pi)),
-             d3Pi = max(abs((up$d2Pi - dn$d2Pi) / (2 * h) - at$d3Pi)),
-             d4Pi = max(abs((up$d3Pi - dn$d3Pi) / (2 * h) - at$d4Pi)),
-             largest_abs_d4Pi = max(abs(at$d4Pi)))
-}))
-fd_pi
-```
-
-The second check is exact. The probabilities of an item always sum to 1, so their fourth derivatives must sum to 0. The slope-weighted sum $\sum_k\alpha_{jk}P_{jk}$ is the mean slope $\kappa_1$, so its fourth derivative $\sum_k \alpha_{jk}\,P_{jk}^{(4)}$ must equal $\kappa_5$. The helper below computes the cumulants of the chosen slope directly from the probabilities and central moments, without using any derivative:
-
-```{r cumulants}
-slope_cumulants <- function(theta, b) {
-  P  <- compute_pi_nrm(theta, b)$Pi
-  a  <- cbind(0, b[, seq(1, ncol(b), by = 2), drop = FALSE])
-  mu <- rowSums(P * a, na.rm = TRUE)
-  cm <- function(r) rowSums(P * (a - mu)^r, na.rm = TRUE)
-  cbind(k1 = mu, k2 = cm(2), k3 = cm(3),
-        k4 = cm(4) - 3 * cm(2)^2,
-        k5 = cm(5) - 10 * cm(3) * cm(2))
-}
-
-id_pi <- do.call(rbind, lapply(theta_check, function(th) {
-  at <- compute_pi_nrm(th, bank)
-  k  <- slope_cumulants(th, bank)
-  data.frame(theta = th,
-             sum_d4Pi                 = max(abs(rowSums(at$d4Pi))),
-             slope_weighted_d4Pi_vs_k5 = max(abs(rowSums(slopes * at$d4Pi) - k[, "k5"])))
-}))
-id_pi
-```
-
-The finite differences agree to the order of their own truncation error, and both exact identities hold to rounding error.
-
 ### Item information
 
-```{r ii_check}
-mine_ii   <- compute_ii_nrm(theta = 0, bank)
-theirs_ii <- catR::Ii(th = 0, bank, model = "NRM")
-data.frame(Ii_ours  = mine_ii$Ii,  Ii_catR  = theirs_ii$Ii,
-           dIi_ours = mine_ii$dIi, dIi_catR = theirs_ii$dIi,
-           d2Ii_ours = mine_ii$d2Ii, d2Ii_catR = theirs_ii$d2Ii)
-names(mine_ii)
-```
+The same comparison for the information and the two derivatives `catR` returns:
 
-```{r ii_check_grid}
+```{r ii_check}
 ii_diff <- do.call(rbind, lapply(c(1, 1.702), function(d) do.call(rbind, lapply(theta_check, function(th) {
   ours <- compute_ii_nrm(th, bank, D = d)
   ref  <- catR::Ii(th, bank, model = "NRM", D = d)
@@ -344,15 +370,35 @@ ii_diff <- do.call(rbind, lapply(c(1, 1.702), function(d) do.call(rbind, lapply(
 ii_diff
 ```
 
-The documentation's claim that information is the variance of the chosen category's slope can be checked in two lines:
+`catR` stops at `d2Ii`, so `d3Ii` is checked in two independent ways: against a central finite difference of `d2Ii`, as for `d4Pi`, and against the cumulant identity $I, I', I'', I''' = \kappa_2,\kappa_3,\kappa_4,\kappa_5$ of the theory section. `slope_cumulants()` computes the cumulants of the chosen slope from its central moments, using only the probabilities; its `k2` column is the documentation's claim that the information is the variance of the chosen slope.
 
-```{r ii_variance}
-P0 <- compute_pi_nrm(0, bank)$Pi
-mean_slope <- rowSums(P0 * slopes)
-data.frame(Ii = compute_ii_nrm(0, bank)$Ii,
-           variance_of_chosen_slope = rowSums(P0 * slopes^2) - mean_slope^2)
-all.equal(compute_ii_nrm(0, bank)$Ii, as.numeric(rowSums(P0 * slopes^2) - mean_slope^2))
+```{r d3ii_check}
+slope_cumulants <- function(theta, b) {
+  P  <- compute_pi_nrm(theta, b)$Pi
+  a  <- cbind(0, b[, seq(1, ncol(b), by = 2), drop = FALSE])
+  mu <- rowSums(P * a, na.rm = TRUE)
+  cm <- function(r) rowSums(P * (a - mu)^r, na.rm = TRUE)
+  cbind(k2 = cm(2), k3 = cm(3),
+        k4 = cm(4) - 3 * cm(2)^2,
+        k5 = cm(5) - 10 * cm(3) * cm(2))
+}
+
+id_ii <- do.call(rbind, lapply(theta_check, function(th) {
+  up <- compute_ii_nrm(th + eps, bank)
+  dn <- compute_ii_nrm(th - eps, bank)
+  at <- compute_ii_nrm(th, bank)
+  k  <- slope_cumulants(th, bank)
+  data.frame(theta = th,
+             fd_d3Ii    = max(abs((up$d2Ii - dn$d2Ii) / (2 * eps) - at$d3Ii)),
+             k2_vs_Ii   = max(abs(k[, "k2"] - at$Ii)),
+             k3_vs_dIi  = max(abs(k[, "k3"] - at$dIi)),
+             k4_vs_d2Ii = max(abs(k[, "k4"] - at$d2Ii)),
+             k5_vs_d3Ii = max(abs(k[, "k5"] - at$d3Ii)))
+}))
+id_ii
 ```
+
+The finite difference agrees to about $10^{-8}$, the size of its own error, and the cumulant identity holds to rounding error for the information and all three of its derivatives, including the one `catR` does not compute.
 
 ```{r ii_plot,dev='png'}
 info_grid <- seq(-4, 4, by = 0.05)
@@ -379,32 +425,6 @@ ggplot(df_test, aes(x = theta, y = information)) +
   theme_bw(base_size = 12)
 ```
 
-### The third derivative of the information, which `catR` does not have
-
-`d3Ii` is checked the same way as `d4Pi`: finite differences of the analytic derivative one order lower, and the cumulant identity $I, I', I'', I''' = \kappa_2,\kappa_3,\kappa_4,\kappa_5$. The cumulants come from `slope_cumulants()`, which uses only the probabilities.
-
-```{r d3ii_check}
-id_ii <- do.call(rbind, lapply(theta_check, function(th) {
-  up <- compute_ii_nrm(th + h, bank)
-  dn <- compute_ii_nrm(th - h, bank)
-  at <- compute_ii_nrm(th, bank)
-  k  <- slope_cumulants(th, bank)
-  data.frame(theta = th,
-             fd_dIi   = max(abs((up$Ii   - dn$Ii)   / (2 * h) - at$dIi)),
-             fd_d2Ii  = max(abs((up$dIi  - dn$dIi)  / (2 * h) - at$d2Ii)),
-             fd_d3Ii  = max(abs((up$d2Ii - dn$d2Ii) / (2 * h) - at$d3Ii)),
-             k2_vs_Ii   = max(abs(k[, "k2"] - at$Ii)),
-             k3_vs_dIi  = max(abs(k[, "k3"] - at$dIi)),
-             k4_vs_d2Ii = max(abs(k[, "k4"] - at$d2Ii)),
-             k5_vs_d3Ii = max(abs(k[, "k5"] - at$d3Ii)))
-}))
-id_ii
-c(largest_finite_difference_gap = max(id_ii[, 2:4]),
-  largest_cumulant_gap          = max(id_ii[, 5:8]))
-```
-
-The cumulant identity holds to rounding error for every derivative, including the one `catR` does not compute. The finite differences agree to about $10^{-8}$, the size of their own truncation error.
-
 ### Next-item selection
 
 ```{r next_item_check}
@@ -417,59 +437,45 @@ c(mine_item = mine$item, catR_item = theirs$item,
 With items already administered excluded via `out`:
 
 ```{r next_item_out}
-c(mine = compute_next_item_nrm(theta = 1.5, bank, out = c(2, 5))$item,
-  catR = catR::nextItem(bank, model = "NRM", theta = 1.5, out = c(2, 5),
-                        criterion = "MFI")$item)
-```
-
-And across the whole ability range, with and without an `out` set:
-
-```{r next_item_grid}
-grid <- seq(-4, 4, by = 0.05)
-agreements <- function(out) sum(sapply(grid, function(th)
-  compute_next_item_nrm(th, bank, out = out)$item ==
-    catR::nextItem(bank, model = "NRM", theta = th, out = out, criterion = "MFI")$item))
-
-c(without_out = agreements(NULL), with_out_2_5 = agreements(c(2, 5)), grid_points = length(grid))
+mine   <- compute_next_item_nrm(theta = 1.5, bank, out = c(2, 5))
+theirs <- catR::nextItem(bank, model = "NRM", theta = 1.5, out = c(2, 5), criterion = "MFI")
+c(mine_item = mine$item, catR_item = theirs$item,
+  mine_info = mine$info, catR_info = theirs$info)
 ```
 
 ### Likelihood
 
-`catR` has no exported likelihood function to compare against, so the check rebuilds the same product from `catR`'s own probability matrix:
+`catR` has no exported likelihood function to compare against, so the check rebuilds the same product from `catR`'s own probability matrix, for several patterns at every $\theta$ above. The likelihood spans many orders of magnitude over that range, so the table reports the largest relative difference for each pattern:
 
 ```{r likelihood_check}
-response <- c(4, 3, 2, 1, 0)
-P_catR <- catR::Pi(th = 0.3, bank, model = "NRM")$Pi
-manual <- prod(sapply(1:5, function(i) P_catR[i, response[i] + 1]))
-
-c(compute_likelihood_nrm = compute_likelihood_nrm(theta = 0.3, bank = bank, x = response),
-  from_catR_Pi           = manual)
-all.equal(compute_likelihood_nrm(theta = 0.3, bank = bank, x = response), manual)
+lik_patterns <- list(c(4, 3, 2, 1, 0), c(0, 0, 0, 0, 0), c(4, 4, 4, 4, 4), c(1, 0, 1, 0, 1))
+lik_gap <- sapply(lik_patterns, function(x) max(sapply(theta_check, function(th) {
+  P_catR <- catR::Pi(th = th, bank, model = "NRM")$Pi
+  abs(compute_likelihood_nrm(theta = th, bank = bank, x = x) / prod(P_catR[cbind(1:5, x + 1)]) - 1)
+})))
+names(lik_gap) <- sapply(lik_patterns, paste, collapse = " ")
+lik_gap
 ```
 
 ```{r likelihood_plot,dev='png'}
 lik_grid <- seq(-4, 4, by = 0.05)
 df_lik <- data.frame(theta = lik_grid,
-                     likelihood = sapply(lik_grid, function(th)
-                       compute_likelihood_nrm(th, bank, response)))
+                     sapply(lik_patterns[1:3], function(x)
+                       sapply(lik_grid, function(th) compute_likelihood_nrm(th, bank, x))))
+names(df_lik)[-1] <- names(lik_gap)[1:3]
+df_lik_long <- reshape2::melt(df_lik, id.vars = "theta",
+                              variable.name = "pattern", value.name = "likelihood")
 
-ggplot(df_lik, aes(x = theta, y = likelihood)) +
-  geom_line(linewidth = 1, color = "steelblue") +
-  labs(title = "Likelihood of the response pattern (4, 3, 2, 1, 0)",
-       x = expression(theta), y = "likelihood") +
+ggplot(df_lik_long, aes(x = theta, y = likelihood, color = pattern)) +
+  geom_line(linewidth = 1) +
+  scale_y_log10() +
+  labs(title = "Likelihood of three response patterns",
+       subtitle = "log scale: only the mixed pattern turns over",
+       x = expression(theta), y = "likelihood", color = "pattern") +
   theme_bw(base_size = 12)
 ```
 
-In this bank category 4 has the largest slope and category 0 the smallest on every item, so the all-4 and all-0 patterns are the extreme ones. Their likelihoods never turn over on the grid:
-
-```{r likelihood_extreme}
-c(all_4_strictly_increasing = all(diff(sapply(lik_grid, function(th)
-    compute_likelihood_nrm(th, bank, c(4, 4, 4, 4, 4)))) > 0),
-  all_0_strictly_decreasing = all(diff(sapply(lik_grid, function(th)
-    compute_likelihood_nrm(th, bank, c(0, 0, 0, 0, 0)))) < 0),
-  category_4_steepest_on_every_item = all(apply(slopes, 1, which.max) == 5),
-  category_0_flattest_on_every_item = all(apply(slopes, 1, which.min) == 1))
-```
+The likelihood of (4, 3, 2, 1, 0) has an interior maximum. Category 4 has the largest slope and category 0 the smallest on every item, so the all-4 likelihood rises and the all-0 likelihood falls over the whole range, and neither has a finite maximum, as the theory section predicts.
 
 ### EAP ability estimate and standard error
 
@@ -478,66 +484,40 @@ patterns <- list(c(0, 0, 0, 0, 0), c(1, 1, 1, 1, 1), c(2, 2, 2, 2, 2),
                  c(3, 3, 3, 3, 3), c(4, 4, 4, 4, 4), c(4, 3, 2, 1, 0),
                  c(0, 1, 2, 3, 4), c(1, 0, 1, 0, 1))
 
-validation <- do.call(rbind, lapply(c(1, 1.702), function(d) do.call(rbind, lapply(patterns, function(x) {
-  th_mine <- compute_eap_nrm(bank, x, D = d)
-  th_catR <- catR::eapEst(bank, x, model = "NRM", D = d)
-  data.frame(D        = d,
-             pattern  = paste(x, collapse = " "),
+validation <- do.call(rbind, lapply(patterns, function(x) {
+  th_mine <- compute_eap_nrm(bank, x)
+  th_catR <- catR::eapEst(bank, x, model = "NRM")
+  data.frame(pattern  = paste(x, collapse = " "),
              eap_mine = th_mine,
              eap_catR = th_catR,
-             se_mine  = compute_eap_se_nrm(th_mine, bank, x, D = d),
-             se_catR  = catR::eapSem(th_mine, bank, x, model = "NRM", D = d))
-}))))
+             se_mine  = compute_eap_se_nrm(th_mine, bank, x),
+             se_catR  = catR::eapSem(th_mine, bank, x, model = "NRM"))
+}))
 validation
 
 c(max_eap_difference = max(abs(validation$eap_mine - validation$eap_catR)),
   max_se_difference  = max(abs(validation$se_mine  - validation$se_catR)))
 ```
 
-Both the point estimate and the standard error reproduce `catR` to machine precision for every pattern, including the all-0 and all-4 patterns where Maximum Likelihood would have no finite answer. The rows for $D = 1.702$ repeat the rows for $D = 1$ exactly, in both implementations.
-
-### Items with fewer categories
-
-A four-category item in a five-category bank puts `NA` in its last pair and is scored 0 to 3:
-
-```{r na_padding}
-bank_mixed <- bank
-bank_mixed[5, c("alpha4", "c4")] <- NA
-round(compute_pi_nrm(theta = 0, bank_mixed)$Pi, 6)
-
-c(Pi = isTRUE(all.equal(compute_pi_nrm(0, bank_mixed)[1:4], catR::Pi(0, bank_mixed, model = "NRM"))),
-  Ii = isTRUE(all.equal(compute_ii_nrm(0, bank_mixed)[1:3], catR::Ii(0, bank_mixed, model = "NRM"))))
-
-response_mixed <- c(4, 3, 2, 1, 3)   # item 5 can only be scored 0 to 3
-th <- compute_eap_nrm(bank_mixed, response_mixed)
-c(eap_mine = th,
-  eap_catR = catR::eapEst(bank_mixed, response_mixed, model = "NRM"),
-  se_mine  = compute_eap_se_nrm(th, bank_mixed, response_mixed),
-  se_catR  = catR::eapSem(th, bank_mixed, response_mixed, model = "NRM"))
-```
-
-The padding has to go at the **end** of the row. Both implementations drop `NA` pairs and then fill the remaining categories from the left. A gap left in the middle therefore does not remove the category it seems to remove; it shifts every later category down one code:
-
-```{r na_gap}
-bank_gap <- bank
-bank_gap[5, c("alpha2", "c2")] <- NA                     # meant: item 5 has no category 2
-
-bank_shifted <- bank
-bank_shifted[5, ] <- c(bank[5, c("alpha1", "c1", "alpha3", "c3", "alpha4", "c4")], NA, NA)
-
-round(compute_pi_nrm(0, bank_gap)$Pi[5, ], 6)
-c(same_as_catR               = isTRUE(all.equal(compute_pi_nrm(0, bank_gap)[1:4],
-                                                catR::Pi(0, bank_gap, model = "NRM"))),
-  same_as_left_shifted_bank  = identical(compute_pi_nrm(0, bank_gap), compute_pi_nrm(0, bank_shifted)))
-```
-
-Item 5's missing column comes out as `cat4`, not `cat2`. A response coded 3 on that item is read as the category whose parameters sit in the fourth pair. Responses have to be renumbered from 0 without gaps, as `mirt` does, so that they match.
+Both the point estimate and the standard error reproduce `catR` to machine precision for every pattern, including the all-0 and all-4 patterns where Maximum Likelihood would have no finite answer.
 
 ---
 
 # Examples
 
 ## Worked example: the categories are nominal
+
+Slopes and intercepts are easier to read with the reference category put back in as a column of zeros:
+
+```{r bank_slopes}
+slopes     <- cbind(0, bank[, c("alpha1", "alpha2", "alpha3", "alpha4")])
+intercepts <- cbind(0, bank[, c("c1", "c2", "c3", "c4")])
+colnames(slopes) <- colnames(intercepts) <- paste0("cat", 0:4)
+
+data.frame(slopes, slopes_increase_with_code = apply(slopes, 1, function(s) !is.unsorted(s)))
+```
+
+In four of the five items the slopes happen to increase with the category code. Item 4 is the exception: its category 1 has a steeper slope ($`r slopes[4, "cat1"]`$) than its category 2 ($`r slopes[4, "cat2"]`$). A model for ordered categories could not represent this item.
 
 ### The slopes decide which category is modal
 
@@ -644,13 +624,45 @@ Probabilities, information and the EAP estimate come out the same. Under an orde
 
 ---
 
+## Worked example: items with fewer categories
+
+`bank_mixed`, from the check of the probabilities above, gives item 5 only four categories, scored 0 to 3. A response pattern on that bank is scored the same way, and agrees with `catR`:
+
+```{r na_eap}
+response_mixed <- c(4, 3, 2, 1, 3)   # item 5 can only be scored 0 to 3
+th <- compute_eap_nrm(bank_mixed, response_mixed)
+c(eap_mine = th,
+  eap_catR = catR::eapEst(bank_mixed, response_mixed, model = "NRM"),
+  se_mine  = compute_eap_se_nrm(th, bank_mixed, response_mixed),
+  se_catR  = catR::eapSem(th, bank_mixed, response_mixed, model = "NRM"))
+```
+
+The padding has to go at the **end** of the row. Both implementations drop `NA` pairs and then fill the remaining categories from the left. A gap left in the middle therefore does not remove the category it seems to remove; it shifts every later category down one code:
+
+```{r na_gap}
+bank_gap <- bank
+bank_gap[5, c("alpha2", "c2")] <- NA                     # meant: item 5 has no category 2
+
+bank_shifted <- bank
+bank_shifted[5, ] <- c(bank[5, c("alpha1", "c1", "alpha3", "c3", "alpha4", "c4")], NA, NA)
+
+round(compute_pi_nrm(0, bank_gap)$Pi[5, ], 6)
+c(same_as_catR               = isTRUE(all.equal(compute_pi_nrm(0, bank_gap)[1:4],
+                                                catR::Pi(0, bank_gap, model = "NRM"))),
+  same_as_left_shifted_bank  = identical(compute_pi_nrm(0, bank_gap), compute_pi_nrm(0, bank_shifted)))
+```
+
+Item 5's missing column comes out as `cat4`, not `cat2`. A response coded 3 on that item is read as the category whose parameters sit in the fourth pair. Responses have to be renumbered from 0 without gaps, as `mirt` does, so that they match.
+
+---
+
 ## Worked example: the partial credit model inside the nominal model
 
 The Partial Credit Model (Masters, 1982) with $D = 1$ gives category $k$ the exponent $\sum_{t=1}^{k}(\theta - \delta_{jt}) = k\,\theta - (\delta_{j1}+\cdots+\delta_{jk})$. That is an NRM exponent with
 
 $$\alpha_{jk} = k, \qquad c_{jk} = -(\delta_{j1}+\cdots+\delta_{jk}).$$
 
-The PCM is an NRM whose slopes are fixed to the category codes. The chunk below builds that NRM bank from the PCM bank in the documentation of `cat_eap_pcm.R`:
+The PCM is an NRM whose slopes are fixed to the category codes. The Rating Scale Model is in turn the PCM with $\delta_{jt} = \lambda_j + \delta_t$, one location per item plus thresholds shared by the whole bank, so it is an NRM too. The chunk below builds the NRM bank from the PCM bank in the documentation of `cat_eap_pcm.R`:
 
 ```{r pcm_bank}
 pcm_bank <- matrix(c(-1.853, -2.214, -0.936, -1.508, -0.412,
@@ -696,7 +708,11 @@ pcm_eap
 
 This table also shows where the PCM's famous property comes from. The four patterns with a raw score of 10 get the same estimate to twelve decimals. That is not an extra assumption. The sufficient statistic of the NRM is the sum of the chosen slopes, and when the slopes *are* the codes, that sum is the raw score.
 
-**With $D = 1.702$.** A PCM bank calibrated with $D = 1.702$ carries $D$ in its exponent: $D\,k\,\theta - D(\delta_{j1}+\cdots+\delta_{jk})$. The NRM ignores $D$, so both the slopes and the intercepts have to be multiplied by $D$:
+**With $D = 1.702$.** A PCM bank calibrated with $D = 1.702$ carries $D$ in its exponent: $D\,k\,\theta - D(\delta_{j1}+\cdots+\delta_{jk})$. The NRM ignores $D$, so both the slopes and the intercepts have to be multiplied by $D$. The roxygen note of `compute_pi_nrm()` gives the general rule, which also covers the generalised partial credit model with item discrimination $a_j$:
+
+$$\alpha_{jk} = D\,a_j\,k, \qquad c_{jk} = -D\,a_j\,(\delta_{j1}+\cdots+\delta_{jk}),$$
+
+with $a_j = 1$ for the PCM. The chunk below checks the PCM case:
 
 ```{r pcm_D}
 d <- 1.702
@@ -718,7 +734,7 @@ Probabilities and EAP estimates agree. The derivatives do not: the NRM's `dPi` i
 
 ## Worked example: the sum of the chosen slopes is the score
 
-Under the PCM the raw score is sufficient. Under the NRM the raw score means nothing, since the codes are labels, and the sufficient statistic is $\sum_i\alpha_{i,x_i}$. Slopes given to three decimals repeat their sums quite often, so the example bank contains distinct patterns with exactly the same slope sum. Here are four of them:
+Under the PCM the raw score is sufficient. Under the NRM the raw score means nothing, since the codes are labels, and the sufficient statistic is $\sum_j\alpha_{j,x_j}$. Slopes given to three decimals repeat their sums quite often, so the example bank contains distinct patterns with exactly the same slope sum. Here are four of them:
 
 ```{r slope_sum}
 slope_sum <- function(x, a = slopes) sum(a[cbind(seq_along(x), x + 1)])
@@ -875,7 +891,7 @@ The test opens with item `r trace$item[1]`, the most informative item at $\theta
 
 ### Exposure control
 
-Pure MFI is deterministic: every examinee starting at $\theta = 0$ receives the same first item. The `randomesque` argument draws at random from the $k$ best instead.
+Pure MFI is deterministic: every examinee starting at $\theta = 0$ receives the same first item. The `randomesque` argument draws at random from the $K$ best instead.
 
 ```{r randomesque}
 set.seed(42)
@@ -951,7 +967,7 @@ Three different kinds of effect are visible here, and they should be kept apart.
 
 # Conclusion
 
-All eight functions used here reproduce their `catR` counterparts for the Nominal Response Model: the normal density, the trapezoidal integrator, the category probabilities and their first three derivatives, the item information and its first two derivatives, MFI item selection with and without exclusions, and the two integrals that define EAP scoring. The probabilities and the information are identical to `catR`'s, not merely close. The two quantities `catR` does not compute, `d4Pi` and `d3Ii`, pass both a finite-difference check and an exact cumulant identity.
+All eight functions used here reproduce their `catR` counterparts for the Nominal Response Model: the normal density, the trapezoidal integrator, the category probabilities and their first three derivatives, the item information and its first two derivatives (also for an item padded with `NA`), MFI item selection with and without exclusions, the likelihood (rebuilt from `catR`'s probabilities), and the two integrals that define EAP scoring. The probabilities and the information are identical to `catR`'s, not merely close. The two quantities `catR` does not compute, `d4Pi` and `d3Ii`, agree with central finite differences, and `d3Ii` also satisfies the exact cumulant identity, as do the information and its other two derivatives.
 
 Writing the model out makes its character plain. The codes are labels. Each category's log-odds against the reference is a straight line, and the categories become modal in the order of their slopes; some are never modal at all. The information of an item is the variance of the slope of the category chosen, and its derivatives are the higher cumulants of that slope. The sum of the chosen slopes is the sufficient statistic, so patterns with different raw scores can earn identical estimates, and the raw score says little on its own. The Partial Credit Model is the special case where the slopes equal the codes, which is why its raw score is sufficient. And, as in every other model in the series, the prior keeps estimates finite for the extreme patterns, as long as the integration bounds are wide enough to contain the posterior.
 
@@ -968,3 +984,35 @@ Writing the model out makes its character plain. The codes are labels. Each cate
 ---
 
 *Rendered with R `r getRversion()` · validated against catR `r as.character(packageVersion("catR"))`*
+
+---
+
+# Comments
+
+Questions, corrections and suggestions are welcome below (sign in with GitHub to post).
+
+```{=html}
+<div class="giscus"></div>
+<script>
+(function () {
+  var s = document.createElement("script");
+  s.src = "https://giscus.app/client.js";
+  s.setAttribute("data-repo", "sedzinfo/rwf");
+  s.setAttribute("data-repo-id", "REPLACE_WITH_REPO_ID");
+  s.setAttribute("data-category", "Comments");
+  s.setAttribute("data-category-id", "REPLACE_WITH_CATEGORY_ID");
+  s.setAttribute("data-mapping", "specific");
+  s.setAttribute("data-term", "EAP NRM Ability Estimation in base R");
+  s.setAttribute("data-strict", "1");
+  s.setAttribute("data-reactions-enabled", "1");
+  s.setAttribute("data-emit-metadata", "0");
+  s.setAttribute("data-input-position", "top");
+  s.setAttribute("data-theme", "light");
+  s.setAttribute("data-lang", "en");
+  s.setAttribute("data-loading", "lazy");
+  s.crossOrigin = "anonymous";
+  s.async = true;
+  document.querySelector(".giscus").appendChild(s);
+})();
+</script>
+```

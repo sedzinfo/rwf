@@ -72,7 +72,17 @@ with the empty sum for $k=0$ taken to be zero, so $\gamma_{j0}=1$.
 - $\delta_1,\ldots,\delta_m$: the **category thresholds**, how far above the item's own location each successive step sits. In the RSM they are **shared by every item in the bank**. Threshold $t$ is the point $\theta = \lambda_j + \delta_t$ where the curves of categories $t-1$ and $t$ cross.
 - $D$: the metric constant, 1 for the logistic metric or 1.702 to approximate the normal-ogive metric.
 
-The shared-threshold assumption is what separates the RSM from the **Partial Credit Model (PCM)** of Masters (1982). Under the PCM each item has its own steps $\delta_{j1},\ldots,\delta_{jm}$; the RSM is the special case $\delta_{jk} = \lambda_j + \delta_k$, in which every item has the same spacing of steps and items differ only by where that pattern is placed. For a scale with $n$ items and $m+1$ categories this cuts the number of parameters from $n \times m$ to $n + m$. The equivalence is checked against `catR`'s PCM below.
+The shared-threshold assumption is what separates the RSM from the **Partial Credit Model (PCM)** of Masters (1982). Under the PCM each item has its own steps $\delta_{j1},\ldots,\delta_{jm}$; the RSM is the special case
+
+$$\delta_{jk} = \lambda_j + \delta_k, \qquad k = 1,\ldots,m,$$
+
+in which every item has the same spacing of steps and items differ only by where that pattern is placed. For a scale with $n$ items and $m+1$ categories this cuts the number of parameters from $n \times m$ to $n + m - 1$. One of the $n + m$ values $\lambda_j$ and $\delta_k$ is redundant: adding a constant to every $\lambda_j$ and subtracting it from every $\delta_k$ leaves every step $\lambda_j + \delta_k$, and with it every probability, unchanged, so calibration fixes it with a constraint such as thresholds that sum to zero. The equivalence with the PCM is checked against `catR`'s PCM in a worked example below.
+
+With a single threshold ($m = 1$) the RSM is the dichotomous Rasch model,
+
+$$P_{j1}(\theta) = \frac{e^{D(\theta - b_j)}}{1 + e^{D(\theta - b_j)}}, \qquad b_j = \lambda_j + \delta_1,$$
+
+the 4PL model with $a_j = 1$, $c_j = 0$ and $d_j = 1$.
 
 ### The layout of the item bank
 
@@ -83,7 +93,9 @@ The shared-threshold assumption is what separates the RSM from the **Partial Cre
 | 1 | $\lambda_j$, the item location |
 | 2 to $m+1$ | $\delta_1,\ldots,\delta_m$, the category thresholds |
 
-so the number of response categories is `ncol(bank)`: a five-point scale scored 0 to 4 needs a bank with 5 columns. Under the rating scale assumption the threshold columns are **identical down every row**. The code does not enforce this; given rows with different thresholds it simply computes the partial credit model with steps $\lambda_j + \delta_{jt}$ (checked below). An item with fewer categories than the widest item is padded with `NA` at the end of its row. Because the exponent is accumulated threshold by threshold, an `NA` makes every later category disappear too, which is why the padding has to be trailing.
+so the number of response categories is `ncol(bank)`: a five-point scale scored 0 to 4 needs a bank with 5 columns. Under the rating scale assumption the threshold columns are **identical down every row**, $\texttt{bank}[j,\,t+1] = \delta_t$ for every item $j$. The code does not enforce this; given rows with different thresholds $\delta_{jt} = \texttt{bank}[j,\,t+1]$ it simply computes the partial credit model with steps $\lambda_j + \delta_{jt}$ (checked in the same worked example). `compute_pi_rsm()`, which every other function calls, begins with `bank <- rbind(bank)`, so a single item may also be passed as a plain vector $(\lambda_j, \delta_1, \ldots, \delta_m)$.
+
+An item with fewer categories than the widest item is padded with `NA` at the end of its row. Because the exponent is accumulated threshold by threshold, an `NA` makes every later category disappear too, which is why the padding has to be trailing. The exact rule is: if the first missing threshold of item $j$ is $\delta_t$, the item has $m_j = t - 1$ thresholds and the categories $0, \ldots, m_j$, whatever the later columns hold. The missing categories are dropped before anything is summed, so every sum over the categories of item $j$ below runs over $h = 0, \ldots, m_j$; $P_{jk}$ and its derivatives are returned as `NA` for $k > m_j$, and the information sums skip those cells (`na.rm = TRUE`).
 
 ### Derivatives of the category probabilities and the role of $D$
 
@@ -94,7 +106,7 @@ z_{jk} = \sum_{t=1}^{k} D\big(\theta - (\lambda_j + \delta_t)\big), \quad z_{j0}
 \qquad
 \gamma_{jk} = e^{z_{jk}},
 \qquad
-\gamma^{(r)}_{jk} = k^r\,\gamma_{jk}, \quad r = 1, 2, 3
+\gamma'_{jk} = k\,\gamma_{jk}, \quad \gamma''_{jk} = k^2\,\gamma_{jk}, \quad \gamma'''_{jk} = k^3\,\gamma_{jk}
 $$
 
 and the four sums over the categories of the item
@@ -133,7 +145,9 @@ P''_{jk} = P_{jk}\big[(k - E_j)^2 - V_j\big], \qquad
 P'''_{jk} = P_{jk}\big[(k - E_j)^3 - 3V_j\,(k - E_j) - M_j\big].
 $$
 
-**The metric constant.** The true derivative of $\gamma_{jk}$ is $D\,k\,\gamma_{jk}$, but the code follows catR and uses $k\,\gamma_{jk}$. With $D = 1$ the formulas above are exact. With any other $D$, the exact derivatives are $D\,P'$, $D^2 P''$ and $D^3 P'''$.
+**The metric constant.** The true derivative of $\gamma_{jk}$ with respect to $\theta$ is $D\,k\,\gamma_{jk}$, but the code follows catR and uses $k\,\gamma_{jk}$, which is its derivative with respect to $D\theta$. With $D = 1$ the formulas above are exact. With any other $D$ they are derivatives with respect to $D\theta$, and the derivatives with respect to $\theta$ are $D\,P'$, $D^2 P''$ and $D^3 P'''$. (catR's 4PL and graded response derivatives do include $D$; leaving it out is specific to its PCM, GPCM and RSM code.)
+
+**No probability floor.** The dichotomous code replaces a probability of exactly 0 or 1 with $10^{-10}$ or $1-10^{-10}$; `compute_pi_rsm()`, like `catR::Pi()` for the RSM, applies no floor, clipping or renormalisation, and needs none. Every $\gamma_{jk}$ is a positive exponential, so every $P_{jk}$ is positive at any ability a quadrature grid would use, and the information below divides only by the $P_{jk}$ themselves, never by $1 - P_{jk}$. The only special values are the `NA`s of the padding, handled by the rule in the previous section.
 
 ### Item information and its derivatives
 
@@ -141,17 +155,23 @@ For a dichotomous item, Fisher information is the familiar $P'^2 / \big(P(1-P)\b
 
 $$I_j(\theta) = \sum_{k=0}^{m} \frac{\big[\partial P_{jk}(\theta)/\partial\theta\big]^2}{P_{jk}(\theta)}$$
 
-These are not two different formulas. For $m=1$ the two categories are $P$ and $1-P$, with derivatives $P'$ and $-P'$, so the sum collapses to $P'^2/P + P'^2/(1-P) = P'^2/\big(P(1-P)\big)$. **Test information** is the sum of the item informations.
+These are not two different formulas. For $m=1$ the two categories are $P$ and $1-P$, with derivatives $P'$ and $-P'$, so the sum collapses to $P'^2/P + P'^2/(1-P) = P'^2/\big(P(1-P)\big)$. **Test information** is the sum of the item informations,
+
+$$I(\theta) = \sum_{j=1}^{n} I_j(\theta)$$
 
 For a Rasch-family model the sum simplifies. Substituting the exact first derivative gives $I_j(\theta) = D^2\,V_j(\theta)$, the variance of the item score at $\theta$ multiplied by $D^2$; and since $\partial E_j/\partial\theta = D\,V_j$, the information is also $D$ times the slope of the expected-score curve. Integrating over $\theta$, the area under any RSM item's information curve is therefore $D\,m$, whatever its thresholds.
 
 `compute_ii_rsm()` returns the information together with its first two derivatives, obtained by differentiating each category term $P'^2/P$ and summing:
 
-$$\texttt{Ii} = \sum_k \frac{P_k'^2}{P_k},\qquad
-\texttt{dIi} = \sum_k \left(\frac{2P_k'P_k''}{P_k} - \frac{P_k'^3}{P_k^2}\right),\qquad
-\texttt{d2Ii} = \sum_k \left(\frac{2P_k''^2 + 2P_k'P_k'''}{P_k} - \frac{5P_k'^2P_k''}{P_k^2} + \frac{2P_k'^4}{P_k^3}\right)$$
+$$\texttt{Ii} = \sum_k \frac{P'^2_{jk}}{P_{jk}},\qquad
+\texttt{dIi} = \sum_k \left(\frac{2P'_{jk}P''_{jk}}{P_{jk}} - \frac{P'^3_{jk}}{P_{jk}^2}\right),\qquad
+\texttt{d2Ii} = \sum_k \left(\frac{2P''^2_{jk} + 2P'_{jk}P'''_{jk}}{P_{jk}} - \frac{5P'^2_{jk}P''_{jk}}{P_{jk}^2} + \frac{2P'^4_{jk}}{P_{jk}^3}\right)$$
 
-with the derivatives $P'$, $P''$, $P'''$ taken from `dPi`, `d2Pi` and `d3Pi`. Because those carry catR's $D$ convention, so does the information: `Ii` is $I_j/D^2$, `dIi` is $D^{-3}\,\partial I_j/\partial\theta$ and `d2Ii` is $D^{-4}\,\partial^2 I_j/\partial\theta^2$.
+with the derivatives $P'$, $P''$, $P'''$ taken from `dPi`, `d2Pi` and `d3Pi`. In the moment notation of the previous section these are the variance, the third central moment and the fourth cumulant of the item score:
+
+$$\texttt{Ii} = V_j, \qquad \texttt{dIi} = M_j, \qquad \texttt{d2Ii} = \sum_{h} (h - E_j)^4\,P_{jh} - 3V_j^2$$
+
+Because $P'$, $P''$ and $P'''$ carry catR's $D$ convention, so does the information: `Ii` is $I_j/D^2$, `dIi` is $D^{-3}\,\partial I_j/\partial\theta$ and `d2Ii` is $D^{-4}\,\partial^2 I_j/\partial\theta^2$. They are the information about $D\theta$ and its derivatives with respect to $D\theta$, so as functions of $\theta$ they are not even consistent with one another: the $\theta$-derivative of the returned `Ii` is $D$ times `dIi`.
 
 ### Next-item selection
 
@@ -159,44 +179,88 @@ An adaptive test picks, at each step, the unadministered item that is most infor
 
 $$j^\ast = \arg\max_{j \notin \texttt{out}} I_j(\hat\theta)$$
 
-where `out` holds the indices of the items already given. `compute_next_item_rsm()` also has a `randomesque` argument: instead of always taking the single best item it draws uniformly from the `randomesque` most informative ones. This is standard exposure control; pure MFI would give the same handful of items to almost everyone, which is both a security problem and a waste of the bank.
+where `out` holds the indices of the items already given. `compute_next_item_rsm()` computes `Ii` for every available item and returns the index of the chosen item, its `Ii` as `info` (so the reported value carries the $D$ convention above, while the choice does not: dividing every item's information by the same $D^2$ leaves the ranking unchanged) and the indices that were available.
 
-The RSM gives this rule a special structure. Since $P_{jk}$ depends on $\theta$ and $\lambda_j$ only through $\theta - \lambda_j$, every item information curve is **one common function shifted by the item location**, $I_j(\theta) = f(\theta - \lambda_j)$. Two consequences follow, both checked below:
+The function also has a `randomesque` argument: instead of always taking the single best item it draws uniformly from the `randomesque` most informative ones. With $k = \min(\texttt{randomesque},\ \text{number of available items})$, the next item is drawn uniformly from the $k$ available items with the largest $I_j(\hat\theta)$, ties broken by item order as `order()` does; $k = 1$ is pure MFI. This is standard exposure control; pure MFI would give the same handful of items to almost everyone, which is both a security problem and a waste of the bank. The rule holds for `randomesque` equal to 1 or at least 2 (2.5 acts as 2). For any other value below 2 the code passes a single index to `sample()`, which then draws uniformly from the available items up to and including the best one, not from the top $k$, so `randomesque` should be a whole number.
+
+Two differences from `catR::nextItem()` matter only for ties: when several items are exactly tied for the maximum, `catR` draws one of them at random while this function takes the first; and with `randomesque` above 1, `catR` also keeps every item tied with the last one kept. In an RSM bank exact ties are not exotic: two items with the same $\lambda_j$ have the same information at every $\theta$.
+
+The RSM gives this rule a special structure. Since $P_{jk}$ depends on $\theta$ and $\lambda_j$ only through $\theta - \lambda_j$, every item information curve is **one common function shifted by the item location**, $I_j(\theta) = f(\theta - \lambda_j)$, as long as the items share all their thresholds (no `NA` padding). Two consequences follow, both checked in a worked example below:
 
 1. Every item in the bank has the **same maximum information**. Items differ only in *where* on the $\theta$ axis they are useful, never in *how* useful they can be.
 2. MFI is close to a **nearest-neighbour lookup on $\lambda_j$**. It is exactly one only if $f$ is symmetric about its peak, which is a property of the thresholds and has to be checked.
 
 ### Likelihood of a response pattern
 
-Under **local independence**, the likelihood of a response pattern $\mathbf{x} = (x_1,\ldots,x_n)$, with each $x_i \in \{0,\ldots,m\}$, is
+Under **local independence**, the likelihood of a response pattern $\mathbf{x} = (x_1,\ldots,x_n)$, with each $x_j \in \{0,\ldots,m\}$ the category observed on item $j$ (0-based, as in the code), is
 
-$$L(\theta) = \prod_{i=1}^{n} P_{i,x_i}(\theta)$$
+$$L(\theta) = \prod_{j=1}^{n} P_{jx_j}(\theta)$$
 
-This is the polytomous counterpart of $\prod P_i^{x_i}(1-P_i)^{1-x_i}$. The dichotomous version uses the exponents $x_i$ and $1-x_i$ as a switch between two probabilities; with more than two categories the response simply indexes the right column of the probability matrix. The `x[i]+1` in `compute_likelihood_rsm()` is index bookkeeping: categories start at 0, R columns start at 1. The likelihood uses only the probabilities, never their derivatives.
+This is the polytomous counterpart of $\prod P_j^{x_j}(1-P_j)^{1-x_j}$. The dichotomous version uses the exponents $x_j$ and $1-x_j$ as a switch between two probabilities; with more than two categories the response simply indexes the right column of the probability matrix. The `x[i]+1` in `compute_likelihood_rsm()` is index bookkeeping: categories start at 0, R columns start at 1. The product runs over the first $n$ = `length(x)` rows of the bank, so `bank` and `x` must list the items in the same order. The likelihood uses only the probabilities, never their derivatives.
 
 ### EAP and its standard error
 
-A **prior** $\pi(\theta)$ on ability, normal with mean and SD `priorPar` (standard normal by default), turns the likelihood into a posterior, and EAP reports its mean and standard deviation (Bock & Mislevy, 1982):
+A **prior** $\pi(\theta)$ on ability turns the likelihood into a posterior, and EAP reports its mean and standard deviation (Bock & Mislevy, 1982). The prior is normal, with mean and SD `priorPar` (standard normal by default):
+
+$$\pi(\theta) = \frac{1}{\sigma\sqrt{2\pi}}\exp\!\left(-\frac{(\theta-\mu)^2}{2\sigma^2}\right), \qquad (\mu,\sigma) = \texttt{priorPar}$$
+
+`density_function()` writes this out longhand, with the base $e$ computed as `exp(1)` rather than a hard-coded 2.71828, which is accurate to only six significant digits. The estimate is the posterior mean
 
 $$\hat\theta_{EAP} = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}$$
 
-and its precision as the **posterior standard deviation**
+For a response pattern $\mathbf{x}$, with $L$ the likelihood above, the two integrands are
+
+$$
+\begin{aligned}
+g(s) &= s\,\pi(s)\,L(s),\\
+h(s) &= \pi(s)\,L(s).
+\end{aligned}
+$$
+
+On the quadrature grid $X=(\theta_1,\ldots,\theta_Q)$, where $Q=\texttt{nqp}$ and $\theta_q=\texttt{lower}+(q-1)(\texttt{upper}-\texttt{lower})/(Q-1)$ (by default `r formals(compute_eap_rsm)$nqp` points on $[`r eval(formals(compute_eap_rsm)$lower)`, `r eval(formals(compute_eap_rsm)$upper)`]$), the estimate is approximated by
+
+$$
+\hat\theta_{EAP} \approx \frac{\operatorname{Trap}(X,\,g(X))}{\operatorname{Trap}(X,\,h(X))},
+$$
+
+where $g(X)=(g(\theta_1),\ldots,g(\theta_Q))$ and $h(X)=(h(\theta_1),\ldots,h(\theta_Q))$. `Trap` denotes the trapezoidal integration implemented by `integrate_cat()` below. The precision of the estimate is the **posterior standard deviation**
 
 $$SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
 
-Both integrals are evaluated on `nqp` equally spaced quadrature points $X_1,\ldots,X_Q$ from `lower` to `upper` (defaults `r formals(compute_eap_rsm)$nqp` points on $[`r eval(formals(compute_eap_rsm)$lower)`, `r eval(formals(compute_eap_rsm)$upper)`]$) with the trapezoidal rule that `integrate_cat()` implements:
+whose numerator integrand is the squared distance from the EAP estimate times the posterior weight; the denominator is the same posterior weight used above:
 
-$$\int f(\theta)\,d\theta \approx \sum_{q=1}^{Q-1} \frac{X_{q+1}-X_q}{2}\,\big[f(X_q) + f(X_{q+1})\big]$$
+$$
+\begin{aligned}
+g_{SE}(s) &= (s-\hat\theta_{EAP})^2\,\pi(s)\,L(s),\\
+h(s) &= \pi(s)\,L(s).
+\end{aligned}
+$$
 
-The normal prior is what makes EAP usable at the edges of the score range. Maximum Likelihood has no finite maximum for a pattern in which every response sits in the lowest or the highest category, whereas the prior keeps both integrals, and so the estimate and its standard error, finite. `compute_eap_se_rsm()` takes the evaluation point `theta` as a free argument; passing the EAP estimate gives the posterior standard deviation.
+Using the same quadrature grid $X$ as above, the numerical estimate is
+
+$$
+SE(\hat\theta_{EAP}) \approx \sqrt{\frac{\operatorname{Trap}(X,\,g_{SE}(X))}{\operatorname{Trap}(X,\,h(X))}}.
+$$
+
+`compute_eap_se_rsm()` takes the point $\hat\theta_{EAP}$ in $g_{SE}$ as its free argument `theta`: passing the EAP estimate gives the posterior standard deviation, and any other value the posterior root mean squared deviation around that value.
+
+The normal prior is what makes EAP usable at the edges of the score range. Maximum Likelihood has no finite maximum for a pattern in which every response sits in the lowest or the highest category, whereas the prior keeps both integrals, and so the estimate and its standard error, finite.
+
+### Numerical integration
+
+Neither integral has a closed form, so the integrands are evaluated at the $Q$ quadrature points and integrated with the **trapezoidal rule**, which approximates the area between two adjacent points by a trapezoid, the width times the average of the two heights:
+
+$$\int f(\theta)\,d\theta \approx \sum_{q=1}^{Q-1} (\theta_{q+1}-\theta_q)\,\frac{f(\theta_q)+f(\theta_{q+1})}{2}$$
+
+`integrate_cat()` implements exactly this sum, with its `x` the grid and its `y` the integrand evaluated on it; `density_function()` supplies $\pi(\theta)$.
 
 ### A Rasch-family consequence: the raw score is sufficient
 
 The RSM has no discrimination parameter. Writing out the likelihood,
 
-$$L(\theta) = \frac{\exp\left[D\,\theta\sum_i x_i \;-\; D\sum_i \sum_{t=1}^{x_i}(\lambda_i + \delta_t)\right]}{\prod_i \sum_{h=0}^{m}\gamma_{ih}(\theta)}$$
+$$L(\theta) = \frac{\exp\left[D\,\theta\sum_j x_j \;-\; D\sum_j \sum_{t=1}^{x_j}(\lambda_j + \delta_t)\right]}{\prod_j \sum_{h=0}^{m}\gamma_{jh}(\theta)}$$
 
-the denominator does not depend on the responses, and in the numerator $\theta$ meets the responses only through $D\,\theta \sum_i x_i$. Two patterns with the same **total score** on the same items therefore have likelihoods that differ by a constant factor, which cancels from the EAP ratio: the raw score is a **sufficient statistic** for $\theta$, and the EAP estimate and its standard error depend on the pattern only through its sum. Differing discriminations are exactly what makes the pattern itself informative in the 2PL and its relatives; the RSM gives that up by design.
+the denominator does not depend on the responses, and in the numerator $\theta$ meets the responses only through $D\,\theta \sum_j x_j$. Two patterns with the same **total score** on the same items therefore have likelihoods that differ by a constant factor, which cancels from the EAP ratio: the raw score is a **sufficient statistic** for $\theta$, and the EAP estimate and its standard error depend on the pattern only through its sum. Differing discriminations are exactly what makes the pattern itself informative in the 2PL and its relatives; the RSM gives that up by design.
 
 ---
 
@@ -218,7 +282,7 @@ bank <- matrix(c(lambdaj, delta1, delta2, delta3, delta4), nrow = 5,
 bank
 ```
 
-That is `r nrow(bank)` items with `r ncol(bank)` response categories each, scored 0 to `r ncol(bank) - 1`. The threshold columns are constant down each column; that is the rating scale assumption made concrete. They are also not in increasing order, which matters later.
+That is `r nrow(bank)` items with `r ncol(bank)` response categories each, scored 0 to `r ncol(bank) - 1`. Each threshold column holds the same value for every item, which is the rating scale assumption made concrete, and the thresholds are not in increasing order, which matters later.
 
 ---
 
@@ -243,11 +307,7 @@ ggplot(comparison, aes(x = x)) +
   theme_bw(base_size = 12)
 ```
 
-The function writes out the textbook normal density longhand. One detail from its documentation is worth repeating: it uses `exp(1)` rather than a hard-coded `2.71828`, which is accurate to only six significant digits:
-
-```{r density_literal}
-c(exp_1 = exp(1), literal = 2.71828, difference = exp(1) - 2.71828)
-```
+The hand-written density and `dnorm()` differ by at most `r format(max(abs(comparison$density_function - comparison$dnorm)), digits = 2)`, which is rounding error.
 
 ### Numerical integration
 
@@ -258,18 +318,14 @@ c(integrate_cat = integrate_cat(x, y), integrate.catR = catR::integrate.catR(x, 
 all.equal(integrate_cat(x, y), catR::integrate.catR(x, y))
 ```
 
-### Category response probabilities and their derivatives
+Both approximate $\int_{-3}^{3} e^x\,dx$ from the same 33 rounded values on the same grid and return the same number.
 
-The probabilities of the five items at $\theta = 0$:
+### Response probabilities and derivatives
 
-```{r pi_show}
-round(compute_pi_rsm(theta = 0, bank)$Pi, 4)
-```
-
-All four elements of the returned list (`Pi`, `dPi`, `d2Pi`, `d3Pi`) are compared with `catR::Pi()` at five ability values and both metric constants. `all.equal()` is applied to the whole list, so names and dimnames are compared as well as values:
+All four elements of the returned list (`Pi`, `dPi`, `d2Pi`, `d3Pi`) are compared with `catR::Pi()` at seven ability values, out to the tails at $\pm 6$, and both metric constants. `all.equal()` is applied to the whole list, so names and dimnames are compared as well as values:
 
 ```{r pi_check}
-check_points <- expand.grid(theta = c(-3, -1, 0, 0.7, 2.5), D = c(1, 1.702))
+check_points <- expand.grid(theta = c(-6, -3, -1, 0, 0.7, 2.5, 6), D = c(1, 1.702))
 
 pi_check <- do.call(rbind, lapply(seq_len(nrow(check_points)), function(i) {
   th <- check_points$theta[i]
@@ -286,23 +342,7 @@ pi_check <- do.call(rbind, lapply(seq_len(nrow(check_points)), function(i) {
 pi_check
 ```
 
-`r sum(pi_check$all_equal)` of `r nrow(pi_check)` comparisons agree, and the largest absolute difference in any element of any of the four matrices is `r max(pi_check[, grep("max_diff", names(pi_check))])`. That the check also passes at $D = 1.702$ says only that both implementations follow the same convention for $D$; whether that convention gives the true derivatives is a separate question, taken up below.
-
-The quotient-rule formulas in the code are the moment forms given in the theory section in disguise. Checking this at $D = 1$, where the returned derivatives are exact:
-
-```{r pi_moments}
-r  <- compute_pi_rsm(theta = 0.4, bank)
-P  <- r$Pi
-k  <- matrix(0:4, nrow = 5, ncol = 5, byrow = TRUE)   # category score of each cell
-E  <- rowSums(P * k)                                  # expected score of each item
-dv <- k - E                                           # k - E_j
-V  <- rowSums(P * dv^2)                               # score variance
-M  <- rowSums(P * dv^3)                               # third central moment
-
-c(dPi  = max(abs(P * dv                      - r$dPi)),
-  d2Pi = max(abs(P * (dv^2 - V)              - r$d2Pi)),
-  d3Pi = max(abs(P * (dv^3 - 3 * V * dv - M) - r$d3Pi)))
-```
+`r sum(pi_check$all_equal)` of `r nrow(pi_check)` comparisons agree, and the largest absolute difference in any element of any of the four matrices is `r max(pi_check[, grep("max_diff", names(pi_check))])`.
 
 ```{r pi_plot,dev='png'}
 theta_grid <- seq(-6, 6, by = 0.1)
@@ -320,40 +360,46 @@ ggplot(df_long, aes(x = theta, y = P, color = category)) +
   theme_bw(base_size = 12)
 ```
 
-```{r pi_plot_facts}
-c(max_deviation_of_row_sum_from_1 = max(abs(rowSums(curves) - 1)))
-modal <- apply(curves, 1, which.max) - 1   # most probable category at each theta
-table(modal)
-c(modal_at_lowest_theta = modal[1], modal_at_highest_theta = modal[length(modal)])
+Category 0 is the most probable response at low ability and category 4 at high ability, but the middle three categories are never the most probable response anywhere. The worked example on threshold ordering below shows why: this is a property of these thresholds, not of the model.
+
+**An item with fewer categories.** Setting item 5's last threshold to `NA` turns it into a four-category item, scored 0 to 3, and the same comparison is repeated at every check point:
+
+```{r pi_check_na}
+bank_mixed <- bank
+bank_mixed[5, "delta4"] <- NA
+P_mixed <- compute_pi_rsm(theta = 0, bank_mixed)$Pi
+P_mixed[5, ]
+c(max_deviation_of_row_sum_from_1 = max(abs(rowSums(P_mixed, na.rm = TRUE) - 1)),
+  all_equal_at_every_check_point  = all(sapply(seq_len(nrow(check_points)), function(i)
+    isTRUE(all.equal(compute_pi_rsm(check_points$theta[i], bank_mixed, D = check_points$D[i]),
+                     catR::Pi(check_points$theta[i], bank_mixed, model = "RSM",
+                              D = check_points$D[i]))))))
 ```
 
-The five curves sum to 1 at every $\theta$, category 0 is the most probable response at low ability and category 4 at high ability. The middle three categories, however, are never the most probable response anywhere on the grid. The section on threshold ordering below explains why: this is a property of these thresholds, not of the model.
+Item 5's `cat4` is `NA` because the category does not exist, its four probabilities still sum to 1, and the whole list agrees with `catR::Pi()`, `NA`s included.
 
-### The RSM as a constrained partial credit model
+**The metric constant.** Agreement at $D = 1.702$ says only that both implementations leave $D$ out of the derivatives in the same way. Central finite differences of `Pi`, which is exact at every $D$, show what the returned derivatives are:
 
-The claim that the RSM is the PCM with steps $\delta_{jk} = \lambda_j + \delta_k$ can be checked against `catR`'s own PCM, whose bank holds the steps directly (one column per step, no location column):
-
-```{r rsm_as_pcm}
-bank_pcm <- bank[, 1] + bank[, -1]   # step k of item j is lambda_j + delta_k
-bank_pcm
-
-all.equal(compute_pi_rsm(theta = 0.4, bank),
-          catR::Pi(th = 0.4, it = bank_pcm, model = "PCM"))
-all.equal(compute_eap_rsm(bank, x = c(4, 3, 2, 1, 0)),
-          catR::eapEst(bank_pcm, c(4, 3, 2, 1, 0), model = "PCM"))
+```{r pi_check_D}
+fd_check <- do.call(rbind, lapply(c(1, 1.702), function(D) {
+  P  <- function(t) compute_pi_rsm(t, bank, D = D)$Pi
+  th <- 0.7
+  h  <- 1e-3
+  fd <- list(dPi  = (P(th + h) - P(th - h)) / (2 * h),
+             d2Pi = (P(th + h) - 2 * P(th) + P(th - h)) / h^2,
+             d3Pi = (P(th + 2 * h) - 2 * P(th + h) + 2 * P(th - h) - P(th - 2 * h)) / (2 * h^3))
+  returned <- compute_pi_rsm(th, bank, D = D)
+  data.frame(D = D, element = names(fd), D_power = D^(1:3),
+             max_error_at_face_value = sapply(names(fd), function(nm) max(abs(fd[[nm]] - returned[[nm]]))),
+             max_error_times_D_power = sapply(1:3, function(r) max(abs(fd[[r]] - D^r * returned[[names(fd)[r]]]))),
+             row.names = NULL)
+}))
+fd_check
 ```
 
-The same holds when the rows do *not* share their thresholds, which is what `compute_pi_rsm()` does if handed such a bank: it computes the PCM with steps $\lambda_j + \delta_{jt}$.
+At $D = 1$ the returned derivatives agree with the finite differences to within finite-difference error. At $D = 1.702$, taken at face value, they are wrong by up to `r sprintf("%.3f", fd_check$max_error_at_face_value[4])`, `r sprintf("%.3f", fd_check$max_error_at_face_value[5])` and `r sprintf("%.3f", fd_check$max_error_at_face_value[6])`; multiplied by $D$, $D^2$ and $D^3$ they agree again, as the theory section says.
 
-```{r rsm_as_pcm_free}
-set.seed(7)
-bank_free <- bank
-bank_free[, -1] <- bank_free[, -1] + round(matrix(rnorm(20, sd = 0.3), nrow = 5), 2)
-all.equal(compute_pi_rsm(theta = 0.4, bank_free),
-          catR::Pi(th = 0.4, it = bank_free[, 1] + bank_free[, -1], model = "PCM"))
-```
-
-### Item information and its derivatives
+### Item information
 
 All three elements returned by `compute_ii_rsm()` (`Ii`, `dIi`, `d2Ii`) against `catR::Ii()`, at the same points:
 
@@ -372,20 +418,31 @@ ii_check <- do.call(rbind, lapply(seq_len(nrow(check_points)), function(i) {
 ii_check
 ```
 
-`r sum(ii_check$all_equal)` of `r nrow(ii_check)` comparisons agree, with a largest absolute difference of `r max(ii_check[, grep("max_diff", names(ii_check))])`. At $D = 1$ the returned derivatives can also be checked against a finite-difference derivative of the returned information itself, and against the identity $I_j = D^2 V_j$ from the theory section:
+`r sum(ii_check$all_equal)` of `r nrow(ii_check)` comparisons agree, with a largest absolute difference of `r max(ii_check[, grep("max_diff", names(ii_check))])`. Because `catR` shares the $D$ convention, the true information is checked separately: it is $D^2 V_j$, which needs only the probabilities, and its finite-difference derivatives are compared with what the function returns (each ratio is a least-squares fit over the five items):
 
-```{r ii_derivative_fd}
-h  <- 1e-4
-th <- 0.4
-I1 <- function(t) compute_ii_rsm(t, bank)$Ii
-returned <- compute_ii_rsm(th, bank)
-
-c(dIi_vs_finite_difference  = max(abs((I1(th + h) - I1(th - h)) / (2 * h) - returned$dIi)),
-  d2Ii_vs_finite_difference = max(abs((I1(th + h) - 2 * I1(th) + I1(th - h)) / h^2 - returned$d2Ii)),
-  Ii_vs_score_variance      = max(abs(returned$Ii - V)))
+```{r ii_check_D}
+info_check <- do.call(rbind, lapply(c(1, 1.702), function(D) {
+  I_true <- function(t) {               # D^2 Var(X | theta), from the probabilities only
+    p <- compute_pi_rsm(t, bank, D = D)$Pi
+    D^2 * as.numeric(p %*% (0:4)^2 - (p %*% (0:4))^2)
+  }
+  I_returned <- function(t) compute_ii_rsm(t, bank, D = D)$Ii
+  th  <- 0.7
+  h   <- 1e-4
+  fd  <- function(f) (f(th + h) - f(th - h)) / (2 * h)
+  fd2 <- function(f) (f(th + h) - 2 * f(th) + f(th - h)) / h^2
+  ratio <- function(a, b) sum(a * b) / sum(b^2)
+  returned <- compute_ii_rsm(th, bank, D = D)
+  data.frame(D = D,
+             true_I_over_Ii                    = ratio(I_true(th),  returned$Ii),
+             true_dI_over_dIi                  = ratio(fd(I_true),  returned$dIi),
+             true_d2I_over_d2Ii                = ratio(fd2(I_true), returned$d2Ii),
+             theta_derivative_of_Ii_over_dIi   = ratio(fd(I_returned), returned$dIi))
+}))
+info_check
 ```
 
-(`V` is the vector of score variances at $\theta = 0.4$ computed in the `pi_moments` chunk.)
+At $D = 1$ the returned values are the information and its first two derivatives. At $D = 1.702$ they are too small by `r sprintf("%.4f", info_check$true_I_over_Ii[2])` $= D^2$, `r sprintf("%.4f", info_check$true_dI_over_dIi[2])` $= D^3$ and `r sprintf("%.4f", info_check$true_d2I_over_d2Ii[2])` $= D^4$, and the $\theta$-derivative of the returned `Ii` is `r sprintf("%.4f", info_check$theta_derivative_of_Ii_over_dIi[2])` $= D$ times `dIi`, because every returned value is a derivative with respect to $D\theta$. Item selection is untouched, since every item's information is divided by the same $D^2$, and so is the EAP estimate, which uses only the probabilities; but the `info` that `compute_next_item_rsm()` reports, or a standard error computed as $1/\sqrt{\sum_j I_j}$ from `Ii`, would be wrong by a factor $D^2$ and $D$ respectively.
 
 ```{r ii_plot,dev='png'}
 info_grid <- seq(-4, 4, by = 0.05)
@@ -412,129 +469,7 @@ ggplot(df_test, aes(x = theta, y = information)) +
   theme_bw(base_size = 12)
 ```
 
-The claim that every curve is one common function shifted by $\lambda_j$ is easy to check: locate each peak numerically.
-
-```{r info_peaks}
-peaks <- t(sapply(1:5, function(j) {
-  opt <- optimize(function(th) compute_ii_rsm(th, bank[j, , drop = FALSE])$Ii,
-                  interval = c(-6, 6), maximum = TRUE, tol = 1e-10)
-  c(peak = opt$maximum, max_information = opt$objective)
-}))
-peaks <- data.frame(lambdaj = lambdaj, peaks, offset = peaks[, "peak"] - lambdaj)
-peaks
-offset <- mean(peaks$offset)
-c(spread_of_offsets = diff(range(peaks$offset)),
-  spread_of_maxima  = diff(range(peaks$max_information)))
-```
-
-Every item reaches the same maximum information, `r sprintf("%.4f", peaks$max_information[1])`, at the same offset of `r sprintf("%.4f", offset)` above its own $\lambda_j$ (the spreads are at the level of the optimiser's tolerance). The bank has no strong and weak items, only items aimed at different parts of the scale.
-
-Whether the common curve is symmetric about its peak decides whether MFI is exactly a nearest-neighbour rule. Comparing item 1's information at equal distances above and below its peak:
-
-```{r info_asymmetry}
-f_item1 <- function(th) compute_ii_rsm(th, bank[1, , drop = FALSE])$Ii
-distance <- c(0.25, 0.5, 1, 1.5, 2)
-asymmetry <- data.frame(distance   = distance,
-                        above_peak = sapply(peaks$peak[1] + distance, f_item1),
-                        below_peak = sapply(peaks$peak[1] - distance, f_item1))
-asymmetry$difference <- asymmetry$above_peak - asymmetry$below_peak
-asymmetry
-```
-
-It is not. At every distance the information above the peak is larger than below it, and the gap grows with distance, from `r sprintf("%.4f", asymmetry$difference[1])` at `r asymmetry$distance[1]` to `r sprintf("%.4f", asymmetry$difference[nrow(asymmetry)])` at `r asymmetry$distance[nrow(asymmetry)]`: with these thresholds an item stays useful for abilities somewhat above its location for longer than below it. The consequence for item selection is shown after the next check.
-
-### The metric constant $D$ and catR's derivative convention
-
-The validation tables above agree with `catR` at $D = 1.702$ too, but that only shows that both implementations leave $D$ out of the derivative in the same way. To see what the returned numbers actually are, compare them with a finite-difference derivative of the probabilities, which are exact at every $D$:
-
-```{r D_finite_difference}
-D  <- 1.702
-th <- 0.7
-h  <- 1e-3
-P_D <- function(t) compute_pi_rsm(t, bank, D = D)$Pi
-returned <- compute_pi_rsm(th, bank, D = D)
-
-finite_difference <- list(
-  dPi  = (P_D(th + h) - P_D(th - h)) / (2 * h),
-  d2Pi = (P_D(th + h) - 2 * P_D(th) + P_D(th - h)) / h^2,
-  d3Pi = (P_D(th + 2 * h) - 2 * P_D(th + h) + 2 * P_D(th - h) - P_D(th - 2 * h)) / (2 * h^3))
-
-D_check <- do.call(rbind, lapply(1:3, function(r) {
-  nm <- names(finite_difference)[r]
-  fd <- finite_difference[[nm]]
-  ret <- returned[[nm]]
-  data.frame(element = nm,
-             D_power = D^r,
-             ratio_finite_difference_to_returned = sum(fd * ret) / sum(ret^2),
-             max_error_taken_at_face_value = max(abs(fd - ret)),
-             max_error_after_multiplying_by_D_power = max(abs(fd - D^r * ret)))
-}))
-D_check
-```
-
-The ratio of the true derivative to the returned one is `r sprintf("%.4f", D_check$ratio_finite_difference_to_returned[1])`, `r sprintf("%.4f", D_check$ratio_finite_difference_to_returned[2])` and `r sprintf("%.4f", D_check$ratio_finite_difference_to_returned[3])` for the first, second and third derivative, against $D = `r sprintf("%.4f", D)`$, $D^2 = `r sprintf("%.4f", D^2)`$ and $D^3 = `r sprintf("%.4f", D^3)`$. Taken at face value the returned derivatives are wrong by up to `r sprintf("%.3f", D_check$max_error_taken_at_face_value[1])`, `r sprintf("%.3f", D_check$max_error_taken_at_face_value[2])` and `r sprintf("%.3f", D_check$max_error_taken_at_face_value[3])`; multiplied by $D$, $D^2$ and $D^3$ they agree with the finite differences to within the finite-difference error.
-
-The information inherits the same factor. The true information can be built from the finite-difference first derivative, or, independently of any derivative, from the identity $I_j = D^2 V_j$:
-
-```{r D_information}
-info_true <- function(t) {           # D^2 Var(X | theta): uses the probabilities only
-  p <- P_D(t)
-  D^2 * as.numeric(p %*% (0:4)^2 - (p %*% (0:4))^2)
-}
-info_from_fd <- rowSums(finite_difference$dPi^2 / P_D(th))
-returned_I <- compute_ii_rsm(th, bank, D = D)
-
-hh <- 1e-4
-true_I <- list(Ii   = info_true(th),
-               dIi  = (info_true(th + hh) - info_true(th - hh)) / (2 * hh),
-               d2Ii = (info_true(th + hh) - 2 * info_true(th) + info_true(th - hh)) / hh^2)
-
-c(info_from_fd_vs_D2_variance = max(abs(info_from_fd - info_true(th)) / info_true(th)))
-
-D_info_check <- data.frame(
-  element = names(true_I),
-  D_power = D^(2:4),
-  ratio_true_to_returned = sapply(names(true_I), function(nm)
-    sum(true_I[[nm]] * returned_I[[nm]]) / sum(returned_I[[nm]]^2)),
-  row.names = NULL)
-D_info_check
-
-# dIi is not even the derivative of the returned Ii: one more factor of D is missing
-I_ret <- function(t) compute_ii_rsm(t, bank, D = D)$Ii
-c(ratio_derivative_of_returned_Ii_to_dIi =
-    sum(((I_ret(th + hh) - I_ret(th - hh)) / (2 * hh)) * returned_I$dIi) / sum(returned_I$dIi^2))
-```
-
-The information built from the true derivative agrees with $D^2 V_j$ (largest relative difference `r signif(max(abs(info_from_fd - info_true(th)) / info_true(th)), 2)`, which is finite-difference error), and the returned `Ii`, `dIi` and `d2Ii` are too small by `r sprintf("%.4f", D_info_check$ratio_true_to_returned[1])` $= D^2$, `r sprintf("%.4f", D_info_check$ratio_true_to_returned[2])` $= D^3$ and `r sprintf("%.4f", D_info_check$ratio_true_to_returned[3])` $= D^4$. So at $D \neq 1$ the *magnitudes* are off: the `info` value that `compute_next_item_rsm()` reports, or a standard error computed as $1/\sqrt{\sum_j I_j}$ from `Ii`, would be wrong by a factor $D^2$ and $D$ respectively.
-
-What the convention does *not* change is anything this pipeline decides or estimates. Item selection only compares items at one $\theta$, and every item's information is divided by the same $D^2$, so the ranking is untouched:
-
-```{r D_selection}
-grid_D <- seq(-4, 4, by = 0.01)
-same_ranking <- sapply(grid_D, function(t)
-  identical(order(compute_ii_rsm(t, bank, D = D)$Ii), order(info_true(t))))
-same_item <- sapply(grid_D, function(t)
-  compute_next_item_rsm(t, bank, D = D)$item == which.max(info_true(t)))
-c(grid_points = length(grid_D), same_ranking = sum(same_ranking), same_item = sum(same_item))
-```
-
-The ranking of all five items, and hence both the MFI pick and the `randomesque` shortlist, is the same under the returned and the true information at every one of the `r length(grid_D)` grid points. And the EAP estimate never touches a derivative: `compute_likelihood_rsm()` uses only `$Pi`, which is exact. Rebuilding the EAP at $D = 1.702$ from probabilities written straight from the model formula, with no code from `cat_eap_rsm.R` involved:
-
-```{r D_eap}
-p_direct <- function(t, b, D) {
-  t(apply(b, 1, function(row) {
-    z <- c(0, cumsum(D * (t - (row[1] + row[-1]))))
-    exp(z) / sum(exp(z))
-  }))
-}
-all.equal(unname(p_direct(0.7, bank, D)), unname(compute_pi_rsm(0.7, bank, D = D)$Pi))
-
-x_D <- c(4, 3, 2, 1, 0)
-q <- seq(-4, 4, length = 33)
-L_direct <- sapply(q, function(t) prod(p_direct(t, bank, D)[cbind(1:5, x_D + 1)]))
-c(direct          = integrate_cat(q, q * dnorm(q) * L_direct) / integrate_cat(q, dnorm(q) * L_direct),
-  compute_eap_rsm = compute_eap_rsm(bank, x_D, D = D))
-```
+The test information is the sum of the five item curves. That every item curve is the same curve shifted by its $\lambda_j$ is checked in the worked example on MFI and the nearest item location below.
 
 ### Next-item selection
 
@@ -568,41 +503,6 @@ c(settings = nrow(selection_check),
 ```
 
 `compute_next_item_rsm()` picks the same item as `catR::nextItem()` in `r sum(selection_check$mine == selection_check$catR)` of `r nrow(selection_check)` settings, and reports the same information.
-
-Now the nearest-neighbour question. MFI is compared on a fine grid with two shortcuts: the item whose $\lambda_j$ is closest to $\theta$, and the item whose peak $\lambda_j +$ `r sprintf("%.4f", offset)` is closest to $\theta$:
-
-```{r nn_check}
-grid <- seq(-4, 4, by = 0.001)
-mfi             <- sapply(grid, function(th) which.max(compute_ii_rsm(th, bank)$Ii))
-nearest         <- sapply(grid, function(th) which.min(abs(th - lambdaj)))
-nearest_shifted <- sapply(grid, function(th) which.min(abs(th - (lambdaj + offset))))
-
-c(grid_points      = length(grid),
-  disagree_nearest = sum(mfi != nearest),
-  disagree_shifted = sum(mfi != nearest_shifted))
-grid[mfi != nearest_shifted]
-```
-
-The exact switch points are where the information curves of two neighbouring items cross:
-
-```{r nn_crossings}
-o  <- order(lambdaj)
-fI <- function(th, j) compute_ii_rsm(th, bank[j, , drop = FALSE])$Ii
-crossings <- do.call(rbind, lapply(1:4, function(i) {
-  lo <- o[i]; hi <- o[i + 1]
-  cross <- uniroot(function(th) fI(th, lo) - fI(th, hi),
-                   interval = c(lambdaj[lo], lambdaj[hi]), tol = 1e-12)$root
-  data.frame(lower_item = lo, upper_item = hi,
-             gap = lambdaj[hi] - lambdaj[lo],
-             midpoint = (lambdaj[lo] + lambdaj[hi]) / 2,
-             shifted_midpoint = (lambdaj[lo] + lambdaj[hi]) / 2 + offset,
-             crossing = cross)
-}))
-crossings$crossing_minus_shifted_midpoint <- crossings$crossing - crossings$shifted_midpoint
-crossings
-```
-
-MFI and "closest $\lambda_j$" disagree at `r sum(mfi != nearest)` of `r length(grid)` grid points; shifting by the peak offset removes most of that, but `r sum(mfi != nearest_shifted)` points, between `r sprintf("%.3f", min(grid[mfi != nearest_shifted]))` and `r sprintf("%.3f", max(grid[mfi != nearest_shifted]))`, remain. They sit between item `r crossings$lower_item[4]` and item `r crossings$upper_item[4]`, the widest gap in the bank (`r sprintf("%.3f", crossings$gap[4])`). There the curves cross far out in their tails, where the asymmetry shown above is largest, and the crossing lies `r sprintf("%.4f", crossings$crossing_minus_shifted_midpoint[4])` above the shifted midpoint, so the lower item keeps the lead for longer than a symmetric curve would allow. For the three closely spaced pairs the crossing is within `r signif(max(abs(crossings$crossing_minus_shifted_midpoint[1:3])), 2)` of the shifted midpoint. Nearest-neighbour on $\lambda_j$ is a good mental model of MFI in an RSM bank, and a close approximation, but it is not the rule itself; `compute_next_item_rsm()` computes the information and takes the maximum, as `catR` does.
 
 ### Likelihood
 
@@ -669,7 +569,7 @@ c(eap_all_equal = isTRUE(all.equal(validation$eap_mine, validation$eap_catR)),
   max_se_difference  = max(abs(validation$se_mine  - validation$se_catR)))
 ```
 
-Both the point estimate and the standard error reproduce `catR` across all `r nrow(validation)` rows: the largest absolute differences are `r signif(max(abs(validation$eap_mine - validation$eap_catR)), 2)` for the estimate and `r signif(max(abs(validation$se_mine - validation$se_catR)), 2)` for the standard error, including the two extreme patterns.
+Both the point estimate and the standard error reproduce `catR` across all `r nrow(validation)` rows: the largest absolute differences are `r format(max(abs(validation$eap_mine - validation$eap_catR)), digits = 2)` for the estimate and `r format(max(abs(validation$se_mine - validation$se_catR)), digits = 2)` for the standard error, including the two extreme patterns.
 
 ---
 
@@ -695,7 +595,7 @@ c(spread_of_theta_EAP = diff(range(sufficiency$theta_EAP)),
   spread_of_SE        = diff(range(sufficiency$SE)))
 ```
 
-The five estimates differ by at most `r signif(diff(range(sufficiency$theta_EAP)), 2)` and the standard errors by at most `r signif(diff(range(sufficiency$SE)), 2)`: identical up to floating-point rounding. The reason is visible in the likelihoods themselves. Their ratio is the same constant at every quadrature point, so it cancels from both EAP integrals:
+The five estimates differ by at most `r format(diff(range(sufficiency$theta_EAP)), digits = 2)` and the standard errors by at most `r format(diff(range(sufficiency$SE)), digits = 2)`: identical up to floating-point rounding. The reason is visible in the likelihoods themselves. Their ratio is the same constant at every quadrature point, so it cancels from both EAP integrals:
 
 ```{r sufficiency_ratio}
 q <- seq(-4, 4, length = 33)
@@ -798,6 +698,34 @@ In practice the two functions are always paired, `compute_eap_se_rsm(compute_eap
 
 ---
 
+## Worked example: the RSM as a constrained partial credit model
+
+The theory section describes the RSM as the PCM with steps $\delta_{jk} = \lambda_j + \delta_k$. That can be checked against `catR`'s own PCM, whose bank holds the steps directly (one column per step, no location column):
+
+```{r rsm_as_pcm}
+bank_pcm <- bank[, 1] + bank[, -1]   # step k of item j is lambda_j + delta_k
+bank_pcm
+
+all.equal(compute_pi_rsm(theta = 0.4, bank),
+          catR::Pi(th = 0.4, it = bank_pcm, model = "PCM"))
+all.equal(compute_eap_rsm(bank, x = c(4, 3, 2, 1, 0)),
+          catR::eapEst(bank_pcm, c(4, 3, 2, 1, 0), model = "PCM"))
+```
+
+The same holds when the rows do *not* share their thresholds, which is what `compute_pi_rsm()` does if handed such a bank: it computes the PCM with steps $\lambda_j + \delta_{jt}$.
+
+```{r rsm_as_pcm_free}
+set.seed(7)
+bank_free <- bank
+bank_free[, -1] <- bank_free[, -1] + round(matrix(rnorm(20, sd = 0.3), nrow = 5), 2)
+all.equal(compute_pi_rsm(theta = 0.4, bank_free),
+          catR::Pi(th = 0.4, it = bank_free[, 1] + bank_free[, -1], model = "PCM"))
+```
+
+The rating scale assumption therefore lives entirely in the bank: the code computes a partial credit model either way, and identical threshold columns are what make it the RSM.
+
+---
+
 ## Worked example: threshold ordering
 
 The thresholds in this bank are `r paste(sprintf("%.3f", bank[1, 2:5]), collapse = ", ")`, which is **not increasing**. Disordered thresholds are common in real data. They mean that some categories are never the most probable response at any ability level, although every category keeps a positive probability everywhere.
@@ -875,21 +803,14 @@ Disordered thresholds concentrate information: item 1 peaks at `r sprintf("%.3f"
 
 ## Worked example: items with different numbers of categories
 
-Items need not all share a category count. A four-point item in a five-point bank pads its unused threshold with `NA`, and its responses are then scored 0 to 3.
+Items need not all share a category count. A four-point item in a five-point bank pads its unused threshold with `NA`, and its responses are then scored 0 to 3. In `bank_mixed`, the bank of the probability check in the validation section, item 5 is such an item, and its information agrees with `catR` too:
 
 ```{r na_padding}
-bank_mixed <- bank
-bank_mixed[5, "delta4"] <- NA
 bank_mixed
-
-P_mixed <- compute_pi_rsm(theta = 0, bank_mixed)$Pi
-round(P_mixed, 6)
-rowSums(P_mixed, na.rm = TRUE)
-c(Pi_vs_catR = isTRUE(all.equal(P_mixed, catR::Pi(0, bank_mixed, model = "RSM")$Pi)),
-  Ii_vs_catR = isTRUE(all.equal(compute_ii_rsm(0, bank_mixed), catR::Ii(0, bank_mixed, model = "RSM"))))
+isTRUE(all.equal(compute_ii_rsm(0, bank_mixed), catR::Ii(0, bank_mixed, model = "RSM")))
 ```
 
-Item 5's `cat4` is `NA` because the category does not exist, and its remaining four probabilities still sum to 1. Scoring works unchanged:
+Scoring works unchanged:
 
 ```{r na_padding_eap}
 response_mixed <- c(4, 3, 2, 1, 3)   # item 5 can only be scored 0 to 3
@@ -916,6 +837,77 @@ bank_hole <- bank
 bank_hole[5, "delta2"] <- NA
 round(compute_pi_rsm(theta = 0, bank_hole)$Pi[5, ], 6)
 ```
+
+---
+
+## Worked example: MFI and the nearest item location
+
+The theory section predicts that every item in this bank reaches the same maximum information, and that MFI is close to, but not necessarily exactly, a nearest-neighbour lookup on $\lambda_j$. The first claim is easy to check: locate each item's information peak numerically.
+
+```{r info_peaks}
+peaks <- t(sapply(1:5, function(j) {
+  opt <- optimize(function(th) compute_ii_rsm(th, bank[j, , drop = FALSE])$Ii,
+                  interval = c(-6, 6), maximum = TRUE, tol = 1e-10)
+  c(peak = opt$maximum, max_information = opt$objective)
+}))
+peaks <- data.frame(lambdaj = lambdaj, peaks, offset = peaks[, "peak"] - lambdaj)
+peaks
+offset <- mean(peaks$offset)
+c(spread_of_offsets = diff(range(peaks$offset)),
+  spread_of_maxima  = diff(range(peaks$max_information)))
+```
+
+Every item reaches the same maximum information, `r sprintf("%.4f", peaks$max_information[1])`, at the same offset of `r sprintf("%.4f", offset)` above its own $\lambda_j$ (the spreads are at the level of the optimiser's tolerance). The bank has no strong and weak items, only items aimed at different parts of the scale.
+
+Whether the common curve is symmetric about its peak decides whether MFI is exactly a nearest-neighbour rule. Comparing item 1's information at equal distances above and below its peak:
+
+```{r info_asymmetry}
+f_item1 <- function(th) compute_ii_rsm(th, bank[1, , drop = FALSE])$Ii
+distance <- c(0.25, 0.5, 1, 1.5, 2)
+asymmetry <- data.frame(distance   = distance,
+                        above_peak = sapply(peaks$peak[1] + distance, f_item1),
+                        below_peak = sapply(peaks$peak[1] - distance, f_item1))
+asymmetry$difference <- asymmetry$above_peak - asymmetry$below_peak
+asymmetry$ratio      <- asymmetry$above_peak / asymmetry$below_peak
+asymmetry
+```
+
+It is not. At every distance the information above the peak is larger than below it, by a factor that grows with distance, from `r sprintf("%.4f", asymmetry$ratio[1])` at `r asymmetry$distance[1]` to `r sprintf("%.2f", asymmetry$ratio[nrow(asymmetry)])` at `r asymmetry$distance[nrow(asymmetry)]`; the absolute difference is largest in between (`r sprintf("%.4f", max(asymmetry$difference))` at `r asymmetry$distance[which.max(asymmetry$difference)]`) because both curves die out. With these thresholds an item stays useful for abilities somewhat above its location for longer than below it.
+
+Now the nearest-neighbour question. MFI is compared on a fine grid with two shortcuts: the item whose $\lambda_j$ is closest to $\theta$, and the item whose peak $\lambda_j +$ `r sprintf("%.4f", offset)` is closest to $\theta$:
+
+```{r nn_check}
+grid <- seq(-4, 4, by = 0.001)
+mfi             <- sapply(grid, function(th) which.max(compute_ii_rsm(th, bank)$Ii))
+nearest         <- sapply(grid, function(th) which.min(abs(th - lambdaj)))
+nearest_shifted <- sapply(grid, function(th) which.min(abs(th - (lambdaj + offset))))
+
+c(grid_points      = length(grid),
+  disagree_nearest = sum(mfi != nearest),
+  disagree_shifted = sum(mfi != nearest_shifted))
+grid[mfi != nearest_shifted]
+```
+
+The exact switch points are where the information curves of two neighbouring items cross:
+
+```{r nn_crossings}
+o  <- order(lambdaj)
+fI <- function(th, j) compute_ii_rsm(th, bank[j, , drop = FALSE])$Ii
+crossings <- do.call(rbind, lapply(1:4, function(i) {
+  lo <- o[i]; hi <- o[i + 1]
+  cross <- uniroot(function(th) fI(th, lo) - fI(th, hi),
+                   interval = c(lambdaj[lo], lambdaj[hi]), tol = 1e-12)$root
+  data.frame(lower_item = lo, upper_item = hi,
+             gap = lambdaj[hi] - lambdaj[lo],
+             midpoint = (lambdaj[lo] + lambdaj[hi]) / 2,
+             shifted_midpoint = (lambdaj[lo] + lambdaj[hi]) / 2 + offset,
+             crossing = cross)
+}))
+crossings$crossing_minus_shifted_midpoint <- crossings$crossing - crossings$shifted_midpoint
+crossings
+```
+
+MFI and "closest $\lambda_j$" disagree at `r sum(mfi != nearest)` of `r length(grid)` grid points; shifting by the peak offset removes most of that, but `r sum(mfi != nearest_shifted)` points, between `r sprintf("%.3f", min(grid[mfi != nearest_shifted]))` and `r sprintf("%.3f", max(grid[mfi != nearest_shifted]))`, remain. They sit between item `r crossings$lower_item[4]` and item `r crossings$upper_item[4]`, the widest gap in the bank (`r sprintf("%.3f", crossings$gap[4])`). There the curves cross about `r sprintf("%.2f", crossings$gap[4] / 2)` from either peak, where the information is down to `r sprintf("%.0f%%", 100 * f_item1(peaks$peak[1] + crossings$gap[4] / 2) / peaks$max_information[1])` of its maximum and the asymmetry shown above is far stronger than within the `r sprintf("%.3f", max(crossings$gap[1:3]) / 2)` or less that separates each closely spaced pair from its crossing. The crossing lies `r sprintf("%.4f", crossings$crossing_minus_shifted_midpoint[4])` above the shifted midpoint, so the lower item keeps the lead for longer than a symmetric curve would allow. For the three closely spaced pairs the crossing is within `r format(max(abs(crossings$crossing_minus_shifted_midpoint[1:3])), digits = 2)` of the shifted midpoint. Nearest-neighbour on $\lambda_j$ is a good mental model of MFI in an RSM bank, and a close approximation, but it is not the rule itself; `compute_next_item_rsm()` computes the information and takes the maximum, as `catR` does.
 
 ---
 
@@ -1055,15 +1047,15 @@ th_D     <- settings_tab$theta[11:12]
 
 Three different kinds of effect are visible here, and they should not be confused with one another:
 
-- **Quadrature points** are pure approximation error. Moving from 11 to 33 points changes the estimate by `r sprintf("%.4f", abs(th_nqp[2] - th_nqp[1]))`, from 33 to 101 by `r signif(abs(th_nqp[3] - th_nqp[2]), 2)`, and from 101 to 501 by `r signif(abs(th_nqp[4] - th_nqp[3]), 2)`. The default of 33 points is a reasonable accuracy and speed compromise and matches `catR`.
-- **Integration bounds** are also approximation error, but of a more dangerous kind. Truncating at $\pm 3$ moves the estimate by `r sprintf("%.3f", abs(th_bound[1] - th_bound[2]))`, because for an all-maximum pattern the posterior still has real mass beyond $\theta = 3$, and cutting it off silently biases the estimate downward. Even the default $\pm 4$ is `r sprintf("%.4f", abs(compute_eap_rsm(bank, x) - reference))` short of the reference, more than the error from using only 33 points; widening to $\pm 6$ changes the estimate by `r sprintf("%.4f", th_bound[3] - th_bound[2])` and $\pm 8$ adds only `r signif(abs(th_bound[4] - th_bound[3]), 2)` more. Bounds must be wide enough for the *most extreme pattern the bank can produce*, not for a typical one.
+- **Quadrature points** are pure approximation error. Moving from 11 to 33 points changes the estimate by `r sprintf("%.4f", abs(th_nqp[2] - th_nqp[1]))`, from 33 to 101 by `r format(abs(th_nqp[3] - th_nqp[2]), digits = 2)`, and from 101 to 501 by `r format(abs(th_nqp[4] - th_nqp[3]), digits = 2)`. The default of 33 points is a reasonable accuracy and speed compromise and matches `catR`.
+- **Integration bounds** are also approximation error, but of a more dangerous kind. Truncating at $\pm 3$ moves the estimate by `r sprintf("%.3f", abs(th_bound[1] - th_bound[2]))`, because for an all-maximum pattern the posterior still has real mass beyond $\theta = 3$, and cutting it off silently biases the estimate downward. Even the default $\pm 4$ is `r sprintf("%.4f", abs(compute_eap_rsm(bank, x) - reference))` short of the reference, more than the error from using only 33 points; widening to $\pm 6$ changes the estimate by `r sprintf("%.4f", th_bound[3] - th_bound[2])` and $\pm 8$ adds only `r format(abs(th_bound[4] - th_bound[3]), digits = 2)` more. Bounds must be wide enough for the *most extreme pattern the bank can produce*, not for a typical one.
 - **The prior SD and the metric constant are not approximation error at all**: they are different models. Doubling the prior SD to 2 weakens the shrinkage and moves the estimate from `r sprintf("%.2f", th_prior[1])` to `r sprintf("%.2f", th_prior[2])`; changing $D$ to 1.702 rescales the latent metric and moves it to `r sprintf("%.2f", th_D[2])`. Both belong in the model specification and must match whatever was used to calibrate the item parameters.
 
 ---
 
 # Conclusion
 
-All eight functions reproduce their `catR` counterparts: the normal density, the trapezoidal integrator, the RSM category probabilities with all three derivatives, the item information with both derivatives, MFI item selection with and without excluded items, the likelihood, and the two integrals that define EAP scoring, at both $D = 1$ and $D = 1.702$ and for extreme as well as ordinary patterns. Together they run a complete polytomous adaptive test in a few hundred lines of base R.
+All eight functions reproduce their `catR` counterparts: the normal density, the trapezoidal integrator, the RSM category probabilities with all three derivatives (also for an item padded with `NA`), the item information with both derivatives, MFI item selection with and without excluded items, the likelihood (rebuilt from `catR`'s probabilities, since `catR` does not export one), and the two integrals that define EAP scoring, at both $D = 1$ and $D = 1.702$ and for extreme as well as ordinary patterns. Finite differences check the derivatives independently of `catR`: they are exact at $D = 1$ and too small by powers of $D$ at $D = 1.702$. Together they run a complete polytomous adaptive test in a few hundred lines of base R.
 
 Writing the model out makes its character visible in a way a package call does not. The RSM's shared thresholds make every item information curve the same curve shifted along the ability axis, so no item is more informative than any other, only better targeted, and MFI behaves almost like a nearest-neighbour lookup on the item locations; the asymmetry of the curve for these thresholds is what keeps it from being exactly one. Its Rasch-family structure makes the raw score a sufficient statistic, so a response pattern contributes nothing beyond its total, and it ties the information to the variance of the item score, so threshold order can move information around but never add to it. The code also inherits `catR`'s convention of leaving $D$ out of the derivatives: at $D \neq 1$ the reported derivatives and information are too small by powers of $D$, which leaves item selection and EAP scoring untouched but matters for any use of the information as a number. And the prior does the same job here as in the dichotomous case: it keeps estimates and standard errors finite for the all-minimum and all-maximum patterns that a real rating scale produces constantly, at the cost of a known, deliberate pull toward the prior mean.
 
@@ -1080,3 +1072,35 @@ Writing the model out makes its character visible in a way a package call does n
 ---
 
 *Rendered with R `r getRversion()` · validated against catR `r as.character(packageVersion("catR"))`*
+
+---
+
+# Comments
+
+Questions, corrections and suggestions are welcome below (sign in with GitHub to post).
+
+```{=html}
+<div class="giscus"></div>
+<script>
+(function () {
+  var s = document.createElement("script");
+  s.src = "https://giscus.app/client.js";
+  s.setAttribute("data-repo", "sedzinfo/rwf");
+  s.setAttribute("data-repo-id", "REPLACE_WITH_REPO_ID");
+  s.setAttribute("data-category", "Comments");
+  s.setAttribute("data-category-id", "REPLACE_WITH_CATEGORY_ID");
+  s.setAttribute("data-mapping", "specific");
+  s.setAttribute("data-term", "EAP RSM Ability Estimation in base R");
+  s.setAttribute("data-strict", "1");
+  s.setAttribute("data-reactions-enabled", "1");
+  s.setAttribute("data-emit-metadata", "0");
+  s.setAttribute("data-input-position", "top");
+  s.setAttribute("data-theme", "light");
+  s.setAttribute("data-lang", "en");
+  s.setAttribute("data-loading", "lazy");
+  s.crossOrigin = "anonymous";
+  s.async = true;
+  document.querySelector(".giscus").appendChild(s);
+})();
+</script>
+```

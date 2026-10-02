@@ -100,11 +100,19 @@ $$I_j(\theta) = \frac{P'^2_j}{P_j Q_j}, \qquad Q_j = 1-P_j$$
 
 This is the polytomous formula $\sum_k (\partial P_{jk}/\partial\theta)^2/P_{jk}$ with the two categories $P_j$ and $Q_j$, whose derivatives are $P'_j$ and $-P'_j$: $P'^2_j/P_j + P'^2_j/Q_j = P'^2_j/(P_jQ_j)$. **Test information** is the sum of the item informations, and its reciprocal square root is the asymptotic standard error of a maximum-likelihood ability estimate.
 
+For a test of $n$ items, the test information is
+
+$$I(\theta) = \sum_{j=1}^{n} I_j(\theta)$$
+
 For the 2PL ($c_j=0$, $d_j=1$) the slope is $P'_j = Da_jP_jQ_j$, so the information reduces to $D^2a_j^2P_jQ_j$. It is symmetric around $b_j$, peaks there with height $D^2a_j^2/4$, and so is governed entirely by the discrimination: in a 2PL bank the high-$a$ items are simply better items. Guessing and slipping change both the height and the location of the peak. A guessing parameter $c_j>0$ (with $d_j=1$) lowers the information and moves its peak **above** $b_j$, to (Birnbaum, 1968)
 
 $$\theta_{\max} = b_j + \frac{1}{Da_j}\,\log\frac{1+\sqrt{1+8c_j}}{2}$$
 
 because a correct answer from an examinee just below $b_j$ may well be a lucky guess and tells the test less than it would under the 2PL. The worked example on guessing and slipping below checks this formula numerically, and also checks its mirror image for $d_j<1$.
+
+Its mirror image, for slipping with $c_j=0$ and $d_j<1$, puts the peak **below** $b_j$, at
+
+$$\theta_{\max} = b_j - \frac{1}{Da_j}\,\log\frac{1+\sqrt{1+8(1-d_j)}}{2}$$
 
 `compute_ii_dichotomous()` also returns the first two derivatives of the information. The first is
 
@@ -122,9 +130,17 @@ Both are checked against finite differences below as well as against `catR`.
 
 An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate: the **Maximum Fisher Information (MFI)** criterion. `compute_next_item_dichotomous()` computes $I_j(\hat\theta)$ for every item not listed in `out`, the indices of the items already administered, and returns the index of the best one, its information, and the indices that were available.
 
+The best item is
+
+$$j^{*} = \arg\max_{j\notin\texttt{out}} I_j(\hat\theta)$$
+
 If every item had the same $a_j$ with $c_j=0$ and $d_j=1$, the information curves would be copies of one another shifted by $b_j$, and MFI would reduce to picking the item whose $b_j$ is closest to $\hat\theta$. In a 4PL bank the curves differ in height and in shape, so a highly discriminating item some distance away can beat a weak item right on target, and the information of every available item really does have to be computed. This contrasts with the Rating Scale Model vignette, where every item reaches the same maximum information and MFI is close to (though not exactly) a nearest-neighbour lookup on the item locations.
 
 The `randomesque` argument draws at random from the $k$ most informative items instead of always taking the single best. This is standard exposure control: pure MFI would give the same handful of highly discriminating items to almost everyone. Two documented differences from `catR::nextItem()` matter only for ties: when several items are exactly tied for the maximum, `catR` draws one of them at random while this function takes the first; and with `randomesque` above 1, `catR` also keeps every item tied with the last one kept.
+
+In general `item` is drawn uniformly from the $k$ available items with the largest $I_j(\hat\theta)$ ($j^{*}$ when $k=1$), and `info` is its information, where
+
+$$k = \max\!\big(1,\ \min(\lfloor\texttt{randomesque}\rfloor,\ |\texttt{available}|)\big), \qquad \texttt{available} = \{\,j : j\notin\texttt{out}\,\}$$
 
 ### Likelihood of a response pattern
 
@@ -139,6 +155,10 @@ The exponents act as a switch: a correct response contributes $P_j$, a wrong one
 Maximum Likelihood fails outright for an all-correct or all-incorrect pattern, because the likelihood keeps increasing toward $\theta=\pm\infty$ with no interior maximum. EAP (Bock & Mislevy, 1982) sidesteps this by placing a **prior** $\pi(\theta)$ on ability (standard normal by default) and reporting the **mean of the posterior distribution**
 
 $$\hat\theta_{EAP} = E[\theta \mid \mathbf{x}] = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}$$
+
+The prior is the normal density computed by `density_function()`:
+
+$$\pi(\theta) = \frac{1}{\sigma\sqrt{2\pi}}\exp\!\left(-\frac{(\theta-\mu)^2}{2\sigma^2}\right), \qquad (\mu,\sigma) = \texttt{priorPar}$$
 
 For a response pattern $\mathbf{x}=(x_1,\ldots,x_n)$, the likelihood and the two integrands are
 
@@ -174,6 +194,10 @@ Using the same quadrature grid $X$ as above, the numerical estimate is
 $$
 SE(\hat\theta_{EAP}) \approx \sqrt{\frac{\operatorname{Trap}(X,\,g_{SE}(X))}{\operatorname{Trap}(X,\,h(X))}}.
 $$
+
+`compute_eap_se_dichotomous()` centres the deviation at its `theta` argument $t$, which is $\hat\theta_{EAP}$ in normal use but need not be:
+
+$$\operatorname{RMSD}(t) = \sqrt{\frac{\operatorname{Trap}(X,\,g_t(X))}{\operatorname{Trap}(X,\,h(X))}}, \qquad g_t(s) = (s-t)^2\,\pi(s)\,L(s)$$
 
 All four integrals are finite, and both denominators are positive, for every response pattern: $0<L(\theta)\le 1$ and the normal prior has a finite mean and variance. This is what rescues the all-correct and all-incorrect patterns, whose likelihood never shrinks to zero in one tail and so cannot be integrated on its own.
 
@@ -801,3 +825,35 @@ Written out, the model's character is easy to see. The discrimination sets how u
 ---
 
 *Rendered with R `r getRversion()` · validated against catR `r as.character(packageVersion("catR"))`*
+
+---
+
+# Comments
+
+Questions, corrections and suggestions are welcome below (sign in with GitHub to post).
+
+```{=html}
+<div class="giscus"></div>
+<script>
+(function () {
+  var s = document.createElement("script");
+  s.src = "https://giscus.app/client.js";
+  s.setAttribute("data-repo", "sedzinfo/rwf");
+  s.setAttribute("data-repo-id", "REPLACE_WITH_REPO_ID");
+  s.setAttribute("data-category", "Comments");
+  s.setAttribute("data-category-id", "REPLACE_WITH_CATEGORY_ID");
+  s.setAttribute("data-mapping", "specific");
+  s.setAttribute("data-term", "EAP Dichotomous Ability Estimation in base R");
+  s.setAttribute("data-strict", "1");
+  s.setAttribute("data-reactions-enabled", "1");
+  s.setAttribute("data-emit-metadata", "0");
+  s.setAttribute("data-input-position", "top");
+  s.setAttribute("data-theme", "light");
+  s.setAttribute("data-lang", "en");
+  s.setAttribute("data-loading", "lazy");
+  s.crossOrigin = "anonymous";
+  s.async = true;
+  document.querySelector(".giscus").appendChild(s);
+})();
+</script>
+```

@@ -31,24 +31,24 @@ The functions in [`cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/
 
 ## Description
 
-The companion vignette *EAP Ability Estimation From Scratch* builds the whole EAP pipeline for **dichotomous** items scored right/wrong under the 4PL model. This vignette does the same job for **polytomous** items — a Likert scale scored 0, 1, 2, 3, 4 — under Muraki's **modified graded response model**, and adds the two pieces an adaptive test actually needs on top of scoring: **item information** and **next-item selection**.
+The companion vignette on dichotomous items builds the whole EAP pipeline, item information and next-item selection included, for items scored right/wrong under the 4PL model. This vignette does the same job for **polytomous** items — a Likert scale scored 0, 1, 2, 3, 4 — under Muraki's **modified graded response model**.
 
 The model goes by several names, so it is worth fixing them once. Muraki (1990) introduced it as a modification of Samejima's (1969) **graded response model (GRM)**. `catR` calls it `"MGRM"`. `mirt` calls it the **graded rating scale model** (`itemtype = "grsm"`). And `cat_eap_ggrm.R` calls it the **generalized graded response model**, which is where the `_ggrm` suffix of its function names comes from. Despite that name the model is not a generalisation of the GRM but a **restriction** of it: every item keeps its own discrimination, but the spacing between its thresholds is shared by all the items that use the same rating scale. The vignette keeps the file's function names and otherwise calls the model the modified GRM, or MGRM.
 
 [`working_examples/cat_eap_ggrm.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_ggrm.R) implements the model-specific part of the pipeline in six small functions, and [`working_examples/cat_eap_common.R`](https://github.com/sedzinfo/rwf/blob/main/working_examples/cat_eap_common.R) supplies the two helpers every model shares. All eight are written in base R with no runtime dependency on `catR`:
 
-| Function | Purpose | `catR` equivalent it mirrors |
-|---|---|---|
-| `density_function()` | Normal density | `stats::dnorm()` |
-| `integrate_cat()` | Numerical integration (trapezoidal rule) | `catR::integrate.catR()` |
-| `compute_pi_ggrm()` | Category response probabilities + three derivatives | `catR::Pi(model="MGRM")` |
-| `compute_ii_ggrm()` | Item information + two derivatives | `catR::Ii(model="MGRM")` |
-| `compute_next_item_ggrm()` | Maximum Fisher information item selection | `catR::nextItem(model="MGRM", criterion="MFI")` |
-| `compute_likelihood_ggrm()` | Likelihood of a polytomous response pattern | *(internal to `catR::eapEst()`)* |
-| `compute_eap_ggrm()` | EAP ability estimate | `catR::eapEst(model="MGRM")` |
-| `compute_eap_se_ggrm()` | EAP standard error | `catR::eapSem(model="MGRM")` |
+| Function | File | Purpose | `catR` equivalent it mirrors |
+|---|---|---|---|
+| `density_function()` | `cat_eap_common.R` | Normal density (the prior) | `stats::dnorm()` |
+| `integrate_cat()` | `cat_eap_common.R` | Numerical integration (trapezoidal rule) | `catR::integrate.catR()` |
+| `compute_pi_ggrm()` | `cat_eap_ggrm.R` | Category response probabilities and their first three derivatives | `catR::Pi(model="MGRM")` |
+| `compute_ii_ggrm()` | `cat_eap_ggrm.R` | Item information and its first two derivatives | `catR::Ii(model="MGRM")` |
+| `compute_next_item_ggrm()` | `cat_eap_ggrm.R` | Maximum Fisher information item selection, with randomesque exposure control | `catR::nextItem(model="MGRM", criterion="MFI")` |
+| `compute_likelihood_ggrm()` | `cat_eap_ggrm.R` | Likelihood of a polytomous response pattern | *(internal to `catR::eapEst()`)* |
+| `compute_eap_ggrm()` | `cat_eap_ggrm.R` | EAP ability estimate | `catR::eapEst(model="MGRM")` |
+| `compute_eap_se_ggrm()` | `cat_eap_ggrm.R` | EAP standard error | `catR::eapSem(model="MGRM")` |
 
-The sections below walk through the theory behind each function, validate every one of them against its `catR` counterpart, work through four properties that follow from the model's restricted form, and then run a small adaptive test end to end.
+The sections below walk through the theory behind each function, validate every one of them against its `catR` counterpart, work through four properties that follow from the model's restricted form, run a small adaptive test end to end, and close with the numerical side: the integration settings and the floating-point precision of the category probabilities.
 
 ```{r source,message=FALSE,warning=FALSE}
 library(ggplot2)
@@ -71,9 +71,9 @@ $$P^*_{jk}(\theta) = P(X_j \ge k \mid \theta) = \frac{\exp\big[D\alpha_j(\theta 
 
 with the two boundary curves fixed at $P^*_{j0} = 1$ (every response is in category 0 or above) and $P^*_{j,m+1} = 0$. Second, the probability of category $k$ is the difference between two adjacent cumulative curves:
 
-$$P_{jk}(\theta) = P(X_j = k \mid \theta) = P^*_{jk}(\theta) - P^*_{j,k+1}(\theta).$$
+$$P_{jk}(\theta) = P(X_j = k \mid \theta) = P^*_{jk}(\theta) - P^*_{j,k+1}(\theta), \qquad k = 0,\ldots,m,$$
 
-This makes the model **cumulative**: the threshold $\beta_{jk}$ is the ability at which "category $k$ or above" becomes more likely than "below $k$". The rating scale and partial credit models are **adjacent-category** models instead: they compare each category with its neighbour and divide by a normalising total. For the differences to be probabilities the cumulative curves must never cross, and since all $m$ curves of an item share the slope $\alpha_j$, that means the thresholds must be strictly increasing, $\beta_{j1} < \beta_{j2} < \cdots < \beta_{jm}$.
+so the lowest category has $P_{j0} = 1 - P^*_{j1}$ and the highest $P_{jm} = P^*_{jm}$. This makes the model **cumulative**: the threshold $\beta_{jk}$ is the ability at which "category $k$ or above" becomes more likely than "below $k$". The rating scale and partial credit models are **adjacent-category** models instead: they compare each category with its neighbour and divide by a normalising total. For every difference to be a positive probability the cumulative curves must never cross or coincide, and since all $m$ curves of an item share the slope $\alpha_j$, that means the thresholds must be strictly increasing, $\beta_{j1} < \beta_{j2} < \cdots < \beta_{jm}$.
 
 ### The modified GRM: a location and shared category parameters
 
@@ -91,7 +91,11 @@ Because $\beta_{jk} = b_j - c_k$ must increase with $k$, the category parameters
 
 The restriction relates the MGRM to the GRM the way the rating scale model relates to the partial credit model: one set of step parameters per block instead of one per item. Unlike the rating scale model it keeps the item discrimination. For a single block of $n$ items with $m+1$ categories the GRM has $n(m+1)$ item parameters and the MGRM $2n + m - 1$; the $-1$ is the identifiability constraint.
 
-**Identifiability.** Only the differences $b_j - c_k$ enter the model, so adding the same constant to every $b_j$ and every $c_k$ of a block leaves every probability unchanged. One constraint per block pins the parameters down. Muraki centres the $c_k$ of each block at zero; `mirt` instead sets $b_j = 0$ for the first item of each block. Both conventions describe the same model and give the same probabilities, which a worked example below demonstrates.
+**Identifiability.** Only the differences $b_j - c_k$ enter the model, so adding the same constant $t$ to every $b_j$ and every $c_k$ of a block leaves every threshold, and therefore every probability, unchanged:
+
+$$\big(b_j + t\big) - \big(c_k + t\big) = b_j - c_k = \beta_{jk}.$$
+
+One constraint per block pins the parameters down. Muraki centres the $c_k$ of each block at zero, $\sum_{k=1}^{m} c_k = 0$, which any solution reaches with $t = -\bar c$, $\bar c = \frac{1}{m}\sum_{k=1}^{m} c_k$; `mirt` instead sets $b_j = 0$ for the first item of each block, which any solution reaches with $t$ equal to minus that item's location. Both conventions describe the same model and give the same probabilities, which a worked example below demonstrates.
 
 ### The bank layout
 
@@ -103,30 +107,56 @@ The restriction relates the MGRM to the GRM the way the rating scale model relat
 | 2 | the item location $b_j$ |
 | 3 to $m+2$ | the category parameters $c_1,\ldots,c_m$ |
 
-A bank for items with $m+1$ categories therefore has $m+2$ columns, and the number of categories is `ncol(bank) - 1`: a five-point Likert scale scored 0 to 4 has $m = 4$ category parameters and needs a six-column bank. The category columns are identical down every row of a block, and a bank with a single block has the same $c_k$ in every row. Items answered on a different rating scale form a block of their own with their own $c_k$ — always the case for items with a different number of categories — and the shorter rows are padded with `NA` on the right.
+A bank for items with $m+1$ categories therefore has $m+2$ columns, and the number of categories is `ncol(bank) - 1`: a five-point Likert scale scored 0 to 4 has $m = 4$ category parameters and needs a six-column bank. The category columns are identical down every row of a block, and a bank with a single block has the same $c_k$ in every row. Items answered on a different rating scale form a block of their own with their own $c_k$ — always the case for items with a different number of categories — and the shorter rows are padded with `NA` on the right. In such a bank $m$ is the number of category parameters of the widest item; item $j$ has $m_j \le m$ non-`NA` category parameters and the categories $0,\ldots,m_j$, and every formula below applies to item $j$ with $m$ replaced by $m_j$.
+
+The columns are read by position, not by name, and each row is read on its own: nothing in the code checks that the rows of a block really share their $c_k$, and a bank in which every row had its own $c_k$ would simply be a GRM bank written in another form. `compute_pi_ggrm()`, which every other model function calls directly or through another one, begins with `bank <- rbind(bank)`, so a single item may also be passed as a plain vector `c(alpha, b, c1, ..., cm)`.
 
 ### Derivatives
 
-Item information needs the first derivative of each category probability, and its own derivatives need the second and third. All of them come from the cumulative curves, using the logistic identity $\frac{d}{d\theta}P^* = D\alpha_j P^*(1-P^*)$ repeatedly:
+Item information needs the first derivative of each category probability, and its own derivatives need the second and third. All of them come from the cumulative curves, using the logistic identity $\frac{d}{d\theta}P^* = D\alpha_j P^*(1-P^*)$ repeatedly. `compute_pi_ggrm()` evaluates them recursively, as `catR::Pi()` does:
 
 $$\frac{dP^*_{jk}}{d\theta} = D\alpha_j P^*_{jk}\big(1-P^*_{jk}\big), \qquad
 \frac{d^2P^*_{jk}}{d\theta^2} = D\alpha_j \frac{dP^*_{jk}}{d\theta}\big(1-2P^*_{jk}\big),$$
 
 $$\frac{d^3P^*_{jk}}{d\theta^3} = D\alpha_j\left[\frac{d^2P^*_{jk}}{d\theta^2} - 2\left(\frac{dP^*_{jk}}{d\theta}\right)^2 - 2P^*_{jk}\,\frac{d^2P^*_{jk}}{d\theta^2}\right].$$
 
-The boundary curves $P^*_{j0}=1$ and $P^*_{j,m+1}=0$ are constants with zero derivatives of every order, and differentiation is linear, so every derivative of a category probability is the same difference of two adjacent cumulative derivatives — for example $P'_{jk} = P^{*\prime}_{jk} - P^{*\prime}_{j,k+1}$. `compute_pi_ggrm()` returns the four matrices `Pi`, `dPi`, `d2Pi` and `d3Pi`, one row per item and one column per category.
+Substituting each line into the next gives the closed forms, with $W_{jk} = P^*_{jk}\big(1-P^*_{jk}\big)$:
+
+$$\frac{dP^*_{jk}}{d\theta} = D\alpha_j W_{jk}, \qquad
+\frac{d^2P^*_{jk}}{d\theta^2} = D^2\alpha_j^2 W_{jk}\big(1-2P^*_{jk}\big), \qquad
+\frac{d^3P^*_{jk}}{d\theta^3} = D^3\alpha_j^3 W_{jk}\big(1-6P^*_{jk}+6P^{*2}_{jk}\big).$$
+
+The boundary curves $P^*_{j0}=1$ and $P^*_{j,m+1}=0$ are constants with zero derivatives of every order ($W_{j0} = W_{j,m+1} = 0$), and differentiation is linear, so every derivative of a category probability is the same difference of two adjacent cumulative derivatives. Writing primes for derivatives with respect to $\theta$, for $k = 0,\ldots,m$:
+
+$$
+\begin{aligned}
+P'_{jk} &= D\alpha_j\big[W_{jk} - W_{j,k+1}\big],\\
+P''_{jk} &= D^2\alpha_j^2\big[W_{jk}\big(1-2P^*_{jk}\big) - W_{j,k+1}\big(1-2P^*_{j,k+1}\big)\big],\\
+P'''_{jk} &= D^3\alpha_j^3\big[W_{jk}\big(1-6P^*_{jk}+6P^{*2}_{jk}\big) - W_{j,k+1}\big(1-6P^*_{j,k+1}+6P^{*2}_{j,k+1}\big)\big].
+\end{aligned}
+$$
+
+`compute_pi_ggrm()` returns the four matrices `Pi`, `dPi`, `d2Pi` and `d3Pi`, holding $P_{jk}$, $P'_{jk}$, $P''_{jk}$ and $P'''_{jk}$, one row per item and one column per category: column $k+1$ (named `cat0`, `cat1`, …) holds category $k$. For an item with $m_j < m$ category parameters, the entries for the categories $k = m_j+1,\ldots,m$ are `NA` in all four matrices.
+
+### No probability floor
+
+The dichotomous code replaces a probability of exactly 0 or 1 by $10^{-10}$ or $1-10^{-10}$, as `catR::Pi()` does for dichotomous items. For the MGRM neither `compute_pi_ggrm()` nor `catR::Pi()` floors, clips or renormalises anything: the category probabilities are exactly the differences above. They are positive and sum to 1 when the category parameters are strictly decreasing, but far above an item's thresholds every category except the highest is the difference of two cumulative probabilities close to 1, so it loses precision and can come out as exactly 0; a worked example below measures the error. The only numerical guard is in `compute_ii_ggrm()`, which sums the information terms with `na.rm = TRUE`. That skips the `NA` entries of padded categories, and also any term that is $0/0$ because $P_{jk}$ has rounded to exactly 0 (its derivatives, computed from the same rounded cumulative probabilities, are then exactly 0 as well), so the information stays finite.
 
 ### The metric constant $D$
 
-$D$ appears only in the product $D\alpha_j$. Setting $D = 1.702$ is therefore exactly the same model as keeping $D = 1$ and multiplying every discrimination by 1.702: it rescales the slopes and leaves the locations and category parameters alone. `catR::Pi(model = "MGRM")` applies $D$ in the same place, and every function is checked against `catR` at both values below. $D$ must match the metric on which the item parameters were calibrated; parameters from `mirt` are on the $D = 1$ metric.
+$D$ appears only in the product $D\alpha_j$, so for every $\theta$
+
+$$P_{jk}\big(\theta;\,D,\,\alpha_j\big) = P_{jk}\big(\theta;\,1,\,D\alpha_j\big).$$
+
+Setting $D = 1.702$ is therefore exactly the same model as keeping $D = 1$ and multiplying every discrimination by 1.702: it rescales the slopes and leaves the locations and category parameters alone. `catR::Pi(model = "MGRM")` applies $D$ in the same place, and every function that takes $D$ is checked against `catR` at both values below. $D$ must match the metric on which the item parameters were calibrated; parameters from `mirt` are on the $D = 1$ metric.
 
 ### Item information
 
-For a dichotomous item Fisher information is $I_j(\theta) = P'^2/\big(P(1-P)\big)$. The polytomous generalisation sums the same quantity over categories:
+For a dichotomous item Fisher information is $I_j(\theta) = P'^2/\big(P(1-P)\big)$. The polytomous generalisation sums the same quantity over categories, and **test information** is the sum of the item informations:
 
-$$I_j(\theta) = \sum_{k=0}^{m} \frac{\big[P'_{jk}(\theta)\big]^2}{P_{jk}(\theta)}.$$
+$$I_j(\theta) = \sum_{k=0}^{m} \frac{\big[P'_{jk}(\theta)\big]^2}{P_{jk}(\theta)}, \qquad I(\theta) = \sum_{j=1}^{n} I_j(\theta).$$
 
-For $m = 1$ the two categories are $P$ and $1-P$ with derivatives $P'$ and $-P'$, and the sum collapses to the dichotomous formula. **Test information** is the sum of the item informations. `compute_ii_ggrm()` also returns the first and second derivatives of the item information with respect to $\theta$, obtained by differentiating each category term $P'^2_{jk}/P_{jk}$ and summing:
+`compute_ii_ggrm()` evaluates $I_j$ in exactly this form from the matrices of `compute_pi_ggrm()` and returns one value per item, so test information is the sum of its `Ii`. For $m = 1$ the two categories are $P$ and $1-P$ with derivatives $P'$ and $-P'$, and the sum collapses to the dichotomous formula: the item is a 2PL item with difficulty $b_j - c_1$, and $I_j = D^2\alpha_j^2\,P^*_{j1}\big(1-P^*_{j1}\big)$. `compute_ii_ggrm()` also returns the first and second derivatives of the item information with respect to $\theta$, obtained by differentiating each category term $P'^2_{jk}/P_{jk}$ and summing:
 
 $$I'_j = \sum_{k} \left[\frac{2P'_{jk}P''_{jk}}{P_{jk}} - \frac{P'^3_{jk}}{P^2_{jk}}\right], \qquad
 I''_j = \sum_{k} \left[\frac{2P''^2_{jk} + 2P'_{jk}P'''_{jk}}{P_{jk}} - \frac{5P'^2_{jk}P''_{jk}}{P^2_{jk}} + \frac{2P'^4_{jk}}{P^3_{jk}}\right].$$
@@ -138,31 +168,73 @@ Writing $\Psi$ for the logistic function and $\psi = \Psi(1-\Psi)$ for its deriv
 $$I_j(\theta) = D^2\alpha_j^2 \sum_{k=0}^{m} \frac{\big[\psi(z_{jk}) - \psi(z_{j,k+1})\big]^2}{\Psi(z_{jk}) - \Psi(z_{j,k+1})},
 \qquad z_{jk} = D\alpha_j\,(\theta - b_j + c_k),$$
 
-with $\Psi(z_{j0}) = 1$, $\Psi(z_{j,m+1}) = 0$ and $\psi(z_{j0}) = \psi(z_{j,m+1}) = 0$. Two things can be read off. The ability enters only through $\theta - b_j$, and the $c_k$ are shared, so **two items of a block with the same $\alpha_j$ have the same information curve, shifted by the difference of their $b_j$**. And $\alpha_j$ enters twice: as the factor $\alpha_j^2$ in front, and inside $z_{jk}$, where it sets how far apart the thresholds are relative to the width of each logistic step. So a larger $\alpha_j$ gives a taller curve whose height grows *roughly*, not exactly, with $\alpha_j^2$, and a curve that is narrower around each threshold. Both statements are checked numerically in a worked example below.
+with the boundary conventions $z_{j0} = +\infty$ and $z_{j,m+1} = -\infty$, so that $\Psi(z_{j0}) = 1$, $\Psi(z_{j,m+1}) = 0$ and $\psi(z_{j0}) = \psi(z_{j,m+1}) = 0$. Two things can be read off. The ability enters only through $\theta - b_j$, and the $c_k$ are shared, so **two items of a block with the same $\alpha_j$ have the same information curve, shifted by the difference of their $b_j$**. And $\alpha_j$ enters twice: as the factor $\alpha_j^2$ in front, and inside $z_{jk}$, where it sets how far apart the thresholds are relative to the width of each logistic step. So a larger $\alpha_j$ gives a taller curve whose height grows *roughly*, not exactly, with $\alpha_j^2$, and a curve that is narrower around each threshold. Both statements are checked numerically in a worked example below.
 
 ### Next-item selection
 
-An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate — the **Maximum Fisher Information (MFI)** criterion. `compute_next_item_ggrm()` takes the indices of the items already administered in `out` and chooses among the rest. When several items tie exactly for the maximum, `catR::nextItem()` draws one of them at random while `compute_next_item_ggrm()` takes the first; otherwise the two always agree.
+An adaptive test picks, at each step, the unadministered item that is most informative at the current ability estimate — the **Maximum Fisher Information (MFI)** criterion. `compute_next_item_ggrm()` takes the indices of the items already administered in `out` and chooses among the rest:
 
-Within a block of equal discriminations the information curves are shifted copies of one another, so the choice depends only on where $\theta$ sits relative to each $b_j$. With different discriminations the curves differ in height and shape as well, so there is no such shortcut: the information of every available item has to be computed at $\theta$, and an item with a large $\alpha_j$ whose thresholds cover the current estimate tends to win most comparisons. That is why the `randomesque` argument matters: instead of always taking the single best item it draws at random from the $k$ most informative ones, the standard way to keep a few items from being administered to almost everyone.
+$$j^{*} = \arg\max_{j\notin\texttt{out}} I_j(\hat\theta)$$
+
+It returns the index $j^*$ as `item`, its information $I_{j^*}(\hat\theta)$ as `info`, and the indices of the items that were available as `available`; when `out` already holds every item it stops with an error.
+
+Within a block of equal discriminations the information curves are shifted copies of one another, so the choice depends only on where $\theta$ sits relative to each $b_j$. With different discriminations the curves differ in height and shape as well, so there is no such shortcut: the information of every available item has to be computed at $\theta$, and an item with a large $\alpha_j$ whose thresholds cover the current estimate tends to win most comparisons. That is why the `randomesque` argument matters: instead of always taking the single best item it draws at random from the $k$ most informative ones, the standard way to keep a few items from being administered to almost everyone. Precisely, with
+
+$$k = \max\Big(1,\ \min\big(\lfloor\texttt{randomesque}\rfloor,\ \text{number of available items}\big)\Big),$$
+
+the next item is drawn with equal probabilities from the $k$ available items with the largest $I_j(\hat\theta)$, ties broken by item order as `order()` does; the default `randomesque = 1` is pure MFI and draws no random number.
+
+Two documented differences from `catR::nextItem()` matter only for exact ties. When several items tie for the maximum, `catR` draws one of them at random while `compute_next_item_ggrm()` takes the first; and with `randomesque` above 1, `catR` also keeps every item tied with the last one kept, so it can draw from more than $k$ items. With `randomesque = 1` and no exact tie the two always choose the same item.
 
 ### Likelihood of a response pattern
 
-Under **local independence**, the likelihood of a response pattern $\mathbf{x} = (x_1,\ldots,x_n)$, with each $x_i \in \{0,\ldots,m\}$, is
+Under **local independence**, the likelihood of a response pattern $\mathbf{x} = (x_1,\ldots,x_n)$, with each response coded from 0, $x_j \in \{0,\ldots,m\}$, is
 
-$$L(\theta) = \prod_{i=1}^{n} P_{i,x_i}(\theta).$$
+$$L(\theta) = \prod_{j=1}^{n} P_{j x_j}(\theta).$$
 
-This is the polytomous counterpart of $\prod P_i^{x_i}(1-P_i)^{1-x_i}$: with more than two categories there is nothing for the exponents to switch between, so the response simply indexes a column of the probability matrix. The `x[i]+1` in `compute_likelihood_ggrm()` is index bookkeeping — categories start at 0, R columns at 1.
+This is the polytomous counterpart of $\prod_j P_j^{x_j}(1-P_j)^{1-x_j}$: with more than two categories there is nothing for the exponents to switch between, so the response simply indexes a column of the probability matrix. The `x[i]+1` in `compute_likelihood_ggrm()` is index bookkeeping — categories start at 0, R columns at 1 — so $P_{jx_j}$ is read from column $x_j+1$ of row $j$.
 
 ### EAP and its standard error
 
-A **prior** $\pi(\theta)$ on ability (standard normal by default) turns the likelihood into a posterior, and EAP reports its mean and standard deviation:
+A **prior** $\pi(\theta)$ on ability (standard normal by default) turns the likelihood into a posterior, and EAP (Bock & Mislevy, 1982) reports its mean and standard deviation:
 
 $$\hat\theta_{EAP} = \frac{\displaystyle\int \theta\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}
 \qquad
 SE(\hat\theta_{EAP}) = \sqrt{\frac{\displaystyle\int (\theta-\hat\theta_{EAP})^2\,\pi(\theta)\,L(\theta)\,d\theta}{\displaystyle\int \pi(\theta)\,L(\theta)\,d\theta}}$$
 
-Both integrals are evaluated on a grid of `nqp` quadrature points (default 33) spanning `lower` to `upper` (default $\pm 4$) and integrated with the trapezoidal rule (Bock & Mislevy, 1982). Maximum Likelihood has no finite maximum for a pattern in which every response sits in the lowest or the highest category; the normal prior keeps both integrals, and so the estimate, finite. `compute_eap_se_ggrm()` takes the point around which the spread is measured as its `theta` argument: passing the EAP estimate gives the posterior standard deviation, and any other value gives the larger root mean squared deviation around that value.
+For a response pattern $\mathbf{x}$ with likelihood $L$, the three integrands are
+
+$$
+\begin{aligned}
+g(s) &= s\,\pi(s)\,L(s),\\
+h(s) &= \pi(s)\,L(s),\\
+g_{SE}(s) &= (s-\hat\theta_{EAP})^2\,\pi(s)\,L(s).
+\end{aligned}
+$$
+
+On the quadrature grid $X=(\theta_1,\ldots,\theta_Q)$, where $Q=\texttt{nqp}$ and $\theta_q=\texttt{lower}+(q-1)(\texttt{upper}-\texttt{lower})/(Q-1)$ (by default 33 points from $-4$ to $4$, as in `catR`), the two quantities are approximated by
+
+$$
+\hat\theta_{EAP} \approx \frac{\operatorname{Trap}(X,\,g(X))}{\operatorname{Trap}(X,\,h(X))}
+\qquad
+SE(\hat\theta_{EAP}) \approx \sqrt{\frac{\operatorname{Trap}(X,\,g_{SE}(X))}{\operatorname{Trap}(X,\,h(X))}},
+$$
+
+where $g(X)=(g(\theta_1),\ldots,g(\theta_Q))$, likewise for $h$ and $g_{SE}$, and `Trap` denotes the trapezoidal integration implemented by `integrate_cat()` below. `compute_eap_ggrm()` computes the first ratio. `compute_eap_se_ggrm()` computes the second with its `theta` argument in place of $\hat\theta_{EAP}$ in $g_{SE}$: passing the EAP estimate gives the posterior standard deviation, and any other value gives the larger root mean squared deviation around that value.
+
+Maximum Likelihood has no finite maximum for a pattern in which every response sits in the lowest category, or every response in the highest: the likelihood keeps increasing towards $\theta = -\infty$ or $\theta = +\infty$. As long as the category parameters are strictly decreasing, $0 < L(\theta) \le 1$; since the normal prior has a finite mean and variance, all three integrals are then finite and the denominator positive for every response pattern, which is how the prior keeps the estimate and its standard error finite.
+
+### Numerical integration and the prior
+
+None of these integrals has a closed form, so the integrands are evaluated at the `nqp` quadrature points $\theta_1<\cdots<\theta_Q$ and integrated with the **trapezoidal rule**, which approximates the area between two adjacent points by a trapezoid, the width times the average of the two heights:
+
+$$\int f(\theta)\,d\theta \approx \operatorname{Trap}(X,\,f(X)) = \sum_{q=1}^{Q-1} (\theta_{q+1}-\theta_q)\,\frac{f(\theta_q)+f(\theta_{q+1})}{2}$$
+
+`integrate_cat()` implements exactly this sum. The prior is the normal density, which `density_function()` writes out longhand:
+
+$$\pi(\theta) = \frac{1}{\sigma\sqrt{2\pi}}\exp\!\left(-\frac{(\theta-\mu)^2}{2\sigma^2}\right), \qquad (\mu,\sigma) = \texttt{priorPar}$$
+
+with the default `priorPar = c(0, 1)`, the standard normal.
 
 ---
 
@@ -185,41 +257,7 @@ bank <- matrix(c(alphaj, bj, c1, c2, c3, c4), nrow = 5,
 bank
 ```
 
-The bank has `r ncol(bank)` columns for `r ncol(bank) - 1` response categories. The category parameters are strictly decreasing and follow Muraki's convention of summing to zero within the block:
-
-```{r bank_checks}
-c(strictly_decreasing = all(diff(bank[1, 3:6]) < 0),
-  sum_of_c            = round(sum(bank[1, 3:6]), 12))
-```
-
-The item thresholds $\beta_{jk} = b_j - c_k$ that the model actually uses, and the gaps between consecutive thresholds:
-
-```{r thresholds}
-thresholds <- bank[, "bj"] - bank[, c("c1", "c2", "c3", "c4")]
-colnames(thresholds) <- paste0("beta", 1:4)
-thresholds
-round(t(apply(thresholds, 1, diff)), 12)
-```
-
-Every item has its own thresholds, but the gaps between them are the same in every row — `r paste(round(-diff(bank[1, 3:6]), 3), collapse = ", ")`. That is the restriction made concrete: each item's set of thresholds is the same ladder, slid along the ability axis by $b_j$.
-
-### A bank with two blocks
-
-Items answered on a different rating scale form a block with its own category parameters. Here three four-category items (scored 0 to 3, so three category parameters, centred at zero) are added to the bank; their unused fourth category column is padded with `NA`.
-
-```{r two_blocks}
-bank_two_blocks <- rbind(bank,
-                         "6" = c(1.400, -0.300, 1.2, 0, -1.2, NA),
-                         "7" = c(0.900,  0.500, 1.2, 0, -1.2, NA),
-                         "8" = c(1.100,  0.100, 1.2, 0, -1.2, NA))
-bank_two_blocks
-
-P_two_blocks <- compute_pi_ggrm(theta = 0, bank_two_blocks)$Pi
-round(P_two_blocks, 6)
-rowSums(P_two_blocks, na.rm = TRUE)
-```
-
-Items 6 to 8 have `NA` for `cat4` — the category does not exist — and the probabilities of every item still sum to 1. The same bank is scored against `catR` in the EAP validation below.
+The bank has `r ncol(bank)` columns for `r ncol(bank) - 1` response categories. The category parameters $1.812 > 0.603 > -0.452 > -1.963$ are strictly decreasing and sum to zero, Muraki's convention.
 
 ---
 
@@ -254,22 +292,16 @@ c(integrate_cat = integrate_cat(x, y), integrate.catR = catR::integrate.catR(x, 
 all.equal(integrate_cat(x, y), catR::integrate.catR(x, y))
 ```
 
+Both approximate $\int_{-3}^{3} e^x\,dx$ on the same 33-point trapezoidal grid and return the same number.
+
 ### Category response probabilities and derivatives
 
-At $\theta = 0$, the probabilities and a check of the whole returned list — all four matrices, with their dimension names — against `catR`:
+At $\theta = 0$, the probabilities; then, at nine abilities from $-6$ to $6$ and at both metric constants, the largest absolute difference from `catR::Pi()` in each of the four returned matrices, and whether the whole returned list, dimension names included, is identical to `catR`'s:
 
 ```{r pi_check}
-mine   <- compute_pi_ggrm(theta = 0, bank)
-theirs <- catR::Pi(th = 0, bank, model = "MGRM")
+round(compute_pi_ggrm(theta = 0, bank)$Pi, 6)
 
-round(mine$Pi, 6)
-all.equal(mine, theirs)
-```
-
-The same comparison for every element, at seven ability values across the integration range and at both metric constants, reporting the largest absolute difference in each matrix:
-
-```{r pi_check_grid}
-theta_check <- c(-4, -2.5, -1, 0, 0.7, 2, 4)
+theta_check <- c(-6, -4, -2.5, -1, 0, 0.7, 2, 4, 6)
 
 pi_diff <- do.call(rbind, lapply(c(1, 1.702), function(D) {
   do.call(rbind, lapply(theta_check, function(th) {
@@ -279,27 +311,31 @@ pi_diff <- do.call(rbind, lapply(c(1, 1.702), function(D) {
                Pi   = max(abs(mine$Pi   - theirs$Pi)),
                dPi  = max(abs(mine$dPi  - theirs$dPi)),
                d2Pi = max(abs(mine$d2Pi - theirs$d2Pi)),
-               d3Pi = max(abs(mine$d3Pi - theirs$d3Pi)))
+               d3Pi = max(abs(mine$d3Pi - theirs$d3Pi)),
+               identical = identical(mine, theirs))
   }))
 }))
 pi_diff
-max(pi_diff[, c("Pi", "dPi", "d2Pi", "d3Pi")])
 ```
 
-The largest difference over all `r nrow(pi_diff)` comparisons and all four matrices is `r max(pi_diff[, c("Pi", "dPi", "d2Pi", "d3Pi")])`: the arithmetic is the same as `catR`'s, operation for operation. Agreement with `catR` shows the code reproduces `catR`; it does not by itself show the derivative formulas are right. A central finite difference of each returned matrix checks that independently:
+The largest difference over all `r nrow(pi_diff)` comparisons and all four matrices is `r max(pi_diff[, c("Pi", "dPi", "d2Pi", "d3Pi")])`, and `r sum(pi_diff$identical)` of the `r nrow(pi_diff)` returned lists are identical to `catR`'s: the arithmetic is the same as `catR`'s, operation for operation.
 
-```{r pi_finite_difference}
-fd_step <- 1e-5
-finite_difference <- function(f, th) (f(th + fd_step) - f(th - fd_step)) / (2 * fd_step)
-pi_at <- function(th) compute_pi_ggrm(th, bank)
+Items answered on a different rating scale form a block with its own category parameters, and a scale with fewer categories leaves its rows padded with `NA`. Here three four-category items (scored 0 to 3, so three category parameters, centred at zero) are added to the bank and compared with `catR` on the same grid:
 
-fd_pi <- c(dPi  = max(abs(finite_difference(function(t) pi_at(t)$Pi,   0.3) - pi_at(0.3)$dPi)),
-           d2Pi = max(abs(finite_difference(function(t) pi_at(t)$dPi,  0.3) - pi_at(0.3)$d2Pi)),
-           d3Pi = max(abs(finite_difference(function(t) pi_at(t)$d2Pi, 0.3) - pi_at(0.3)$d3Pi)))
-fd_pi
+```{r pi_check_two_blocks}
+bank_two_blocks <- rbind(bank,
+                         "6" = c(1.400, -0.300, 1.2, 0, -1.2, NA),
+                         "7" = c(0.900,  0.500, 1.2, 0, -1.2, NA),
+                         "8" = c(1.100,  0.100, 1.2, 0, -1.2, NA))
+P_two_blocks <- compute_pi_ggrm(theta = 0, bank_two_blocks)$Pi
+round(P_two_blocks, 6)
+rowSums(P_two_blocks, na.rm = TRUE)
+all(sapply(c(1, 1.702), function(D) sapply(theta_check, function(th)
+  identical(compute_pi_ggrm(theta = th, bank_two_blocks, D = D),
+            catR::Pi(th = th, bank_two_blocks, model = "MGRM", D = D)))))
 ```
 
-Each analytical derivative matches the numerical derivative of the matrix below it to within `r format(signif(max(fd_pi), 1))`, which is the accuracy of a central difference with a step of `r fd_step`.
+Items 6 to 8 have `NA` for `cat4` — the category does not exist — and the probabilities of every item still sum to 1. All four matrices, `NA`s included, are identical to `catR`'s at every point of the grid; the EAP check below scores a pattern on this bank as well.
 
 ```{r pi_plot,dev='png'}
 theta_grid <- seq(-5, 5, by = 0.05)
@@ -329,43 +365,16 @@ ggplot(df_long, aes(x = theta, y = P, color = curve)) +
   theme_bw(base_size = 12)
 ```
 
-The top panel shows four parallel 2PL curves, one per threshold of item 1, all with the slope $\alpha_1$; the bottom panel shows the gaps between them. The category curves sum to 1 at every point of the grid, and the extremes behave as they must:
-
-```{r pi_plot_checks}
-range(rowSums(curves))
-round(curves[c(1, nrow(curves)), ], 4)   # theta = -5 and theta = 5
-```
-
-### Numerical precision of the category probabilities
-
-A category probability is a difference of two cumulative probabilities. Far above an item's thresholds both are close to 1, and their difference loses precision. The documentation of `compute_pi_ggrm()` warns about this, and it is easy to see on the steepest item: category 0 of item 5 is $1 - P^*_{51}$, which can also be computed accurately as the upper tail of the logistic distribution.
-
-```{r precision}
-theta_far <- c(4, 8, 12, 16, 20)
-beta_51 <- bank[5, "bj"] - bank[5, "c1"]
-
-precision <- data.frame(
-  theta    = theta_far,
-  computed = sapply(theta_far, function(t) compute_pi_ggrm(t, bank[5, , drop = FALSE])$Pi[1, "cat0"]),
-  catR     = sapply(theta_far, function(t) catR::Pi(t, bank[5, , drop = FALSE], model = "MGRM")$Pi[1, "cat0"]),
-  accurate = plogis(bank[5, "alphaj"] * (theta_far - beta_51), lower.tail = FALSE))
-precision$relative_error <- abs(precision$computed - precision$accurate) / precision$accurate
-precision
-```
-
-At $\theta = 4$, the upper integration bound, the relative error is `r format(signif(precision$relative_error[1], 2))`. It grows as the true probability shrinks towards the size of the rounding error in numbers close to 1: at $\theta = 12$ it is `r format(signif(precision$relative_error[3], 2))`, and further out the computed value is `r format(precision$computed[4])` at $\theta = 16$ and `r format(precision$computed[5])` at $\theta = 20$, where the accurate values are `r format(signif(precision$accurate[4], 2))` and `r format(signif(precision$accurate[5], 2))`. `catR` computes these probabilities the same way and returns the same values. The problem only arises for a response far below what $\theta$ predicts on a steep item, at abilities far outside the default integration range of this bank, so it does not affect the EAP results below.
+The top panel shows four parallel 2PL curves, one per threshold of item 1, all with the slope $\alpha_1$; the bottom panel shows the gaps between them.
 
 ### Item information
+
+At $\theta = 0$, the information of each item next to `catR::Ii()`; then every element — `Ii`, `dIi` and `d2Ii` — on the same grid of abilities and metric constants, as the largest absolute difference in each:
 
 ```{r ii_check}
 data.frame(mine = compute_ii_ggrm(theta = 0, bank)$Ii,
            catR = catR::Ii(th = 0, bank, model = "MGRM")$Ii)
-all.equal(compute_ii_ggrm(theta = 0, bank), catR::Ii(th = 0, bank, model = "MGRM"))
-```
 
-Every element — `Ii`, `dIi` and `d2Ii` — on the same grid of abilities and metric constants:
-
-```{r ii_check_grid}
 ii_diff <- do.call(rbind, lapply(c(1, 1.702), function(D) {
   do.call(rbind, lapply(theta_check, function(th) {
     mine   <- compute_ii_ggrm(theta = th, bank, D = D)
@@ -378,15 +387,6 @@ ii_diff <- do.call(rbind, lapply(c(1, 1.702), function(D) {
 }))
 ii_diff
 max(ii_diff[, c("Ii", "dIi", "d2Ii")])
-```
-
-And the two derivatives of the information against finite differences:
-
-```{r ii_finite_difference}
-ii_at <- function(th) compute_ii_ggrm(th, bank)
-fd_ii <- c(dIi  = max(abs(finite_difference(function(t) ii_at(t)$Ii,  0.3) - ii_at(0.3)$dIi)),
-           d2Ii = max(abs(finite_difference(function(t) ii_at(t)$dIi, 0.3) - ii_at(0.3)$d2Ii)))
-fd_ii
 ```
 
 ```{r ii_plot,dev='png'}
@@ -418,18 +418,14 @@ The curves differ in height and in shape, not only in position; the worked examp
 
 ### Next-item selection
 
-At $\theta = 0$:
+At $\theta = 0$, and then across a grid of abilities at both metric constants:
 
 ```{r next_item_check}
 mine   <- compute_next_item_ggrm(theta = 0, bank)
 theirs <- catR::nextItem(bank, model = "MGRM", theta = 0, criterion = "MFI")
 c(mine_item = mine$item, catR_item = theirs$item,
   mine_info = mine$info, catR_info = theirs$info)
-```
 
-Across a grid of abilities, at both metric constants:
-
-```{r next_item_grid}
 next_diff <- do.call(rbind, lapply(c(1, 1.702), function(D) {
   do.call(rbind, lapply(seq(-3, 3, by = 0.5), function(th) {
     mine   <- compute_next_item_ggrm(theta = th, bank, D = D)
@@ -452,30 +448,35 @@ do.call(rbind, lapply(out_sets, function(o) data.frame(
   catR = catR::nextItem(bank, model = "MGRM", theta = 0.5, out = o, criterion = "MFI")$item)))
 ```
 
-The one documented difference is the handling of exact ties. A bank in which the first two rows are the same item makes the most informative item tied by construction:
+The documented differences are in the handling of exact ties, and the first one is easy to show. A bank in which the first two rows are the same item makes the most informative item tied by construction. `catR::nextItem()` re-seeds the random-number generator with `set.seed(NULL)` before it returns, so its draws are made reproducible here with its own `random.seed` argument, one seed per call:
 
 ```{r next_item_ties}
 bank_tied_items <- bank[c(1, 1, 2), ]
-set.seed(3)
 table(mine = replicate(200, compute_next_item_ggrm(theta = -0.8, bank_tied_items)$item))
-table(catR = replicate(200, catR::nextItem(bank_tied_items, model = "MGRM", theta = -0.8,
-                                           criterion = "MFI")$item))
+table(catR = sapply(1:200, function(s)
+  catR::nextItem(bank_tied_items, model = "MGRM", theta = -0.8, criterion = "MFI",
+                 random.seed = s)$item))
 ```
 
 `compute_next_item_ggrm()` takes the first of the tied items every time; `catR` draws between them at random. With continuous item parameters exact ties are rare, which is why the grid comparison above agrees everywhere.
 
 ### Likelihood
 
-`catR` has no exported likelihood function to compare against, so the check reconstructs the same product from `catR`'s own probability matrix:
+`catR` has no exported likelihood function to compare against, so the check reconstructs the same product from `catR`'s own probability matrix, $\prod_j P_{jx_j}$ with $P_{jx_j}$ taken from column $x_j + 1$, at several abilities and both metric constants:
 
 ```{r likelihood_check}
 response <- c(4, 3, 2, 1, 0)
-P_catR <- catR::Pi(th = 0.3, bank, model = "MGRM")$Pi
-manual <- prod(sapply(1:5, function(i) P_catR[i, response[i] + 1]))
 
-c(compute_likelihood_ggrm = compute_likelihood_ggrm(theta = 0.3, bank = bank, x = response),
-  from_catR_Pi            = manual)
-all.equal(compute_likelihood_ggrm(theta = 0.3, bank = bank, x = response), manual)
+lik_check <- do.call(rbind, lapply(c(1, 1.702), function(D) {
+  do.call(rbind, lapply(c(-4, -1, 0.3, 2, 4), function(th) {
+    P_catR <- catR::Pi(th = th, bank, model = "MGRM", D = D)$Pi
+    mine   <- compute_likelihood_ggrm(theta = th, bank = bank, x = response, D = D)
+    manual <- prod(P_catR[cbind(1:5, response + 1)])
+    data.frame(D = D, theta = th, compute_likelihood_ggrm = mine, from_catR_Pi = manual,
+               relative_difference = abs(mine - manual) / manual)
+  }))
+}))
+lik_check
 ```
 
 ```{r likelihood_plot,dev='png'}
@@ -493,23 +494,25 @@ ggplot(df_lik, aes(x = theta, y = likelihood)) +
 
 ### EAP ability estimate and standard error
 
-Eight patterns — the five uniform ones, including the two extremes, and three mixed ones — at both metric constants:
+Eight patterns on the five-item bank — the five uniform ones, including the two extremes, and three mixed ones — and one on the two-block bank with its `NA` padding, where items 6 to 8 can only be scored 0 to 3, at both metric constants:
 
 ```{r eap_check}
 patterns <- list(c(0, 0, 0, 0, 0), c(1, 1, 1, 1, 1), c(2, 2, 2, 2, 2),
                  c(3, 3, 3, 3, 3), c(4, 4, 4, 4, 4), c(4, 3, 2, 1, 0),
-                 c(0, 1, 2, 3, 4), c(0, 4, 0, 4, 0))
+                 c(0, 1, 2, 3, 4), c(0, 4, 0, 4, 0),
+                 c(4, 3, 2, 1, 0, 3, 0, 2))   # eight responses: the two-block bank
 
 validation <- do.call(rbind, lapply(c(1, 1.702), function(D) {
   do.call(rbind, lapply(patterns, function(x) {
-    th_mine <- compute_eap_ggrm(bank, x, D = D)
-    th_catR <- catR::eapEst(bank, x, model = "MGRM", D = D)
+    b <- if (length(x) == nrow(bank)) bank else bank_two_blocks
+    th_mine <- compute_eap_ggrm(b, x, D = D)
+    th_catR <- catR::eapEst(b, x, model = "MGRM", D = D)
     data.frame(D = D,
                pattern  = paste(x, collapse = " "),
                eap_mine = th_mine,
                eap_catR = th_catR,
-               se_mine  = compute_eap_se_ggrm(th_mine, bank, x, D = D),
-               se_catR  = catR::eapSem(th_mine, bank, x, model = "MGRM", D = D))
+               se_mine  = compute_eap_se_ggrm(th_mine, b, x, D = D),
+               se_catR  = catR::eapSem(th_mine, b, x, model = "MGRM", D = D))
   }))
 }))
 validation
@@ -518,19 +521,7 @@ c(max_eap_difference = max(abs(validation$eap_mine - validation$eap_catR)),
   max_se_difference  = max(abs(validation$se_mine  - validation$se_catR)))
 ```
 
-And the two-block bank with its `NA` padding, where items 6 to 8 can only be scored 0 to 3:
-
-```{r eap_check_two_blocks}
-x_two_blocks <- c(4, 3, 2, 1, 0, 3, 0, 2)
-th_two_blocks <- compute_eap_ggrm(bank_two_blocks, x_two_blocks)
-
-c(eap_mine = th_two_blocks,
-  eap_catR = catR::eapEst(bank_two_blocks, x_two_blocks, model = "MGRM"),
-  se_mine  = compute_eap_se_ggrm(th_two_blocks, bank_two_blocks, x_two_blocks),
-  se_catR  = catR::eapSem(th_two_blocks, bank_two_blocks, x_two_blocks, model = "MGRM"))
-```
-
-Both the point estimate and the standard error reproduce `catR` to machine precision for every pattern, at both metric constants — the largest differences are `r format(signif(max(abs(validation$eap_mine - validation$eap_catR)), 2))` for the estimate and `r format(signif(max(abs(validation$se_mine - validation$se_catR)), 2))` for the standard error — including the all-lowest and all-highest patterns, where Maximum Likelihood would have failed outright.
+Both the point estimate and the standard error reproduce `catR` to machine precision for every pattern, at both metric constants — the largest differences are `r format(signif(max(abs(validation$eap_mine - validation$eap_catR)), 2))` for the estimate and `r format(signif(max(abs(validation$se_mine - validation$se_catR)), 2))` for the standard error — including the all-lowest and all-highest patterns, where Maximum Likelihood would have failed outright, and the `NA`-padded items of the two-block bank.
 
 ---
 
@@ -538,13 +529,22 @@ Both the point estimate and the standard error reproduce `catR` to machine preci
 
 ## Worked example: a restricted graded response model
 
-Computing the thresholds $b_j - c_k$ turns an MGRM bank into an ordinary GRM bank, laid out the way `cat_eap_grm.R` expects (discrimination, then the $m$ thresholds):
+Computing the thresholds $\beta_{jk} = b_j - c_k$ turns an MGRM bank into an ordinary GRM bank, laid out the way `cat_eap_grm.R` expects (discrimination, then the $m$ thresholds), with the discriminations unchanged:
+
+$$\big(\alpha_j,\ b_j,\ c_1,\ldots,c_m\big) \;\longmapsto\; \big(\alpha_j,\ b_j - c_1,\ \ldots,\ b_j - c_m\big).$$
+
+The thresholds of the bank, and the gaps between consecutive thresholds:
 
 ```{r as_grm}
 bank_as_grm <- cbind(bank[, "alphaj"], bank[, "bj"] - bank[, c("c1", "c2", "c3", "c4")])
 colnames(bank_as_grm) <- c("alphaj", "betaj1", "betaj2", "betaj3", "betaj4")
 bank_as_grm
+round(t(apply(bank_as_grm[, -1], 1, diff)), 12)
+```
 
+Every item has its own thresholds, but the gaps between them are the same in every row — `r paste(round(-diff(bank[1, 3:6]), 3), collapse = ", ")`, the differences $c_k - c_{k+1}$. That is the restriction made concrete: each item's set of thresholds is the same ladder, slid along the ability axis by $b_j$. Passed to `compute_pi_grm()`, the converted bank gives the same output as the original bank passed to `compute_pi_ggrm()`:
+
+```{r as_grm_identical}
 grm_grid <- seq(-4, 4, by = 0.25)
 same_output <- sapply(grm_grid, function(th)
   identical(compute_pi_ggrm(th, bank), compute_pi_grm(th, bank_as_grm)))
@@ -561,7 +561,7 @@ c(compute_eap_ggrm = compute_eap_ggrm(bank, x),
   catR_GRM         = catR::eapEst(bank_as_grm, x, model = "GRM"))
 ```
 
-The conversion only runs one way. A GRM bank can be written as an MGRM bank only if the gaps between consecutive thresholds are the same for every item of a block. The bank from the examples of `cat_eap_grm.R` shows the usual situation:
+The conversion only runs one way. A GRM bank can be written as an MGRM bank only if the gaps between consecutive thresholds are the same for every item of a block, $\beta_{j,k+1} - \beta_{jk} = c_k - c_{k+1}$ for every item $j$ of the block. The bank from the examples of `cat_eap_grm.R` shows the usual situation:
 
 ```{r grm_spacing}
 grm_example <- matrix(c(1.227, 0.845, 1.694, 1.012, 2.103,
@@ -677,7 +677,7 @@ ggplot(info_both, aes(x = theta, y = information, color = item)) +
 
 ### Adding a constant changes nothing
 
-Adding the same constant to every $b_j$ and every $c_k$, or moving to `mirt`'s convention of $b_1 = 0$, leaves every threshold, and therefore every probability, where it was:
+Adding the same constant to every $b_j$ and every $c_k$ ($t = 0.75$ below), or moving to `mirt`'s convention of $b_1 = 0$ ($t = -b_1$), leaves every threshold, and therefore every probability, where it was:
 
 ```{r identifiability}
 bank_shifted <- bank
@@ -740,7 +740,15 @@ c(bank = check_order(bank), two_blocks = check_order(bank_two_blocks),
 
 ## Worked example: converting a `mirt` graded rating scale fit
 
-The documentation of `compute_pi_ggrm()` gives a recipe for turning a `mirt` model fitted with `itemtype = "grsm"` into a bank. `mirt` writes the cumulative curve as $P^*_{jk} = \Psi\big(a_{j}(\theta + c_j + b_k)\big)$ — note that the letters swap roles: `mirt`'s item parameter is `c` and its category parameters are `b1` to `bm`. Matching that with $\Psi\big(\alpha_j(\theta - b_j + c_k)\big)$ gives $\alpha_j = a_j$, $b_j = -c_j$ and $c_k = b_k$, at $D = 1$. To check the recipe, 1000 examinees are simulated from the bank, the model is fitted with `mirt`, and the converted bank is compared with `mirt`'s own trace lines.
+The documentation of `compute_pi_ggrm()` gives a recipe for turning a `mirt` model fitted with `itemtype = "grsm"` into a bank. `mirt` writes the cumulative curve as
+
+$$P^*_{jk} = \Psi\big(a_{j}(\theta + c_j + b_k)\big)$$
+
+— note that the letters swap roles: `mirt`'s item parameter is `c` and its category parameters are `b1` to `bm`. Matching that with $\Psi\big(D\alpha_j(\theta - b_j + c_k)\big)$ at $D = 1$ gives the conversion, with `mirt`'s parameters on the right-hand sides:
+
+$$\alpha_j = a_j, \qquad b_j = -c_j, \qquad c_k = b_k \qquad (D = 1).$$
+
+To check the recipe, 1000 examinees are simulated from the bank, the model is fitted with `mirt`, and the converted bank is compared with `mirt`'s own trace lines.
 
 ```{r mirt_fit}
 set.seed(123)
@@ -775,7 +783,7 @@ names(trace_difference) <- paste("item", 1:5)
 trace_difference
 ```
 
-The converted bank reproduces `mirt`'s trace lines for every item to within `r format(signif(max(trace_difference), 2))` over the whole grid, so the recipe is right. The converted bank uses `mirt`'s convention, $b_1 = 0$; re-centring its category parameters at zero, as in the generating bank, makes the estimates directly comparable with the values they were simulated from:
+The converted bank reproduces `mirt`'s trace lines for every item to within `r format(signif(max(trace_difference), 2))` over the whole grid, so the recipe is right. The converted bank uses `mirt`'s convention, $b_1 = 0$; re-centring its category parameters at zero, as in the generating bank (the shift by $t = -\bar c$ from the theory section, $b_j - \bar c$ and $c_k - \bar c$), makes the estimates directly comparable with the values they were simulated from:
 
 ```{r mirt_recovery}
 bank_mirt_centred <- bank_mirt
@@ -920,11 +928,32 @@ Three different kinds of effect are visible here, and they should not be confuse
 
 ---
 
+## Worked example: numerical precision of the category probabilities
+
+A category probability is a difference of two cumulative probabilities. Far above an item's thresholds both are close to 1, and their difference loses precision. The documentation of `compute_pi_ggrm()` warns about this, and it is easy to see on the steepest item: category 0 of item 5 is $1 - P^*_{51}$, which can also be computed accurately as the upper tail of the logistic distribution.
+
+```{r precision}
+theta_far <- c(4, 8, 12, 16, 20)
+beta_51 <- bank[5, "bj"] - bank[5, "c1"]
+
+precision <- data.frame(
+  theta    = theta_far,
+  computed = sapply(theta_far, function(t) compute_pi_ggrm(t, bank[5, , drop = FALSE])$Pi[1, "cat0"]),
+  catR     = sapply(theta_far, function(t) catR::Pi(t, bank[5, , drop = FALSE], model = "MGRM")$Pi[1, "cat0"]),
+  accurate = plogis(bank[5, "alphaj"] * (theta_far - beta_51), lower.tail = FALSE))
+precision$relative_error <- abs(precision$computed - precision$accurate) / precision$accurate
+precision
+```
+
+At $\theta = 4$, the upper integration bound, the relative error is `r format(signif(precision$relative_error[1], 2))`. It grows as the true probability shrinks towards the size of the rounding error in numbers close to 1: at $\theta = 12$ it is `r format(signif(precision$relative_error[3], 2))`, and further out the computed value is `r format(precision$computed[4])` at $\theta = 16$ and `r format(precision$computed[5])` at $\theta = 20$, where the accurate values are `r format(signif(precision$accurate[4], 2))` and `r format(signif(precision$accurate[5], 2))`. `catR` computes these probabilities the same way and returns the same values. The problem only arises for a response far below what $\theta$ predicts on a steep item, at abilities far outside the default integration range of this bank, so it has no visible effect on any EAP result in this vignette.
+
+---
+
 # Conclusion
 
-All eight functions used here reproduce their `catR` counterparts: the normal density, the trapezoidal integrator, the MGRM category probabilities with all three derivatives, the item information with both derivatives, MFI item selection with and without excluded items, and the two integrals that define EAP scoring, at both metric constants and for extreme patterns as well as ordinary ones. The only documented difference, the handling of exactly tied items in selection, shows up only when a tie is built in on purpose.
+All eight functions used here reproduce their `catR` counterparts: the normal density, the trapezoidal integrator, the MGRM category probabilities with all three derivatives (for items padded with `NA` as well), the item information with both derivatives, MFI item selection with and without excluded items, the likelihood (rebuilt from `catR`'s probabilities, since `catR` does not export one), and the two integrals that define EAP scoring, at both metric constants and for extreme patterns as well as ordinary ones. The only documented differences, both in the handling of exactly tied items in selection, show up only when a tie is built in on purpose.
 
-Written out, the model's character is easy to see. The MGRM is the graded response model with its thresholds split into an item location and category parameters shared across a block — a restriction, which `compute_pi_ggrm()` makes literal by forming $b_j - c_k$ and then running the GRM code unchanged. Sharing the category parameters makes the information curves of equally discriminating items shifted copies of one another, but because the model keeps the item discrimination, a real bank has strong and weak items, the most discriminating item dominates adaptive selection, and exposure control has a visible cost. The split between locations and category parameters is not identified without a constraint, so parameters from different sources must be put on one convention before they are compared, and the category parameters must be strictly decreasing, which nothing in the code checks. Finally, a `mirt` graded rating scale fit converts into this layout with a three-column recipe that reproduces `mirt`'s trace lines exactly.
+Written out, the model's character is easy to see. The MGRM is the graded response model with its thresholds split into an item location and category parameters shared across a block — a restriction, which `compute_pi_ggrm()` makes literal by forming $b_j - c_k$ and then running the GRM code unchanged. Sharing the category parameters makes the information curves of equally discriminating items shifted copies of one another, but because the model keeps the item discrimination, a real bank has strong and weak items, the most discriminating item dominates adaptive selection, and exposure control has a visible cost. The split between locations and category parameters is not identified without a constraint, so parameters from different sources must be put on one convention before they are compared, and the category parameters must be strictly decreasing, which nothing in the code checks. Finally, a `mirt` graded rating scale fit converts into this layout with a three-column recipe that reproduces `mirt`'s trace lines to machine precision.
 
 ---
 
@@ -939,3 +968,35 @@ Written out, the model's character is easy to see. The MGRM is the graded respon
 ---
 
 *Rendered with R `r getRversion()` · validated against catR `r as.character(packageVersion("catR"))`*
+
+---
+
+# Comments
+
+Questions, corrections and suggestions are welcome below (sign in with GitHub to post).
+
+```{=html}
+<div class="giscus"></div>
+<script>
+(function () {
+  var s = document.createElement("script");
+  s.src = "https://giscus.app/client.js";
+  s.setAttribute("data-repo", "sedzinfo/rwf");
+  s.setAttribute("data-repo-id", "REPLACE_WITH_REPO_ID");
+  s.setAttribute("data-category", "Comments");
+  s.setAttribute("data-category-id", "REPLACE_WITH_CATEGORY_ID");
+  s.setAttribute("data-mapping", "specific");
+  s.setAttribute("data-term", "EAP MGRM Ability Estimation in base R");
+  s.setAttribute("data-strict", "1");
+  s.setAttribute("data-reactions-enabled", "1");
+  s.setAttribute("data-emit-metadata", "0");
+  s.setAttribute("data-input-position", "top");
+  s.setAttribute("data-theme", "light");
+  s.setAttribute("data-lang", "en");
+  s.setAttribute("data-loading", "lazy");
+  s.crossOrigin = "anonymous";
+  s.async = true;
+  document.querySelector(".giscus").appendChild(s);
+})();
+</script>
+```
