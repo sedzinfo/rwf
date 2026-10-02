@@ -50,14 +50,30 @@ pre.r-output {
   max-width: 100% !important;
 }
 
-/* Wider floating TOC */
-#TOC {
-  width: 380px !important;
+/* Wider floating TOC - desktop/tablet only. On phones (<768px) rmarkdown
+   stacks the TOC above the text; forcing a fixed width/margin there makes
+   the sidebar overlap the content. */
+@media (min-width: 768px) {
+  #TOC {
+    width: 380px !important;
+  }
+
+  .tocify, div.tocify {
+    width: 380px !important;
+    max-width: 380px !important;
+  }
+
+  .col-xs-12.col-sm-4.col-md-3 {
+    width: 380px !important;
+  }
+
+  .col-xs-12.col-sm-8.col-md-9 {
+    margin-left: 390px;
+    width: calc(100% - 390px);
+  }
 }
 
 .tocify, div.tocify {
-  width: 380px !important;
-  max-width: 380px !important;
   white-space: normal;
 }
 
@@ -66,12 +82,24 @@ pre.r-output {
   word-wrap: break-word;
 }
 
-.col-xs-12.col-sm-4.col-md-3 {
-  width: 380px !important;
-}
+/* Phones: TOC becomes a normal block above the text */
+@media (max-width: 767px) {
+  .tocify, div.tocify {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: none;
+  }
 
-.col-xs-12.col-sm-8.col-md-9 {
-  margin-left: 390px;
+  .col-xs-12.col-sm-8.col-md-9 {
+    margin-left: 0;
+  }
+
+  table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+  }
 }
 
 /* Center htmlwidgets (plotly, leaflet, DT, etc.) - fig.align only affects
