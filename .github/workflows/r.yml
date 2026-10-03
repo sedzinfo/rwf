@@ -3,8 +3,10 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 #
-# See https://github.com/r-lib/actions/tree/master/examples#readme for
+# See https://github.com/r-lib/actions/tree/v2/examples#readme for
 # additional example workflows available for the R community.
+#
+# The package lives in the rwf/ subfolder, so every R step runs there.
 
 name: R
 
@@ -19,31 +21,28 @@ permissions:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        r-version: ['3.6.3', '4.1.1']
+        r-version: ['release', 'oldrel-1']
 
     steps:
       - uses: actions/checkout@v4
       - name: Set up R ${{ matrix.r-version }}
-        uses: r-lib/actions/setup-r@f57f1301a053485946083d7a45022b278929a78a
+        uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.r-version }}
+          use-public-rspm: true
       - name: Install dependencies
-        run: |
-          install.packages(c("remotes", "rcmdcheck"))
-          remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
-      - name: Install TinyTeX for PDF manual
-        run: |
-          install.packages("tinytex")
-          tinytex::install_tinytex()
-        shell: Rscript {0}
-      - name: Build PDF manual
-        run: R CMD Rd2pdf rwf --force --output=rwf.pdf
-      - name: Build package tarball
-        run: R CMD build rwf --resave-data
+        uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: rwf
+          extra-packages: any::rcmdcheck
+          needs: check
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "error")
-        shell: Rscript {0}
+        uses: r-lib/actions/check-r-package@v2
+        with:
+          working-directory: rwf
+          args: 'c("--no-manual")'
+          error-on: '"error"'

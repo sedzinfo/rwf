@@ -1125,7 +1125,7 @@ proportion_accurate<-function(observed,predicted) {
 }
 
 confusion<-function(observed,predicted) {
-  levels<-gtools::mixedsort(as.character(unique(c(observed,predicted))),decreasing=FALSE)
+  levels<-gtools::mixedsort(unique(c(as.character(observed),as.character(predicted))),decreasing=FALSE)
   result<-table(predicted=factor(as.character(predicted),levels=levels),
                 observed=factor(as.character(observed),levels=levels))
   return(result)
