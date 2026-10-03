@@ -134,5 +134,5 @@ devtools::install("path/to/rwf/rwf")
 ![Contributors](https://img.shields.io/github/contributors/sedzinfo/rwf)
 ![License](https://img.shields.io/github/license/sedzinfo/rwf)
 ![Release](https://img.shields.io/github/v/release/sedzinfo/rwf)
-![Workflow Status](https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/main.yml)
+![Workflow Status](https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/r.yml)
 
