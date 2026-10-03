@@ -256,6 +256,7 @@ animate(p,
         width    = 900,
         height   = 800,
         units    = "px",
+        res      = 100,   # set explicitly: when knitting, gganimate otherwise uses the chunk dpi
         renderer = gifski_renderer("eu_salary_race.gif"))
 ```
 

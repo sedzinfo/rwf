@@ -11,7 +11,8 @@ directory<-if (requireNamespace("rstudioapi",quietly=TRUE) && rstudioapi::isAvai
 dir_package<-paste0(directory,"rwf/")
 dir_vignettes<-paste0(directory,"vignettes/")
 output_file<-paste0(dir_vignettes,"code_rwf.R")
-data_url<-"https://raw.githubusercontent.com/sedzinfo/rwf/main/rwf/data/"
+# .rda files are stored in Git LFS, raw.githubusercontent.com only serves the LFS pointer
+data_url<-"https://media.githubusercontent.com/media/sedzinfo/rwf/main/rwf/data/"
 ##########################################################################################
 # PACKAGE FUNCTIONS WITH THEIR SOURCE
 ##########################################################################################

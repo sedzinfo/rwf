@@ -158,7 +158,7 @@ local({
 # DATA
 ##########################################################################################
 .rwf_datasets<-c("df_admission","df_automotive_data","df_blood_pressure","df_co2","df_crop_yield","df_difficile","df_insurance","df_ocean","df_personality","df_responses","df_responses_state","df_sexual_comp","df_titanic")
-.rwf_data_url<-"https://raw.githubusercontent.com/sedzinfo/rwf/main/rwf/data/"
+.rwf_data_url<-"https://media.githubusercontent.com/media/sedzinfo/rwf/main/rwf/data/"
 data<-function(...,list=character(),envir=parent.frame()) {
   requested<-c(vapply(as.list(substitute(list(...)))[-1L],as.character,""),list)
   if (length(requested)==0 || !all(requested %in% .rwf_datasets)) {
