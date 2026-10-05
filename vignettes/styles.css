@@ -1,4 +1,3 @@
-<style>
 body { 
   max-width: 95%; 
   margin: 0 auto; 
@@ -108,4 +107,19 @@ pre.r-output {
   margin-left: auto !important;
   margin-right: auto !important;
 }
-</style>
+
+/* Long display equations scroll inside their own box instead of widening the
+   page; a page wider than the window scrolls sideways under the fixed TOC,
+   so the TOC overlaps the text */
+.MathJax_Display, mjx-container[display="true"], .math.display {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Anything else too wide (tables, widgets) scrolls inside the content column,
+   not the page */
+.toc-content {
+  overflow-x: auto;
+}

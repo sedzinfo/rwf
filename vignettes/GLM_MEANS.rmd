@@ -24,11 +24,13 @@ hook_output <- function(x, options) {
 knitr::knit_hooks$set(output = hook_output)
 knitr::opts_chunk$set(echo=TRUE)
 options(future.show.progress = FALSE)
+directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
 ```
 
 ```{r library,message=FALSE,warning=FALSE}
-source(paste0(directory, "code_rwf.R"))
+source(paste0(directory, "R/code_rwf.R"))
 ```
+
 
 ## Description
 
@@ -56,6 +58,7 @@ Format: A data frame with 1338 rows and 7 variables:
 Source: researchpy repo
 
 ```{r, data}
+load(paste0(directory,"data/df_insurance.rda"))
 head(df_insurance)
 cdf(df_insurance)
 ```
@@ -167,3 +170,106 @@ report_wtests(df=df_insurance,dv=7,iv=c(2,4),var.equal=TRUE)
 |p bartlett          |bartlett test for homogeneity of variances significant values indicate heteroscedasticity|
 |bonferroni_p        |bonferroni adjusted critical value for a=0.05|
 |significant         |if TRUE result is significant after bonferroni adjustment|
+
+
+## Formulas
+
+Group 1 = `level1`, group 2 = `level2`; $x_{1i}$ ($i=1,\dots,n_1$) and $x_{2j}$ ($j=1,\dots,n_2$) are the DV values of the complete cases in each group, $g_i$ is the IV value of case $i$; $N=n_1+n_2$; $\alpha=0.05$; $m$ = number of rows in the output table; $\Phi$, $\varphi$ = standard normal CDF and density, $z_q=\Phi^{-1}(q)$; $t_{q,\,df}$ = $q$ quantile of the t distribution.
+
+### report_ttests
+
+**`n1`, `n2`**
+
+$$n_1=\sum_i \mathbf{1}[g_i=\text{level1}],\qquad n_2=\sum_i \mathbf{1}[g_i=\text{level2}]$$
+
+**`mean1`, `mean2`**
+
+$$\bar{x}_1=\frac{1}{n_1}\sum_{i=1}^{n_1}x_{1i},\qquad \bar{x}_2=\frac{1}{n_2}\sum_{j=1}^{n_2}x_{2j}$$
+
+**`sd1`, `sd2`**
+
+$$s_1=\sqrt{\frac{1}{n_1-1}\sum_{i=1}^{n_1}(x_{1i}-\bar{x}_1)^2},\qquad s_2=\sqrt{\frac{1}{n_2-1}\sum_{j=1}^{n_2}(x_{2j}-\bar{x}_2)^2}$$
+
+**`t`**
+
+$$\text{Welch (default):}\quad t=\frac{\bar{x}_1-\bar{x}_2}{SE},\qquad SE=\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}$$
+
+$$\text{Student (var.equal = TRUE):}\quad t=\frac{\bar{x}_1-\bar{x}_2}{SE},\qquad SE=s_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}},\qquad s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{N-2}$$
+
+**`df`**
+
+$$\text{Welch:}\quad df=\frac{\left(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}\right)^2}{\frac{(s_1^2/n_1)^2}{n_1-1}+\frac{(s_2^2/n_2)^2}{n_2-1}},\qquad \text{Student:}\quad df=N-2$$
+
+**`p`**
+
+$$p_{\text{two.sided}}=2\,P(T_{df}\ge\lvert t\rvert),\qquad p_{\text{less}}=P(T_{df}\le t),\qquad p_{\text{greater}}=P(T_{df}\ge t),\qquad T_{df}\sim t(df)$$
+
+**`CI_l`, `CI_u`**
+
+$$\text{two.sided:}\quad \left[(\bar{x}_1-\bar{x}_2)-t_{1-\alpha/2,\,df}\,SE,\ \ (\bar{x}_1-\bar{x}_2)+t_{1-\alpha/2,\,df}\,SE\right]$$
+
+$$\text{less:}\quad \left(-\infty,\ \ (\bar{x}_1-\bar{x}_2)+t_{1-\alpha,\,df}\,SE\right],\qquad \text{greater:}\quad \left[(\bar{x}_1-\bar{x}_2)-t_{1-\alpha,\,df}\,SE,\ \ \infty\right)$$
+
+**`sd_pooled`**
+
+$$s_{pooled}=\sqrt{\frac{s_1^2+s_2^2}{2}}$$
+
+**`d`**
+
+$$d=\frac{\lvert\bar{x}_2-\bar{x}_1\rvert}{s_{pooled}}$$
+
+**`r`**
+
+$$r=\frac{d}{\sqrt{d^2+\frac{N^2}{n_1n_2}}}$$
+
+**`k_squared[bartlett]`**
+
+$$K^2=\frac{(N-2)\ln s_p^2-(n_1-1)\ln s_1^2-(n_2-1)\ln s_2^2}{1+\frac{1}{3}\left(\frac{1}{n_1-1}+\frac{1}{n_2-1}-\frac{1}{N-2}\right)},\qquad s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{N-2}$$
+
+**`df[bartlett]`**
+
+$$df_{bartlett}=k-1=2-1=1$$
+
+**`p[bartlett]`**
+
+$$p_{bartlett}=P\left(\chi^2_{1}\ge K^2\right)$$
+
+**`bonferroni_p`**
+
+$$\alpha_{bonferroni}=\frac{\alpha}{m}=\frac{0.05}{m}$$
+
+**`significant`**
+
+$$\text{significant}=\begin{cases}\text{TRUE} & p<\alpha_{bonferroni}\\ \text{FALSE} & p\ge\alpha_{bonferroni}\end{cases}$$
+
+### report_wtests
+
+`n1`, `n2`, `mean1`, `mean2`, `sd1`, `sd2`, `sd_pooled`, `d`, `k_squared[bartlett]`, `df[bartlett]`, `p[bartlett]`, `bonferroni_p`, `significant`: as in `report_ttests`.
+
+**`W`**
+
+$$W=R_1-\frac{n_1(n_1+1)}{2},\qquad R_1=\sum_{i=1}^{n_1}\operatorname{rank}(x_{1i})\ \ \text{(ranks in the pooled sample of } N \text{ values, ties averaged)}$$
+
+**`p`**
+
+$$\text{exact } (n_1<50,\ n_2<50)\text{:}\quad p_{\text{two.sided}}=\min\{1,\ 2P(W_0\le W),\ 2P(W_0\ge W)\},\qquad p_{\text{less}}=P(W_0\le W),\qquad p_{\text{greater}}=P(W_0\ge W)$$
+
+$$\text{normal approximation (otherwise):}\quad p_{\text{two.sided}}=2\min\{\Phi(z),\ 1-\Phi(z)\},\qquad p_{\text{less}}=\Phi(z),\qquad p_{\text{greater}}=1-\Phi(z)$$
+
+$$z=\frac{W-\frac{n_1n_2}{2}-c}{\sigma_W},\qquad \sigma_W=\sqrt{\frac{n_1n_2}{12}\left[(N+1)-\frac{\sum_k(t_k^3-t_k)}{N(N-1)}\right]},\qquad c=\begin{cases}0.5\,\operatorname{sign}\left(W-\frac{n_1n_2}{2}\right) & \text{two.sided}\\ 0.5 & \text{greater}\\ -0.5 & \text{less}\end{cases}$$
+
+$W_0$ = null distribution of $W$ (conditional on the ties), $t_k$ = number of values in tie group $k$.
+
+**`CI_l`, `CI_u`**
+
+$$\text{exact, no ties:}\quad \text{two.sided: }\left[D_{(k)},\ D_{(n_1n_2-k+1)}\right],\quad \text{greater: }\left[D_{(k)},\ \infty\right),\quad \text{less: }\left(-\infty,\ D_{(n_1n_2-k+1)}\right]$$
+
+$$k=\min\{w:\ P(W_0\le w)>\alpha/2\}\ \text{(two.sided)},\qquad k=\min\{w:\ P(W_0\le w)>\alpha\}\ \text{(one-sided)}$$
+
+$$\text{normal approximation:}\quad \text{two.sided: } z(CI_l)=z_{1-\alpha/2},\ z(CI_u)=z_{\alpha/2},\qquad \text{greater: } z(CI_l)=z_{1-\alpha},\qquad \text{less: } z(CI_u)=z_{\alpha}$$
+
+$D_{(1)}\le\dots\le D_{(n_1n_2)}$ = sorted differences $x_{1i}-x_{2j}$; $z(\Delta)$ = $z$ computed on $x_{1i}-\Delta$ and $x_{2j}$.
+
+**`r`**
+
+$$r=\frac{\lvert Z\rvert}{\sqrt{N}},\qquad Z=\Phi^{-1}\left(1-\frac{p}{2}\right)$$
