@@ -1,8 +1,10 @@
+options(future.show.progress=FALSE)
 options(width=1000)
-hook_output <- function(x, options) {
-  paste0('<pre class="r-output">', knitr::knit_print(x), '</pre>')
+knitr::opts_chunk$set(echo=TRUE)
+hook_output<-function(x, options) {
+  paste0('<pre class="r-output">',knitr::knit_print(x),'</pre>')
 }
-options(future.show.progress = FALSE)
+knitr::knit_hooks$set(output=hook_output)
 
 knitr::opts_chunk$set(
   output     = hook_output,

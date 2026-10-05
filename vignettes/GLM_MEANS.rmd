@@ -17,15 +17,10 @@ vignette: >
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
-options(future.show.progress=FALSE)
-options(width=1000)
-knitr::opts_chunk$set(echo=TRUE)
-hook_output<-function(x, options) {
-  paste0('<pre class="r-output">',knitr::knit_print(x),'</pre>')
-}
-knitr::knit_hooks$set(output=hook_output)
-directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
+source(paste0(directory, "R/code_options.R"))
 source(paste0(directory, "R/code_rwf.R"))
+
 ```
 
 ## Description
@@ -82,39 +77,39 @@ report_ttests(df=df_insurance,dv=7,iv=c(2,4),var.equal=TRUE)
 ```
 
 ## Explanation of columns
-| Column   | Description                                                                 |
-|----------|-----------------------------------------------------------------------------|
-|DV                  |dependent variable|
-|IV                  |independent variable|
-|level1              |level 1|
-|level2              |level 2|
-|n1                  |sample size for level 1|
-|n2                  |sample size for level 2|
-|t                   |t statistic|
-|df                  |degrees of freedom for t statistic|
-|p                   |p value|
-|CI_l                |confidence interval lower bound|
-|CI_u                |confidence interval upper bound|
-|alternative         |alternative hypothesis|
-|method              |name of method should be displayed here|
-|mean1               |mean for level 1|
-|mean2               |mean for level 2|
-|sd1                 |standard deviation for level 1|
-|sd2                 |standard deviation for level 2|
-|sd_pooled           |pooled standard deviation combined standard deviation of both levels|
-|d                   |measure of effect size cohen's d|
-|d                   |Very small 0.01 Sawilowsky (2009)|
-|d                   |Small 0.20 Cohen (1988)|
-|d                   |Medium 0.50 Cohen (1988)|
-|d                   |Large 0.80 Cohen (1988)|
-|d                   |Very large 1.20 Sawilowsky (2009)|
-|d                   |Huge 12.0 Sawilowsky (2009)|
-|r                   |measure of effect size correlation effect size|
-|k_squared bartlett  |bartlett test for homogeneity of variances|
-|df bartlett         |bartlett test for homogeneity of variances|
-|p bartlett          |bartlett test for homogeneity of variances significant values indicate heteroscedasticity|
-|bonferroni_p        |bonferroni adjusted critical value for a=0.05|
-|significant         |if TRUE result is significant after bonferroni adjustment|
+| Column   |           |Description                            |  Reference               |
+|----------|-----------|---------------------------------------|--------------------------|
+|DV                  ||dependent variable|
+|IV                  ||independent variable|
+|level1              ||level 1|
+|level2              ||level 2|
+|n1                  ||sample size for level 1|
+|n2                  ||sample size for level 2|
+|t                   ||t statistic|
+|df                  ||degrees of freedom for t statistic|
+|p                   ||p value|
+|CI_l                ||confidence interval lower bound|
+|CI_u                ||confidence interval upper bound|
+|alternative         ||alternative hypothesis|
+|method              ||name of method should be displayed here|
+|mean1               ||mean for level 1|
+|mean2               ||mean for level 2|
+|sd1                 ||standard deviation for level 1|
+|sd2                 ||standard deviation for level 2|
+|sd_pooled           ||pooled standard deviation combined standard deviation of both levels|
+|d                   ||measure of effect size cohen's d|
+|d                   |Very small| 0.01| Sawilowsky (2009)|
+|d                   |Small|      0.20| Cohen (1988)|
+|d                   |Medium|     0.50| Cohen (1988)|
+|d                   |Large|      0.80| Cohen (1988)|
+|d                   |Very large| 1.20| Sawilowsky (2009)|
+|d                   |Huge|       12.0| Sawilowsky (2009)|
+|r                   ||measure of effect size correlation effect size|
+|k_squared bartlett  ||bartlett test for homogeneity of variances|
+|df bartlett         ||bartlett test for homogeneity of variances|
+|p bartlett          ||bartlett test for homogeneity of variances significant values indicate heteroscedasticity|
+|bonferroni_p        ||bonferroni adjusted critical value for a=0.05|
+|significant         ||if TRUE result is significant after bonferroni adjustment|
 
 ## Wilcoxon Test
 
@@ -133,39 +128,39 @@ report_wtests(df=df_insurance,dv=7,iv=c(2,4),var.equal=TRUE)
 ```
 
 ## Explanation of columns
-| Column   | Description                                                                 |
-|----------|-----------------------------------------------------------------------------|
-|DV                  |dependent variable|
-|IV                  |independent variable|
-|level1              |level 1|
-|level2              |level 2|
-|n1                  |sample size for level 1|
-|n2                  |sample size for level 2|
-|W                   |wilcoxon statistic|
-|df                  |degrees of freedom for t statistic|
-|p                   |p value|
-|CI_l                |confidence interval lower bound|
-|CI_u                |confidence interval upper bound|
-|alternative         |alternative hypothesis|
-|method              |name of method should be displayed here|
-|mean1               |mean for level 1|
-|mean2               |mean for level 2|
-|sd1                 |standard deviation for level 1|
-|sd2                 |standard deviation for level 2|
-|sd_pooled           |pooled standard deviation combined standard deviation of both levels|
-|d                   |measure of effect size cohen's d|
-|d                   |Very small 0.01 Sawilowsky (2009)|
-|d                   |Small 0.20 Cohen (1988)|
-|d                   |Medium 0.50 Cohen (1988)|
-|d                   |Large 0.80 Cohen (1988)|
-|d                   |Very large 1.20 Sawilowsky (2009)|
-|d                   |Huge 12.0 Sawilowsky (2009)|
-|r                   |measure of effect size correlation effect size|
-|k_squared bartlett  |bartlett test for homogeneity of variances|
-|df bartlett         |bartlett test for homogeneity of variances|
-|p bartlett          |bartlett test for homogeneity of variances significant values indicate heteroscedasticity|
-|bonferroni_p        |bonferroni adjusted critical value for a=0.05|
-|significant         |if TRUE result is significant after bonferroni adjustment|
+| Column   |           |Description                            |  Reference               |
+|----------|-----------|---------------------------------------|--------------------------|
+|DV                  ||dependent variable|
+|IV                  ||independent variable|
+|level1              ||level 1|
+|level2              ||level 2|
+|n1                  ||sample size for level 1|
+|n2                  ||sample size for level 2|
+|W                   ||wilcoxon statistic|
+|df                  ||degrees of freedom for t statistic|
+|p                   ||p value|
+|CI_l                ||confidence interval lower bound|
+|CI_u                ||confidence interval upper bound|
+|alternative         ||alternative hypothesis|
+|method              ||name of method should be displayed here|
+|mean1               ||mean for level 1|
+|mean2               ||mean for level 2|
+|sd1                 ||standard deviation for level 1|
+|sd2                 ||standard deviation for level 2|
+|sd_pooled           ||pooled standard deviation combined standard deviation of both levels|
+|d                   ||measure of effect size cohen's d|
+|d                   |Very small| 0.01 Sawilowsky (2009)|
+|d                   |Small|      0.20| Cohen (1988)|
+|d                   |Medium|     0.50| Cohen (1988)|
+|d                   |Large|      0.80| Cohen (1988)|
+|d                   |Very large| 1.20| Sawilowsky (2009)|
+|d                   |Huge|       12.0| Sawilowsky (2009)|
+|r                   ||measure of effect size correlation effect size|
+|k_squared bartlett  ||bartlett test for homogeneity of variances|
+|df bartlett         ||bartlett test for homogeneity of variances|
+|p bartlett          ||bartlett test for homogeneity of variances significant values indicate heteroscedasticity|
+|bonferroni_p        ||bonferroni adjusted critical value for a=0.05|
+|significant         ||if TRUE result is significant after bonferroni adjustment|
 
 
 ## Formulas
@@ -269,3 +264,31 @@ $D_{(1)}\le\dots\le D_{(n_1n_2)}$ = sorted differences $x_{1i}-x_{2j}$; $z(\Delt
 **`r`**
 
 $$r=\frac{\lvert Z\rvert}{\sqrt{N}},\qquad Z=\Phi^{-1}\left(1-\frac{p}{2}\right)$$
+
+## References
+
+Bartlett, M. S. (1937). Properties of sufficiency and statistical tests. *Proceedings of the Royal Society of London. Series A, 160*(901), 268–282. https://doi.org/10.1098/rspa.1937.0109
+
+Bonferroni, C. E. (1936). Teoria statistica delle classi e calcolo delle probabilità. *Pubblicazioni del R Istituto Superiore di Scienze Economiche e Commerciali di Firenze, 8*, 3–62.
+
+Borenstein, M., Hedges, L. V., Higgins, J. P. T., & Rothstein, H. R. (2009). *Introduction to meta-analysis*. Wiley. https://doi.org/10.1002/9780470743386
+
+Cohen, J. (1988). *Statistical power analysis for the behavioral sciences* (2nd ed.). Lawrence Erlbaum Associates.
+
+Dunn, O. J. (1961). Multiple comparisons among means. *Journal of the American Statistical Association, 56*(293), 52–64. https://doi.org/10.1080/01621459.1961.10482090
+
+Hodges, J. L., & Lehmann, E. L. (1963). Estimates of location based on rank tests. *The Annals of Mathematical Statistics, 34*(2), 598–611. https://doi.org/10.1214/aoms/1177704172
+
+Mann, H. B., & Whitney, D. R. (1947). On a test of whether one of two random variables is stochastically larger than the other. *The Annals of Mathematical Statistics, 18*(1), 50–60. https://doi.org/10.1214/aoms/1177730491
+
+Rosenthal, R. (1991). *Meta-analytic procedures for social research* (Rev. ed.). Sage. https://doi.org/10.4135/9781412984997
+
+Satterthwaite, F. E. (1946). An approximate distribution of estimates of variance components. *Biometrics Bulletin, 2*(6), 110–114. https://doi.org/10.2307/3002019
+
+Sawilowsky, S. S. (2009). New effect size rules of thumb. *Journal of Modern Applied Statistical Methods, 8*(2), 597–599. https://doi.org/10.22237/jmasm/1257035100
+
+Student. (1908). The probable error of a mean. *Biometrika, 6*(1), 1–25. https://doi.org/10.1093/biomet/6.1.1
+
+Welch, B. L. (1947). The generalization of "Student's" problem when several different population variances are involved. *Biometrika, 34*(1–2), 28–35. https://doi.org/10.1093/biomet/34.1-2.28
+
+Wilcoxon, F. (1945). Individual comparisons by ranking methods. *Biometrics Bulletin, 1*(6), 80–83. https://doi.org/10.2307/3001968
