@@ -17,14 +17,8 @@ vignette: >
 ---
   
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
-options(future.show.progress=FALSE)
-options(width=1000)
-knitr::opts_chunk$set(echo=TRUE)
-hook_output<-function(x, options) {
-  paste0('<pre class="r-output">',knitr::knit_print(x),'</pre>')
-}
-knitr::knit_hooks$set(output=hook_output)
-directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
+source(paste0(directory, "R/code_options.R"))
 source(paste0(directory, "R/code_rwf.R"))
 load(paste0(directory, "data/df_blood_pressure.rda"))
 load(paste0(directory, "data/df_crop_yield.rda"))

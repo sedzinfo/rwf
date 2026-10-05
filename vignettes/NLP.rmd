@@ -17,17 +17,9 @@ vignette: >
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
-options(width=1000)
-hook_output <- function(x, options) {
-  paste0('<pre class="r-output">', knitr::knit_print(x), '</pre>')
-}
-knitr::knit_hooks$set(output = hook_output)
-knitr::opts_chunk$set(echo=TRUE)
-options(future.show.progress = FALSE)
-```
-
-```{r load,include=FALSE}
-source(paste0(directory, "code_rwf.R"))
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
+source(paste0(directory, "R/code_options.R"))
+source(paste0(directory, "R/code_rwf.R"))
 ```
 
 This shows the output of several functions that may be used in NLP from rwf.  
