@@ -15,6 +15,6 @@ plot_cfa(model, ...)
 Named list of ggplot objects (same keys as the original \code{plot_cfa})
 }
 \description{
-Drop-in replacement for \code{plot_cfa()} — same signature,
+Drop-in replacement for \code{plot_cfa()} - same signature,
   returns a named list of ggplot objects instead of base-graphics recordings.
 }

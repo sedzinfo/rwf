@@ -24,10 +24,8 @@ hook_output<-function(x, options) {
   paste0('<pre class="r-output">',knitr::knit_print(x),'</pre>')
 }
 knitr::knit_hooks$set(output=hook_output)
-```
-
-```{r load,include=FALSE}
-source(paste0(directory, "code_rwf.R"))
+directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+source(paste0(directory, "R/code_rwf.R"))
 ```
 
 ## Description

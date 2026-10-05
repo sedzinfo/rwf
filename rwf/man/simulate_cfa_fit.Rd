@@ -45,9 +45,9 @@ Excel files. If \code{NULL} no files are written.}
 \value{
 A list of two elements:
   \itemize{
-    \item \code{[[1]]} — a data frame with one row per sample size and one
+    \item \code{[[1]]} - a data frame with one row per sample size and one
       column per lavaan fit index (CFI, RMSEA, SRMR, etc.).
-    \item \code{[[2]]} — a named list of ggplot scatter plots, one per fit
+    \item \code{[[2]]} - a named list of ggplot scatter plots, one per fit
       index, showing how the index changes with sample size.
   }
 }
@@ -59,9 +59,9 @@ Runs a confirmatory factor analysis (CFA) repeatedly across a
   Two workflows are supported:
   \itemize{
     \item \strong{Coefficient-based}: supply \code{model_sim} with fixed
-      loadings — data are generated from those population parameters at each
+      loadings - data are generated from those population parameters at each
       sample size.
-    \item \strong{Correlation-based}: supply \code{df} — data are
+    \item \strong{Correlation-based}: supply \code{df} - data are
       bootstrapped from the observed correlation structure of \code{df} at
       each sample size.
   }

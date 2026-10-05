@@ -40,7 +40,7 @@ plot_cfa_gg <- function(model,
   what   <- match.arg(what)
   layout <- match.arg(layout)
   
-  # ── 1. Extract parameter table ───────────────────────────────────────────
+  # -- 1. Extract parameter table -------------------------------------------
   pe <- lavaan::parameterEstimates(model, standardized = TRUE)
   
   # Choose which column to display on edges
@@ -50,7 +50,7 @@ plot_cfa_gg <- function(model,
                      eq  = "label"
   )
   
-  # ── 2. Identify nodes ────────────────────────────────────────────────────
+  # -- 2. Identify nodes ----------------------------------------------------
   latent_vars   <- unique(pe$lhs[pe$op == "=~"])
   observed_vars <- unique(pe$rhs[pe$op == "=~"])
   all_nodes     <- unique(c(latent_vars, observed_vars))
@@ -61,7 +61,7 @@ plot_cfa_gg <- function(model,
     stringsAsFactors = FALSE
   )
   
-  # ── 3. Compute node layout ───────────────────────────────────────────────
+  # -- 3. Compute node layout -----------------------------------------------
   # Build an igraph just for layout purposes
   edge_list <- pe[pe$op %in% c("=~", "~"), c("lhs","rhs"), drop=FALSE]
   edge_list <- edge_list[edge_list$lhs %in% all_nodes &
@@ -98,7 +98,7 @@ plot_cfa_gg <- function(model,
   node_df$hw <- ifelse(node_df$is_lat, 0.90, 0.70)   # half-width
   node_df$hh <- ifelse(node_df$is_lat, 0.55, 0.42)   # half-height
   
-  # ── 4. Build edge data for factor loadings (=~) ──────────────────────────
+  # -- 4. Build edge data for factor loadings (=~) --------------------------
   loadings <- pe[pe$op == "=~", ]
   
   edge_df <- merge(
@@ -128,7 +128,7 @@ plot_cfa_gg <- function(model,
   edge_df$mx <- (edge_df$x_from + edge_df$x_to) / 2
   edge_df$my <- (edge_df$y_from + edge_df$y_to) / 2
   
-  # ── 5. Covariance arcs between latent variables ──────────────────────────
+  # -- 5. Covariance arcs between latent variables --------------------------
   cov_df <- pe[pe$op == "~~" & pe$lhs != pe$rhs &
                  pe$lhs %in% latent_vars & pe$rhs %in% latent_vars, ]
   
@@ -144,7 +144,7 @@ plot_cfa_gg <- function(model,
     cov_df$my <- (cov_df$y_from + cov_df$y_to) / 2
   }
   
-  # ── 6. Build plot ────────────────────────────────────────────────────────
+  # -- 6. Build plot --------------------------------------------------------
   plot_title <- switch(what,
                        std = "Standardised Estimates",
                        est = "Unstandardised Estimates",
@@ -166,7 +166,7 @@ plot_cfa_gg <- function(model,
     # loading labels
     ggplot2::geom_label(
       data = edge_df,
-      ggplot2::aes(x = mx, y = my, label = display),
+      ggplot2::aes(x = mx, y = my, label = .data$display),
       size      = edge_label_size,
       fill      = "white",
       label.size = 0,
@@ -174,7 +174,7 @@ plot_cfa_gg <- function(model,
       colour    = "#333745"
     ) +
     
-    # node rectangles — observed
+    # node rectangles - observed
     ggplot2::geom_rect(
       data = node_df[!node_df$is_lat, ],
       ggplot2::aes(
@@ -186,7 +186,7 @@ plot_cfa_gg <- function(model,
       linewidth = 0.4
     ) +
     
-    # node ellipses — latent (drawn as wider rounded rects via annotate_custom;
+    # node ellipses - latent (drawn as wider rounded rects via annotate_custom;
     # simplest portable approach: just use distinctly-coloured rects)
     ggplot2::geom_rect(
       data = node_df[node_df$is_lat, ],
@@ -199,7 +199,7 @@ plot_cfa_gg <- function(model,
       linewidth = 0.5
     ) +
     
-    # node labels — observed
+    # node labels - observed
     ggplot2::geom_text(
       data   = node_df[!node_df$is_lat, ],
       ggplot2::aes(x = x, y = y, label = name),
@@ -208,7 +208,7 @@ plot_cfa_gg <- function(model,
       fontface = "plain"
     ) +
     
-    # node labels — latent
+    # node labels - latent
     ggplot2::geom_text(
       data   = node_df[node_df$is_lat, ],
       ggplot2::aes(x = x, y = y, label = name),
@@ -224,7 +224,7 @@ plot_cfa_gg <- function(model,
         hjust = 0.5, size = 12, margin = ggplot2::margin(b = 8)),
       plot.margin  = ggplot2::margin(20, 20, 20, 20)
     ) +
-    ggplot2::labs(title = paste0(plot_title, " — ", layout))
+    ggplot2::labs(title = paste0(plot_title, " \u2014 ", layout))
   
   # add covariance arcs if present
   if (nrow(cov_df) > 0) {
@@ -241,7 +241,7 @@ plot_cfa_gg <- function(model,
       ) +
       ggplot2::geom_label(
         data = cov_df,
-        ggplot2::aes(x = mx, y = my, label = display),
+        ggplot2::aes(x = mx, y = my, label = .data$display),
         size      = edge_label_size,
         fill      = "#fff5f0",
         label.size = 0,
@@ -255,7 +255,7 @@ plot_cfa_gg <- function(model,
 # MODEL PLOT
 ##########################################################################################
 #' @title Batch-plot CFA across layouts and display modes
-#' @description Drop-in replacement for \code{plot_cfa()} — same signature,
+#' @description Drop-in replacement for \code{plot_cfa()} - same signature,
 #'   returns a named list of ggplot objects instead of base-graphics recordings.
 #' @param model A fitted lavaan object
 #' @param ... Extra arguments forwarded to \code{plot_cfa_gg()}
@@ -374,9 +374,9 @@ report_cfa<-function(model,file=NULL,w=10,h=10) {
 #'   Two workflows are supported:
 #'   \itemize{
 #'     \item \strong{Coefficient-based}: supply \code{model_sim} with fixed
-#'       loadings — data are generated from those population parameters at each
+#'       loadings - data are generated from those population parameters at each
 #'       sample size.
-#'     \item \strong{Correlation-based}: supply \code{df} — data are
+#'     \item \strong{Correlation-based}: supply \code{df} - data are
 #'       bootstrapped from the observed correlation structure of \code{df} at
 #'       each sample size.
 #'   }
@@ -402,9 +402,9 @@ report_cfa<-function(model,file=NULL,w=10,h=10) {
 #'
 #' @return A list of two elements:
 #'   \itemize{
-#'     \item \code{[[1]]} — a data frame with one row per sample size and one
+#'     \item \code{[[1]]} - a data frame with one row per sample size and one
 #'       column per lavaan fit index (CFI, RMSEA, SRMR, etc.).
-#'     \item \code{[[2]]} — a named list of ggplot scatter plots, one per fit
+#'     \item \code{[[2]]} - a named list of ggplot scatter plots, one per fit
 #'       index, showing how the index changes with sample size.
 #'   }
 #'

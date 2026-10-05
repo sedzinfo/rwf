@@ -526,7 +526,7 @@ proportion_accurate<-function(observed,predicted) {
 #' # Example with repeated observed and predicted values
 #' confusion(observed=c(1,2,2,2,2),predicted=c(1,1,2,2,2))
 confusion<-function(observed,predicted) {
-  levels<-gtools::mixedsort(unique(c(as.character(observed),as.character(predicted))),decreasing=FALSE)
+  levels<-gtools::mixedsort(as.character(unique(c(observed,predicted))),decreasing=FALSE)
   result<-table(predicted=factor(as.character(predicted),levels=levels),
                 observed=factor(as.character(observed),levels=levels))
   return(result)
@@ -613,6 +613,7 @@ confusion_matrix_percent<-function(observed,predicted) {
 #' @param base_size Base font size. Default 12.
 #' @param title     Plot title suffix.
 #' @export
+#' @importFrom rlang .data
 #' @examples
 #' plot_confusion_extended(observed=c(1,1,1,2,2,2),predicted=c(1,1,1,2,2,2))
 plot_confusion_extended <- function(observed, predicted, positive = NULL, base_size = 12, title = "") {
@@ -674,9 +675,9 @@ plot_confusion_extended <- function(observed, predicted, positive = NULL, base_s
   col_label_vec <- c(paste0("Observed: ", positive), paste0("Observed: ", negative), "")
   row_label_vec <- c("", paste0("Predicted: ", negative), paste0("Predicted: ", positive))
   
-  ggplot2::ggplot(cells, ggplot2::aes(x = col, y = row)) +
-    ggplot2::geom_tile(ggplot2::aes(fill = fill), color = "#fcfcfb", linewidth = 2, width = 0.96, height = 0.96) +
-    ggplot2::geom_text(ggplot2::aes(label = label, color = text_color), size = base_size / 3, lineheight = 0.95, fontface = "bold") +
+  ggplot2::ggplot(cells, ggplot2::aes(x = .data$col, y = .data$row)) +
+    ggplot2::geom_tile(ggplot2::aes(fill = .data$fill), color = "#fcfcfb", linewidth = 2, width = 0.96, height = 0.96) +
+    ggplot2::geom_text(ggplot2::aes(label = .data$label, color = .data$text_color), size = base_size / 3, lineheight = 0.95, fontface = "bold") +
     ggplot2::scale_fill_identity() +
     ggplot2::scale_color_identity() +
     ggplot2::scale_x_continuous(breaks = 1:3, labels = col_label_vec, position = "top", expand = c(0.02, 0.02)) +

@@ -17,8 +17,15 @@ vignette: >
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
-directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
-source(paste0(directory, "code_options.R"))
+options(future.show.progress=FALSE)
+options(width=1000)
+knitr::opts_chunk$set(echo=TRUE)
+hook_output<-function(x, options) {
+  paste0('<pre class="r-output">',knitr::knit_print(x),'</pre>')
+}
+knitr::knit_hooks$set(output=hook_output)
+directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+source(paste0(directory, "R/code_rwf.R"))
 ```
 
 ```{r library,message=FALSE,warning=FALSE}

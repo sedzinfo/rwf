@@ -274,12 +274,12 @@ padNA <- function(df, rowsneeded, first = TRUE) {
     rbind(temp2, df)
   }
 }
-#' @title Pad a data frame to a target number of rows with NAs
-#' @description Extends a data frame to \code{rowsneeded} rows by appending
-#'   (or prepending) \code{NA}-filled rows. Internal helper used by
-#'   \code{\link{c_bind}}.
-#' @return A data frame with \code{rowsneeded} rows and the same columns as
-#'   \code{df}.
+#' @title Get the names of objects passed through dots
+#' @description Returns the unevaluated expressions passed in \code{...} as
+#'   character strings. Internal helper used by \code{\link{c_bind}} to name
+#'   the columns of its output.
+#' @param ... Objects whose expressions should be returned as names.
+#' @return A character vector with one element per argument in \code{...}.
 #' @author Ananda Mahto
 #' @keywords functions
 dotnames <- function(...) {

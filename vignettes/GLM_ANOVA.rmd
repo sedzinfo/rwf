@@ -17,17 +17,15 @@ vignette: >
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+options(future.show.progress=FALSE)
 options(width=1000)
-hook_output <- function(x, options) {
-  paste0('<pre class="r-output">', knitr::knit_print(x), '</pre>')
-}
-knitr::knit_hooks$set(output = hook_output)
 knitr::opts_chunk$set(echo=TRUE)
-options(future.show.progress = FALSE)
-```
-
-```{r library,message=FALSE,warning=FALSE}
-source(paste0(directory, "code_rwf.R"))
+hook_output<-function(x, options) {
+  paste0('<pre class="r-output">',knitr::knit_print(x),'</pre>')
+}
+knitr::knit_hooks$set(output=hook_output)
+directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+source(paste0(directory, "R/code_rwf.R"))
 ```
 
 ## Description

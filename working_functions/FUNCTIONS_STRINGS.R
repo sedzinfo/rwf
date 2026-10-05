@@ -242,27 +242,6 @@ call_to_string <- function(model) {
   return(result)
 }
 ##########################################################################################
-# WRAP
-##########################################################################################
-#' @title Wrap a string to a specified width
-#'
-#' @description Wraps a character string at a given width and collapses the 
-#' result into a single newline-delimited string. Useful for formatting long
-#' plot titles or labels.
-#'
-#' @param x Character. The string to wrap.
-#' @param ... Additional arguments passed to \code{\link[base]{strwrap}},
-#'   such as \code{width}.
-#'
-#' @return A single character string with newlines inserted at wrap points.
-#'
-#' @export
-#' @examples
-#' str_wrap(rep("sting",50),30)
-str_wrap<-function(x,...) {
-  paste(strwrap(x,...),collapse="\n")
-}
-##########################################################################################
 # OUTPUT SEPARATOR
 ##########################################################################################
 #' @title Print a formatted console output block with separators

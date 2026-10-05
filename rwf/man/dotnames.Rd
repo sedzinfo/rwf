@@ -2,18 +2,20 @@
 % Please edit documentation in R/FUNCTIONS.R
 \name{dotnames}
 \alias{dotnames}
-\title{Pad a data frame to a target number of rows with NAs}
+\title{Get the names of objects passed through dots}
 \usage{
 dotnames(...)
 }
+\arguments{
+\item{...}{Objects whose expressions should be returned as names.}
+}
 \value{
-A data frame with \code{rowsneeded} rows and the same columns as
-  \code{df}.
+A character vector with one element per argument in \code{...}.
 }
 \description{
-Extends a data frame to \code{rowsneeded} rows by appending
-  (or prepending) \code{NA}-filled rows. Internal helper used by
-  \code{\link{c_bind}}.
+Returns the unevaluated expressions passed in \code{...} as
+  character strings. Internal helper used by \code{\link{c_bind}} to name
+  the columns of its output.
 }
 \author{
 Ananda Mahto

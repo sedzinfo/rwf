@@ -102,6 +102,7 @@ save(df_personality,file=paste0(directory,"rwf/data/df_personality.rda"))
 save(df_titanic,file=paste0(directory,"rwf/data/df_titanic.rda"))
 save(df_co2,file=paste0(directory,"rwf/data/df_co2.rda"))
 save(df_ocean,file=paste0(directory,"rwf/data/df_ocean.rda"))
+tools::resaveRdaFiles(paste0(directory,"rwf/data"),compress="auto")
 
 write.csv(df_admission,file=paste0(directory,"/data/admission.csv"),
           row.names=FALSE)

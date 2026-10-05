@@ -91,16 +91,16 @@ This argument is used if extended=TRUE</p></dd>
 <span class="r-in"><span><span class="va">d2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html" class="external-link">Sys.time</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">decompose_datetime</span><span class="op">(</span>x <span class="op">=</span> <span class="va">d1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2026            09          01 2026-09-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2026            10          05 2026-10-05</span>
 <span class="r-in"><span><span class="fu">decompose_datetime</span><span class="op">(</span>x <span class="op">=</span> <span class="va">d2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2026            09          01   12     56     00      748112 2026-09-01     12:56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2026            10          05   09     33     30      228133 2026-10-05     09:33</span>
 <span class="r-in"><span><span class="fu">decompose_datetime</span><span class="op">(</span>x <span class="op">=</span> <span class="va">d1</span>, extended <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   QUARTER     MONTH     JULIAN WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Q3 September 20697 days Tuesday       &lt;NA&gt; 2026            09          01 2026-09-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   QUARTER   MONTH     JULIAN WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Q4 October 20731 days  Monday       &lt;NA&gt; 2026            10          05 2026-10-05</span>
 <span class="r-in"><span><span class="fu">decompose_datetime</span><span class="op">(</span>x <span class="op">=</span> <span class="va">d2</span>, extended <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   QUARTER     MONTH        JULIAN WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Q3 September 20697.54 days Tuesday    Morning 2026            09          01   12     56     00      748112 2026-09-01     12:56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   QUARTER   MONTH       JULIAN WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1      Q4 October 20731.4 days  Monday    Morning 2026            10          05   09     33     30      228133 2026-10-05     09:33</span>
 <span class="r-in"><span><span class="fu">decompose_datetime</span><span class="op">(</span>x <span class="op">=</span> <span class="st">"01/15/1900"</span>, format <span class="op">=</span> <span class="st">"%m/%e/%Y"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 1900            01          15 1900-01-15</span>
@@ -115,13 +115,13 @@ This argument is used if extended=TRUE</p></dd>
 <span class="r-in"><span>  format <span class="op">=</span> <span class="st">"%m/%e/%Y"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2026            09          01 2026-09-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2026            10          05 2026-10-05</span>
 <span class="r-in"><span><span class="fu">decompose_datetime</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.POSIXlt.html" class="external-link">as.POSIXct</a></span><span class="op">(</span><span class="va">timestamp2</span>, origin <span class="op">=</span> <span class="st">"1970-01-01"</span><span class="op">)</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  format <span class="op">=</span> <span class="st">"%m/%e/%Y"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2026            09          01 2026-09-01</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 2026            10          05 2026-10-05</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -343,6 +343,7 @@ importFrom(psych,
 importFrom(purrr,walk)
 importFrom(pwr,pwr.r.test)
 importFrom(reshape2,melt)
+importFrom(rlang,.data)
 importFrom(scales,wrap_format)
 importFrom(spelling,spell_check_text)
 importFrom(stats,

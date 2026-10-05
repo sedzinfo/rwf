@@ -41,13 +41,13 @@ Regression
   \item 99.00\% of z-scores lie between -2.58 and +2.58
   \item 99.99\% of z-scores lie between -3.29 and +3.29
   }
-\item{Studentized residuals: }{indicate the the ability of the model to predict that case. They follow a t distribution.}
-\item{DFFits: }{indicate the difference between the adjusted predicted value and the original predicted value.
-Adjusted predicted value for a case refers to the predicted value of that case, when that case is excluded from model fit.}
-\item{Cook's distance: }{indicates leverage. Problematic values for cook's distance > 1 Cook and Weisberg (1982).}
-\item{Hat values: }{indicate leverage. Problematic values for Hat values 2 or 3 times the average (k+1/n)
+\item \strong{Studentized residuals}: indicate the ability of the model to predict that case. They follow a t distribution.
+\item \strong{DFFits}: indicate the difference between the adjusted predicted value and the original predicted value.
+Adjusted predicted value for a case refers to the predicted value of that case, when that case is excluded from model fit.
+\item \strong{Cook's distance}: indicates leverage. Problematic values for cook's distance > 1 Cook and Weisberg (1982).
+\item \strong{Hat values}: indicate leverage. Problematic values for Hat values 2 or 3 times the average (k+1/n)
 The average leverage value is defined as (k+1)/n, k=number of predictors, n=number of participants.
-Leverage values lie between 0 (no influence) and 1 (complete influence over prediction).}
+Leverage values lie between 0 (no influence) and 1 (complete influence over prediction).
 \itemize{
   \item Hoaglin and Welsch (1978) recommends investigating cases with values greater than twice the average (2(k+1)/n)
   \item Stevens (2002) recommends investigating cases with values greater than three times the average (3(k+1)/n)

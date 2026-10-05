@@ -14,16 +14,18 @@ vignette: "%\\VignetteIndexEntry{Generalized Linear Models} %\\VignetteEngine{kn
 ---
 
 ```{r options, echo=FALSE, warning=FALSE, message=FALSE}
+options(future.show.progress=FALSE)
 options(width=1000)
-hook_output <- function(x, options) {
-  paste0('<pre class="r-output">', knitr::knit_print(x), '</pre>')
+knitr::opts_chunk$set(echo=TRUE)
+hook_output<-function(x, options) {
+  paste0('<pre class="r-output">',knitr::knit_print(x),'</pre>')
 }
-knitr::knit_hooks$set(output = hook_output)
-knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
+knitr::knit_hooks$set(output=hook_output)
+directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
+source(paste0(directory, "R/code_rwf.R"))
 ```
 
 ```{r load, include=FALSE}
-source(paste0(directory, "code_rwf.R"))
 library(ggplot2)
 library(MASS)
 library(car)
