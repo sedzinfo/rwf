@@ -265,6 +265,60 @@ $D_{(1)}\le\dots\le D_{(n_1n_2)}$ = sorted differences $x_{1i}-x_{2j}$; $z(\Delt
 
 $$r=\frac{\lvert Z\rvert}{\sqrt{N}},\qquad Z=\Phi^{-1}\left(1-\frac{p}{2}\right)$$
 
+### Between- and within-subjects designs
+
+Between subjects: two independent groups, $x_{1i}$ ($i=1,\dots,n_1$) and $x_{2j}$ ($j=1,\dots,n_2$), $N=n_1+n_2$. Within subjects: $n$ paired observations $(x_{1i},x_{2i})$ on the same cases, $d_i=x_{1i}-x_{2i}$ ($i=1,\dots,n$).
+
+#### t-test
+
+**Between subjects (independent samples)**
+
+$$\text{Welch:}\quad t=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}},\qquad df=\frac{\left(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}\right)^2}{\frac{(s_1^2/n_1)^2}{n_1-1}+\frac{(s_2^2/n_2)^2}{n_2-1}}$$
+
+$$\text{Student:}\quad t=\frac{\bar{x}_1-\bar{x}_2}{s_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}},\qquad s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{N-2},\qquad df=N-2$$
+
+$$d=\frac{\bar{x}_1-\bar{x}_2}{s_p}$$
+
+**Within subjects (paired samples)**
+
+$$\bar{d}=\frac{1}{n}\sum_{i=1}^{n}d_i,\qquad s_d=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(d_i-\bar{d})^2},\qquad SE=\frac{s_d}{\sqrt{n}}$$
+
+$$t=\frac{\bar{d}}{s_d/\sqrt{n}},\qquad df=n-1$$
+
+$$p_{\text{two.sided}}=2\,P(T_{n-1}\ge\lvert t\rvert),\qquad p_{\text{less}}=P(T_{n-1}\le t),\qquad p_{\text{greater}}=P(T_{n-1}\ge t)$$
+
+$$\text{two.sided: }\left[\bar{d}-t_{1-\alpha/2,\,n-1}\,SE,\ \ \bar{d}+t_{1-\alpha/2,\,n-1}\,SE\right],\qquad \text{less: }\left(-\infty,\ \bar{d}+t_{1-\alpha,\,n-1}\,SE\right],\qquad \text{greater: }\left[\bar{d}-t_{1-\alpha,\,n-1}\,SE,\ \infty\right)$$
+
+$$d_z=\frac{\bar{d}}{s_d}=\frac{t}{\sqrt{n}}$$
+
+#### Wilcoxon test
+
+**Between subjects (rank-sum test, Mann-Whitney U)**
+
+$$W=\sum_{i=1}^{n_1}\operatorname{rank}(x_{1i})-\frac{n_1(n_1+1)}{2}\ \ \text{(ranks in the pooled sample of } N \text{ values)},\qquad E(W)=\frac{n_1n_2}{2}$$
+
+$$z=\frac{W-\frac{n_1n_2}{2}-c}{\sqrt{\frac{n_1n_2}{12}\left[(N+1)-\frac{\sum_k(t_k^3-t_k)}{N(N-1)}\right]}},\qquad r=\frac{\lvert Z\rvert}{\sqrt{N}}$$
+
+$$\text{CI: Hodges-Lehmann, from the sorted } n_1n_2 \text{ differences } x_{1i}-x_{2j}$$
+
+**Within subjects (signed-rank test)**
+
+$$V=\sum_{i:\,d_i>0}\operatorname{rank}\left(\lvert d_i\rvert\right),\qquad E(V)=\frac{n'(n'+1)}{4}$$
+
+$$\text{exact } (n<50)\text{:}\quad p_{\text{two.sided}}=\min\{1,\ 2P(V_0\le V),\ 2P(V_0\ge V)\},\qquad p_{\text{less}}=P(V_0\le V),\qquad p_{\text{greater}}=P(V_0\ge V)$$
+
+$$\text{normal approximation (otherwise):}\quad z=\frac{V-\frac{n'(n'+1)}{4}-c}{\sigma_V},\qquad \sigma_V=\sqrt{\frac{n'(n'+1)(2n'+1)}{24}-\frac{\sum_k(t_k^3-t_k)}{48}}$$
+
+$$p_{\text{two.sided}}=2\min\{\Phi(z),\ 1-\Phi(z)\},\qquad p_{\text{less}}=\Phi(z),\qquad p_{\text{greater}}=1-\Phi(z)$$
+
+$$\text{exact, no ties or zeros:}\quad \text{two.sided: }\left[A_{(k)},\ A_{(M-k+1)}\right],\quad \text{greater: }\left[A_{(k)},\ \infty\right),\quad \text{less: }\left(-\infty,\ A_{(M-k+1)}\right],\qquad M=\frac{n(n+1)}{2}$$
+
+$$k=\min\{v:\ P(V_0\le v)>\alpha/2\}\ \text{(two.sided)},\qquad k=\min\{v:\ P(V_0\le v)>\alpha\}\ \text{(one-sided)}$$
+
+$$r=\frac{\lvert Z\rvert}{\sqrt{n}},\qquad Z=\Phi^{-1}\left(1-\frac{p}{2}\right)$$
+
+$n'$ = number of non-zero $d_i$ (zero differences are dropped in the normal approximation; the exact test ranks all $n$ differences and conditions $V_0$ on their ranks), $t_k$ = number of $\lvert d_i\rvert$ in tie group $k$, $c$ = continuity correction ($0.5\,\operatorname{sign}(V-E(V))$ two.sided, $0.5$ greater, $-0.5$ less), $A_{(1)}\le\dots\le A_{(M)}$ = sorted Walsh averages $(d_i+d_j)/2$, $i\le j$.
+
 ## References
 
 Bartlett, M. S. (1937). Properties of sufficiency and statistical tests. *Proceedings of the Royal Society of London. Series A, 160*(901), 268–282. https://doi.org/10.1098/rspa.1937.0109
