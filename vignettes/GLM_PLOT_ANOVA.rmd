@@ -26,6 +26,9 @@ hook_output<-function(x, options) {
 knitr::knit_hooks$set(output=hook_output)
 directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
 source(paste0(directory, "R/code_rwf.R"))
+load(paste0(directory, "data/df_blood_pressure.rda"))
+load(paste0(directory, "data/df_crop_yield.rda"))
+library(reshape)
 ```
 
 ## Description
