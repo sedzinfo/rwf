@@ -1,6 +1,6 @@
 # Batch-plot CFA across layouts and display modes
 
-Drop-in replacement for `plot_cfa()` — same signature, returns a named
+Drop-in replacement for `plot_cfa()` - same signature, returns a named
 list of ggplot objects instead of base-graphics recordings.
 
 ## Usage

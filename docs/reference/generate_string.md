@@ -3,18 +3,9 @@
 Produces a character vector of random strings by sampling from a
 character pool.
 
-Produces a character vector of random strings by sampling from a
-character pool.
-
 ## Usage
 
 ``` r
-generate_string(
-  vector = c(LETTERS, letters, 0:9),
-  vector_length = 1,
-  nchar = 5
-)
-
 generate_string(
   vector = c(LETTERS, letters, 0:9),
   vector_length = 1,
@@ -41,17 +32,11 @@ generate_string(
 
 A character vector of length `vector_length`.
 
-A character vector of length `vector_length`.
-
 ## Examples
 
 ``` r
 generate_string(nchar = 10)
-#> [1] "Qpbiq0V3gy"
+#> [1] "bZwJJG1Gav"
 generate_string(nchar = 10, vector_length = 10)
-#>  [1] "BDKtiMfokM" "e88uujSJKN" "8t9x17soEE" "w3R1T6xuEu" "zM1MlY0n8Y" "K4dlxt5T51" "fqSuRoItpC" "rKOQAHD80A" "Tj8fCOU6mh" "FSjr5y0Ldv"
-generate_string(nchar = 10)
-#> [1] "3TFkxSdkDC"
-generate_string(nchar = 10, vector_length = 10)
-#>  [1] "pDXXMwSqbY" "dxJtYPZnGY" "00Ilcn0rWr" "KJowe9e3Po" "Qe0YRgcqzD" "nXoeJCYylj" "C3nSxNkZr4" "vWHInBNKUk" "Vhbg0iGtzs" "70jlhOzW6N"
+#>  [1] "YtLe9GN1XU" "CI0EAwKbBQ" "LmJ04xj5ea" "10xHL3hx9z" "rmJfWwTPfw" "2HTluAbipN" "UJhCHzb05b" "oyCmso6QPQ" "WylfR1nPUg" "m6YC7WoVOI"
 ```

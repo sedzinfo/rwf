@@ -4,9 +4,9 @@
   analysis and sample size planning in SEM.
 Two workflows are supported:
 Coefficient-based: supply model_sim with fixed
-      loadings — data are generated from those population parameters at each
+      loadings - data are generated from those population parameters at each
       sample size.
-Correlation-based: supply df — data are
+Correlation-based: supply df - data are
       bootstrapped from the observed correlation structure of df at
       each sample size.
 Iterations run in parallel via future.apply. Results are written to
@@ -15,9 +15,9 @@ Iterations run in parallel via future.apply. Results are written to
   analysis and sample size planning in SEM.
 Two workflows are supported:
 Coefficient-based: supply model_sim with fixed
-      loadings — data are generated from those population parameters at each
+      loadings - data are generated from those population parameters at each
       sample size.
-Correlation-based: supply df — data are
+Correlation-based: supply df - data are
       bootstrapped from the observed correlation structure of df at
       each sample size.
 Iterations run in parallel via future.apply. Results are written to
@@ -57,9 +57,9 @@ Iterations run in parallel via future.apply. Results are written to
   range of sample sizes and returns fit indices for each. Useful for power
   analysis and sample size planning in SEM.</p>
 <p>Two workflows are supported:</p><ul><li><p><strong>Coefficient-based</strong>: supply <code>model_sim</code> with fixed
-      loadings — data are generated from those population parameters at each
+      loadings - data are generated from those population parameters at each
       sample size.</p></li>
-<li><p><strong>Correlation-based</strong>: supply <code>df</code> — data are
+<li><p><strong>Correlation-based</strong>: supply <code>df</code> - data are
       bootstrapped from the observed correlation structure of <code>df</code> at
       each sample size.</p></li>
 </ul><p>Iterations run in parallel via <code>future.apply</code>. Results are written to
@@ -130,9 +130,9 @@ Excel files. If <code>NULL</code> no files are written.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list of two elements:</p><ul><li><p><code>[[1]]</code> — a data frame with one row per sample size and one
+    <p>A list of two elements:</p><ul><li><p><code>[[1]]</code> - a data frame with one row per sample size and one
       column per lavaan fit index (CFI, RMSEA, SRMR, etc.).</p></li>
-<li><p><code>[[2]]</code> — a named list of ggplot scatter plots, one per fit
+<li><p><code>[[2]]</code> - a named list of ggplot scatter plots, one per fit
       index, showing how the index changes with sample size.</p></li>
 </ul></div>
 

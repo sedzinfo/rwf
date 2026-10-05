@@ -53,32 +53,32 @@ report_logistic(
 
 ## Note
 
-\(1\) Problematic values for standardized residuals \> +-1.96  
+\(1\) Problematic values for standardized residuals \> +-1.96\
 Standardized residuals are residuals divided by an estimated standard
-deviation and they can be interpreted as z scores in that:  
-95 99 99.99 (2) Problematic values for dfBeta \>=1  
+deviation and they can be interpreted as z scores in that:\
+95 99 99.99 (2) Problematic values for dfBeta \>=1\
 dfBeta estimates coefficients if the respective case is removed from the
-dataset  
+dataset\
 (3) Problematic values for Hat values (leverage) 2 or 3 times the
-average (k+1/n)  
+average (k+1/n)\
 Hat values (leverage),gauge the influence of the observed value of the
-outcome variable over the predicted values  
+outcome variable over the predicted values\
 The average leverage value is defined as (k+1)/n, k=number of
 predictors, n=number of participants. Leverage values lie between 0 (no
-influence) and 1 (complete influence over prediction)  
+influence) and 1 (complete influence over prediction)\
 If no cases exert undue influence over the model then all leverage
-values should be close to (k+1)/n  
+values should be close to (k+1)/n\
 Hoaglin and Welsch (1978) recommends investigating cases with values
-greater than twice the average (2(k+1)/n)  
+greater than twice the average (2(k+1)/n)\
 Stevens (2002) recommends investigating cases with values greater than
-three times the average (3(k+1)/n)  
-(4) Problematic values for VIFs \> 10  
-ASSUMPTIONS  
+three times the average (3(k+1)/n)\
+(4) Problematic values for VIFs \> 10\
+ASSUMPTIONS\
 (1) Linearity between continous predictors and the logit (test wether
 the interaction term between the predictor and its log transformation is
-significant)  
-(2) Independence of errors  
-(3) No multicolinearity  
+significant)\
+(2) Independence of errors\
+(3) No multicolinearity\
 
 ## Examples
 

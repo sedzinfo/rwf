@@ -16,11 +16,11 @@ A character string with the directory path, always ending with "/"
 
 ## Details
 
-The function tries three approaches in order:  
+The function tries three approaches in order:\
 1. If RStudio is available, uses `rstudioapi` to get the active document
-path  
+path\
 2. If running from the command line via `Rscript --file=`, parses the
-file argument  
+file argument\
 3. Falls back to [`getwd()`](https://rdrr.io/r/base/getwd.html) as a
 last resort
 

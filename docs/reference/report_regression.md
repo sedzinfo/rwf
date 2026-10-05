@@ -48,7 +48,7 @@ report_regression(
 
 ## Note
 
-1.  Problematic values for standardized residuals \> +-1.96  
+1.  Problematic values for standardized residuals \> +-1.96\
     **Standardized residuals** are residuals divided by an estimated
     standard deviation and they can be interpreted as z scores in that:
 
@@ -58,22 +58,22 @@ report_regression(
 
     - 99.99% of z-scores lie between -3.29 and +3.29
 
-2.  Studentized residuals: indicate the the ability of the model to
+2.  **Studentized residuals**: indicate the ability of the model to
     predict that case. They follow a t distribution.
 
-3.  DFFits: indicate the difference between the adjusted predicted value
-    and the original predicted value. Adjusted predicted value for a
-    case refers to the predicted value of that case, when that case is
+3.  **DFFits**: indicate the difference between the adjusted predicted
+    value and the original predicted value. Adjusted predicted value for
+    a case refers to the predicted value of that case, when that case is
     excluded from model fit.
 
-4.  Cook's distance: indicates leverage. Problematic values for cook's
-    distance \> 1 Cook and Weisberg (1982).
+4.  **Cook's distance**: indicates leverage. Problematic values for
+    cook's distance \> 1 Cook and Weisberg (1982).
 
-5.  Hat values: indicate leverage. Problematic values for Hat values 2
-    or 3 times the average (k+1/n) The average leverage value is defined
-    as (k+1)/n, k=number of predictors, n=number of participants.
-    Leverage values lie between 0 (no influence) and 1 (complete
-    influence over prediction).
+5.  **Hat values**: indicate leverage. Problematic values for Hat values
+    2 or 3 times the average (k+1/n) The average leverage value is
+    defined as (k+1)/n, k=number of predictors, n=number of
+    participants. Leverage values lie between 0 (no influence) and 1
+    (complete influence over prediction).
 
     - Hoaglin and Welsch (1978) recommends investigating cases with
       values greater than twice the average (2(k+1)/n)
@@ -81,18 +81,18 @@ report_regression(
     - Stevens (2002) recommends investigating cases with values greater
       than three times the average (3(k+1)/n)
 
-**T-tests**: test the hypothesis that b's are different from 0  
-**Multiple R^2**: Variance Explained  
+**T-tests**: test the hypothesis that b's are different from 0\
+**Multiple R^2**: Variance Explained\
 **Adjusted R^2**: Indicates how much variance in Y would be accounted
 for if the model is derived from the population from which the sample
-was taken. Idealy, R^2 = Adjusted R^2  
+was taken. Idealy, R^2 = Adjusted R^2\
 **F-Statistic**: tests the null hypothesis is that the overall model has
-no effect  
+no effect\
 **Covariance ratios**: critical values CVR\>1+\[3(k+1)/n\]
 CRV\<1-\[3(k+1)/n\]. In general we should obtain small values or we may
-have to remove cases  
-  
-  
+have to remove cases\
+\
+\
 **ASSUMPTIONS**
 
 1.  variable types: All predictors must be quantitative or categorical
@@ -112,7 +112,7 @@ have to remove cases
     (homoscedasticity)
 
 6.  Independent errors: For any two observations the residual terms
-    should be uncorrelated (or independent)  
+    should be uncorrelated (or independent)\
     This eventuality is sometimes described as a lack of
     autocorrelation. This assumption can be tested with the
     Durbin-Watson test,which tests for serial correlations between

@@ -1,8 +1,9 @@
-# Pad a data frame to a target number of rows with NAs
+# Get the names of objects passed through dots
 
-Extends a data frame to `rowsneeded` rows by appending (or prepending)
-`NA`-filled rows. Internal helper used by
-[`c_bind`](https://sedzinfo.github.io/rwf/reference/c_bind.md).
+Returns the unevaluated expressions passed in `...` as character
+strings. Internal helper used by
+[`c_bind`](https://sedzinfo.github.io/rwf/reference/c_bind.md) to name
+the columns of its output.
 
 ## Usage
 
@@ -10,9 +11,15 @@ Extends a data frame to `rowsneeded` rows by appending (or prepending)
 dotnames(...)
 ```
 
+## Arguments
+
+- ...:
+
+  Objects whose expressions should be returned as names.
+
 ## Value
 
-A data frame with `rowsneeded` rows and the same columns as `df`.
+A character vector with one element per argument in `...`.
 
 ## Author
 

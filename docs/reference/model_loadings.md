@@ -33,9 +33,9 @@ model_loadings(model, cut = NULL, matrix_type = "pattern", sort = TRUE, ...)
 ## Note
 
 Check to see if you have multicolinearity values above .8 in the matrix
-are problematic  
-Structure matrix represents Loadings after rotation  
-Pattern matrix represents Loadings before rotation  
+are problematic\
+Structure matrix represents Loadings after rotation\
+Pattern matrix represents Loadings before rotation\
 
 ## Examples
 

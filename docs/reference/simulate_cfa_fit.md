@@ -6,10 +6,10 @@ and sample size planning in SEM.
 
 Two workflows are supported:
 
-- **Coefficient-based**: supply `model_sim` with fixed loadings — data
+- **Coefficient-based**: supply `model_sim` with fixed loadings - data
   are generated from those population parameters at each sample size.
 
-- **Correlation-based**: supply `df` — data are bootstrapped from the
+- **Correlation-based**: supply `df` - data are bootstrapped from the
   observed correlation structure of `df` at each sample size.
 
 Iterations run in parallel via `future.apply`. Results are written to a
@@ -79,10 +79,10 @@ simulate_cfa_fit(
 
 A list of two elements:
 
-- `[[1]]` — a data frame with one row per sample size and one column per
+- `[[1]]` - a data frame with one row per sample size and one column per
   lavaan fit index (CFI, RMSEA, SRMR, etc.).
 
-- `[[2]]` — a named list of ggplot scatter plots, one per fit index,
+- `[[2]]` - a named list of ggplot scatter plots, one per fit index,
   showing how the index changes with sample size.
 
 ## Examples

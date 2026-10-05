@@ -4,19 +4,9 @@ Creates a character vector where each element contains a comma-separated
 string of randomly sampled categories, simulating multiple response
 survey data.
 
-Creates a character vector where each element contains a comma-separated
-string of randomly sampled categories, simulating multiple response
-survey data.
-
 ## Usage
 
 ``` r
-generate_multiple_responce_vector(
-  responces = 1:4,
-  responded = 1:4,
-  length = 10
-)
-
 generate_multiple_responce_vector(
   responces = 1:4,
   responded = 1:4,
@@ -46,14 +36,9 @@ generate_multiple_responce_vector(
 A character vector of length `length`, where each element is a
 comma-separated string of sampled response categories.
 
-A character vector of length `length`, where each element is a
-comma-separated string of sampled response categories.
-
 ## Examples
 
 ``` r
 generate_multiple_responce_vector(responces = 1:4, responded = 1:4, length = 10)
-#>  [1] "4, 3, 2, 1" "3, 1"       "2, 1"       "3, 2, 4"    "3, 2"       "2, 4, 1"    "1, 2, 4, 3" "3, 2, 1, 4" "2"          "3"         
-generate_multiple_responce_vector(responces = 1:4, responded = 1:4, length = 10)
-#>  [1] "2, 1, 3, 4" "2, 4, 3, 1" "3, 2, 1"    "1, 3"       "2, 1"       "4, 2"       "2, 3, 1, 4" "1"          "1, 4, 2"    "3, 4"      
+#>  [1] "3"          "3, 4, 2, 1" "1, 2"       "1"          "3, 2, 4, 1" "2"          "1, 4"       "2, 4, 1"    "3, 4, 2, 1" "2, 1"      
 ```

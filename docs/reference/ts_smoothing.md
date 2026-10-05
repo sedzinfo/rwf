@@ -53,44 +53,44 @@ ts_smoothing(
 
   `"kernel"`
 
-  :   Gaussian kernel smoother via
-      [`ksmooth()`](https://rdrr.io/r/stats/ksmooth.html) — bandwidth
-      controls the smoothing window (default).
+  : Gaussian kernel smoother via
+    [`ksmooth()`](https://rdrr.io/r/stats/ksmooth.html) — bandwidth
+    controls the smoothing window (default).
 
   `"lowess"`
 
-  :   Locally weighted regression via
-      [`lowess()`](https://rdrr.io/r/stats/lowess.html) — `f` controls
-      the span proportion.
+  : Locally weighted regression via
+    [`lowess()`](https://rdrr.io/r/stats/lowess.html) — `f` controls the
+    span proportion.
 
   `"friedman"`
 
-  :   Friedman's super-smoother via
-      [`supsmu()`](https://rdrr.io/r/stats/supsmu.html) — span must be
-      in (0, 1).
+  : Friedman's super-smoother via
+    [`supsmu()`](https://rdrr.io/r/stats/supsmu.html) — span must be in
+    (0, 1).
 
   `"splines"`
 
-  :   Smoothing splines via
-      [`smooth.spline()`](https://rdrr.io/r/stats/smooth.spline.html) —
-      `spar` controls the penalty.
+  : Smoothing splines via
+    [`smooth.spline()`](https://rdrr.io/r/stats/smooth.spline.html) —
+    `spar` controls the penalty.
 
   `"default"`
 
-  :   Running mean filter via
-      [`filter()`](https://rdrr.io/r/stats/filter.html) — bandwidth
-      rounded to an integer window width.
+  : Running mean filter via
+    [`filter()`](https://rdrr.io/r/stats/filter.html) — bandwidth
+    rounded to an integer window width.
 
   `"polynomial"`
 
-  :   Fits a centred cubic polynomial trend with and without seasonal
-      (cos/sin) terms via [`lm()`](https://rdrr.io/r/stats/lm.html).
+  : Fits a centred cubic polynomial trend with and without seasonal
+    (cos/sin) terms via [`lm()`](https://rdrr.io/r/stats/lm.html).
 
   `"linear"`
 
-  :   Fits a simple linear trend via
-      [`lm()`](https://rdrr.io/r/stats/lm.html) and draws the regression
-      line.
+  : Fits a simple linear trend via
+    [`lm()`](https://rdrr.io/r/stats/lm.html) and draws the regression
+    line.
 
 ## Value
 

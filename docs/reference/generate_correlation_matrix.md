@@ -5,16 +5,9 @@ correlation matrix, using Cholesky decomposition. If no matrix is
 supplied, a random symmetric positive-definite matrix is generated
 automatically.
 
-Simulates multivariate normal data whose columns reproduce a target
-correlation matrix, using Cholesky decomposition. If no matrix is
-supplied, a random symmetric positive-definite matrix is generated
-automatically.
-
 ## Usage
 
 ``` r
-generate_correlation_matrix(correlation_martix, nrows = 10)
-
 generate_correlation_matrix(correlation_martix, nrows = 10)
 ```
 
@@ -35,16 +28,7 @@ generate_correlation_matrix(correlation_martix, nrows = 10)
 A data frame with `nrows` rows and `ncol(correlation_martix)` columns of
 simulated numeric values.
 
-A data frame with `nrows` rows and `ncol(correlation_martix)` columns of
-simulated numeric values.
-
 ## Details
-
-Uses Cholesky decomposition
-([`chol()`](https://rdrr.io/r/base/chol.html)) to factor the target
-correlation matrix, then multiplies by independent standard normal draws
-to produce correlated columns. The resulting correlations approximate
-the target matrix, with accuracy improving as `nrows` increases.
 
 Uses Cholesky decomposition
 ([`chol()`](https://rdrr.io/r/base/chol.html)) to factor the target
@@ -60,14 +44,6 @@ the target matrix, with accuracy improving as `nrows` increases.
 ## Examples
 
 ``` r
-df <- data.frame(matrix(.999, ncol = 2, nrow = 2))
-correlation_martix <- as.matrix(df)
-diag(correlation_martix) <- 1
-df <- generate_correlation_matrix(correlation_martix, nrows = 100)
-stats::cor(df)
-#>        X1     X2
-#> X1 1.0000 0.9993
-#> X2 0.9993 1.0000
 df <- data.frame(matrix(.999, ncol = 2, nrow = 2))
 correlation_martix <- as.matrix(df)
 diag(correlation_martix) <- 1

@@ -28,24 +28,24 @@ round_dataframe(df, digits = 0, type = "round")
 
   `"round"`
 
-  :   Round to `digits` decimal places using
-      [`round()`](https://rdrr.io/r/base/Round.html) (default).
+  : Round to `digits` decimal places using
+    [`round()`](https://rdrr.io/r/base/Round.html) (default).
 
   `"ceiling"`
 
-  :   Round up to the nearest integer using
-      [`ceiling()`](https://rdrr.io/r/base/Round.html).
+  : Round up to the nearest integer using
+    [`ceiling()`](https://rdrr.io/r/base/Round.html).
 
   `"floor"`
 
-  :   Round down to the nearest integer using
-      [`floor()`](https://rdrr.io/r/base/Round.html).
+  : Round down to the nearest integer using
+    [`floor()`](https://rdrr.io/r/base/Round.html).
 
   `"tenth"`
 
-  :   Divide each value by 10 then round to `digits` decimal places —
-      useful for rescaling values that were multiplied by 10 (e.g.
-      converting tenths back to units).
+  : Divide each value by 10 then round to `digits` decimal places —
+    useful for rescaling values that were multiplied by 10 (e.g.
+    converting tenths back to units).
 
 ## Value
 

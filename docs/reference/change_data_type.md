@@ -22,27 +22,27 @@ change_data_type(df, type)
 
   `"character"`
 
-  :   Converts all columns to character, trimming leading and trailing
-      whitespace.
+  : Converts all columns to character, trimming leading and trailing
+    whitespace.
 
   `"numeric"`
 
-  :   Converts all columns to numeric (via character with whitespace
-      trimming). Non-numeric strings become `NA`.
+  : Converts all columns to numeric (via character with whitespace
+    trimming). Non-numeric strings become `NA`.
 
   `"factor"`
 
-  :   Converts all columns to factor.
+  : Converts all columns to factor.
 
   `"factor_character"`
 
-  :   Converts only factor columns to character; all other columns are
-      left unchanged.
+  : Converts only factor columns to character; all other columns are
+    left unchanged.
 
   `"character_factor"`
 
-  :   Converts only character columns to factor; all other columns are
-      left unchanged.
+  : Converts only character columns to factor; all other columns are
+    left unchanged.
 
 ## Value
 

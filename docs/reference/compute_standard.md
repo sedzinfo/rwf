@@ -32,56 +32,56 @@ compute_standard(vector, mean = 0, sd = 1, type = "z", input = "non_standard")
 
   `"z"`
 
-  :   Z-scores (mean=0, sd=1).
+  : Z-scores (mean=0, sd=1).
 
   `"uz"`
 
-  :   Unstandardise: convert z-scores back to raw scores using supplied
-      `mean` and `sd`.
+  : Unstandardise: convert z-scores back to raw scores using supplied
+    `mean` and `sd`.
 
   `"sten"`
 
-  :   Sten scores (1–10, mean=5.5, sd=2).
+  : Sten scores (1–10, mean=5.5, sd=2).
 
   `"t"`
 
-  :   T-scores (mean=50, sd=10).
+  : T-scores (mean=50, sd=10).
 
   `"stanine"`
 
-  :   Stanine scores (1–9, mean=5, sd=2).
+  : Stanine scores (1–9, mean=5, sd=2).
 
   `"center"`
 
-  :   Mean-centred scores.
+  : Mean-centred scores.
 
   `"center_reversed"`
 
-  :   Reversed mean-centred scores.
+  : Reversed mean-centred scores.
 
   `"percent"`
 
-  :   Percentage of the maximum observed value.
+  : Percentage of the maximum observed value.
 
   `"percentile"`
 
-  :   Cumulative normal percentile (0–100).
+  : Cumulative normal percentile (0–100).
 
   `"scale_zero_one"`
 
-  :   Min-max scaled scores (0–1).
+  : Min-max scaled scores (0–1).
 
   `"normal_density"`
 
-  :   Normal density values.
+  : Normal density values.
 
   `"cumulative_density"`
 
-  :   Cumulative sum of the input vector.
+  : Cumulative sum of the input vector.
 
   `"all"`
 
-  :   Returns a data frame with all score types, sorted by z-score.
+  : Returns a data frame with all score types, sorted by z-score.
 
 - input:
 

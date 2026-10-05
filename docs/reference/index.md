@@ -303,7 +303,7 @@
 - [`dummy_arrange()`](https://sedzinfo.github.io/rwf/reference/dummy_arrange.md)
   : Dummy-code a multiple response vector into a binary data frame
 - [`dotnames()`](https://sedzinfo.github.io/rwf/reference/dotnames.md) :
-  Pad a data frame to a target number of rows with NAs
+  Get the names of objects passed through dots
 - [`padNA()`](https://sedzinfo.github.io/rwf/reference/padNA.md) : Pad a
   data frame to a target number of rows with NAs
 - [`environment_options()`](https://sedzinfo.github.io/rwf/reference/environment_options.md)

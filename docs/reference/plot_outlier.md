@@ -26,17 +26,17 @@ plot_outlier(df, method = "mean", title = "", base_size = 10, pb = FALSE)
 
   `"mean"`
 
-  :   Flags observations more than 2 standard deviations from the mean.
+  : Flags observations more than 2 standard deviations from the mean.
 
   `"median"`
 
-  :   Flags observations more than 2 rescaled MADs (\\2 \times
-      \mathrm{MAD}/0.6745\\) from the median.
+  : Flags observations more than 2 rescaled MADs (\\2 \times
+    \mathrm{MAD}/0.6745\\) from the median.
 
   `"boxplot"`
 
-  :   Flags observations outside \\Q1 - 1.5 \times IQR\\ or \\Q3 + 1.5
-      \times IQR\\.
+  : Flags observations outside \\Q1 - 1.5 \times IQR\\ or \\Q3 + 1.5
+    \times IQR\\.
 
   Default is `"mean"`.
 

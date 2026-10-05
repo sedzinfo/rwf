@@ -25,11 +25,11 @@ split_str_df(df, split = "/", type = "row", index, ...)
 
   `"row"`
 
-  :   Splits the row names of `df`.
+  : Splits the row names of `df`.
 
   `"collumn"`
 
-  :   Splits the column specified by `index`.
+  : Splits the column specified by `index`.
 
   Default is `"row"`.
 

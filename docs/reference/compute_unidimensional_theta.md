@@ -36,10 +36,10 @@ compute_unidimensional_theta(a, b = 0, g = 0, i = 1, d = 1.702, theta = 0)
 
 ## Note
 
-when scaling constant=1 it has no effect in equation  
-when innatentiveness=1 and guessing=0 function computes a 2PL score  
-when innatentiveness=1 and guessing!=0 function computes a 3PL score  
-when innatentiveness!=1 and guessing!=0 function computes a 4PL score  
+when scaling constant=1 it has no effect in equation\
+when innatentiveness=1 and guessing=0 function computes a 2PL score\
+when innatentiveness=1 and guessing!=0 function computes a 3PL score\
+when innatentiveness!=1 and guessing!=0 function computes a 4PL score\
 
 ## Examples
 

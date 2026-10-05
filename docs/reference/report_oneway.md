@@ -75,12 +75,12 @@ report_oneway(
 
 ## Note
 
-\(1\) The Fisher procedure assumes heteroscedasticity  
-(2) The Welch procedure does not assume heteroscedasticity  
+\(1\) The Fisher procedure assumes heteroscedasticity\
+(2) The Welch procedure does not assume heteroscedasticity\
 (3) The Kruskal Wallis procedure does not assume normality but it is not
-an alternative for violations of heteroscedasticity  
+an alternative for violations of heteroscedasticity\
 (4) Posthoc Tuckey: not good for unequal sample sizes or
-heteroscedasticity  
+heteroscedasticity\
 (5) Posthoc Games Howell: good for unequal sample sizes and
 heteroscedasticity
 

@@ -36,17 +36,17 @@ matrix,row and column percentages,and overall accuracy.
 
 ## Note
 
-Total measures-Accuracy: (TP+TN)/total  
-Total measures-Prevalence: (TP+FN)/total  
-Total measures-Proportion Incorrectly Classified: (FN+FP)/total  
-Horizontal measures-True Positive Rate-Sensitivity: TP/(TP+FN)  
-Horizontal measures-True Negative Rate-Specificity: TN/(FP+TN)  
-Horizontal measures-False Negative Rate-Miss Rate: FN/(TP+FN)  
-Horizontal measures-False Positive Rate-Fall-out: FP/(FP+TN)  
-Vertical measures-Positive Predictive value-Precision: TP/(TP+FP)  
-Vertical measures-Negative Predictive value: TN/(FN+TN)  
-Vertical measures-False Omission Rate: FN/(FN+TN)  
-Vertical measures-False Discovery Rate: FP/(TP+FP)  
+Total measures-Accuracy: (TP+TN)/total\
+Total measures-Prevalence: (TP+FN)/total\
+Total measures-Proportion Incorrectly Classified: (FN+FP)/total\
+Horizontal measures-True Positive Rate-Sensitivity: TP/(TP+FN)\
+Horizontal measures-True Negative Rate-Specificity: TN/(FP+TN)\
+Horizontal measures-False Negative Rate-Miss Rate: FN/(TP+FN)\
+Horizontal measures-False Positive Rate-Fall-out: FP/(FP+TN)\
+Vertical measures-Positive Predictive value-Precision: TP/(TP+FP)\
+Vertical measures-Negative Predictive value: TN/(FN+TN)\
+Vertical measures-False Omission Rate: FN/(FN+TN)\
+Vertical measures-False Discovery Rate: FP/(TP+FP)\
 
 ## Examples
 

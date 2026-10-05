@@ -71,80 +71,78 @@ A named `list` with two elements:
 
   NAMES
 
-  :   Column name (truncated to `name_length`).
+  : Column name (truncated to `name_length`).
 
   EMPTY
 
-  :   Count of `""` empty strings.
+  : Count of `""` empty strings.
 
   null
 
-  :   Count of `NULL` values (always 0 for dataframe columns).
+  : Count of `NULL` values (always 0 for dataframe columns).
 
   na
 
-  :   Count of `NA` values.
+  : Count of `NA` values.
 
   NOT_NA
 
-  :   Count of non-`NA` values.
+  : Count of non-`NA` values.
 
   NAN
 
-  :   Count of `NaN` values.
+  : Count of `NaN` values.
 
   INF
 
-  :   Count of `Inf` and `-Inf` values.
+  : Count of `Inf` and `-Inf` values.
 
   FIN
 
-  :   Count of finite values.
+  : Count of finite values.
 
   RANGE
 
-  :   Number of distinct values.
+  : Number of distinct values.
 
   MEAN
 
-  :   Arithmetic mean, rounded to `digits`. `NA` for non-numeric
-      columns.
+  : Arithmetic mean, rounded to `digits`. `NA` for non-numeric columns.
 
   MEDIAN
 
-  :   Median, rounded to `digits`. `NA` for non-numeric columns.
+  : Median, rounded to `digits`. `NA` for non-numeric columns.
 
   SD
 
-  :   Standard deviation, rounded to `digits`. `NA` for non-numeric
-      columns.
+  : Standard deviation, rounded to `digits`. `NA` for non-numeric
+    columns.
 
   MIN
 
-  :   Minimum value or first label in sorted order.
+  : Minimum value or first label in sorted order.
 
   MAX
 
-  :   Maximum value or last label in sorted order.
+  : Maximum value or last label in sorted order.
 
   MODE
 
-  :   Storage mode as returned by
-      [`mode()`](https://rdrr.io/r/base/mode.html).
+  : Storage mode as returned by
+    [`mode()`](https://rdrr.io/r/base/mode.html).
 
   TYPE
 
-  :   Type as returned by
-      [`typeof()`](https://rdrr.io/r/base/typeof.html).
+  : Type as returned by
+    [`typeof()`](https://rdrr.io/r/base/typeof.html).
 
   CLASS
 
-  :   Class as returned by
-      [`class()`](https://rdrr.io/r/base/class.html).
+  : Class as returned by [`class()`](https://rdrr.io/r/base/class.html).
 
   FACTOR
 
-  :   Logical; `TRUE` if the column is a factor.
+  : Logical; `TRUE` if the column is a factor.
 
 ## Note
 

@@ -41,62 +41,62 @@ report_ttests(df, dv, iv, file = NULL, ...)
 
   `x`
 
-  :   a (non-empty) numeric vector of data values.
+  : a (non-empty) numeric vector of data values.
 
   `y`
 
-  :   an optional (non-empty) numeric vector of data values.
+  : an optional (non-empty) numeric vector of data values.
 
   `alternative`
 
-  :   a character string specifying the alternative hypothesis, must be
-      one of `"two.sided"` (default), `"greater"` or `"less"`. You can
-      specify just the initial letter.
+  : a character string specifying the alternative hypothesis, must be
+    one of `"two.sided"` (default), `"greater"` or `"less"`. You can
+    specify just the initial letter.
 
   `mu`
 
-  :   a number indicating the true value of the mean (or difference in
-      means if you are performing a two sample test).
+  : a number indicating the true value of the mean (or difference in
+    means if you are performing a two sample test).
 
   `paired`
 
-  :   a logical indicating whether you want a paired t-test.
+  : a logical indicating whether you want a paired t-test.
 
   `var.equal`
 
-  :   a logical variable indicating whether to treat the two variances
-      as being equal. If `TRUE` then the pooled variance is used to
-      estimate the variance otherwise the Welch (or Satterthwaite)
-      approximation to the degrees of freedom is used.
+  : a logical variable indicating whether to treat the two variances as
+    being equal. If `TRUE` then the pooled variance is used to estimate
+    the variance otherwise the Welch (or Satterthwaite) approximation to
+    the degrees of freedom is used.
 
   `conf.level`
 
-  :   confidence level of the interval.
+  : confidence level of the interval.
 
   `formula`
 
-  :   a formula of the form `lhs ~ rhs` where `lhs` is a numeric
-      variable giving the data values and `rhs` either `1` for a
-      one-sample or paired test or a factor with two levels giving the
-      corresponding groups. If `lhs` is of class
-      `"`[`Pair`](https://rdrr.io/r/stats/Pair.html)`"` and `rhs` is
-      `1`, a paired test is done, see Examples.
+  : a formula of the form `lhs ~ rhs` where `lhs` is a numeric variable
+    giving the data values and `rhs` either `1` for a one-sample or
+    paired test or a factor with two levels giving the corresponding
+    groups. If `lhs` is of class
+    `"`[`Pair`](https://rdrr.io/r/stats/Pair.html)`"` and `rhs` is `1`,
+    a paired test is done, see Examples.
 
   `data`
 
-  :   an optional matrix or data frame (or similar: see
-      [`model.frame`](https://rdrr.io/r/stats/model.frame.html))
-      containing the variables in the formula `formula`. By default the
-      variables are taken from `environment(formula)`.
+  : an optional matrix or data frame (or similar: see
+    [`model.frame`](https://rdrr.io/r/stats/model.frame.html))
+    containing the variables in the formula `formula`. By default the
+    variables are taken from `environment(formula)`.
 
   `subset`
 
-  :   an optional vector specifying a subset of observations to be used.
+  : an optional vector specifying a subset of observations to be used.
 
   `na.action`
 
-  :   a function which indicates what should happen when the data
-      contain [`NA`](https://rdrr.io/r/base/NA.html)s.
+  : a function which indicates what should happen when the data contain
+    [`NA`](https://rdrr.io/r/base/NA.html)s.
 
 ## Value
 

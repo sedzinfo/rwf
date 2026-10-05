@@ -22,22 +22,21 @@ report_manova(model, file = NULL)
 
 Pillai-Bartlett trace (V): Represents the sum of the proportion of
 explained variance on the discriminant functions. As such,it is similar
-to the ratio of SS M /SS T,which is known as R 2.  
+to the ratio of SS M /SS T,which is known as R 2.\
 Hotelling-s T 2: Represents the sum of the eigenvalues for each variate
-it compares directly to the F-ratio in ANOVA  
+it compares directly to the F-ratio in ANOVA\
 Wilks-s lambda (L): Represents the ratio of error variance to total
-variance (SS R /SS T ) for each variate.  
+variance (SS R /SS T ) for each variate.\
 Roy-s largest root: Represents the proportion of explained variance to
-unexplained variance (SS M /SS R ) for the first discriminant
-function.  
-ASSUMPTIONS  
-Independence: Observations should be statistically independent.  
+unexplained variance (SS M /SS R ) for the first discriminant function.\
+ASSUMPTIONS\
+Independence: Observations should be statistically independent.\
 Random sampling: Data should be randomly sampled from the population of
-interest and measured at an interval level.  
+interest and measured at an interval level.\
 Multivariate normality: In ANOVA,we assume that our dependent variable
 is normally distributed within each group. In the case of MANOVA,we
 assume that the dependent variables (collectively) have multivariate
-normality within groups.  
+normality within groups.\
 Homogeneity of covariance matrices: In ANOVA,it is assumed that the
 variances in each group are roughly equal (homogeneity of variance). In
 MANOVA we must assume that this is true for each dependent variable,but
