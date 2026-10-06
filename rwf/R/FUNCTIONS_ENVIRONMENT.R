@@ -238,6 +238,7 @@ combine_files<-function(input_dir="working_functions",
                         pattern="\\.[Rr]$",
                         recursive=TRUE) {
   files<-list.files(input_dir,pattern=pattern,full.names=TRUE,recursive=recursive)
+  files<-files[!dir.exists(files)]
   files<-files[normalizePath(files)!=normalizePath(output_file,mustWork=FALSE)]
   contents<-lapply(files,function(f) {
     c("##########################################################################################",

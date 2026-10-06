@@ -798,7 +798,8 @@ plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = F
       coord_flip()
   }
   if (pb) close(progress)
-  return(plot)
+  invisible(lapply(plot,print))
+  return(invisible(plot))
 }
 ##########################################################################################
 #  PLOT HISTOGRAM
@@ -868,7 +869,8 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
       }
   }
   if(pb) close(progress)
-  return(plot)
+  invisible(lapply(plot,print))
+  return(invisible(plot))
 }
 ##########################################################################################
 # PLOT QQ
@@ -932,7 +934,8 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
     }
   }
   if(pb) close(progress)
-  return(plot)
+  invisible(lapply(plot,print))
+  return(invisible(plot))
 }
 ##########################################################################################
 # PLOT BOXPLOT
@@ -955,7 +958,6 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
 #' vector <- generate_missing(rnorm(1000), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_boxplot(df = vector)
-#' plot_boxplot(df = generate_missing(vector))
 #' plot_boxplot(df = df)
 plot_boxplot <- function(df, title = "", base_size = 10) {
   variable <- value <- NULL
@@ -2731,6 +2733,7 @@ combine_files<-function(input_dir="working_functions",
                         pattern="\\.[Rr]$",
                         recursive=TRUE) {
   files<-list.files(input_dir,pattern=pattern,full.names=TRUE,recursive=recursive)
+  files<-files[!dir.exists(files)]
   files<-files[normalizePath(files)!=normalizePath(output_file,mustWork=FALSE)]
   contents<-lapply(files,function(f) {
     c("##########################################################################################",
@@ -3884,7 +3887,8 @@ plot_multiplot <- function(..., plotlist = NULL, cols = 2, layout = NULL) {
       p[[page]] <- grDevices::recordPlot()
     }
   }
-  return(p)
+  invisible(lapply(p,print))
+  return(invisible(p))
 }
 ##########################################################################################
 # DUPLICATE Y AXIS
@@ -5629,16 +5633,41 @@ confusion_matrix_percent<-function(observed,predicted) {
 #'     Negative Predictive Value/False Omission Rate (predicted negative row)}
 #' }
 #'
+#' @details
+#' With \eqn{TP}, \eqn{TN}, \eqn{FP} and \eqn{FN} the numbers of true positives,
+#' true negatives, false positives and false negatives, and
+#' \eqn{N = TP + TN + FP + FN} the total number of cases:
+#' \describe{
+#'   \item{Accuracy}{\eqn{\frac{TP + TN}{N}}{(TP + TN) / N}}
+#'   \item{Prevalence}{\eqn{\frac{TP + FN}{N}}{(TP + FN) / N}}
+#'   \item{Proportion Incorrectly Classified}{\eqn{\frac{FN + FP}{N} = 1 - \mathrm{Accuracy}}{(FN + FP) / N = 1 - Accuracy}}
+#'   \item{Sensitivity (true positive rate, recall)}{\eqn{\frac{TP}{TP + FN}}{TP / (TP + FN)}}
+#'   \item{Miss Rate (false negative rate)}{\eqn{\frac{FN}{TP + FN} = 1 - \mathrm{Sensitivity}}{FN / (TP + FN) = 1 - Sensitivity}}
+#'   \item{Specificity (true negative rate)}{\eqn{\frac{TN}{FP + TN}}{TN / (FP + TN)}}
+#'   \item{Fall-out (false positive rate)}{\eqn{\frac{FP}{FP + TN} = 1 - \mathrm{Specificity}}{FP / (FP + TN) = 1 - Specificity}}
+#'   \item{Precision (positive predictive value)}{\eqn{\frac{TP}{TP + FP}}{TP / (TP + FP)}}
+#'   \item{False Discovery Rate}{\eqn{\frac{FP}{TP + FP} = 1 - \mathrm{Precision}}{FP / (TP + FP) = 1 - Precision}}
+#'   \item{Negative Predictive Value}{\eqn{\frac{TN}{FN + TN}}{TN / (FN + TN)}}
+#'   \item{False Omission Rate}{\eqn{\frac{FN}{FN + TN} = 1 - \mathrm{NPV}}{FN / (FN + TN) = 1 - NPV}}
+#' }
+#'
 #' @param observed  Vector of true class labels (2 unique values).
 #' @param predicted Vector of predicted class labels (2 unique values, same domain).
 #' @param positive  Value treated as the positive class. Defaults to the second
 #'   sorted level (matches rwf's \code{confusion()} convention).
-#' @param base_size Base font size. Default 12.
+#' @param base_size Base font size. Default 10.
 #' @param title     Plot title suffix.
 #' @export
 #' @importFrom rlang .data
 #' @examples
-#' plot_confusion_extended(observed=c(0,0,0,1,1,1),predicted=c(0,0,0,1,1,1))
+#' plot_confusion_extended(observed=c(0,0,0,1,1,1,1),
+#'                         predicted=c(0,0,0,1,1,1,1))
+#' plot_confusion_extended(observed=c(0,0,0,1,1,1,1),
+#'                         predicted=c(0,0,0,1,1,1,0),
+#'                         positive=0)
+#' plot_confusion_extended(observed=c(0,0,0,1,1,1,1),
+#'                         predicted=c(0,0,0,1,1,1,0),
+#'                         positive=1)
 plot_confusion_extended <- function(observed, predicted, positive = NULL, base_size = 10, title = "") {
   observed  <- as.character(observed)
   predicted <- as.character(predicted)
@@ -6363,17 +6392,17 @@ plot_oneway <- function(df, dv, iv, base_size = 20, type = "se", order_factor = 
       ggpubr::as_ggplot(gridExtra::arrangeGrob(means_plot))
     }
   }
-
+  
   df[, iv] <- change_data_type(data.frame(df[, iv]), "factor")
   combinations <- expand.grid(names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv", "dv")
   row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
   combinations <- change_data_type(combinations, type = "character")
-
+  
   n_rows <- nrow(combinations)
   n_cores <- parallel::detectCores()
   use_parallel <- n_cores * 4 < n_rows
-
+  
   if (use_parallel) {
     message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
     future::plan(future::multisession, workers = n_cores)
@@ -6390,13 +6419,16 @@ plot_oneway <- function(df, dv, iv, base_size = 20, type = "se", order_factor = 
     plot_data <- setNames(lapply(seq_len(n_rows), output_data), row.names(combinations))
     plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
   }
-
+  
   plot_data_df <- Reduce(plyr::rbind.fill, plot_data)
   names_input_missing <- setdiff(names(df)[c(iv, dv)], names(plot_data_df))
   names_input <- names(df)[c(iv, dv)]
   names_input <- names_input[!names_input %in% names_input_missing]
   plot_data_df <- plot_data_df[, c(names_input, "N", "sd", "se", "ci")]
-  return(list(plot_data = plot_data, plot_data_df = plot_data_df, plots = plots))
+  
+  result<-list(plot_data = plot_data, plot_data_df = plot_data_df, plots = invisible(plots))
+  invisible(lapply(result$plots,print))
+  return(invisible(result))
 }
 ##########################################################################################
 # PLOT TWO WAY INTERACTION
@@ -6515,7 +6547,7 @@ plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_fact
       ggpubr::as_ggplot(gridExtra::arrangeGrob(interactions_plot))
     }
   }
-
+  
   df[, iv] <- change_data_type(df[, iv], type = "factor")
   combinations <- expand.grid(names(df)[iv], names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv1", "iv2", "dv")
@@ -6523,11 +6555,11 @@ plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_fact
   combinations <- change_data_type(combinations, type = "character")
   combinations <- combinations[-which(combinations$iv1 == combinations$iv2), ]
   combinations <- combinations[!duplicated(combinations), ]
-
+  
   n_rows <- nrow(combinations)
   n_cores <- parallel::detectCores()
   use_parallel <- n_cores * 4 < n_rows
-
+  
   if (use_parallel) {
     message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
     future::plan(future::multisession, workers = n_cores)
@@ -6545,10 +6577,12 @@ plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_fact
     plot_data <- setNames(lapply(seq_len(n_rows), output_data), row.names(combinations))
     plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
   }
-
+  
   plot_data_df <- Reduce(plyr::rbind.fill, plot_data)
   plot_data_df <- plot_data_df[, c(names(df)[c(iv, dv)], setdiff(c("N", "sd", "se", "ci"), names(df)[c(iv, dv)]))]
-  return(list(plot_data = plot_data, plot_data_df = plot_data_df, plots = plots))
+  result<-list(plot_data = plot_data, plot_data_df = plot_data_df, plots = plots)
+  invisible(lapply(result$plots,print))
+  return(invisible(result))
 }
 ##########################################################################################
 # PLOT ANOVA DIAGNOSTICS
@@ -6619,16 +6653,16 @@ plot_oneway_diagnostics <- function(df, dv, iv, base_size = 10) {
         theme(axis.text.x = element_text(angle = 45, hjust = 1))
     }
   }
-
+  
   combinations <- expand.grid(names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv", "dv")
   row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
   combinations <- change_data_type(combinations, type = "character")
-
+  
   n_rows <- nrow(combinations)
   n_cores <- parallel::detectCores()
   use_parallel <- n_cores * 4 < n_rows
-
+  
   if (use_parallel) {
     message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
     future::plan(future::multisession, workers = n_cores)
@@ -6641,8 +6675,8 @@ plot_oneway_diagnostics <- function(df, dv, iv, base_size = 10) {
   } else {
     plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
   }
-
-  return(plots)
+  invisible(lapply(plots,print))
+  return(invisible(plots))
 }
 
 ##########################################################################################
@@ -7777,8 +7811,9 @@ plot_loadings<-function(model,matrix_type=NULL,title="",base_size=10,color=c("#5
     labs(y="Loading",x="",title=paste(str_proper(matrix_type),"Matrix",title))+
     theme_bw(base_size=base_size)+
     lims(y=c(0,1))
-  result<-list(correlation_loadings=correlation_loadings,plot_barplot=plot_barplot)
-  return(result)
+  plotlist<-list(correlation_loadings=correlation_loadings,plot_barplot=plot_barplot)
+  invisible(lapply(plotlist,print))
+  return(invisible(plotlist))
 }
 ##########################################################################################
 # PLOT SCREE

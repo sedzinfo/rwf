@@ -11,6 +11,9 @@ cat("\014")
 library(rwf)
 environment_options()
 rstudioapi::getSourceEditorContext()$path
+combine_files(input_dir = gsub("ENVIRONMENT/", "", directory),
+              output_file = paste0(gsub("working_functions/ENVIRONMENT/", "", directory), "vignettes/R/code_rwf.R"),
+              recursive = FALSE)
 ##########################################################################################
 # SOURCE
 ##########################################################################################

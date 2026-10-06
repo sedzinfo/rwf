@@ -20,7 +20,7 @@ plot_confusion_extended(
 \item{positive}{Value treated as the positive class. Defaults to the second
 sorted level (matches rwf's \code{confusion()} convention).}
 
-\item{base_size}{Base font size. Default 12.}
+\item{base_size}{Base font size. Default 10.}
 
 \item{title}{Plot title suffix.}
 }
@@ -35,6 +35,31 @@ alongside the row/column/overall measures:
     Negative Predictive Value/False Omission Rate (predicted negative row)}
 }
 }
+\details{
+With \eqn{TP}, \eqn{TN}, \eqn{FP} and \eqn{FN} the numbers of true positives,
+true negatives, false positives and false negatives, and
+\eqn{N = TP + TN + FP + FN} the total number of cases:
+\describe{
+  \item{Accuracy}{\eqn{\frac{TP + TN}{N}}{(TP + TN) / N}}
+  \item{Prevalence}{\eqn{\frac{TP + FN}{N}}{(TP + FN) / N}}
+  \item{Proportion Incorrectly Classified}{\eqn{\frac{FN + FP}{N} = 1 - \mathrm{Accuracy}}{(FN + FP) / N = 1 - Accuracy}}
+  \item{Sensitivity (true positive rate, recall)}{\eqn{\frac{TP}{TP + FN}}{TP / (TP + FN)}}
+  \item{Miss Rate (false negative rate)}{\eqn{\frac{FN}{TP + FN} = 1 - \mathrm{Sensitivity}}{FN / (TP + FN) = 1 - Sensitivity}}
+  \item{Specificity (true negative rate)}{\eqn{\frac{TN}{FP + TN}}{TN / (FP + TN)}}
+  \item{Fall-out (false positive rate)}{\eqn{\frac{FP}{FP + TN} = 1 - \mathrm{Specificity}}{FP / (FP + TN) = 1 - Specificity}}
+  \item{Precision (positive predictive value)}{\eqn{\frac{TP}{TP + FP}}{TP / (TP + FP)}}
+  \item{False Discovery Rate}{\eqn{\frac{FP}{TP + FP} = 1 - \mathrm{Precision}}{FP / (TP + FP) = 1 - Precision}}
+  \item{Negative Predictive Value}{\eqn{\frac{TN}{FN + TN}}{TN / (FN + TN)}}
+  \item{False Omission Rate}{\eqn{\frac{FN}{FN + TN} = 1 - \mathrm{NPV}}{FN / (FN + TN) = 1 - NPV}}
+}
+}
 \examples{
-plot_confusion_extended(observed=c(0,0,0,1,1,1),predicted=c(0,0,0,1,1,1))
+plot_confusion_extended(observed=c(0,0,0,1,1,1,1),
+                        predicted=c(0,0,0,1,1,1,1))
+plot_confusion_extended(observed=c(0,0,0,1,1,1,1),
+                        predicted=c(0,0,0,1,1,1,0),
+                        positive=0)
+plot_confusion_extended(observed=c(0,0,0,1,1,1,1),
+                        predicted=c(0,0,0,1,1,1,0),
+                        positive=1)
 }
