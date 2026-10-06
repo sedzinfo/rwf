@@ -199,7 +199,8 @@ plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = F
       coord_flip()
   }
   if (pb) close(progress)
-  return(plot)
+  invisible(lapply(plot,print))
+  return(invisible(plot))
 }
 ##########################################################################################
 #  PLOT HISTOGRAM
@@ -269,7 +270,8 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
       }
   }
   if(pb) close(progress)
-  return(plot)
+  invisible(lapply(plot,print))
+  return(invisible(plot))
 }
 ##########################################################################################
 # PLOT QQ
@@ -333,7 +335,8 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
     }
   }
   if(pb) close(progress)
-  return(plot)
+  invisible(lapply(plot,print))
+  return(invisible(plot))
 }
 ##########################################################################################
 # PLOT BOXPLOT
@@ -356,7 +359,6 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
 #' vector <- generate_missing(rnorm(1000), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_boxplot(df = vector)
-#' plot_boxplot(df = generate_missing(vector))
 #' plot_boxplot(df = df)
 plot_boxplot <- function(df, title = "", base_size = 10) {
   variable <- value <- NULL

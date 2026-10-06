@@ -27,7 +27,6 @@ Melts all numeric columns of \code{df} into a single long
 vector <- generate_missing(rnorm(1000), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 plot_boxplot(df = vector)
-plot_boxplot(df = generate_missing(vector))
 plot_boxplot(df = df)
 }
 \keyword{assumptions}
