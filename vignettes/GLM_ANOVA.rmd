@@ -20,6 +20,7 @@ vignette: >
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "R/code_options.R"))
 source(paste0(directory, "R/code_rwf.R"))
+library(ggfortify)
 ```
 
 ## Description
@@ -110,12 +111,12 @@ df<-data.frame(id=rep(seq(1,80),each=81,1),
                IV3=rep(LETTERS[7:9],each=9,240),
                IV4=rep(LETTERS[10:12],each=27,80),
                stringsAsFactors=FALSE)
-cdf<-data.frame(matrix(.01,ncol=4,nrow=4))
-correlation_martix<-as.matrix(cdf)
+ctdf<-data.frame(matrix(.01,ncol=4,nrow=4))
+correlation_martix<-as.matrix(ctdf)
 diag(correlation_martix)<-1
-cdf<-generate_correlation_matrix(correlation_martix,nrows=nrow(df))+10
-names(cdf)<-paste0("DV",1:4)
-df<-data.frame(df,cdf)
+ctdf<-generate_correlation_matrix(correlation_martix,nrows=nrow(df))+10
+names(ctdf)<-paste0("DV",1:4)
+df<-data.frame(df,ctdf)
 df$DV2<-df$DV2+10
 df$DV3<-df$DV3+20
 df$DV4<-df$DV4+30

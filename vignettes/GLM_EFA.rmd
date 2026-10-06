@@ -44,7 +44,7 @@ Four datasets are shown to illustrate how the plot looks under different factor 
 3. A simulated dataset where only one factor has strong internal correlations — tests asymmetric structure detection.
 4. A near-identity correlation matrix (all correlations ~0.01) — no real factor structure; loadings should be near zero.
 
-```{r, plot_loadings,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE,results='hide',dev='png',fig.retina=2}
+```{r, plot_loadings,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE,results='hide'}
 model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
 plot_loadings(model=model,matrix_type="structure")
 plot_loadings(model=model,matrix_type="pattern")
@@ -86,7 +86,7 @@ A scree plot shows eigenvalues (the amount of variance each factor explains) in 
 
 `plot_scree` plots eigenvalues alongside parallel analysis results, which compares observed eigenvalues against those from random data of the same size. Factors with eigenvalues above the parallel analysis line are unlikely to be noise and should be retained.
 
-```{r, plot_scree,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE,results='hide',dev='png',fig.retina=2}
+```{r, plot_scree,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE,results='hide'}
 plot_scree(df=mtcars,title="",base_size=15)
 ```
 
@@ -100,7 +100,7 @@ Three calls demonstrate the options:
 - `cut = 0.4`: only loadings ≥ 0.4 shown, structure matrix — a common threshold for "meaningful" loadings in applied research.
 - `cut = 0.4, matrix_type = "all"`: both pattern and structure matrices side by side, unsorted.
 
-```{r, model_loadings,fig.width=20,fig.height=10,echo=TRUE,message=FALSE,warning=FALSE,dev='png',fig.retina=2}
+```{r, model_loadings,fig.width=20,fig.height=10,echo=TRUE,message=FALSE,warning=FALSE}
 model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
 model_loadings(model=model,cut=NULL,matrix_type="pattern")
 model_loadings(model=model,cut=0.4,matrix_type="structure")
@@ -124,7 +124,7 @@ compute_residual_stats(model)
 
 The example uses a simulated dataset with a known two-factor structure (the same 6×6 correlation matrix used in the Plot Loadings section), so the output should cleanly recover the two factors. The computation chunk uses `results='hide'` to suppress intermediate output; the formatted result is printed in the next chunk.
 
-```{r, report_efa,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE,results='hide',dev='png',fig.retina=2}
+```{r, report_efa,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE,results='hide'}
 cm<-matrix(c(1,.8,.8,.1,.1,.1,
              .8,1,.8,.1,.1,.1,
              .8,.8,1,.1,.1,.1,
@@ -137,7 +137,7 @@ model<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
 result<-report_efa(model=model,df=df1)
 ```
 
-```{r, print_output,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE,dev='png',fig.retina=2}
+```{r, print_output,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE}
 result
 ```
 

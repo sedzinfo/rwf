@@ -31,7 +31,7 @@ Installation instructions for rwf can be found [here](https://github.com/sedzinf
 The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/FUNCTIONS_TRAIN_TEST.R)
 
 ## Plot Receiver Operating Characteristic ROC Curve
-```{r plot_roc,fig.width=8,fig.height=8,echo=TRUE,message=FALSE,warning=FALSE,results='hide',dev='png',fig.retina=2}
+```{r plot_roc,echo=TRUE,message=FALSE,warning=FALSE,results='hide'}
 # Observed vector binary
 observed<-round(abs(rnorm(100,m=0,sd=.5)))
 # Predicted vector continuous
@@ -50,7 +50,7 @@ plot_roc(observed=round(abs(df1$X1),0),predicted=abs(df1$X2))
 ```
 
 ## Plot Confusion Matrix
-```{r plot_confusion,fig.width=8,fig.height=8,dev='png',fig.retina=2}
+```{r plot_confusion}
 plot_confusion(observed=c(1,2,3,1,2,3),predicted=c(1,2,3,1,2,3))
 observed<-c(rep("male",10),rep("female",10),"male","male")
 predicted<-c(rep("male",10),rep("female",10),"female","female")
@@ -60,7 +60,7 @@ plot_confusion(observed=observed,predicted=predicted)
 ## Plot Separability
 This function generates a separability plot using ggplot2. It shows the density distribution of predicted probabilities for different observed categories. The plot helps to visualize how well the predicted probabilities separate the different observed categories.
 
-```{r plot_separability,fig.width=8,fig.height=8,dev='png',fig.retina=2}
+```{r plot_separability}
 df1<-data.frame(matrix(.999,ncol=2,nrow=2))
 correlation_martix<-as.matrix(df1)
 diag(correlation_martix)<-1
@@ -74,7 +74,7 @@ plot_separability(observed=round(abs(df1$X1),0),predicted=abs(df1$X2))
 ## Plot Confusion Matrix Performance
 This function evaluates the performance of a confusion matrix at different cut-off points. It iterates through a range of cut-off points, calculates the confusion matrix,and evaluates the proportion of correct classifications for each cut-off.
 
-```{r plot_confusion_performance,fig.width=9,fig.height=8,dev='png',fig.retina=2}
+```{r plot_confusion_performance,fig.width=9}
 df<-data.frame(matrix(.999,ncol=2,nrow=2))
 correlation_martix<-as.matrix(df)
 diag(correlation_martix)<-1
