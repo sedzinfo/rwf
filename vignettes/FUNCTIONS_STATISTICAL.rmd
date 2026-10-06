@@ -1,0 +1,208 @@
+---
+title: "FUNCTIONS_STATISTICAL"
+author: ""
+output:
+  html_document:
+    css: styles.css
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+    code_folding: show
+    self_contained: true
+vignette: >
+  %\VignetteIndexEntry{FUNCTIONS_STATISTICAL}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
+source(paste0(directory, "R/code_options.R"))
+source(paste0(directory, "R/code_rwf.R"))
+```
+
+## Description
+
+This shows the output of basic statistical functions from the package rwf. The functions compute multiple-comparison alpha adjustments (Bonferroni and Šidák), standard scores (z, T, sten, stanine, percentiles and others), the correlation corrected for measurement error, skewness, kurtosis, the standard error of the mean, and the margin of error of a confidence interval. Each section gives the formula the function uses and checks the result against an established implementation.
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/FUNCTIONS_STATISTICAL.R)
+
+## Notation
+
+$x_1,\dots,x_n$ are the non-missing values of the input vector; $\bar{x}=\frac{1}{n}\sum_{i=1}^{n}x_i$ is their mean and $s=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2}$ their sample standard deviation. $\Phi$ is the standard normal cumulative distribution function and $z_q=\Phi^{-1}(q)$ its $q$ quantile. $\operatorname{round}(\cdot)$ rounds to the nearest integer (R rounds halves to the even integer) and $\operatorname{clip}_{[a,b]}(y)=\min\{\max\{y,a\},b\}$ limits $y$ to the range $[a,b]$.
+
+## compute_adjustment
+
+Returns the per-test alpha that keeps the family-wise error rate at $\alpha$ across $k$ tests.
+
+$$\alpha_{\text{Bonferroni}}=\frac{\alpha}{k}$$
+
+$$\alpha_{\text{Šidák}}=1-(1-\alpha)^{1/k}$$
+
+Bonferroni (Dunn, 1961) holds for any dependence between the tests; Šidák (Šidák, 1967) assumes independent tests and is slightly less strict.
+
+```{r compute_adjustment}
+compute_adjustment(a = 0.05, ntests = 10)
+```
+
+Comparing a p value with $\alpha/k$ is the same as comparing $k\,p$ with $\alpha$, which is what `stats::p.adjust` returns:
+
+```{r compute_adjustment_check}
+p <- c(0.001, 0.004, 0.02, 0.3)
+adjustment <- compute_adjustment(a = 0.05, ntests = length(p))
+data.frame(p,
+           significant_rwf = p < adjustment$bonferroni,
+           significant_p_adjust = stats::p.adjust(p, method = "bonferroni") < 0.05)
+```
+
+## compute_standard
+
+Transforms a vector into standard scores. With `input = "non_standard"` (default) the z-scores are computed from the data; with `input = "standard"` the input is taken to be z-scores already, $z_i=x_i$.
+
+| `type` | Formula |
+|---|---|
+| `"z"` | $z_i=\dfrac{x_i-\bar{x}}{s}$ |
+| `"uz"` | $x_i\,\sigma+\mu$ (converts z-scores back to raw scores with the supplied `mean` $\mu$ and `sd` $\sigma$) |
+| `"t"` | $T_i=10\,z_i+50$ |
+| `"sten"` | $\operatorname{clip}_{[1,10]}\left(\operatorname{round}(2\,z_i+5.5)\right)$ |
+| `"stanine"` | $\operatorname{round}\left(\operatorname{clip}_{[1,9]}(2\,z_i+5)\right)$ |
+| `"center"` | $x_i-\bar{x}$ |
+| `"center_reversed"` | $\bar{x}-x_i$ |
+| `"percent"` | $100\,\dfrac{x_i}{\max_j x_j}$ |
+| `"percentile"` | $100\,\Phi(z_i)$ |
+| `"scale_zero_one"` | $\dfrac{x_i-\min_j x_j}{\max_j x_j-\min_j x_j}$ |
+| `"normal_density"` | $f(x_i)=\dfrac{1}{\sigma\sqrt{2\pi}}\exp\left(-\dfrac{1}{2}\left(\dfrac{x_i-\mu}{\sigma}\right)^2\right)$ |
+| `"cumulative_density"` | $C_i=\sum_{j=1}^{i}x_j$ (running sum of the input) |
+| `"all"` | data frame with `z`, `sten`, `t`, `stanine`, `percent`, `percentile` and `scale_0_1`, sorted by `z` |
+
+```{r compute_standard}
+set.seed(1)
+vector <- round(rnorm(10, mean = 100, sd = 15))
+compute_standard(vector, type = "all")
+```
+
+The z-scores match `scale()`, and the T-scores and percentiles follow directly from them:
+
+```{r compute_standard_check}
+z <- compute_standard(vector, type = "z")
+all.equal(z, as.numeric(scale(vector)))
+all.equal(compute_standard(vector, type = "t"), 10 * z + 50)
+all.equal(compute_standard(vector, type = "percentile"), 100 * pnorm(z))
+all.equal(compute_standard(vector, type = "scale_zero_one"),
+          (vector - min(vector)) / (max(vector) - min(vector)))
+```
+
+`"uz"` reverses the transformation when it is given the original mean and standard deviation:
+
+```{r compute_standard_uz}
+all.equal(compute_standard(z, mean = mean(vector), sd = sd(vector), type = "uz"), vector)
+```
+
+`"normal_density"` evaluates the density at each value and `"cumulative_density"` adds the values up in order. Multiplied by the grid step $\Delta x$, the running sum of the density approximates the cumulative distribution function, $\Phi(x_i)\approx\sum_{j\le i}f(x_j)\,\Delta x$:
+
+```{r compute_standard_density,fig.width=10,fig.height=4}
+grid <- seq(-4, 4, 0.01)
+density <- compute_standard(grid, mean = 0, sd = 1, type = "normal_density")
+cumulative <- compute_standard(density, type = "cumulative_density")
+par(mfrow = c(1, 2))
+plot(grid, density, type = "l", xlab = "x", ylab = "density", main = "normal_density")
+plot(grid, cumulative * 0.01, type = "l", xlab = "x", ylab = "cumulative", main = "cumulative_density x step")
+```
+
+## compute_dissatenuation
+
+Corrects the correlation between two variables for measurement error (Spearman, 1904). Each observed score is a true score plus error, $X=T_X+E_X$ and $Y=T_Y+E_Y$.
+
+$$r_{XY}=\frac{\operatorname{cov}(X,Y)}{\sqrt{\operatorname{var}(X)\operatorname{var}(Y)}}$$
+
+$$R_X=\frac{\operatorname{var}(T_X)}{\operatorname{var}(T_X)+\operatorname{var}(E_X)},\qquad R_Y=\frac{\operatorname{var}(T_Y)}{\operatorname{var}(T_Y)+\operatorname{var}(E_Y)}$$
+
+$$\hat{\rho}_{T_XT_Y}=\frac{r_{XY}}{\sqrt{R_X\,R_Y}}$$
+
+$r_{XY}$ is the observed correlation, $R_X$ and $R_Y$ are the reliabilities (true-score variance over total variance) and $\hat{\rho}_{T_XT_Y}$ is the estimated correlation between the true scores.
+
+Two true scores with a correlation of 0.6 are measured with error. The observed correlation is lower than 0.6; the corrected one recovers it:
+
+```{r compute_dissatenuation}
+set.seed(1)
+n <- 10000
+true_scores <- MASS::mvrnorm(n, mu = c(0, 0), Sigma = matrix(c(1, 0.6, 0.6, 1), 2))
+error1 <- rnorm(n, sd = 0.7)
+error2 <- rnorm(n, sd = 0.5)
+data.frame(true = cor(true_scores[, 1], true_scores[, 2]),
+           observed = cor(true_scores[, 1] + error1, true_scores[, 2] + error2),
+           corrected = compute_dissatenuation(true_scores[, 1], error1, true_scores[, 2], error2))
+```
+
+## compute_skewness
+
+Sample skewness $b_1$, the version used by MINITAB and BMDP (Joanes & Gill, 1998). With $m_k=\frac{1}{n}\sum_{i=1}^{n}(x_i-\bar{x})^k$ the $k$-th sample central moment:
+
+$$g_1=\frac{m_3}{m_2^{3/2}}=\frac{\sqrt{n}\sum_{i=1}^{n}(x_i-\bar{x})^3}{\left(\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^{3/2}}$$
+
+$$b_1=\frac{m_3}{s^3}=g_1\left(\frac{n-1}{n}\right)^{3/2}$$
+
+0 means a symmetric distribution; positive values mean a longer right tail and negative values a longer left tail. The result matches `e1071::skewness(type = 3)`:
+
+```{r compute_skewness}
+set.seed(1)
+vector <- rexp(1000)
+compute_skewness(vector)
+e1071::skewness(vector, type = 3)
+```
+
+## compute_kurtosis
+
+Sample excess kurtosis $b_2$, the version used by MINITAB and BMDP (Joanes & Gill, 1998):
+
+$$g_2+3=\frac{m_4}{m_2^{2}}=\frac{n\sum_{i=1}^{n}(x_i-\bar{x})^4}{\left(\sum_{i=1}^{n}(x_i-\bar{x})^2\right)^{2}}$$
+
+$$b_2=\frac{m_4}{s^4}-3=(g_2+3)\left(\frac{n-1}{n}\right)^{2}-3$$
+
+0 means tails like a normal distribution; positive values mean heavier tails (leptokurtic) and negative values lighter tails (platykurtic). The result matches `e1071::kurtosis(type = 3)`:
+
+```{r compute_kurtosis}
+compute_kurtosis(vector)
+e1071::kurtosis(vector, type = 3)
+```
+
+## compute_standard_error
+
+Standard error of the mean:
+
+$$SE_{\bar{x}}=\frac{s}{\sqrt{n}}=\sqrt{\frac{s^2}{n}}$$
+
+```{r compute_standard_error}
+set.seed(1)
+vector <- rnorm(1000, mean = 100, sd = 15)
+compute_standard_error(vector)
+psych::describe(vector)$se
+```
+
+## compute_confidence_inteval
+
+Margin of error of a 95% confidence interval for the mean, based on the normal distribution:
+
+$$ME=z_{0.975}\,\frac{s}{\sqrt{n}}\approx1.96\,\frac{s}{\sqrt{n}}$$
+
+The function returns the margin of error, not the interval itself; the interval is $\bar{x}\pm ME$. For large samples it is close to the interval from `t.test`, which uses $t_{0.975,\,n-1}$ instead of $z_{0.975}$:
+
+```{r compute_confidence_inteval}
+margin <- compute_confidence_inteval(vector)
+margin
+mean(vector) + c(-1, 1) * margin
+as.numeric(t.test(vector)$conf.int)
+```
+
+## References
+
+Dunn, O. J. (1961). Multiple comparisons among means. *Journal of the American Statistical Association, 56*(293), 52–64. https://doi.org/10.1080/01621459.1961.10482090
+
+Joanes, D. N., & Gill, C. A. (1998). Comparing measures of sample skewness and kurtosis. *Journal of the Royal Statistical Society: Series D (The Statistician), 47*(1), 183–189. https://doi.org/10.1111/1467-9884.00122
+
+Šidák, Z. (1967). Rectangular confidence regions for the means of multivariate normal distributions. *Journal of the American Statistical Association, 62*(318), 626–633. https://doi.org/10.1080/01621459.1967.10482935
+
+Spearman, C. (1904). The proof and measurement of association between two things. *The American Journal of Psychology, 15*(1), 72–101. https://doi.org/10.2307/1412159
