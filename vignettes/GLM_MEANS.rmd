@@ -54,15 +54,32 @@ head(df_insurance)
 cdf(df_insurance)
 ```
 
+## Assumptions
+
+### t-test
+
+- **Independence**: observations are independent within and between groups (Student, 1908). For a within-subjects design, the pairs are independent of each other.
+- **Scale**: the DV is measured on an interval or ratio scale.
+- **Normality**: the DV is normally distributed within each group; for a within-subjects design, the differences $d_i$ are normally distributed (Student, 1908). With large groups the t-test is robust to non-normality. Normality can be checked with the Shapiro-Wilk test (Shapiro & Wilk, 1965).
+- **Equal variances**: Student's t-test (`var.equal = TRUE`) assumes equal variances in both groups. Welch's t-test (the default) does not (Welch, 1947) and is the safer default (Delacre et al., 2017). The Bartlett columns (`k_squared[bartlett]`, `df[bartlett]`, `p[bartlett]`) test this assumption (Bartlett, 1937); `p[bartlett]` < .05 suggests unequal variances. Bartlett's test is itself sensitive to non-normality (Box, 1953).
+
+### Wilcoxon test
+
+- **Independence**: observations are independent within and between groups (Wilcoxon, 1945; Mann & Whitney, 1947). For a within-subjects design (signed-rank test), the pairs are independent of each other.
+- **Scale**: the DV is at least ordinal. For the signed-rank test, the differences $d_i$ must be meaningful to rank, so the DV should be interval.
+- **No normality required**: the test uses ranks instead of raw values (Wilcoxon, 1945).
+- **Shape**: the rank-sum test compares whether values in one group tend to be larger than in the other, $P(X_1>X_2)\neq 0.5$ (Mann & Whitney, 1947). It can be read as a difference in medians only when both groups have the same distribution shape and spread; otherwise it can be significant even with equal medians (Fagerland & Sandvik, 2009). The signed-rank test assumes the differences $d_i$ are symmetric around their median (Wilcoxon, 1945).
+- **Ties**: tied values are given average ranks and the variance is corrected for ties (see Formulas).
+
 ## T-Test
 
-`report_ttests` runs independent-samples t-tests for all pairwise combinations of levels of the specified independent variable(s) against a dependent variable. When multiple IVs are provided, it tests all level combinations across variables.
+`report_ttests` runs independent-samples t-tests for all pairwise combinations of levels of the specified independent variable(s) against a dependent variable. When multiple IVs are provided, it tests all level combinations.
 
 The calls below demonstrate the key options:
 
 - **Single IV** (`iv = 2`, sex): one pairwise comparison (male vs. female).
 - **Single IV** (`iv = 4`, children): pairwise comparisons across all child-count groups.
-- **Multiple IVs** (`iv = c(2,4)`): all combinations of sex and children levels tested simultaneously.
+- **Multiple IVs** (`iv = c(2,4)`): all combinations of sex and children levels.
 - **`alternative`**: controls the direction of the hypothesis — `"two.sided"` (default), `"less"`, or `"greater"`.
 - **`var.equal = TRUE`**: uses Student's t-test assuming equal variances; default (`FALSE`) uses Welch's t-test which does not assume equal variances and is generally safer.
 
@@ -77,7 +94,7 @@ report_ttests(df=df_insurance,dv=7,iv=c(2,4),var.equal=TRUE)
 ```
 
 ## Explanation of columns
-| Column   |           |Description                            |  Reference               |
+| Column   | Effect    |Description                            |  Reference               |
 |----------|-----------|---------------------------------------|--------------------------|
 |DV                  ||dependent variable|
 |IV                  ||independent variable|
@@ -115,7 +132,7 @@ report_ttests(df=df_insurance,dv=7,iv=c(2,4),var.equal=TRUE)
 
 `report_wtests` runs the Wilcoxon rank-sum test (Mann-Whitney U), the non-parametric equivalent of the independent-samples t-test. It makes no assumption about the distribution of the data and compares group medians via rank ordering. Use it when the normality assumption is violated or the outcome is ordinal.
 
-The calls mirror those in the T-Test section exactly, allowing direct comparison of parametric and non-parametric results on the same data. The key difference in the output is the **W statistic** (Wilcoxon rank-sum) in place of t, and the absence of pooled standard deviation as a meaningful quantity under rank-based testing.
+The calls mirror those in the T-Test section exactly, allowing direct comparison of parametric and non-parametric results on the same data. The key difference in the output is the **W statistic** (Wilcoxon rank-sum) in place of t.
 
 ```{r, report_wtests}
 report_wtests(df=df_insurance,dv=7,iv=c(2))
@@ -124,11 +141,11 @@ report_wtests(df=df_insurance,dv=7,iv=c(2,4))
 report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="two.sided")
 report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="less")
 report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="greater")
-report_wtests(df=df_insurance,dv=7,iv=c(2,4),var.equal=TRUE)
+report_wtests(df=df_insurance,dv=7,iv=c(2,4),var.equal=FALSE)
 ```
 
 ## Explanation of columns
-| Column   |           |Description                            |  Reference               |
+| Column   | Effect    |Description                            |  Reference               |
 |----------|-----------|---------------------------------------|--------------------------|
 |DV                  ||dependent variable|
 |IV                  ||independent variable|
@@ -149,7 +166,7 @@ report_wtests(df=df_insurance,dv=7,iv=c(2,4),var.equal=TRUE)
 |sd2                 ||standard deviation for level 2|
 |sd_pooled           ||pooled standard deviation combined standard deviation of both levels|
 |d                   ||measure of effect size cohen's d|
-|d                   |Very small| 0.01 Sawilowsky (2009)|
+|d                   |Very small| 0.01| Sawilowsky (2009)|
 |d                   |Small|      0.20| Cohen (1988)|
 |d                   |Medium|     0.50| Cohen (1988)|
 |d                   |Large|      0.80| Cohen (1988)|
@@ -368,9 +385,15 @@ Bonferroni, C. E. (1936). Teoria statistica delle classi e calcolo delle probabi
 
 Borenstein, M., Hedges, L. V., Higgins, J. P. T., & Rothstein, H. R. (2009). *Introduction to meta-analysis*. Wiley. https://doi.org/10.1002/9780470743386
 
+Box, G. E. P. (1953). Non-normality and tests on variances. *Biometrika, 40*(3–4), 318–335. https://doi.org/10.1093/biomet/40.3-4.318
+
 Cohen, J. (1988). *Statistical power analysis for the behavioral sciences* (2nd ed.). Lawrence Erlbaum Associates.
 
+Delacre, M., Lakens, D., & Leys, C. (2017). Why psychologists should by default use Welch's t-test instead of Student's t-test. *International Review of Social Psychology, 30*(1), 92–101. https://doi.org/10.5334/irsp.82
+
 Dunn, O. J. (1961). Multiple comparisons among means. *Journal of the American Statistical Association, 56*(293), 52–64. https://doi.org/10.1080/01621459.1961.10482090
+
+Fagerland, M. W., & Sandvik, L. (2009). The Wilcoxon-Mann-Whitney test under scrutiny. *Statistics in Medicine, 28*(10), 1487–1497. https://doi.org/10.1002/sim.3561
 
 Hodges, J. L., & Lehmann, E. L. (1963). Estimates of location based on rank tests. *The Annals of Mathematical Statistics, 34*(2), 598–611. https://doi.org/10.1214/aoms/1177704172
 
@@ -381,6 +404,8 @@ Rosenthal, R. (1991). *Meta-analytic procedures for social research* (Rev. ed.).
 Satterthwaite, F. E. (1946). An approximate distribution of estimates of variance components. *Biometrics Bulletin, 2*(6), 110–114. https://doi.org/10.2307/3002019
 
 Sawilowsky, S. S. (2009). New effect size rules of thumb. *Journal of Modern Applied Statistical Methods, 8*(2), 597–599. https://doi.org/10.22237/jmasm/1257035100
+
+Shapiro, S. S., & Wilk, M. B. (1965). An analysis of variance test for normality (complete samples). *Biometrika, 52*(3–4), 591–611. https://doi.org/10.1093/biomet/52.3-4.591
 
 Student. (1908). The probable error of a mean. *Biometrika, 6*(1), 1–25. https://doi.org/10.1093/biomet/6.1.1
 

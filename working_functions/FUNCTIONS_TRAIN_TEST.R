@@ -53,7 +53,8 @@ plot_roc<-function(observed,predicted,base_size=10,title="") {
   }
   plotlist[[toString(rco1$levels)]]<-rp(rco1)
   plotlist[[toString(rco2$levels)]]<-rp(rco2)
-  return(plotlist)
+  invisible(lapply(plotlist,print))
+  return(invisible(plotlist))
 }
 ##########################################################################################
 # PLOT CONFUSION
@@ -148,7 +149,7 @@ plot_confusion<-function(observed,predicted,base_size=10,title="") {
 plot_separability<-function(observed,predicted,base_size=10,title="") {
   df<-data.frame(observed=as.factor(observed),predicted=predicted)
   plot<-ggplot(df,aes(x=predicted,color=factor(observed)))+
-    geom_density(size=1)+
+    geom_density(linewidth=1)+
     labs(title=paste("Predicted proportion vs Observed category",title),
          color="observed",
          caption=paste0("Observations:",nrow(df)))+
@@ -191,8 +192,6 @@ plot_separability<-function(observed,predicted,base_size=10,title="") {
 #' result_confusion_performance(observed=round(abs(df$X1),0),
 #'                              predicted=abs(df$X2),
 #'                              step=0.01)
-#' result_confusion_performance(observed=c(1,2,3,1,2,3),
-#'                              predicted=abs(rnorm(6,0,sd=0.1)))
 result_confusion_performance<-function(observed,predicted,step=.1,base_size=10,title="") {
   cut_point<-value<-variable<-NULL
   df_cut_performance<-data.frame()
@@ -615,8 +614,8 @@ confusion_matrix_percent<-function(observed,predicted) {
 #' @export
 #' @importFrom rlang .data
 #' @examples
-#' plot_confusion_extended(observed=c(1,1,1,2,2,2),predicted=c(1,1,1,2,2,2))
-plot_confusion_extended <- function(observed, predicted, positive = NULL, base_size = 12, title = "") {
+#' plot_confusion_extended(observed=c(0,0,0,1,1,1),predicted=c(0,0,0,1,1,1))
+plot_confusion_extended <- function(observed, predicted, positive = NULL, base_size = 10, title = "") {
   observed  <- as.character(observed)
   predicted <- as.character(predicted)
   lvls <- sort(unique(c(observed, predicted)))

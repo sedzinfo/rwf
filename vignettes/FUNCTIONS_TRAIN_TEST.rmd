@@ -132,6 +132,10 @@ predicted<-factor(round(rnorm(10000,m=10,sd=1)))
 confusion_matrix_percent(observed,predicted)
 ```
 
+## Confusion Matrix Percent
+```{r confusion_extended}
+plot_confusion_extended(observed=c(0,0,0,1,1,1),predicted=c(0,0,0,1,1,1))
+```
 
 
 
