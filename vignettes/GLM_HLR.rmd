@@ -24,9 +24,11 @@ source(paste0(directory, "R/code_rwf.R"))
 
 ## Description
 
-This vignette demonstrates Hierarchical Linear Regression (HLR) using the `report_hlr` function from the `rwf` package. HLR builds regression models in sequential steps (blocks), adding predictors at each step. This lets you assess how much additional variance each new set of predictors explains beyond what earlier predictors already account for — measured as the change in R² (ΔR²).
+This shows the output of the Hierarchical Linear Regression (HLR) function `report_hlr` from the package rwf. HLR builds regression models in sequential steps (blocks), adding predictors at each step. This shows how much additional variance each new set of predictors explains beyond the earlier ones, measured as the change in R² (ΔR²).
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_HLR.R)
 
 ## Report HLR
 

@@ -24,9 +24,11 @@ source(paste0(directory, "R/code_rwf.R"))
 
 ## Description
 
-This vignette documents the reliability and validity functions from `working_functions/GLM_RELIABILITY.R`: Cronbach's alpha and its item-level diagnostics, a Multitrait-Multimethod (MTMM) matrix for convergent/discriminant validity, and variance-components-based reliability (Shrout-Fleiss) for person × item × time measurement designs.
+This shows the output of reliability and validity functions from the package rwf. The functions include Cronbach's alpha and its item-level diagnostics, a Multitrait-Multimethod (MTMM) matrix for convergent and discriminant validity, and variance-components-based reliability (Shrout-Fleiss) for person × item × time measurement designs.
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_RELIABILITY.R)
 
 ## Theoretical Background
 

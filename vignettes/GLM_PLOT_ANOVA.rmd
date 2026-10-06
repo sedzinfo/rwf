@@ -27,14 +27,16 @@ library(reshape)
 
 ## Description
 
-This vignette demonstrates plotting functions for visualising group means, interactions, and ANOVA model diagnostics from the `rwf` package. These plots are designed to accompany ANOVA results — they help communicate what the model found (means plots, interaction plots) and whether its assumptions hold (diagnostic plots).
+This shows the output of plotting functions from the package rwf for visualising group means, interactions, and ANOVA model diagnostics. The plots accompany ANOVA results: they show what the model found (means plots, interaction plots) and whether its assumptions hold (diagnostic plots).
 
 Two datasets are used throughout:
 
 - **`df_blood_pressure`**: a repeated-measures dataset recording blood pressure under different treatments, with grouping variables for patient, sex, and age group.
 - **`df_crop_yield`**: a factorial dataset recording crop yield under different fertiliser and irrigation conditions.
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_ANOVA_PLOT.R)
 
 ## Plot Oneway
 

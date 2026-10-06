@@ -22,8 +22,13 @@ source(paste0(directory, "R/code_options.R"))
 source(paste0(directory, "R/code_rwf.R"))
 ```
 
-This shows the output of several functions that may be used in NLP from rwf.  
-Installation instructions of rwf can be found here https://github.com/sedzinfo/rwf
+## Description
+
+This shows the output of functions from the package rwf that may be used in Natural Language Processing (NLP). The functions clean text, remove stopwords, tag parts of speech, compute text similarity between documents, and calculate word and character statistics.
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/ML_NLP.R)
 
 ## Clear text
 ```{r clear_text}

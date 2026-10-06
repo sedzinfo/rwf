@@ -25,9 +25,11 @@ library(ggplot2)
 
 ## Description
 
-`working_functions/GLM_IRT_U.R` is a from-scratch, base-R implementation of unidimensional IRT's two core computations: the item response function (with optional guessing/inattentiveness parameters) and the item/test information used to derive standard errors — plus a hand-rolled Newton-Raphson routine for Maximum Likelihood ability estimation. Six functions in total: `compute_unidimensional_theta`, `compute_unidimensional_ability`, `compute_info_1pl`, `compute_info_2pl`, `compute_info_3pl`, and `compute_se_theta`.
+This shows the output of a from-scratch, base-R implementation of unidimensional IRT from the package rwf. The functions compute the item response function with optional guessing and inattentiveness parameters (`compute_unidimensional_theta`), item and test information for the 1PL, 2PL and 3PL models (`compute_info_1pl`, `compute_info_2pl`, `compute_info_3pl`), standard errors (`compute_se_theta`), and Maximum Likelihood ability estimates with a Newton-Raphson routine (`compute_unidimensional_ability`).
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_IRT_U.R)
 
 ## Theoretical Background
 

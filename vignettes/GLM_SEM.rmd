@@ -24,9 +24,11 @@ source(paste0(directory, "R/code_rwf.R"))
 
 ## Description
 
-This vignette documents the Structural Equation Modeling (SEM) / Confirmatory Factor Analysis (CFA) functions from `working_functions/GLM_SEM.R`: a dependency-free (no `semPlot`) path diagram plotter, a full CFA report (fit indices, parameter estimates, modification indices, predicted scores), and a sample-size-planning simulation that tracks how model fit behaves as sample size grows.
+This shows the output of Structural Equation Modeling (SEM) and Confirmatory Factor Analysis (CFA) functions from the package rwf. The functions include a path diagram plotter that does not need `semPlot`, a full CFA report (fit indices, parameter estimates, modification indices, predicted scores), and a sample-size planning simulation that tracks how model fit changes as sample size grows.
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_SEM.R)
 
 ## Theoretical Background
 

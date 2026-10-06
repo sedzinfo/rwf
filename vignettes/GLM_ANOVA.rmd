@@ -23,9 +23,12 @@ source(paste0(directory, "R/code_rwf.R"))
 ```
 
 ## Description
-This vignette demonstrates several ANOVA-related functions from the `rwf` package. It covers non-parametric alternatives (Kruskal-Wallis), one-way and factorial ANOVA, MANOVA, effect size estimation, and post hoc comparisons. Each section shows `rwf` output alongside equivalent results from established packages so you can verify the numbers.
+
+This shows the output of ANOVA-related functions from the package rwf. The functions cover non-parametric alternatives (Kruskal-Wallis), one-way and factorial ANOVA, MANOVA, effect size estimation, and post hoc comparisons. Each section shows rwf output alongside equivalent results from established packages so you can verify the numbers.
 
 Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_ANOVA.R)
 
 ## Formula
 The built-in `mtcars` dataset is used throughout the non-parametric and one-way sections. The formula `qsec ~ cyl` models quarter-mile time (`qsec`) as a function of number of cylinders (`cyl`), treating cylinders as a grouping factor.

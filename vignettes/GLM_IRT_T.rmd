@@ -28,9 +28,11 @@ library(thurstonianIRT)
 
 ## Description
 
-This vignette documents `working_functions/GLM_IRT_T.R`, the largest single file in `rwf`'s IRT toolkit (~22 functions). It covers **Thurstonian IRT** for forced-choice/ranking questionnaires — where respondents rank or compare items within blocks rather than rating each item independently — end to end: building the comparison design, encoding rank data into the binary pairwise-comparison format the model needs, a from-scratch single-dimension item characteristic curve and grid-based ability estimator, and a modern MAP/Empirical-Bayes-Modal scorer that reproduces `thurstonianIRT::predict()` from a fitted `lavaan` model's parameters directly, plus a Heywood-case diagnostic for the underlying `lavaan` fit.
+This shows the output of Thurstonian IRT functions from the package rwf, for forced-choice and ranking questionnaires where respondents rank or compare items within blocks instead of rating each item independently. The functions cover the full workflow: building the comparison design, encoding rank data into the binary pairwise-comparison format the model needs, a from-scratch single-dimension item characteristic curve and grid-based ability estimator, a MAP/Empirical-Bayes-Modal scorer that reproduces `thurstonianIRT::predict()` directly from a fitted `lavaan` model's parameters, and a Heywood-case diagnostic for the `lavaan` fit.
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_IRT_T.R)
 
 ## Theoretical Background
 

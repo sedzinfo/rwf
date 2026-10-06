@@ -24,9 +24,11 @@ source(paste0(directory, "R/code_rwf.R"))
 
 ## Description
 
-This vignette documents the correlation functions from `working_functions/GLM_CORRELATION.R` in the `rwf` package: a correlation heatmap plotter, power analysis for correlation tests, a full bivariate correlation report (r, p, CI, adjusted p, sample size — all as lower-triangle matrices), and special correlation types for dichotomous/ordinal data (tetrachoric, polychoric, biserial, polyserial).
+This shows the output of correlation functions from the package rwf. The functions include a correlation heatmap plotter, power analysis for correlation tests, a full bivariate correlation report (r, p, CI, adjusted p and sample size, all as lower-triangle matrices), and special correlation types for dichotomous and ordinal data (tetrachoric, polychoric, biserial, polyserial).
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_CORRELATION.R)
 
 ## Theoretical Background
 

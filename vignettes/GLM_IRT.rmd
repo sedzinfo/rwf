@@ -24,9 +24,11 @@ source(paste0(directory, "R/code_rwf.R"))
 
 ## Description
 
-This vignette documents the unidimensional IRT reporting functions from `working_functions/GLM_IRT.R`: `plot_irt_onefactor` (test information and expected score curves) and `report_irt` (a full model report: coefficients, local independence diagnostics, absolute and relative fit statistics). Both wrap models fit with the `mirt` package.
+This shows the output of unidimensional IRT reporting functions from the package rwf. The functions are `plot_irt_onefactor` (test information and expected score curves) and `report_irt` (a full model report: coefficients, local independence diagnostics, absolute and relative fit statistics). Both use models fit with the `mirt` package.
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_IRT.R)
 
 ## Theoretical Background
 

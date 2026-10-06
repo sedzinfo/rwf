@@ -25,12 +25,14 @@ source(paste0(directory, "R/code_rwf.R"))
 
 ## Description
 
-This vignette demonstrates mean comparison functions from the `rwf` package — `report_ttests` and `report_wtests`. Both functions run pairwise comparisons across all combinations of independent variable levels and return a structured table with test statistics, effect sizes, confidence intervals, and Bonferroni-adjusted significance flags.
+This shows the output of mean comparison functions from the package rwf: `report_ttests` and `report_wtests`. Both functions run pairwise comparisons between the levels of each independent variable and return a table with test statistics, effect sizes, confidence intervals, and Bonferroni-adjusted significance flags.
 
 - Use `report_ttests` when data meet the normality assumption (parametric).
 - Use `report_wtests` when data are ordinal or normality cannot be assumed (non-parametric).
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_MEANS.R)
 
 ## Data
 

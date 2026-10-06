@@ -24,9 +24,11 @@ source(paste0(directory, "R/code_rwf.R"))
 
 ## Description
 
-This vignette demonstrates Exploratory Factor Analysis (EFA) functions from the `rwf` package. EFA is used to uncover the latent structure underlying a set of observed variables — it identifies groups of variables that share common variance, which are interpreted as factors. The sections below cover loading plots, scree plots, loading tables, residual diagnostics, and a full EFA report.
+This shows the output of Exploratory Factor Analysis (EFA) functions from the package rwf. EFA uncovers the latent structure underlying a set of observed variables: it identifies groups of variables that share common variance, which are interpreted as factors. The functions include loading plots, scree plots, loading tables, residual diagnostics, and a full EFA report.
 
 Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_EFA.R)
 
 ## Plot Loadings
 

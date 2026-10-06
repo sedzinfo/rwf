@@ -24,9 +24,11 @@ source(paste0(directory, "R/code_rwf.R"))
 
 ## Description
 
-This vignette documents the logistic regression functions from `working_functions/GLM_LOGISTIC_REGRESSION.R`: the logistic response function, a visualisation of a fitted logistic model against its predictors, a likelihood-ratio test for comparing nested models, and a full diagnostic report (`report_logistic`) covering pseudo-R², coefficients, residual diagnostics, and confusion-matrix-based classification performance.
+This shows the output of logistic regression functions from the package rwf. The functions include the logistic response function, a plot of a fitted logistic model against its predictors, a likelihood-ratio test for comparing nested models, and a full diagnostic report (`report_logistic`) covering pseudo-R², coefficients, residual diagnostics, and confusion-matrix-based classification performance.
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_LOGISTIC_REGRESSION.R)
 
 ## Theoretical Background
 

@@ -23,8 +23,12 @@ source(paste0(directory, "R/code_rwf.R"))
 ```
 
 ## Description
-This shows the output of useful functions for training and testing from rwf.  
+
+This shows the output of useful functions for training and testing from the package rwf. The functions include plotting ROC curves, confusion matrices, separability plots, and evaluating confusion matrix performance at different cut-off points. Additionally, it demonstrates k-fold and k-sample cross-validation procedures, scaling data, and calculating confusion matrix statistics.
+
 Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/FUNCTIONS_TRAIN_TEST.R)
 
 ## Plot Receiver Operating Characteristic ROC Curve
 ```{r plot_roc,fig.width=8,fig.height=8,echo=TRUE,message=FALSE,warning=FALSE,results='hide',dev='png',fig.retina=2}
@@ -92,7 +96,6 @@ infert_formula<-as.formula(factor(case)~age+parity+education+spontaneous+induced
 result<-k_fold(infert,k=10,model_formula=infert_formula)
 model_formula<-as.formula(mpg~cyl+disp+hp+drat+wt+qsec+vs+am+gear+carb)
 result<-k_fold(mtcars,k=2,model_formula=model_formula)
-result
 ```
 
 ## KSAMPLE
@@ -103,7 +106,6 @@ infert_formula<-as.formula(factor(case)~age+parity+education+spontaneous+induced
 result<-k_sample(df=infert,k=10,model_formula=infert_formula)
 model_formula<-as.formula(mpg~cyl+disp+hp+drat+wt+qsec+vs+am+gear+carb)
 result<-k_sample(df=mtcars,k=10,model_formula=model_formula)
-result
 ```
 
 ## Scaling

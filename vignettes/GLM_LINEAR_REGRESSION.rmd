@@ -24,9 +24,11 @@ source(paste0(directory, "R/code_rwf.R"))
 
 ## Description
 
-This vignette demonstrates linear regression functions from the `rwf` package, covering scatterplot visualisation and full regression reporting for both simple and multiple regression models.
+This shows the output of linear regression functions from the package rwf. The functions cover scatterplot visualisation and full regression reporting for both simple and multiple regression models.
 
-Installation instructions for rwf can be found on the [rwf GitHub repository](https://github.com/sedzinfo/rwf)
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_LINEAR_REGRESSION.R)
 
 ## Plot Scatterplot
 
