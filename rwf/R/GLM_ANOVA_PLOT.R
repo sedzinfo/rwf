@@ -121,17 +121,17 @@ plot_oneway <- function(df, dv, iv, base_size = 20, type = "se", order_factor = 
       ggpubr::as_ggplot(gridExtra::arrangeGrob(means_plot))
     }
   }
-
+  
   df[, iv] <- change_data_type(data.frame(df[, iv]), "factor")
   combinations <- expand.grid(names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv", "dv")
   row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
   combinations <- change_data_type(combinations, type = "character")
-
+  
   n_rows <- nrow(combinations)
   n_cores <- parallel::detectCores()
   use_parallel <- n_cores * 4 < n_rows
-
+  
   if (use_parallel) {
     message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
     future::plan(future::multisession, workers = n_cores)
@@ -148,13 +148,16 @@ plot_oneway <- function(df, dv, iv, base_size = 20, type = "se", order_factor = 
     plot_data <- setNames(lapply(seq_len(n_rows), output_data), row.names(combinations))
     plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
   }
-
+  
   plot_data_df <- Reduce(plyr::rbind.fill, plot_data)
   names_input_missing <- setdiff(names(df)[c(iv, dv)], names(plot_data_df))
   names_input <- names(df)[c(iv, dv)]
   names_input <- names_input[!names_input %in% names_input_missing]
   plot_data_df <- plot_data_df[, c(names_input, "N", "sd", "se", "ci")]
-  return(list(plot_data = plot_data, plot_data_df = plot_data_df, plots = plots))
+  
+  result<-list(plot_data = plot_data, plot_data_df = plot_data_df, plots = invisible(plots))
+  invisible(lapply(result$plots,print))
+  return(invisible(result))
 }
 ##########################################################################################
 # PLOT TWO WAY INTERACTION
@@ -273,7 +276,7 @@ plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_fact
       ggpubr::as_ggplot(gridExtra::arrangeGrob(interactions_plot))
     }
   }
-
+  
   df[, iv] <- change_data_type(df[, iv], type = "factor")
   combinations <- expand.grid(names(df)[iv], names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv1", "iv2", "dv")
@@ -281,11 +284,11 @@ plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_fact
   combinations <- change_data_type(combinations, type = "character")
   combinations <- combinations[-which(combinations$iv1 == combinations$iv2), ]
   combinations <- combinations[!duplicated(combinations), ]
-
+  
   n_rows <- nrow(combinations)
   n_cores <- parallel::detectCores()
   use_parallel <- n_cores * 4 < n_rows
-
+  
   if (use_parallel) {
     message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
     future::plan(future::multisession, workers = n_cores)
@@ -303,10 +306,12 @@ plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_fact
     plot_data <- setNames(lapply(seq_len(n_rows), output_data), row.names(combinations))
     plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
   }
-
+  
   plot_data_df <- Reduce(plyr::rbind.fill, plot_data)
   plot_data_df <- plot_data_df[, c(names(df)[c(iv, dv)], setdiff(c("N", "sd", "se", "ci"), names(df)[c(iv, dv)]))]
-  return(list(plot_data = plot_data, plot_data_df = plot_data_df, plots = plots))
+  result<-list(plot_data = plot_data, plot_data_df = plot_data_df, plots = plots)
+  invisible(lapply(result$plots,print))
+  return(invisible(result))
 }
 ##########################################################################################
 # PLOT ANOVA DIAGNOSTICS
@@ -377,16 +382,16 @@ plot_oneway_diagnostics <- function(df, dv, iv, base_size = 10) {
         theme(axis.text.x = element_text(angle = 45, hjust = 1))
     }
   }
-
+  
   combinations <- expand.grid(names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv", "dv")
   row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
   combinations <- change_data_type(combinations, type = "character")
-
+  
   n_rows <- nrow(combinations)
   n_cores <- parallel::detectCores()
   use_parallel <- n_cores * 4 < n_rows
-
+  
   if (use_parallel) {
     message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
     future::plan(future::multisession, workers = n_cores)
@@ -399,6 +404,6 @@ plot_oneway_diagnostics <- function(df, dv, iv, base_size = 10) {
   } else {
     plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
   }
-
-  return(plots)
+  invisible(lapply(plots,print))
+  return(invisible(plots))
 }

@@ -78,7 +78,8 @@ plot_multiplot <- function(..., plotlist = NULL, cols = 2, layout = NULL) {
       p[[page]] <- grDevices::recordPlot()
     }
   }
-  return(p)
+  invisible(lapply(p,print))
+  return(invisible(p))
 }
 ##########################################################################################
 # DUPLICATE Y AXIS
