@@ -100,8 +100,9 @@ plot_loadings<-function(model,matrix_type=NULL,title="",base_size=10,color=c("#5
     labs(y="Loading",x="",title=paste(str_proper(matrix_type),"Matrix",title))+
     theme_bw(base_size=base_size)+
     lims(y=c(0,1))
-  result<-list(correlation_loadings=correlation_loadings,plot_barplot=plot_barplot)
-  return(result)
+  plotlist<-list(correlation_loadings=correlation_loadings,plot_barplot=plot_barplot)
+  invisible(lapply(plotlist,print))
+  return(invisible(plotlist))
 }
 ##########################################################################################
 # PLOT SCREE

@@ -199,3 +199,54 @@ write_txt <- function(input, file = NULL) {
     cat(readLines(invisible(paste0(file, ".log"))), sep = "\n")
   }
 }
+##########################################################################################
+# COMBINE FILES
+##########################################################################################
+#' @title Combine all files in a directory into a single file
+#' @description Lists the files in \code{input_dir} that match \code{pattern},
+#'   reads each one and writes their contents, in alphabetical order, to
+#'   \code{output_file}. Each file's contents are preceded by a
+#'   \code{# FILE: <path>} header block so the origin of every section is
+#'   visible. If \code{output_file} lies inside \code{input_dir}, it is
+#'   excluded so the file does not include itself.
+#' @param input_dir Character string. Directory to read files from. Default
+#'   \code{"working_functions"}.
+#' @param output_file Character string. Path of the combined file to write.
+#'   An existing file is overwritten. Default \code{"all_functions.R"}.
+#' @param pattern Regular expression passed to \code{\link[base]{list.files}}
+#'   to select files. Default \code{"\\\\.[Rr]$"} selects R scripts. Use
+#'   \code{NULL} to include every file.
+#' @param recursive Logical. If \code{TRUE} (default), files in
+#'   subdirectories of \code{input_dir} are included; if \code{FALSE}, only
+#'   files directly in \code{input_dir}.
+#' @return Invisibly returns a character vector with the paths of the
+#'   combined files. Called for its side effect of writing
+#'   \code{output_file}.
+#' @keywords functions
+#' @export
+#' @examples
+#' # input_dir <- file.path(tempdir(), "combine_files_example")
+#' # dir.create(file.path(input_dir, "sub"), recursive = TRUE, showWarnings = FALSE)
+#' # writeLines("a <- 1", file.path(input_dir, "a.R"))
+#' # writeLines("b <- 2", file.path(input_dir, "sub", "b.R"))
+#' # output_file <- file.path(tempdir(), "combined.R")
+#' # combine_files(input_dir = input_dir, output_file = output_file)
+#' # cat(readLines(output_file), sep = "\n")
+#' # combine_files(input_dir = input_dir, output_file = output_file, recursive = FALSE)
+combine_files<-function(input_dir="working_functions",
+                        output_file="all_functions.R",
+                        pattern="\\.[Rr]$",
+                        recursive=TRUE) {
+  files<-list.files(input_dir,pattern=pattern,full.names=TRUE,recursive=recursive)
+  files<-files[normalizePath(files)!=normalizePath(output_file,mustWork=FALSE)]
+  contents<-lapply(files,function(f) {
+    c("##########################################################################################",
+      paste0("# FILE: ",f),
+      "##########################################################################################",
+      readLines(f,warn=FALSE,encoding="UTF-8"),
+      "")
+  })
+  writeLines(unlist(contents),output_file,useBytes=TRUE)
+  cat("Combined",length(files),"files into",output_file,"\n")
+  invisible(files)
+}

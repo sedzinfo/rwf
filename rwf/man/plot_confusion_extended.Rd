@@ -8,7 +8,7 @@ plot_confusion_extended(
   observed,
   predicted,
   positive = NULL,
-  base_size = 12,
+  base_size = 10,
   title = ""
 )
 }
@@ -36,5 +36,5 @@ alongside the row/column/overall measures:
 }
 }
 \examples{
-plot_confusion_extended(observed=c(1,1,1,2,2,2),predicted=c(1,1,1,2,2,2))
+plot_confusion_extended(observed=c(0,0,0,1,1,1),predicted=c(0,0,0,1,1,1))
 }

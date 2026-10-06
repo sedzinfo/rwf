@@ -23,6 +23,7 @@ source(paste0(directory, "R/code_rwf.R"))
 load(paste0(directory, "data/df_blood_pressure.rda"))
 load(paste0(directory, "data/df_crop_yield.rda"))
 library(reshape)
+library(ggplot2)
 ```
 
 ## Description
@@ -55,7 +56,7 @@ The four calls demonstrate the key combinations:
 
 The `df_blood_pressure` data is first reshaped from wide to long format using `melt`, so that each treatment condition becomes a level of a single `treatment` factor rather than separate columns.
 
-```{r plot_oneway,fig.width=10,fig.height=10,echo=TRUE,message=FALSE,warning=FALSE,results='show',dev='png',fig.retina=2}
+```{r plot_oneway,fig.width=10,fig.height=10,echo=TRUE,message=FALSE,warning=FALSE,results='show',dev='png'}
 df_blood_pressure_melt<-melt(df_blood_pressure,
                              variable.name="treatment",
                              value.name="blood_pressure",
@@ -80,7 +81,7 @@ The two calls demonstrate different contexts:
 - **Blood pressure data** (three IVs: `sex`, `agegrp`, `treatment`): a three-way interaction plot using the melted long-format data. With `base_size = 20` the text is scaled up for readability. This is useful when presenting findings where the treatment effect differs across sex and age groups.
 - **Crop yield data** (two IVs: fertiliser, irrigation): `order_factor = TRUE` reorders factor levels by their mean, which can make patterns in the interaction easier to read when factor levels have no natural order.
 
-```{r plot_interactions,fig.width=15,fig.height=10,echo=TRUE,message=FALSE,warning=FALSE,results='show',dev='png',fig.retina=2}
+```{r plot_interactions,fig.width=15,fig.height=10,echo=TRUE,message=FALSE,warning=FALSE,results='show',dev='png'}
 plot_interaction(df=df_blood_pressure_melt,
                  dv=5,iv=2:4,base_size=20,title="",type="se")
 plot_interaction(df=df_crop_yield,dv=3,iv=1:2,type="se",order_factor=TRUE)
@@ -100,6 +101,6 @@ The key plots produced are:
 
 Here the blood pressure data is used in long format with blood pressure as the DV and sex, age group, and treatment as IVs, allowing diagnostics to be assessed across all three grouping factors simultaneously.
 
-```{r plot_anova_diagnostics,fig.width=20,fig.height=15,echo=TRUE,message=FALSE,warning=FALSE,results='show',dev='png',fig.retina=2}
+```{r plot_anova_diagnostics,fig.width=20,fig.height=15,echo=TRUE,message=FALSE,warning=FALSE,results='show',dev='png'}
 plot_oneway_diagnostics(df=df_blood_pressure_melt,dv=5,iv=2:4,base_size=15)
 ```

@@ -88,7 +88,6 @@ d) a vector with elements of the two marginal frequencies (row and column) and t
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">report_choric_serial</span><span class="op">(</span><span class="fu"><a href="generate_data.html">generate_data</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">0</span>,max<span class="op">=</span><span class="fl">1</span>,type<span class="op">=</span><span class="st">"uniform"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>              type<span class="op">=</span><span class="st">"tetrachoric"</span>,file<span class="op">=</span><span class="st">"tetrachoric"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> For i = 4 j = 3  A cell entry of 0 was replaced with correct =  0.5.  Check your data!</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Matrix was not positive definite, smoothing was done</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-plt img"><img src="report_choric_serial-1.png" alt="" width="700" height="433"></span>
@@ -96,20 +95,33 @@ d) a vector with elements of the two marginal frequencies (row and column) and t
 <span class="r-out co"><span class="r-pr">#&gt;</span> tetrachoric correlation </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    X1    X2    X3    X4    X5   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> X1  1.00                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2  0.71  1.00                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X3  0.03  0.55  1.00            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4  0.00  0.59  0.76  1.00      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X5  0.31 -0.31 -0.17 -0.54  1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2 -0.45  1.00                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3  0.16 -0.53  1.00            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4 -0.15 -0.15  0.40  1.00      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X5  0.53 -0.16  0.74  0.26  1.00</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  with tau of </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    X1    X2    X3    X4    X5 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  0.00  0.00 -0.25  0.25 -0.52 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.52 -0.52  0.25 -0.25 -0.25 </span>
 <span class="r-in"><span><span class="fu">report_choric_serial</span><span class="op">(</span><span class="fu"><a href="generate_data.html">generate_data</a></span><span class="op">(</span>min<span class="op">=</span><span class="fl">1</span>,max<span class="op">=</span><span class="fl">5</span>,type<span class="op">=</span><span class="st">"uniform"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>              type<span class="op">=</span><span class="st">"polychoric"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The items do not have an equal number of response alternatives, global set to FALSE.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NaNs produced</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in if (any(lower &gt; upper)) stop("lower&gt;upper integration limits"):</span> missing value where TRUE/FALSE needed</span>
+<span class="r-plt img"><img src="report_choric_serial-2.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Call: psych::polychoric(x = x)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Polychoric correlations </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    X1    X2    X3    X4    X5   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1  1.00                        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2  0.27  1.00                  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3 -0.33 -0.10  1.00            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4  0.27  0.14  0.23  1.00      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X5 -0.71 -0.19 -0.27 -0.41  1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  with tau of </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        1     2     3    4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1 -0.52  0.25  0.84 1.28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2 -0.84  0.25  0.52 0.84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3 -0.52 -0.25 -0.25 0.52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4 -0.52 -0.25  0.00 0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X5 -0.25  0.00  0.52 0.84</span>
 <span class="r-in"><span><span class="fu">report_choric_serial</span><span class="op">(</span>x<span class="op">=</span><span class="fu">psych</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/psych/man/bock.table.html" class="external-link">lsat6</a></span>,y<span class="op">=</span><span class="fu">psych</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/psych/man/bock.table.html" class="external-link">lsat6</a></span>,</span></span>
 <span class="r-in"><span>                     type<span class="op">=</span><span class="st">"polyserial"</span>,file<span class="op">=</span><span class="st">"polyserial"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Q1     Q2      Q3      Q4      Q5</span>
@@ -126,7 +138,7 @@ d) a vector with elements of the two marginal frequencies (row and column) and t
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>For x = 4 y = 4 x seems to be dichotomous, not continuous</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>For x = 5 y = 5 x seems to be dichotomous, not continuous</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-plt img"><img src="report_choric_serial-2.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_choric_serial-3.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Q1      Q2      Q3      Q4      Q5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Q1 1.00000 0.13671 0.18316 0.08199 0.04406</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Q2 0.09773 1.00000 0.15200 0.08249 0.11416</span>

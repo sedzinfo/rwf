@@ -175,6 +175,7 @@ reference:
       - check_heywood
       - clear_stopwords
       - clear_text
+      - combine_files
       - comparison_combinations
       - confusion
       - confusion_matrix_percent
