@@ -144,7 +144,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education1   -0.0043     0.4185   -0.01   0.9918   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education2   -0.0043     0.2502   -0.02   0.9863   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for binomial family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -163,15 +163,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0    80.00 40.00 120.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    85.00 43.00 128.00 0.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0     8.00  4.00  12.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   157.00 79.00 236.00 0.33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.48  0.52   1.00 0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.05  0.95   1.00 0.35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333     0.5               0.67               0.34            0.48            0.52          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.35               0.67               0.33            0.05            0.95             0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
@@ -201,19 +201,19 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                    mean        sd    median    trimmed                   mad       min      max     range    skew kurtosis         se       IQR      Q0.1     Q0.25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.33467741935483868998 0.4728318  0.000000  0.2950000 0.0000000000000000000  0.000000  1.00000 1.0000000  0.6965   -1.521 0.03002485 1.0000000  0.000000  0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  0.22266646654342803213 0.0004748  0.222222  0.2226591 0.0000000000000002469  0.222222  0.22317 0.0009496  0.1285   -1.991 0.00003015 0.0009496  0.222222  0.222222</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  0.22266646654342855949 0.0004748  0.222222  0.2226591 0.0000000000000003292  0.222222  0.22317 0.0009496  0.1285   -1.991 0.00003015 0.0009496  0.222222  0.222222</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.00000000000000000000 0.0000000  1.000000  1.0000000 0.0000000000000000000  1.000000  1.00000 0.0000000     NaN      NaN 0.00000000 0.0000000  1.000000  1.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248 -0.68711171700747974977 0.0064513 -0.693147 -0.6872116 0.0000000000000011522 -0.693147 -0.68024 0.0129034  0.1285   -1.991 0.00040966 0.0129034 -0.693147 -0.693147</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.05289798836848470798 1.0520434 -0.735742 -0.1426134 0.0470972692361399312 -1.148272  5.10590 6.2541679  1.0406    0.555 0.06680482 2.1213200 -0.767508 -0.767508</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.33467741935488015681 0.0014367  0.333333  0.3346552 0.0000000000000002469  0.333333  0.33621 0.0028736  0.1285   -1.991 0.00009123 0.0028736  0.333333  0.333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.00000000000018620813 2.1234939 -1.500000 -0.1792208 0.0096272727272484517 -1.506494  3.00000 4.5064935  0.6965   -1.521 0.13484200 4.4808525 -1.506494 -1.506494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.00000000000008834091 1.0082815 -0.710072 -0.0848326 0.0069675501467795211 -0.738549  1.47710 2.2156468  0.6966   -1.520 0.06402594 2.1259860 -0.714771 -0.714771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248 -0.00000000000008834091 1.0082815 -0.710072 -0.0848326 0.0069675501467795211 -0.738549  1.47710 2.2156468  0.6966   -1.520 0.06402594 2.1259860 -0.714771 -0.714771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248 -0.00000000000000079857 0.0153489 -0.004202 -0.0005128 0.0002445803301557215 -0.045455  0.09091 0.1363636  2.5539   19.363 0.00097466 0.0127700 -0.004367 -0.004367</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.00000000000000009282 0.0289458  0.004202  0.0002530 0.0002445803301557267 -0.090909  0.18182 0.2727273  2.9919   25.249 0.00183806 0.0127700 -0.008621 -0.008403</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248 -0.00000000000000002458 0.0169426  0.004367 -0.0004824 0.0189328156242746203 -0.090909  0.04545 0.1363636 -1.7661   12.228 0.00107586 0.0127700 -0.008621 -0.008403</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248 -0.00000000000000917166 0.1142557 -0.065092 -0.0078274 0.0023137388488821773 -0.222681  0.44536 0.6680428  1.0740    1.807 0.00725524 0.1968371 -0.066653 -0.066653</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.01209677419354838676 0.0160965  0.008621  0.0084828 0.0004260344827586207  0.008333  0.08333 0.0750000  4.1833   15.564 0.00102213 0.0002874  0.008333  0.008333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248 -0.68711171700748086000 0.0064513 -0.693147 -0.6872116 0.0000000000000049380 -0.693147 -0.68024 0.0129034  0.1285   -1.991 0.00040966 0.0129034 -0.693147 -0.693147</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.05289798836848422225 1.0520434 -0.735742 -0.1426134 0.0470972692361404238 -1.148272  5.10590 6.2541679  1.0406    0.555 0.06680482 2.1213200 -0.767508 -0.767508</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.33467741935487987925 0.0014367  0.333333  0.3346552 0.0000000000000011522  0.333333  0.33621 0.0028736  0.1285   -1.991 0.00009123 0.0028736  0.333333  0.333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.00000000000018490764 2.1234939 -1.500000 -0.1792208 0.0096272727272474629 -1.506494  3.00000 4.5064935  0.6965   -1.521 0.13484200 4.4808525 -1.506494 -1.506494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.00000000000008780326 1.0082815 -0.710072 -0.0848326 0.0069675501467791924 -0.738549  1.47710 2.2156468  0.6966   -1.520 0.06402594 2.1259860 -0.714771 -0.714771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248 -0.00000000000008780326 1.0082815 -0.710072 -0.0848326 0.0069675501467791924 -0.738549  1.47710 2.2156468  0.6966   -1.520 0.06402594 2.1259860 -0.714771 -0.714771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248 -0.00000000000000078884 0.0153489 -0.004202 -0.0005128 0.0002445803301557254 -0.045455  0.09091 0.1363636  2.5539   19.363 0.00097466 0.0127700 -0.004367 -0.004367</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.00000000000000008112 0.0289458  0.004202  0.0002530 0.0002445803301557100 -0.090909  0.18182 0.2727273  2.9919   25.249 0.00183806 0.0127700 -0.008621 -0.008403</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248 -0.00000000000000003194 0.0169426  0.004367 -0.0004824 0.0189328156242745647 -0.090909  0.04545 0.1363636 -1.7661   12.228 0.00107586 0.0127700 -0.008621 -0.008403</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248 -0.00000000000000909087 0.1142557 -0.065092 -0.0078274 0.0023137388488821565 -0.222681  0.44536 0.6680428  1.0740    1.807 0.00725524 0.1968371 -0.066653 -0.066653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.01209677419354835554 0.0160965  0.008621  0.0084828 0.0004260344827586232  0.008333  0.08333 0.0750000  4.1833   15.564 0.00102213 0.0002874  0.008333  0.008333</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Q0.5     Q0.75      Q0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.000000  1.000000  1.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.222222  0.223172  0.223172</span>
@@ -255,7 +255,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education1  -0.000958   0.093661   -0.01          0.99    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education2  -0.000958   0.056015   -0.02          0.99    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for gaussian family taken to be 0.2254)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -274,15 +274,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0    88.00 44.00 132.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    77.00 39.00 116.00 0.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0     8.00  4.00  12.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   157.00 79.00 236.00 0.33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.53  0.47   1.00 0.51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.05  0.95   1.00 0.35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.51               0.67               0.34            0.53            0.47          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.35               0.67               0.33            0.05            0.95             0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
@@ -310,36 +310,36 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                      mean       sd     median     trimmed       mad       min     max    range    skew kurtosis         se       IQR       Q0.1      Q0.25       Q0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.3346774193548386899799 0.472832  0.0000000  0.29500000 0.0000000  0.000000 1.00000 1.000000  0.6965   -1.521 0.03002485 1.0000000  0.0000000  0.0000000  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  1.0000000000000000000000 0.000000  1.0000000  1.00000000 0.0000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000 0.0000000  1.0000000  1.0000000  1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.0000000000000000000000 0.000000  1.0000000  1.00000000 0.0000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000 0.0000000  1.0000000  1.0000000  1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248  0.3346774193548386344688 0.001437  0.3333333  0.33465517 0.0000000  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123 0.0028736  0.3333333  0.3333333  0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.0558747052870981336659 0.576973 -0.3475120 -0.07244286 0.0211848 -5.270505 0.65249 5.922993 -2.5096   24.664 0.03663782 1.0000000 -0.3618010 -0.3618010 -0.3475120</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.3346774193548386344688 0.001437  0.3333333  0.33465517 0.0000000  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123 0.0028736  0.3333333  0.3333333  0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248  0.0000000000000000628732 0.472830 -0.3333333 -0.03965517 0.0042603 -0.336207 0.66667 1.002874  0.6965   -1.521 0.03002471 1.0000000 -0.3362069 -0.3362069 -0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248  0.0000000000000001278191 1.002161 -0.7050595 -0.08411265 0.0091642 -0.733336 1.46667 2.200007  0.6966   -1.520 0.06363727 2.1154850 -0.7112406 -0.7112406 -0.7050595</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248  0.0014388562414124872989 1.003176 -0.7043340 -0.08276966 0.0091736 -0.732642 1.47014 2.202786  0.6966   -1.520 0.06370171 2.1175710 -0.7105215 -0.7105215 -0.7043340</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248  0.0000000000000000001572 0.003412 -0.0009337 -0.00011444 0.0000605 -0.010101 0.02020 0.030303  2.5517   19.335 0.00021666 0.0028419 -0.0009745 -0.0009745 -0.0009337</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.0000000000000000001877 0.006433  0.0009337  0.00005647 0.0000605 -0.020202 0.04040 0.060606  2.9911   25.239 0.00040849 0.0028419 -0.0019240 -0.0018674  0.0009337</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248  0.0000000000000000002410 0.003766  0.0009745 -0.00010638 0.0042134 -0.020202 0.01010 0.030303 -1.7649   12.213 0.00023914 0.0028419 -0.0019240 -0.0018674  0.0009745</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248  0.0001493959927702293619 0.113650 -0.0645662 -0.00766434 0.0025060 -0.220900 0.44326 0.664165  1.0762    1.808 0.00721679 0.1957845 -0.0662565 -0.0662565 -0.0645662</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.0120967741935483867610 0.016096  0.0086207  0.00848276 0.0004260  0.008333 0.08333 0.075000  4.1833   15.564 0.00102213 0.0002874  0.0083333  0.0083333  0.0086207</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Q0.75      Q0.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.0000000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.0000000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1.0000000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3362069 0.3362069</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.6381990 0.6524880</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.3362069 0.3362069</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6637931 0.6666667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  1.4042443 1.4101190</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  1.4070494 1.4129838</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.0018674 0.0019240</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.0009745 0.0009745</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.0009745 0.0037348</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.1295280 0.1312080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.0086207 0.0086207</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                      mean       sd     median     trimmed                 mad       min     max    range    skew kurtosis         se       IQR       Q0.1      Q0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.3346774193548386899799 0.472832  0.0000000  0.29500000 0.00000000000000000  0.000000 1.00000 1.000000  0.6965   -1.521 0.03002485 1.0000000  0.0000000  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  1.0000000000000000000000 0.000000  1.0000000  1.00000000 0.00000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000 0.0000000  1.0000000  1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.0000000000000000000000 0.000000  1.0000000  1.00000000 0.00000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000 0.0000000  1.0000000  1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248  0.3346774193548389120245 0.001437  0.3333333  0.33465517 0.00000000000000321  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123 0.0028736  0.3333333  0.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.0558747052870984112216 0.576973 -0.3475120 -0.07244286 0.02118479238423381 -5.270505 0.65249 5.922993 -2.5096   24.664 0.03663782 1.0000000 -0.3618010 -0.3618010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.3346774193548389120245 0.001437  0.3333333  0.33465517 0.00000000000000321  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123 0.0028736  0.3333333  0.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.0000000000000002183679 0.472830 -0.3333333 -0.03965517 0.00426034482758550 -0.336207 0.66667 1.002874  0.6965   -1.521 0.03002471 1.0000000 -0.3362069 -0.3362069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.0000000000000004952019 1.002161 -0.7050595 -0.08411265 0.00916418028496998 -0.733336 1.46667 2.200007  0.6966   -1.520 0.06363727 2.1154850 -0.7112406 -0.7112406</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248  0.0014388562414118723394 1.003176 -0.7043340 -0.08276966 0.00917360992327951 -0.732642 1.47014 2.202786  0.6966   -1.520 0.06370171 2.1175710 -0.7105215 -0.7105215</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248  0.0000000000000000001995 0.003412 -0.0009337 -0.00011444 0.00006049886821297 -0.010101 0.02020 0.030303  2.5517   19.335 0.00021666 0.0028419 -0.0009745 -0.0009745</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248  0.0000000000000000023967 0.006433  0.0009337  0.00005647 0.00006049886821291 -0.020202 0.04040 0.060606  2.9911   25.239 0.00040849 0.0028419 -0.0019240 -0.0018674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248 -0.0000000000000000016111 0.003766  0.0009745 -0.00010638 0.00421344004468356 -0.020202 0.01010 0.030303 -1.7649   12.213 0.00023914 0.0028419 -0.0019240 -0.0018674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248  0.0001493959927701791362 0.113650 -0.0645662 -0.00766434 0.00250601067626520 -0.220900 0.44326 0.664165  1.0762    1.808 0.00721679 0.1957845 -0.0662565 -0.0662565</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.0120967741935484041083 0.016096  0.0086207  0.00848276 0.00042603448275863  0.008333 0.08333 0.075000  4.1833   15.564 0.00102213 0.0002874  0.0083333  0.0083333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Q0.5     Q0.75      Q0.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.0000000 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   1.0000000 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1.0000000 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0.3333333 0.3362069 0.3362069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  -0.3475120 0.6381990 0.6524880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   0.3333333 0.3362069 0.3362069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  -0.3333333 0.6637931 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  -0.7050595 1.4042443 1.4101190</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  -0.7043340 1.4070494 1.4129838</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 -0.0009337 0.0018674 0.0019240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  0.0009337 0.0009745 0.0009745</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  0.0009745 0.0009745 0.0037348</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 -0.0645662 0.1295280 0.1312080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14  0.0086207 0.0086207 0.0086207</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Call"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
@@ -368,7 +368,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education1  -0.00286    0.34166   -0.01        0.99    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education2  -0.00286    0.20429   -0.01        0.99    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for poisson family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -387,15 +387,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0    80.00 40.00 120.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    85.00 43.00 128.00 0.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0     8.00  4.00  12.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   157.00 79.00 236.00 0.33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.48  0.52   1.00 0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.05  0.95   1.00 0.35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333     0.5               0.67               0.34            0.48            0.52          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.35               0.67               0.33            0.05            0.95             0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
@@ -423,21 +423,21 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                 mean       sd    median    trimmed                   mad       min      max     range    skew kurtosis         se       IQR      Q0.1     Q0.25      Q0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.33467741935483869 0.472832  0.000000  0.2950000 0.0000000000000000000  0.000000  1.00000  1.000000  0.6965   -1.521 0.03002485 1.0000000  0.000000  0.000000  0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  0.33469443861903031 0.001436  0.333351  0.3346722 0.0000000000000002469  0.333351  0.33622  0.002873  0.1285   -1.991 0.00009121 0.0028731  0.333351  0.333351  0.333351</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.00000000000000000 0.000000  1.000000  1.0000000 0.0000000000000000000  1.000000  1.00000  0.000000     NaN      NaN 0.00000000 0.0000000  1.000000  1.000000  1.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248 -1.09459731048665598 0.004292 -1.098612 -1.0946638 0.0000000000000013168 -1.098612 -1.09003  0.008584  0.1285   -1.991 0.00027252 0.0085837 -1.098612 -1.098612 -1.098612</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.01982219519776281 1.034512 -0.599525 -0.1161905 0.0402332229387734747 -0.937506  9.97234 10.909848  3.9138   32.647 0.06569160 1.7320060 -0.626662 -0.626662 -0.599525</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.33467741978769144 0.001437  0.333333  0.3346552 0.0000000000000004115  0.333333  0.33621  0.002874  0.1285   -1.991 0.00009123 0.0028736  0.333333  0.333333  0.333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.00000000129354471 1.412818 -1.000000 -0.1200000 0.0000000000000000000 -1.000000  2.00000  3.000000  0.6966   -1.521 0.08971404 2.9743590 -1.000000 -1.000000 -1.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.00000000075296403 0.822431 -0.579771 -0.0693663 0.0038221878970772474 -0.603023  1.20605  1.809068  0.6966   -1.520 0.05222444 1.7321152 -0.582349 -0.582349 -0.579771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248 -0.00000000075296403 0.822431 -0.579771 -0.0693663 0.0038221878970772474 -0.603023  1.20605  1.809068  0.6966   -1.520 0.05222444 1.7321152 -0.582349 -0.582349 -0.579771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248 -0.00000000000546014 0.010229 -0.002801 -0.0003404 0.0001444501278772379 -0.030303  0.06061  0.090909  2.5561   19.392 0.00064956 0.0085008 -0.002899 -0.002899 -0.002801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.00000000000042411 0.019295  0.002801  0.0001680 0.0001444501278772372 -0.060606  0.12121  0.181818  2.9928   25.260 0.00122526 0.0085008 -0.005723 -0.005602  0.002801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248  0.00000000000002093 0.011292  0.002899 -0.0003241 0.0126032736572890009 -0.060606  0.03030  0.090909 -1.7673   12.244 0.00071705 0.0085008 -0.005723 -0.005602  0.002899</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248 -0.00000000007775186 0.093228 -0.053149 -0.0063774 0.0017150512078150004 -0.181823  0.36365  0.545469  1.0751    1.818 0.00592000 0.1606035 -0.054306 -0.054306 -0.053149</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.01209677419354839 0.016096  0.008621  0.0084828 0.0004260344827586232  0.008333  0.08333  0.075000  4.1833   15.564 0.00102213 0.0002874  0.008333  0.008333  0.008621</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                 mean       sd    median    trimmed                  mad       min      max     range    skew kurtosis         se       IQR      Q0.1     Q0.25      Q0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.33467741935483869 0.472832  0.000000  0.2950000 0.000000000000000000  0.000000  1.00000  1.000000  0.6965   -1.521 0.03002485 1.0000000  0.000000  0.000000  0.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  0.33469443861903181 0.001436  0.333351  0.3346722 0.000000000000002881  0.333351  0.33622  0.002873  0.1285   -1.991 0.00009121 0.0028731  0.333351  0.333351  0.333351</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.00000000000000000 0.000000  1.000000  1.0000000 0.000000000000000000  1.000000  1.00000  0.000000     NaN      NaN 0.00000000 0.0000000  1.000000  1.000000  1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248 -1.09459731048665931 0.004292 -1.098612 -1.0946638 0.000000000000005926 -1.098612 -1.09003  0.008584  0.1285   -1.991 0.00027252 0.0085837 -1.098612 -1.098612 -1.098612</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.01982219519776108 1.034512 -0.599525 -0.1161905 0.040233222938772489 -0.937506  9.97234 10.909848  3.9138   32.647 0.06569160 1.7320060 -0.626662 -0.626662 -0.599525</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.33467741978769033 0.001437  0.333333  0.3346552 0.000000000000001975  0.333333  0.33621  0.002874  0.1285   -1.991 0.00009123 0.0028736  0.333333  0.333333  0.333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.00000000129354153 1.412818 -1.000000 -0.1200000 0.000000000000000000 -1.000000  2.00000  3.000000  0.6966   -1.521 0.08971404 2.9743590 -1.000000 -1.000000 -1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.00000000075296214 0.822431 -0.579771 -0.0693663 0.003822187897077577 -0.603023  1.20605  1.809068  0.6966   -1.520 0.05222444 1.7321152 -0.582349 -0.582349 -0.579771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248 -0.00000000075296214 0.822431 -0.579771 -0.0693663 0.003822187897077577 -0.603023  1.20605  1.809068  0.6966   -1.520 0.05222444 1.7321152 -0.582349 -0.582349 -0.579771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248 -0.00000000000546013 0.010229 -0.002801 -0.0003404 0.000144450127877237 -0.030303  0.06061  0.090909  2.5561   19.392 0.00064956 0.0085008 -0.002899 -0.002899 -0.002801</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.00000000000042409 0.019295  0.002801  0.0001680 0.000144450127877229 -0.060606  0.12121  0.181818  2.9928   25.260 0.00122526 0.0085008 -0.005723 -0.005602  0.002801</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248  0.00000000000002092 0.011292  0.002899 -0.0003241 0.012603273657289006 -0.060606  0.03030  0.090909 -1.7673   12.244 0.00071705 0.0085008 -0.005723 -0.005602  0.002899</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248 -0.00000000007775164 0.093228 -0.053149 -0.0063774 0.001715051207814949 -0.181823  0.36365  0.545469  1.0751    1.818 0.00592000 0.1606035 -0.054306 -0.054306 -0.053149</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.01209677419354839 0.016096  0.008621  0.0084828 0.000426034482758608  0.008333  0.08333  0.075000  4.1833   15.564 0.00102213 0.0002874  0.008333  0.008333  0.008621</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        Q0.75      Q0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   1.000000  1.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.336224  0.336224</span>
@@ -479,7 +479,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education1  -0.000958   0.093661   -0.01          0.99    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education2  -0.000958   0.056015   -0.02          0.99    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for quasi family taken to be 0.2254)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -498,15 +498,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0    88.00 44.00 132.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    77.00 39.00 116.00 0.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0     8.00  4.00  12.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   157.00 79.00 236.00 0.33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.53  0.47   1.00 0.51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.05  0.95   1.00 0.35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.51               0.67               0.34            0.53            0.47          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.35               0.67               0.33            0.05            0.95             0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
@@ -534,36 +534,36 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                      mean       sd     median     trimmed       mad       min     max    range    skew kurtosis         se       IQR       Q0.1      Q0.25       Q0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.3346774193548386899799 0.472832  0.0000000  0.29500000 0.0000000  0.000000 1.00000 1.000000  0.6965   -1.521 0.03002485 1.0000000  0.0000000  0.0000000  0.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  1.0000000000000000000000 0.000000  1.0000000  1.00000000 0.0000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000 0.0000000  1.0000000  1.0000000  1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.0000000000000000000000 0.000000  1.0000000  1.00000000 0.0000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000 0.0000000  1.0000000  1.0000000  1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248  0.3346774193548386344688 0.001437  0.3333333  0.33465517 0.0000000  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123 0.0028736  0.3333333  0.3333333  0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.0558747052870981336659 0.576973 -0.3475120 -0.07244286 0.0211848 -5.270505 0.65249 5.922993 -2.5096   24.664 0.03663782 1.0000000 -0.3618010 -0.3618010 -0.3475120</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.3346774193548386344688 0.001437  0.3333333  0.33465517 0.0000000  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123 0.0028736  0.3333333  0.3333333  0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248  0.0000000000000000628732 0.472830 -0.3333333 -0.03965517 0.0042603 -0.336207 0.66667 1.002874  0.6965   -1.521 0.03002471 1.0000000 -0.3362069 -0.3362069 -0.3333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248  0.0000000000000001278191 1.002161 -0.7050595 -0.08411265 0.0091642 -0.733336 1.46667 2.200007  0.6966   -1.520 0.06363727 2.1154850 -0.7112406 -0.7112406 -0.7050595</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248  0.0014388562414124872989 1.003176 -0.7043340 -0.08276966 0.0091736 -0.732642 1.47014 2.202786  0.6966   -1.520 0.06370171 2.1175710 -0.7105215 -0.7105215 -0.7043340</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248  0.0000000000000000001572 0.003412 -0.0009337 -0.00011444 0.0000605 -0.010101 0.02020 0.030303  2.5517   19.335 0.00021666 0.0028419 -0.0009745 -0.0009745 -0.0009337</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.0000000000000000001877 0.006433  0.0009337  0.00005647 0.0000605 -0.020202 0.04040 0.060606  2.9911   25.239 0.00040849 0.0028419 -0.0019240 -0.0018674  0.0009337</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248  0.0000000000000000002410 0.003766  0.0009745 -0.00010638 0.0042134 -0.020202 0.01010 0.030303 -1.7649   12.213 0.00023914 0.0028419 -0.0019240 -0.0018674  0.0009745</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248  0.0001493959927702293619 0.113650 -0.0645662 -0.00766434 0.0025060 -0.220900 0.44326 0.664165  1.0762    1.808 0.00721679 0.1957845 -0.0662565 -0.0662565 -0.0645662</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.0120967741935483867610 0.016096  0.0086207  0.00848276 0.0004260  0.008333 0.08333 0.075000  4.1833   15.564 0.00102213 0.0002874  0.0083333  0.0083333  0.0086207</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        Q0.75      Q0.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.0000000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  1.0000000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  1.0000000 1.0000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.3362069 0.3362069</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.6381990 0.6524880</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.3362069 0.3362069</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.6637931 0.6666667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  1.4042443 1.4101190</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  1.4070494 1.4129838</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.0018674 0.0019240</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.0009745 0.0009745</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.0009745 0.0037348</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.1295280 0.1312080</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.0086207 0.0086207</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                      mean       sd     median     trimmed                 mad       min     max    range    skew kurtosis         se       IQR       Q0.1      Q0.25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.3346774193548386899799 0.472832  0.0000000  0.29500000 0.00000000000000000  0.000000 1.00000 1.000000  0.6965   -1.521 0.03002485 1.0000000  0.0000000  0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  1.0000000000000000000000 0.000000  1.0000000  1.00000000 0.00000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000 0.0000000  1.0000000  1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.0000000000000000000000 0.000000  1.0000000  1.00000000 0.00000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000 0.0000000  1.0000000  1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248  0.3346774193548389120245 0.001437  0.3333333  0.33465517 0.00000000000000321  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123 0.0028736  0.3333333  0.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.0558747052870984112216 0.576973 -0.3475120 -0.07244286 0.02118479238423381 -5.270505 0.65249 5.922993 -2.5096   24.664 0.03663782 1.0000000 -0.3618010 -0.3618010</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.3346774193548389120245 0.001437  0.3333333  0.33465517 0.00000000000000321  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123 0.0028736  0.3333333  0.3333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.0000000000000002183679 0.472830 -0.3333333 -0.03965517 0.00426034482758550 -0.336207 0.66667 1.002874  0.6965   -1.521 0.03002471 1.0000000 -0.3362069 -0.3362069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.0000000000000004952019 1.002161 -0.7050595 -0.08411265 0.00916418028496998 -0.733336 1.46667 2.200007  0.6966   -1.520 0.06363727 2.1154850 -0.7112406 -0.7112406</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248  0.0014388562414118723394 1.003176 -0.7043340 -0.08276966 0.00917360992327951 -0.732642 1.47014 2.202786  0.6966   -1.520 0.06370171 2.1175710 -0.7105215 -0.7105215</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248  0.0000000000000000001995 0.003412 -0.0009337 -0.00011444 0.00006049886821297 -0.010101 0.02020 0.030303  2.5517   19.335 0.00021666 0.0028419 -0.0009745 -0.0009745</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248  0.0000000000000000023967 0.006433  0.0009337  0.00005647 0.00006049886821291 -0.020202 0.04040 0.060606  2.9911   25.239 0.00040849 0.0028419 -0.0019240 -0.0018674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248 -0.0000000000000000016111 0.003766  0.0009745 -0.00010638 0.00421344004468356 -0.020202 0.01010 0.030303 -1.7649   12.213 0.00023914 0.0028419 -0.0019240 -0.0018674</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248  0.0001493959927701791362 0.113650 -0.0645662 -0.00766434 0.00250601067626520 -0.220900 0.44326 0.664165  1.0762    1.808 0.00721679 0.1957845 -0.0662565 -0.0662565</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.0120967741935484041083 0.016096  0.0086207  0.00848276 0.00042603448275863  0.008333 0.08333 0.075000  4.1833   15.564 0.00102213 0.0002874  0.0083333  0.0083333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          Q0.5     Q0.75      Q0.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.0000000 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   1.0000000 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   1.0000000 1.0000000 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0.3333333 0.3362069 0.3362069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  -0.3475120 0.6381990 0.6524880</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   0.3333333 0.3362069 0.3362069</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  -0.3333333 0.6637931 0.6666667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  -0.7050595 1.4042443 1.4101190</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  -0.7043340 1.4070494 1.4129838</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 -0.0009337 0.0018674 0.0019240</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  0.0009337 0.0009745 0.0009745</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12  0.0009745 0.0009745 0.0037348</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 -0.0645662 0.1295280 0.1312080</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14  0.0086207 0.0086207 0.0086207</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Call"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
@@ -590,7 +590,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education1   -0.0043     0.4210   -0.01   0.9919   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education2   -0.0043     0.2518   -0.02   0.9864   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for quasibinomial family taken to be 1.012)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -609,15 +609,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0    80.00 40.00 120.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    85.00 43.00 128.00 0.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0     8.00  4.00  12.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   157.00 79.00 236.00 0.33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.48  0.52   1.00 0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.05  0.95   1.00 0.35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333     0.5               0.67               0.34            0.48            0.52          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.35               0.67               0.33            0.05            0.95             0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
@@ -647,19 +647,19 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                    mean        sd    median    trimmed                   mad       min      max     range    skew kurtosis         se       IQR      Q0.1     Q0.25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.33467741935483868998 0.4728318  0.000000  0.2950000 0.0000000000000000000  0.000000  1.00000 1.0000000  0.6965   -1.521 0.03002485 1.0000000  0.000000  0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  0.22266646654342803213 0.0004748  0.222222  0.2226591 0.0000000000000002469  0.222222  0.22317 0.0009496  0.1285   -1.991 0.00003015 0.0009496  0.222222  0.222222</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  0.22266646654342855949 0.0004748  0.222222  0.2226591 0.0000000000000003292  0.222222  0.22317 0.0009496  0.1285   -1.991 0.00003015 0.0009496  0.222222  0.222222</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.00000000000000000000 0.0000000  1.000000  1.0000000 0.0000000000000000000  1.000000  1.00000 0.0000000     NaN      NaN 0.00000000 0.0000000  1.000000  1.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248 -0.68711171700747974977 0.0064513 -0.693147 -0.6872116 0.0000000000000011522 -0.693147 -0.68024 0.0129034  0.1285   -1.991 0.00040966 0.0129034 -0.693147 -0.693147</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.05289798836848470798 1.0520434 -0.735742 -0.1426134 0.0470972692361399312 -1.148272  5.10590 6.2541679  1.0406    0.555 0.06680482 2.1213200 -0.767508 -0.767508</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.33467741935488015681 0.0014367  0.333333  0.3346552 0.0000000000000002469  0.333333  0.33621 0.0028736  0.1285   -1.991 0.00009123 0.0028736  0.333333  0.333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.00000000000018620813 2.1234939 -1.500000 -0.1792208 0.0096272727272484517 -1.506494  3.00000 4.5064935  0.6965   -1.521 0.13484200 4.4808525 -1.506494 -1.506494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.00000000000008783548 1.0021643 -0.705764 -0.0843180 0.0069252782702249830 -0.734068  1.46814 2.2022046  0.6966   -1.520 0.06363750 2.1130877 -0.710435 -0.710435</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248  0.00143892390164839044 1.0031793 -0.705039 -0.0829767 0.0069324009951323854 -0.733376  1.47162 2.2050004  0.6966   -1.520 0.06370195 2.1151568 -0.709715 -0.709715</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248 -0.00000000000000079857 0.0153489 -0.004202 -0.0005128 0.0002445803301557215 -0.045455  0.09091 0.1363636  2.5539   19.363 0.00097466 0.0127700 -0.004367 -0.004367</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.00000000000000009282 0.0289458  0.004202  0.0002530 0.0002445803301557267 -0.090909  0.18182 0.2727273  2.9919   25.249 0.00183806 0.0127700 -0.008621 -0.008403</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248 -0.00000000000000002458 0.0169426  0.004367 -0.0004824 0.0189328156242746203 -0.090909  0.04545 0.1363636 -1.7661   12.228 0.00107586 0.0127700 -0.008621 -0.008403</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248  0.00014944824050792621 0.1136873 -0.064631 -0.0076554 0.0022986672787554167 -0.221121  0.44371 0.6648327  1.0773    1.818 0.00721915 0.1958397 -0.066181 -0.066181</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.01209677419354838676 0.0160965  0.008621  0.0084828 0.0004260344827586207  0.008333  0.08333 0.0750000  4.1833   15.564 0.00102213 0.0002874  0.008333  0.008333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248 -0.68711171700748086000 0.0064513 -0.693147 -0.6872116 0.0000000000000049380 -0.693147 -0.68024 0.0129034  0.1285   -1.991 0.00040966 0.0129034 -0.693147 -0.693147</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.05289798836848422225 1.0520434 -0.735742 -0.1426134 0.0470972692361404238 -1.148272  5.10590 6.2541679  1.0406    0.555 0.06680482 2.1213200 -0.767508 -0.767508</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.33467741935487987925 0.0014367  0.333333  0.3346552 0.0000000000000011522  0.333333  0.33621 0.0028736  0.1285   -1.991 0.00009123 0.0028736  0.333333  0.333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.00000000000018490764 2.1234939 -1.500000 -0.1792208 0.0096272727272474629 -1.506494  3.00000 4.5064935  0.6965   -1.521 0.13484200 4.4808525 -1.506494 -1.506494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.00000000000008730666 1.0021643 -0.705764 -0.0843180 0.0069252782702246543 -0.734068  1.46814 2.2022046  0.6966   -1.520 0.06363750 2.1130877 -0.710435 -0.710435</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248  0.00143892390164886575 1.0031793 -0.705039 -0.0829767 0.0069324009951320566 -0.733376  1.47162 2.2050004  0.6966   -1.520 0.06370195 2.1151568 -0.709715 -0.709715</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248 -0.00000000000000078884 0.0153489 -0.004202 -0.0005128 0.0002445803301557254 -0.045455  0.09091 0.1363636  2.5539   19.363 0.00097466 0.0127700 -0.004367 -0.004367</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.00000000000000008112 0.0289458  0.004202  0.0002530 0.0002445803301557100 -0.090909  0.18182 0.2727273  2.9919   25.249 0.00183806 0.0127700 -0.008621 -0.008403</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248 -0.00000000000000003194 0.0169426  0.004367 -0.0004824 0.0189328156242745647 -0.090909  0.04545 0.1363636 -1.7661   12.228 0.00107586 0.0127700 -0.008621 -0.008403</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248  0.00014944824050800110 0.1136873 -0.064631 -0.0076554 0.0022986672787553551 -0.221121  0.44371 0.6648327  1.0773    1.818 0.00721915 0.1958397 -0.066181 -0.066181</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.01209677419354835554 0.0160965  0.008621  0.0084828 0.0004260344827586232  0.008333  0.08333 0.0750000  4.1833   15.564 0.00102213 0.0002874  0.008333  0.008333</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Q0.5     Q0.75      Q0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.000000  1.000000  1.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.222222  0.223172  0.223172</span>
@@ -701,7 +701,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education1  -0.00286    0.28039   -0.01            0.99    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education2  -0.00286    0.16766   -0.02            0.99    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for quasipoisson family taken to be 0.6735)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -720,15 +720,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0    80.00 40.00 120.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    85.00 43.00 128.00 0.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0     8.00  4.00  12.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   157.00 79.00 236.00 0.33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.48  0.52   1.00 0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.05  0.95   1.00 0.35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333     0.5               0.67               0.34            0.48            0.52          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.35               0.67               0.33            0.05            0.95             0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
@@ -756,21 +756,21 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                 mean       sd    median    trimmed                   mad       min      max     range    skew kurtosis         se       IQR      Q0.1     Q0.25      Q0.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.33467741935483869 0.472832  0.000000  0.2950000 0.0000000000000000000  0.000000  1.00000  1.000000  0.6965   -1.521 0.03002485 1.0000000  0.000000  0.000000  0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  0.33469443861903031 0.001436  0.333351  0.3346722 0.0000000000000002469  0.333351  0.33622  0.002873  0.1285   -1.991 0.00009121 0.0028731  0.333351  0.333351  0.333351</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.00000000000000000 0.000000  1.000000  1.0000000 0.0000000000000000000  1.000000  1.00000  0.000000     NaN      NaN 0.00000000 0.0000000  1.000000  1.000000  1.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248 -1.09459731048665598 0.004292 -1.098612 -1.0946638 0.0000000000000013168 -1.098612 -1.09003  0.008584  0.1285   -1.991 0.00027252 0.0085837 -1.098612 -1.098612 -1.098612</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.01982219519776281 1.034512 -0.599525 -0.1161905 0.0402332229387734747 -0.937506  9.97234 10.909848  3.9138   32.647 0.06569160 1.7320060 -0.626662 -0.626662 -0.599525</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.33467741978769144 0.001437  0.333333  0.3346552 0.0000000000000004115  0.333333  0.33621  0.002874  0.1285   -1.991 0.00009123 0.0028736  0.333333  0.333333  0.333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.00000000129354471 1.412818 -1.000000 -0.1200000 0.0000000000000000000 -1.000000  2.00000  3.000000  0.6966   -1.521 0.08971404 2.9743590 -1.000000 -1.000000 -1.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.00000000091749615 1.002143 -0.706458 -0.0845237 0.0046573841414729571 -0.734791  1.46958  2.204372  0.6966   -1.520 0.06363613 2.1106042 -0.709600 -0.709600 -0.706458</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248  0.00143896056542663 1.003158 -0.705734 -0.0831842 0.0046621701947466322 -0.734099  1.47309  2.207186  0.6966   -1.520 0.06370060 2.1126560 -0.708879 -0.708879 -0.705734</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248 -0.00000000000546014 0.010229 -0.002801 -0.0003404 0.0001444501278772379 -0.030303  0.06061  0.090909  2.5561   19.392 0.00064956 0.0085008 -0.002899 -0.002899 -0.002801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.00000000000042411 0.019295  0.002801  0.0001680 0.0001444501278772372 -0.060606  0.12121  0.181818  2.9928   25.260 0.00122526 0.0085008 -0.005723 -0.005602  0.002801</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248  0.00000000000002093 0.011292  0.002899 -0.0003241 0.0126032736572890009 -0.060606  0.03030  0.090909 -1.7673   12.244 0.00071705 0.0085008 -0.005723 -0.005602  0.002899</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248  0.00014950160746984 0.113725 -0.064696 -0.0076463 0.0020885612157228437 -0.221345  0.44416  0.665509  1.0783    1.829 0.00722154 0.1958954 -0.066105 -0.066105 -0.064696</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.01209677419354839 0.016096  0.008621  0.0084828 0.0004260344827586232  0.008333  0.08333  0.075000  4.1833   15.564 0.00102213 0.0002874  0.008333  0.008333  0.008621</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                 mean       sd    median    trimmed                  mad       min      max     range    skew kurtosis         se       IQR      Q0.1     Q0.25      Q0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.33467741935483869 0.472832  0.000000  0.2950000 0.000000000000000000  0.000000  1.00000  1.000000  0.6965   -1.521 0.03002485 1.0000000  0.000000  0.000000  0.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  0.33469443861903181 0.001436  0.333351  0.3346722 0.000000000000002881  0.333351  0.33622  0.002873  0.1285   -1.991 0.00009121 0.0028731  0.333351  0.333351  0.333351</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.00000000000000000 0.000000  1.000000  1.0000000 0.000000000000000000  1.000000  1.00000  0.000000     NaN      NaN 0.00000000 0.0000000  1.000000  1.000000  1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248 -1.09459731048665931 0.004292 -1.098612 -1.0946638 0.000000000000005926 -1.098612 -1.09003  0.008584  0.1285   -1.991 0.00027252 0.0085837 -1.098612 -1.098612 -1.098612</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.01982219519776108 1.034512 -0.599525 -0.1161905 0.040233222938772489 -0.937506  9.97234 10.909848  3.9138   32.647 0.06569160 1.7320060 -0.626662 -0.626662 -0.599525</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.33467741978769033 0.001437  0.333333  0.3346552 0.000000000000001975  0.333333  0.33621  0.002874  0.1285   -1.991 0.00009123 0.0028736  0.333333  0.333333  0.333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.00000000129354153 1.412818 -1.000000 -0.1200000 0.000000000000000000 -1.000000  2.00000  3.000000  0.6966   -1.521 0.08971404 2.9743590 -1.000000 -1.000000 -1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.00000000091749387 1.002143 -0.706458 -0.0845237 0.004657384141473451 -0.734791  1.46958  2.204372  0.6966   -1.520 0.06363613 2.1106042 -0.709600 -0.709600 -0.706458</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248  0.00143896056542902 1.003158 -0.705734 -0.0831842 0.004662170194746962 -0.734099  1.47309  2.207186  0.6966   -1.520 0.06370060 2.1126560 -0.708879 -0.708879 -0.705734</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248 -0.00000000000546013 0.010229 -0.002801 -0.0003404 0.000144450127877237 -0.030303  0.06061  0.090909  2.5561   19.392 0.00064956 0.0085008 -0.002899 -0.002899 -0.002801</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.00000000000042409 0.019295  0.002801  0.0001680 0.000144450127877229 -0.060606  0.12121  0.181818  2.9928   25.260 0.00122526 0.0085008 -0.005723 -0.005602  0.002801</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248  0.00000000000002092 0.011292  0.002899 -0.0003241 0.012603273657289006 -0.060606  0.03030  0.090909 -1.7673   12.244 0.00071705 0.0085008 -0.005723 -0.005602  0.002899</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248  0.00014950160747012 0.113725 -0.064696 -0.0076463 0.002088561215722782 -0.221345  0.44416  0.665509  1.0783    1.829 0.00722154 0.1958954 -0.066105 -0.066105 -0.064696</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.01209677419354839 0.016096  0.008621  0.0084828 0.000426034482758608  0.008333  0.08333  0.075000  4.1833   15.564 0.00102213 0.0002874  0.008333  0.008333  0.008621</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        Q0.75      Q0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   1.000000  1.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.336224  0.336224</span>
@@ -811,7 +811,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -0.701308   0.271601   -2.58   0.0098 **</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stratum      0.000339   0.005626    0.06   0.9520   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for binomial family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1039,7 +1039,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education1   -0.0043     0.4185   -0.01   0.9918   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> education2   -0.0043     0.2502   -0.02   0.9863   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for binomial family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1066,12 +1066,12 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   -0.6931    0.50               0.67               0.34            0.48            0.52          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   -0.6931    0.35               0.67               0.33            0.05            0.95          0.5000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   -0.6831    0.51               0.67               0.34            0.53            0.47          0.5025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.6931 -0.6831</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.6831</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Pseudo R^2"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
@@ -1097,19 +1097,19 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  variable   n                    mean        sd    median    trimmed                   mad       min      max     range    skew kurtosis         se       IQR      Q0.1     Q0.25</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1           variable.case 248  0.33467741935483868998 0.4728318  0.000000  0.2950000 0.0000000000000000000  0.000000  1.00000 1.0000000  0.6965   -1.521 0.03002485 1.0000000  0.000000  0.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  0.22266646654342803213 0.0004748  0.222222  0.2226591 0.0000000000000002469  0.222222  0.22317 0.0009496  0.1285   -1.991 0.00003015 0.0009496  0.222222  0.222222</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                 weights 248  0.22266646654342855949 0.0004748  0.222222  0.2226591 0.0000000000000003292  0.222222  0.22317 0.0009496  0.1285   -1.991 0.00003015 0.0009496  0.222222  0.222222</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3           prior_weights 248  1.00000000000000000000 0.0000000  1.000000  1.0000000 0.0000000000000000000  1.000000  1.00000 0.0000000     NaN      NaN 0.00000000 0.0000000  1.000000  1.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248 -0.68711171700747974977 0.0064513 -0.693147 -0.6872116 0.0000000000000011522 -0.693147 -0.68024 0.0129034  0.1285   -1.991 0.00040966 0.0129034 -0.693147 -0.693147</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.05289798836848470798 1.0520434 -0.735742 -0.1426134 0.0470972692361399312 -1.148272  5.10590 6.2541679  1.0406    0.555 0.06680482 2.1213200 -0.767508 -0.767508</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.33467741935488015681 0.0014367  0.333333  0.3346552 0.0000000000000002469  0.333333  0.33621 0.0028736  0.1285   -1.991 0.00009123 0.0028736  0.333333  0.333333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.00000000000018620813 2.1234939 -1.500000 -0.1792208 0.0096272727272484517 -1.506494  3.00000 4.5064935  0.6965   -1.521 0.13484200 4.4808525 -1.506494 -1.506494</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.00000000000008834091 1.0082815 -0.710072 -0.0848326 0.0069675501467795211 -0.738549  1.47710 2.2156468  0.6966   -1.520 0.06402594 2.1259860 -0.714771 -0.714771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248 -0.00000000000008834091 1.0082815 -0.710072 -0.0848326 0.0069675501467795211 -0.738549  1.47710 2.2156468  0.6966   -1.520 0.06402594 2.1259860 -0.714771 -0.714771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248 -0.00000000000000079857 0.0153489 -0.004202 -0.0005128 0.0002445803301557215 -0.045455  0.09091 0.1363636  2.5539   19.363 0.00097466 0.0127700 -0.004367 -0.004367</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.00000000000000009282 0.0289458  0.004202  0.0002530 0.0002445803301557267 -0.090909  0.18182 0.2727273  2.9919   25.249 0.00183806 0.0127700 -0.008621 -0.008403</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248 -0.00000000000000002458 0.0169426  0.004367 -0.0004824 0.0189328156242746203 -0.090909  0.04545 0.1363636 -1.7661   12.228 0.00107586 0.0127700 -0.008621 -0.008403</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248 -0.00000000000000917166 0.1142557 -0.065092 -0.0078274 0.0023137388488821773 -0.222681  0.44536 0.6680428  1.0740    1.807 0.00725524 0.1968371 -0.066653 -0.066653</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.01209677419354838676 0.0160965  0.008621  0.0084828 0.0004260344827586207  0.008333  0.08333 0.0750000  4.1833   15.564 0.00102213 0.0002874  0.008333  0.008333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       linear_predictors 248 -0.68711171700748086000 0.0064513 -0.693147 -0.6872116 0.0000000000000049380 -0.693147 -0.68024 0.0129034  0.1285   -1.991 0.00040966 0.0129034 -0.693147 -0.693147</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                 effects 248 -0.05289798836848422225 1.0520434 -0.735742 -0.1426134 0.0470972692361404238 -1.148272  5.10590 6.2541679  1.0406    0.555 0.06680482 2.1213200 -0.767508 -0.767508</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                  fitted 248  0.33467741935487987925 0.0014367  0.333333  0.3346552 0.0000000000000011522  0.333333  0.33621 0.0028736  0.1285   -1.991 0.00009123 0.0028736  0.333333  0.333333</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7               residuals 248 -0.00000000000018490764 2.1234939 -1.500000 -0.1792208 0.0096272727272474629 -1.506494  3.00000 4.5064935  0.6965   -1.521 0.13484200 4.4808525 -1.506494 -1.506494</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  standardized_residuals 248 -0.00000000000008780326 1.0082815 -0.710072 -0.0848326 0.0069675501467791924 -0.738549  1.47710 2.2156468  0.6966   -1.520 0.06402594 2.1259860 -0.714771 -0.714771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       student_residuals 248 -0.00000000000008780326 1.0082815 -0.710072 -0.0848326 0.0069675501467791924 -0.738549  1.47710 2.2156468  0.6966   -1.520 0.06402594 2.1259860 -0.714771 -0.714771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10     dfbeta.(Intercept) 248 -0.00000000000000078884 0.0153489 -0.004202 -0.0005128 0.0002445803301557254 -0.045455  0.09091 0.1363636  2.5539   19.363 0.00097466 0.0127700 -0.004367 -0.004367</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      dfbeta.education1 248 -0.00000000000000008112 0.0289458  0.004202  0.0002530 0.0002445803301557100 -0.090909  0.18182 0.2727273  2.9919   25.249 0.00183806 0.0127700 -0.008621 -0.008403</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      dfbeta.education2 248 -0.00000000000000003194 0.0169426  0.004367 -0.0004824 0.0189328156242745647 -0.090909  0.04545 0.1363636 -1.7661   12.228 0.00107586 0.0127700 -0.008621 -0.008403</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                 dffits 248 -0.00000000000000909087 0.1142557 -0.065092 -0.0078274 0.0023137388488821565 -0.222681  0.44536 0.6680428  1.0740    1.807 0.00725524 0.1968371 -0.066653 -0.066653</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14              hatvalues 248  0.01209677419354835554 0.0160965  0.008621  0.0084828 0.0004260344827586232  0.008333  0.08333 0.0750000  4.1833   15.564 0.00102213 0.0002874  0.008333  0.008333</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Q0.5     Q0.75      Q0.9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.000000  1.000000  1.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.222222  0.223172  0.223172</span>
@@ -1150,7 +1150,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -0.701308   0.271601   -2.58   0.0098 **</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stratum      0.000339   0.005626    0.06   0.9520   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for binomial family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

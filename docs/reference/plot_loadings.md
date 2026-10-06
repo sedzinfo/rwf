@@ -100,6 +100,7 @@ cm<-matrix(c(1,.01,.01,.01,.01,.01,
              ncol=6,nrow=6)
 df1<-generate_correlation_matrix(cm,nrows=10000)
 model3<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
+#> maximum iteration exceeded
 plot_loadings(model=model3,matrix_type="pattern",base_size=10)
 #> $correlation_loadings
 

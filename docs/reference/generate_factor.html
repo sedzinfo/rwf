@@ -81,16 +81,16 @@ a single factor vector is returned instead of a data frame. Default is <code>10<
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">generate_factor</span><span class="op">(</span>vector <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, ncols <span class="op">=</span> <span class="fl">5</span>, nrows <span class="op">=</span> <span class="fl">10</span>, type <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    X1 X2 X3 X4 X5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   E  B  A  B  A</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   C  E  C  E  D</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   C  C  D  A  D</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   B  E  D  D  C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   B  B  A  E  D</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   B  A  E  E  C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   A  C  A  E  D</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   E  D  D  D  B</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   C  E  A  E  C</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  D  B  D  E  A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   C  D  B  A  B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   B  D  E  B  E</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   A  B  C  C  D</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   B  E  D  A  A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   A  B  B  B  D</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   A  A  C  A  C</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   E  C  D  B  B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   C  C  A  A  E</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9   A  A  B  E  D</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  B  D  B  E  D</span>
 <span class="r-in"><span><span class="fu">generate_factor</span><span class="op">(</span>vector <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, ncols <span class="op">=</span> <span class="fl">5</span>, nrows <span class="op">=</span> <span class="fl">10</span>, type <span class="op">=</span> <span class="st">"balanced"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    X1 X2 X3 X4 X5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   A  A  A  A  A</span>
@@ -107,7 +107,7 @@ a single factor vector is returned instead of a data frame. Default is <code>10<
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] A A B B C C D D E E</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Levels: A B C D E</span>
 <span class="r-in"><span><span class="fu">generate_factor</span><span class="op">(</span>vector <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, ncols <span class="op">=</span> <span class="fl">1</span>, nrows <span class="op">=</span> <span class="fl">10</span>, type <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] B A B B E B B C B A</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] E C E C E A D A A B</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Levels: A B C D E</span>
 </code></pre></div>
     </div>
