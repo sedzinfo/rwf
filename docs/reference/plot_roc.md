@@ -52,12 +52,8 @@ different class level orders.
 observed<-round(abs(rnorm(100,m=0,sd=0.5)))
 predicted<-abs(rnorm(100,m=0,sd=0.5))
 plot_roc(observed=observed,predicted=predicted)
-#> $`1, 0`
 
-#> 
-#> $`0, 1`
 
-#> 
 
 # Example with generated correlation matrix
 df1<-data.frame(matrix(0.999,ncol=2,nrow=2))
@@ -68,10 +64,5 @@ df1$X1<-ifelse(abs(df1$X1) < 1,0,1)
 df1$X2<-abs(df1$X2)
 df1$X2<-(df1$X2-min(df1$X2))/(max(df1$X2)-min(df1$X2))
 plot_roc(observed=round(abs(df1$X1),0),predicted=abs(df1$X2))
-#> $`1, 0`
 
-#> 
-#> $`0, 1`
-
-#> 
 ```

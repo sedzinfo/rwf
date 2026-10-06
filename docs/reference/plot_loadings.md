@@ -46,19 +46,11 @@ plot_loadings(
 ``` r
 model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
 plot_loadings(model=model,matrix_type="structure")
-#> $correlation_loadings
 
-#> 
-#> $plot_barplot
 
-#> 
 plot_loadings(model=model,matrix_type="pattern")
-#> $correlation_loadings
 
-#> 
-#> $plot_barplot
 
-#> 
 cm<-matrix(c(1,.8,.8,.1,.1,.1,
              .8,1,.8,.1,.1,.1,
              .8,.8,1,.1,.1,.1,
@@ -69,12 +61,8 @@ cm<-matrix(c(1,.8,.8,.1,.1,.1,
 df1<-generate_correlation_matrix(cm,nrows=10000)
 model1<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
 plot_loadings(model=model1,matrix_type="pattern",base_size=30)
-#> $correlation_loadings
 
-#> 
-#> $plot_barplot
 
-#> 
 cm<-matrix(c(1,.1,.1,.1,.1,.1,
              .1,1,.1,.1,.1,.1,
              .1,.1,1,.1,.1,.1,
@@ -85,12 +73,8 @@ cm<-matrix(c(1,.1,.1,.1,.1,.1,
 df1<-generate_correlation_matrix(cm,nrows=10000)
 model2<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
 plot_loadings(model=model2,matrix_type="pattern",base_size=30)
-#> $correlation_loadings
 
-#> 
-#> $plot_barplot
 
-#> 
 cm<-matrix(c(1,.01,.01,.01,.01,.01,
              .01,1,.01,.01,.01,.01,
              .01,.01,1,.01,.01,.01,
@@ -100,12 +84,6 @@ cm<-matrix(c(1,.01,.01,.01,.01,.01,
              ncol=6,nrow=6)
 df1<-generate_correlation_matrix(cm,nrows=10000)
 model3<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
-#> maximum iteration exceeded
 plot_loadings(model=model3,matrix_type="pattern",base_size=10)
-#> $correlation_loadings
 
-#> 
-#> $plot_barplot
-
-#> 
 ```

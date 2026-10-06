@@ -3,6 +3,7 @@
 <url><loc>https://sedzinfo.github.io/rwf/authors.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/index.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/alpha_diagnostics.html</loc></url>
+<url><loc>https://sedzinfo.github.io/rwf/reference/c_bind.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/call_to_string.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/cdf.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/cdff.html</loc></url>
@@ -11,6 +12,7 @@
 <url><loc>https://sedzinfo.github.io/rwf/reference/check_heywood.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/clear_stopwords.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/clear_text.html</loc></url>
+<url><loc>https://sedzinfo.github.io/rwf/reference/combine_files.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/comparison_combinations.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/compute_ability.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/compute_adjustment.html</loc></url>
@@ -55,7 +57,6 @@
 <url><loc>https://sedzinfo.github.io/rwf/reference/confusion.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/confusion_matrix_percent.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/convert_excel_unix_timestamp.html</loc></url>
-<url><loc>https://sedzinfo.github.io/rwf/reference/c_bind.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/data_frame_index.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/decompose_datetime.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/deg2rad.html</loc></url>
@@ -97,17 +98,17 @@
 <url><loc>https://sedzinfo.github.io/rwf/reference/generate_multiple_responce_vector.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/generate_string.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/generate_unique_comparisons_index.html</loc></url>
-<url><loc>https://sedzinfo.github.io/rwf/reference/getfwp.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/get_script_directory.html</loc></url>
+<url><loc>https://sedzinfo.github.io/rwf/reference/getfwp.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/hinvert_title_grob.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/icc_cfa.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/increase_index.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/index.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/install_all_packages.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/install_load.html</loc></url>
-<url><loc>https://sedzinfo.github.io/rwf/reference/key_to_cfa_model.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/k_fold.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/k_sample.html</loc></url>
+<url><loc>https://sedzinfo.github.io/rwf/reference/key_to_cfa_model.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/matrix_triangle.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/mean_sd_alpha.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/mgsub.html</loc></url>
@@ -196,7 +197,6 @@
 <url><loc>https://sedzinfo.github.io/rwf/reference/split_str.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/split_str_df.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/stat_word_char.html</loc></url>
-<url><loc>https://sedzinfo.github.io/rwf/reference/string_aes.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/str_aes.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/str_count.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/str_mgsub.html</loc></url>
@@ -211,6 +211,7 @@
 <url><loc>https://sedzinfo.github.io/rwf/reference/str_sub.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/str_trim_df.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/str_wrap.html</loc></url>
+<url><loc>https://sedzinfo.github.io/rwf/reference/string_aes.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/sub_str.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/swap.html</loc></url>
 <url><loc>https://sedzinfo.github.io/rwf/reference/symmetric_matrix.html</loc></url>

@@ -23,5 +23,5 @@ A character vector of the same length as `x`.
 ``` r
 x <- generate_string(nchar = 10, vector = LETTERS, vector_length = 10)
 str_proper(x)
-#>  [1] "Spjddiwzhb" "Gqlakpqinr" "Psokpfjdwv" "Cajebczuoz" "Idotyzzere" "Trulkkmmdn" "Alkhdlxhcf" "Onesqtshed" "Kizmlzmwpo" "Ezzkyludqq"
+#>  [1] "Koggyecimi" "Spjddiwzhb" "Gqlakpqinr" "Psokpfjdwv" "Cajebczuoz" "Idotyzzere" "Trulkkmmdn" "Alkhdlxhcf" "Onesqtshed" "Kizmlzmwpo"
 ```

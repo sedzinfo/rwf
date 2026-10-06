@@ -182,17 +182,17 @@ cdff(df = generate_missing(mtcars))
 #> 
 #> $check
 #>    NAMES EMPTY null na NOT_NA NAN INF FIN RANGE   MEAN MEDIAN     SD   MIN   MAX    MODE   TYPE   CLASS FACTOR
-#> 1    mpg     0    0  5     27   0   0  27    22  20.71  21.00   6.34  10.4  33.9 numeric double numeric  FALSE
-#> 2    cyl     0    0  5     27   0   0  27     4   6.52   8.00   1.72     4     8 numeric double numeric  FALSE
-#> 3   disp     0    0  5     27   0   0  27    23 233.86 225.00 117.84  71.1   472 numeric double numeric  FALSE
-#> 4     hp     0    0  5     27   0   0  27    20 150.07 123.00  71.86    52   335 numeric double numeric  FALSE
-#> 5   drat     0    0  5     27   0   0  27    20   3.61   3.73   0.54  2.76  4.93 numeric double numeric  FALSE
-#> 6     wt     0    0  5     27   0   0  27    26   3.22   3.21   1.02 1.513 5.424 numeric double numeric  FALSE
-#> 7   qsec     0    0  5     27   0   0  27    28  17.80  17.42   1.93  14.5  22.9 numeric double numeric  FALSE
+#> 1    mpg     0    0  5     27   0   0  27    24  20.09  19.20   5.69  10.4  33.9 numeric double numeric  FALSE
+#> 2    cyl     0    0  5     27   0   0  27     4   6.22   6.00   1.87     4     8 numeric double numeric  FALSE
+#> 3   disp     0    0  5     27   0   0  27    25 243.80 258.00 128.01  71.1   472 numeric double numeric  FALSE
+#> 4     hp     0    0  5     27   0   0  27    20 146.56 123.00  71.81    52   335 numeric double numeric  FALSE
+#> 5   drat     0    0  5     27   0   0  27    21   3.60   3.69   0.55  2.76  4.93 numeric double numeric  FALSE
+#> 6     wt     0    0  5     27   0   0  27    25   3.21   3.21   0.99 1.615 5.424 numeric double numeric  FALSE
+#> 7   qsec     0    0  5     27   0   0  27    27  17.79  17.82   1.82  14.5  22.9 numeric double numeric  FALSE
 #> 8     vs     0    0  5     27   0   0  27     3   0.41   0.00   0.50     0     1 numeric double numeric  FALSE
 #> 9     am     0    0  5     27   0   0  27     3   0.41   0.00   0.50     0     1 numeric double numeric  FALSE
-#> 10  gear     0    0  5     27   0   0  27     4   3.74   4.00   0.71     3     5 numeric double numeric  FALSE
-#> 11  carb     0    0  5     27   0   0  27     7   2.85   2.00   1.68     1     8 numeric double numeric  FALSE
+#> 10  gear     0    0  5     27   0   0  27     4   3.74   4.00   0.76     3     5 numeric double numeric  FALSE
+#> 11  carb     0    0  5     27   0   0  27     7   2.93   2.00   1.62     1     8 numeric double numeric  FALSE
 #> 
 cdff(df = infert, nuniques = 10)
 #> $summary

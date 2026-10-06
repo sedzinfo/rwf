@@ -358,7 +358,7 @@ report_irt(model=irt_threefactor,file="three_factors")
 #> $model_coefficients_oblimin
 #>      .id       a1       a2       a3         d  g  u  x     F1     F2     F3
 #> V1 items 0.005699  0.01011  8.14833 16.235542  0  1 NA     NA     NA     NA
-#> V2 items 0.017266  1.12695  0.01710  2.060654  0  1 NA     NA     NA     NA
+#> V2 items 0.017266  1.12695  0.01711  2.060654  0  1 NA     NA     NA     NA
 #> V3 items 0.979659  0.12596 -0.09645  0.006835  0  1 NA     NA     NA     NA
 #> V4 items 0.908478  0.04810  0.11014 -1.995141  0  1 NA     NA     NA     NA
 #> V5 items 1.008980 -0.10254  0.02583 -3.952170  0  1 NA     NA     NA     NA

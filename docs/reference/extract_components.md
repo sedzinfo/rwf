@@ -53,13 +53,13 @@ design$response <- rowSums(change_data_type(design[, 1:2], type = "numeric")) + 
 model <- mixlm::lm(response ~ r(time) * r(person) + r(item) * r(person), data = design)
 extract_components(model)
 #> $components
-#>     component         VC vc_percent
-#> 1        time  1.0087172   50.53238
-#> 2      person -0.0008239    0.04128
-#> 3        item  0.9746568   48.82611
-#> 4 time:person  0.0013259    0.06642
-#> 5 person:item -0.0002685    0.01345
-#> 6   Residuals  0.0103874    0.52036
+#>     component          VC vc_percent
+#> 1        time  1.01979173  50.106421
+#> 2      person -0.00011694   0.005746
+#> 3        item  1.00340773  49.301410
+#> 4 time:person  0.00005982   0.002939
+#> 5 person:item -0.00093142   0.045764
+#> 6   Residuals  0.01094395   0.537720
 #> 
 #> $plot
 

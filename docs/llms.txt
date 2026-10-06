@@ -443,6 +443,8 @@ Status](https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/main.
   : Remove stopwods
 - [`clear_text()`](https://sedzinfo.github.io/rwf/reference/clear_text.md)
   : Clear text
+- [`combine_files()`](https://sedzinfo.github.io/rwf/reference/combine_files.md)
+  : Combine all files in a directory into a single file
 - [`comparison_combinations()`](https://sedzinfo.github.io/rwf/reference/comparison_combinations.md)
   : All pairwise column name combinations
 - [`confusion()`](https://sedzinfo.github.io/rwf/reference/confusion.md)

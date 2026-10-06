@@ -134,6 +134,7 @@ result<-simulate_cfa_fit(model_sim=model_sim, model=model,
 
 
 
+
 plot_multiplot(plotlist=result[[2]], cols=4)
 
 #> [[1]]
@@ -143,6 +144,7 @@ df <- lavaan::simulateData(model=model_sim, model.type="cfa",
                            return.type="data.frame", sample.nobs=1000)
 result<-simulate_cfa_fit(model=model, df=df,
                          minnobs=50, maxnobs=10000, stepping=100, file="report")
+
 
 
 

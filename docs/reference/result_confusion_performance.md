@@ -190,26 +190,4 @@ result_confusion_performance(observed=round(abs(df$X1),0),
 #> sum 707.00 293.00 1000.00 1.00
 #> p     0.99   0.96    1.00 0.98
 #> 
-result_confusion_performance(observed=c(1,2,3,1,2,3),
-                             predicted=abs(rnorm(6,0,sd=0.1)))
-#> $plot_performance
-
-#> 
-#> $cut_performance
-#>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Collumn_Observed.3 Collumn_Observed.4 Row_Predicted.1 Row_Predicted.2 Row_Predicted.3 Row_Predicted.4 Mean_proportion
-#> 1   0.02026    0.17                  0                0.2                  0                  0               0             0.5               0               0          0.0875
-#> 2   0.12026    0.00                  0                0.0                  0                  0               0             0.0               0               0          0.0000
-#> 
-#> $cut
-#> [1] 0.02026
-#> 
-#> $confusion_matrix
-#>        0    1    2    3  sum    p
-#> 0   0.00 1.00 0.00 0.00 1.00 0.00
-#> 1   0.00 1.00 2.00 2.00 5.00 0.20
-#> 2   0.00 0.00 0.00 0.00 0.00 0.00
-#> 3   0.00 0.00 0.00 0.00 0.00 0.00
-#> sum 0.00 2.00 2.00 2.00 6.00 1.00
-#> p   0.00 0.50 0.00 0.00 1.00 0.17
-#> 
 ```
