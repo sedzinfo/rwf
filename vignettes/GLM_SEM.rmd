@@ -20,6 +20,9 @@ vignette: >
 directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
 source(paste0(directory, "R/code_options.R"))
 source(paste0(directory, "R/code_rwf.R"))
+library(ggplot2)
+library(grid)
+
 ```
 
 ## Description
@@ -42,10 +45,7 @@ where $\eta$ is the latent factor, $\lambda_i$ is the factor loading (how strong
 
 ### Model fit indices
 
-- **$\chi^2$ test**: tests whether the model-implied covariance matrix differs significantly from the observed one. With large samples, this test is almost always significant even for good models, so it's rarely used alone.
-- **CFI / TLI** (Comparative Fit Index / Tucker-Lewis Index): compare the fitted model to a null (no-correlation) baseline; conventionally $\geq 0.95$ indicates good fit.
-- **RMSEA** (Root Mean Square Error of Approximation): a badness-of-fit index that penalizes model complexity; conventionally $\leq 0.06$ (sometimes $0.08$) indicates good fit, with an accompanying confidence interval.
-- **SRMR** (Standardized Root Mean Square Residual): the average standardized difference between observed and model-implied correlations; conventionally $\leq 0.08$ indicates good fit.
+Every index in the report is listed with its reference in [Fit indices in the report](#fit-indices-in-the-report).
 
 ### Modification indices
 
@@ -78,14 +78,45 @@ plot_cfa_gg(fit, what = "est", layout = "circle")
 
 `what = "std"` shows standardized loadings (comparable across indicators regardless of their original scale); `what = "est"` shows raw, unstandardized estimates (in the original metric of each indicator). Three `layout` options (`tree`, `circle`, `spring`) control node placement via `igraph`.
 
-`plot_cfa` is a batch wrapper that runs every combination of `layout` × `what` (9 diagrams total) in one call — useful for quickly picking the clearest arrangement for a report:
+### Equality constraints
+
+`what = "eq"` labels each loading with its parameter label, so loadings constrained to be equal (sharing the same label) are easy to spot; loadings without a label show their estimate. It needs a model with labelled parameters. Here the loadings of X2 and X3 are constrained to be equal (`a`), and so are those of X5 and X6 (`b`):
+
+```{r plot_cfa_eq,fig.width=8,fig.height=6}
+model_eq <- "LATENT1=~X1+a*X2+a*X3
+             LATENT2=~X4+b*X5+b*X6"
+fit_eq <- lavaan::cfa(model_eq, data = df_cfa)
+plot_cfa_gg(fit_eq, what = "eq", layout = "spring")
+```
+
+### Styling
+
+`label_size` and `edge_label_size` set the text size of the node and path labels; `color_latent` and `color_observed` set the fill colour of the latent and observed nodes:
+
+```{r plot_cfa_style,fig.width=8,fig.height=6}
+plot_cfa_gg(fit, what = "std", layout = "tree",
+            label_size = 4, edge_label_size = 3.5,
+            color_latent = "#2c3e50", color_observed = "#ecf0f1")
+```
+
+### All layouts at once
+
+`plot_cfa` is a batch wrapper that runs every combination of `layout` × `what` in one call and returns them as a named list — useful for quickly picking the clearest arrangement for a report. The three `eq` diagrams are only produced for models with labelled parameters, so `fit` gives 6 diagrams and `fit_eq` gives all 9:
 
 ```{r plot_cfa_batch,results='hide'}
 all_plots <- plot_cfa(fit)
+all_plots_eq <- plot_cfa(fit_eq)
 ```
 
 ```{r plot_cfa_batch_names}
 names(all_plots)
+names(all_plots_eq)
+```
+
+Any diagram can be taken from the list by name:
+
+```{r plot_cfa_batch_one,fig.width=8,fig.height=6}
+all_plots$spring_standard_estimates
 ```
 
 ## Full CFA Report
@@ -99,14 +130,67 @@ result <- report_cfa(model = fit)
 ```{r report_cfa_output}
 result$fit_indices
 result$r_squared
-head(result$parameters)
-head(result$modification_indices[order(-result$modification_indices$mi), ])
+result$parameters
+result$modification_indices[order(-result$modification_indices$mi), ]
 ```
 
 - **`fit_indices`**: the full `lavaan` fit table (CFI, TLI, RMSEA + CI, SRMR, AIC, BIC, etc.).
 - **`r_squared`**: proportion of each indicator's variance explained by its latent factor.
 - **`parameters`**: every estimated parameter (loadings, variances, covariances) with SE, z, p, and confidence intervals.
 - **`modification_indices`**: sorted here by size — the largest values are the parameters most likely to improve fit if freed (again, only worth freeing with a substantive rationale).
+
+The rest of the report holds the input data and model matrices:
+
+```{r report_cfa_output_rest}
+result$sample_covariance
+result$standardized_estimates
+head(result$predict)
+result$call
+```
+
+- **`sample_covariance`**: the observed covariance matrix of the indicators that the model tries to reproduce.
+- **`unstandardized_estimates`** / **`standardized_estimates`**: the model matrices — `lambda` (loadings), `theta` (residual variances and covariances) and `psi` (factor variances and covariances).
+- **`predict`**: the observed data with each case's predicted factor scores added as extra columns.
+- **`call`**: the `lavaan` call that fitted the model.
+
+With `file`, the report is also saved: `report_cfa(fit, file = "cfa")` writes every table to `cfa.xlsx` and all diagrams to `cfa_diagram.pdf`, with `w` and `h` setting the PDF page size in inches.
+
+### Fit indices in the report
+
+`result$fit_indices` holds every fit measure `lavaan` computes (Rosseel, 2012). Cut-offs are given only where the literature gives one; "lower is better" indices are for comparing models fitted to the same data. The `_nomean` variants ignore the mean structure, so they equal the plain index when the model has no means, as here.
+
+| Row in `fit_indices` | Index | Good fit | Reference |
+|---|---|---|---|
+| `npar` | Number of free parameters | — | — |
+| `fmin` | Minimum of the fit function, $\chi^2/(2N)$ | — | Jöreskog (1969) |
+| `chisq`, `df`, `pvalue` | $\chi^2$ test of exact fit | $p > .05$ | Jöreskog (1969) |
+| `baseline.chisq`, `baseline.df`, `baseline.pvalue` | $\chi^2$ test of the baseline (independence) model, used by the incremental indices | — | Bentler & Bonett (1980) |
+| `cfi` | Comparative Fit Index | $\geq .95$ | Bentler (1990); Hu & Bentler (1999) |
+| `tli`, `nnfi` | Tucker-Lewis Index / Non-Normed Fit Index (same value) | $\geq .95$ | Tucker & Lewis (1973); Bentler & Bonett (1980); Hu & Bentler (1999) |
+| `rfi` | Relative Fit Index | close to 1 | Bollen (1986) |
+| `nfi` | Normed Fit Index | $\geq .90$ | Bentler & Bonett (1980) |
+| `pnfi` | Parsimony Normed Fit Index | higher is better | James et al. (1982) |
+| `ifi` | Incremental Fit Index | close to 1 | Bollen (1989a) |
+| `rni` | Relative Noncentrality Index | $\geq .95$ | McDonald & Marsh (1990); Hu & Bentler (1999) |
+| `logl`, `unrestricted.logl` | Log-likelihood of the model and of the saturated model | — | Jöreskog (1969) |
+| `aic` | Akaike Information Criterion | lower is better | Akaike (1974) |
+| `bic` | Bayesian Information Criterion | lower is better | Schwarz (1978) |
+| `ntotal` | Total sample size | — | — |
+| `bic2` | Sample-size adjusted BIC | lower is better | Sclove (1987) |
+| `rmsea` | Root Mean Square Error of Approximation | $\leq .06$ | Steiger & Lind (1980); Steiger (1990); Hu & Bentler (1999) |
+| `rmsea.ci.lower`, `rmsea.ci.upper`, `rmsea.ci.level` | 90% confidence interval of RMSEA | — | Browne & Cudeck (1992) |
+| `rmsea.pvalue`, `rmsea.close.h0` | Test of close fit, $H_0$: RMSEA $\leq .05$ | $p > .05$ | Browne & Cudeck (1992) |
+| `rmsea.notclose.pvalue`, `rmsea.notclose.h0` | Test of not-close fit, $H_0$: RMSEA $\geq .08$ | $p < .05$ | MacCallum et al. (1996) |
+| `rmr`, `rmr_nomean` | Root Mean Square Residual (unstandardized, depends on the scale of the variables) | — | Jöreskog & Sörbom (1981) |
+| `srmr`, `srmr_bentler`, `srmr_bentler_nomean` | Standardized Root Mean Square Residual | $\leq .08$ | Bentler (1995); Hu & Bentler (1999) |
+| `crmr`, `crmr_nomean` | Correlation Root Mean Square Residual (residual correlations, diagonal excluded) | — | Bollen (1989b) |
+| `srmr_mplus`, `srmr_mplus_nomean` | SRMR as computed by Mplus | $\leq .08$ | Asparouhov & Muthén (2018) |
+| `gfi`, `gfi.ci.lower`, `gfi.ci.upper`, `gfi.ci.level` | Goodness of Fit Index, with confidence interval | close to 1 | Jöreskog & Sörbom (1981) |
+| `cn_05`, `cn_01` | Hoelter's critical N at $\alpha = .05$ and $.01$ | $> 200$ | Hoelter (1983) |
+| `gfi_lisrel`, `agfi_lisrel` | GFI and Adjusted GFI as computed by LISREL | close to 1 | Jöreskog & Sörbom (1981) |
+| `pgfi` | Parsimony Goodness of Fit Index | higher is better | Mulaik et al. (1989) |
+| `mfi` | McDonald's Fit Index | close to 1 | McDonald (1989) |
+| `ecvi` | Expected Cross-Validation Index | lower is better | Browne & Cudeck (1989) |
 
 ### Multi-group models
 
@@ -119,11 +203,19 @@ When the fitted model has more than one group, `report_cfa` additionally returns
 ```{r simulate_cfa_fit,results='hide'}
 model_sim <- "LATENT =~ 1*X1 + 0.5*X2 + 1.5*X3 + 1.5*X4 + X5"
 model_est <- "LATENT =~ X1 + X2 + X3 + X4 + X5"
-result_sim <- simulate_cfa_fit(model_sim = model_sim, model = model_est, minnobs = 50, maxnobs = 1000, stepping = 100)
+result_sim <- simulate_cfa_fit(model_sim = model_sim, model = model_est, minnobs = 50, maxnobs = 10000, stepping = 100)
 ```
 
-```{r simulate_cfa_fit_plot,fig.width=12,fig.height=8}
-plot_multiplot(plotlist = result_sim[[2]], cols = 3)
+The first element is a table with one row per sample size and one column per fit index; the second is a named list of plots, one per fit index:
+
+```{r simulate_cfa_fit_table}
+head(result_sim[[1]][, c("observations", "cfi", "tli", "rmsea", "srmr")])
+```
+
+```{r simulate_cfa_fit_plots,fig.width=10,fig.height=8}
+plot_multiplot(plotlist = result_sim[[2]][c("observations_cfi", "observations_tli",
+                                            "observations_rmsea", "observations_srmr")],
+               cols = 2)
 ```
 
 Each panel tracks one fit index against sample size. Indices like RMSEA and SRMR typically stabilize and tighten (less sample-to-sample variability) as $n$ grows — the point at which a given index's variability becomes acceptably small for your purposes is a data-driven answer to "how large a sample do I need?" for this specific model.
@@ -133,6 +225,58 @@ Each panel tracks one fit index against sample size. Indices like RMSEA and SRMR
 ## Conclusion
 
 `plot_cfa_gg`/`plot_cfa` visualize a fitted measurement model's structure without requiring `semPlot`'s system dependencies; `report_cfa` collects every quantity needed to write up a CFA (fit, parameters, R², modification indices) in one call; and `simulate_cfa_fit` turns "what sample size do I need" into an empirical, visualizable question rather than a rule of thumb.
+
+## References
+
+Akaike, H. (1974). A new look at the statistical model identification. *IEEE Transactions on Automatic Control, 19*(6), 716–723. https://doi.org/10.1109/TAC.1974.1100705
+
+Asparouhov, T., & Muthén, B. (2018). *SRMR in Mplus* [Technical report]. Muthén & Muthén. https://www.statmodel.com/download/SRMR2.pdf
+
+Bentler, P. M. (1990). Comparative fit indexes in structural models. *Psychological Bulletin, 107*(2), 238–246. https://doi.org/10.1037/0033-2909.107.2.238
+
+Bentler, P. M. (1995). *EQS structural equations program manual*. Multivariate Software.
+
+Bentler, P. M., & Bonett, D. G. (1980). Significance tests and goodness of fit in the analysis of covariance structures. *Psychological Bulletin, 88*(3), 588–606. https://doi.org/10.1037/0033-2909.88.3.588
+
+Bollen, K. A. (1986). Sample size and Bentler and Bonett's nonnormed fit index. *Psychometrika, 51*(3), 375–377. https://doi.org/10.1007/BF02294061
+
+Bollen, K. A. (1989a). A new incremental fit index for general structural equation models. *Sociological Methods & Research, 17*(3), 303–316. https://doi.org/10.1177/0049124189017003004
+
+Bollen, K. A. (1989b). *Structural equations with latent variables*. Wiley. https://doi.org/10.1002/9781118619179
+
+Browne, M. W., & Cudeck, R. (1989). Single sample cross-validation indices for covariance structures. *Multivariate Behavioral Research, 24*(4), 445–455. https://doi.org/10.1207/s15327906mbr2404_4
+
+Browne, M. W., & Cudeck, R. (1992). Alternative ways of assessing model fit. *Sociological Methods & Research, 21*(2), 230–258. https://doi.org/10.1177/0049124192021002005
+
+Hoelter, J. W. (1983). The analysis of covariance structures: Goodness-of-fit indices. *Sociological Methods & Research, 11*(3), 325–344. https://doi.org/10.1177/0049124183011003003
+
+Hu, L., & Bentler, P. M. (1999). Cutoff criteria for fit indexes in covariance structure analysis: Conventional criteria versus new alternatives. *Structural Equation Modeling, 6*(1), 1–55. https://doi.org/10.1080/10705519909540118
+
+James, L. R., Mulaik, S. A., & Brett, J. M. (1982). *Causal analysis: Assumptions, models, and data*. Sage.
+
+Jöreskog, K. G. (1969). A general approach to confirmatory maximum likelihood factor analysis. *Psychometrika, 34*(2), 183–202. https://doi.org/10.1007/BF02289343
+
+Jöreskog, K. G., & Sörbom, D. (1981). *LISREL V: Analysis of linear structural relationships by maximum likelihood and least squares methods*. National Educational Resources.
+
+MacCallum, R. C., Browne, M. W., & Sugawara, H. M. (1996). Power analysis and determination of sample size for covariance structure modeling. *Psychological Methods, 1*(2), 130–149. https://doi.org/10.1037/1082-989X.1.2.130
+
+McDonald, R. P. (1989). An index of goodness-of-fit based on noncentrality. *Journal of Classification, 6*(1), 97–103. https://doi.org/10.1007/BF01908590
+
+McDonald, R. P., & Marsh, H. W. (1990). Choosing a multivariate model: Noncentrality and goodness of fit. *Psychological Bulletin, 107*(2), 247–255. https://doi.org/10.1037/0033-2909.107.2.247
+
+Mulaik, S. A., James, L. R., Van Alstine, J., Bennett, N., Lind, S., & Stilwell, C. D. (1989). Evaluation of goodness-of-fit indices for structural equation models. *Psychological Bulletin, 105*(3), 430–445. https://doi.org/10.1037/0033-2909.105.3.430
+
+Rosseel, Y. (2012). lavaan: An R package for structural equation modeling. *Journal of Statistical Software, 48*(2), 1–36. https://doi.org/10.18637/jss.v048.i02
+
+Schwarz, G. (1978). Estimating the dimension of a model. *The Annals of Statistics, 6*(2), 461–464. https://doi.org/10.1214/aos/1176344136
+
+Sclove, S. L. (1987). Application of model-selection criteria to some problems in multivariate analysis. *Psychometrika, 52*(3), 333–343. https://doi.org/10.1007/BF02294360
+
+Steiger, J. H. (1990). Structural model evaluation and modification: An interval estimation approach. *Multivariate Behavioral Research, 25*(2), 173–180. https://doi.org/10.1207/s15327906mbr2502_4
+
+Steiger, J. H., & Lind, J. C. (1980). *Statistically based tests for the number of common factors* [Paper presentation]. Annual meeting of the Psychometric Society, Iowa City, IA, United States.
+
+Tucker, L. R., & Lewis, C. (1973). A reliability coefficient for maximum likelihood factor analysis. *Psychometrika, 38*(1), 1–10. https://doi.org/10.1007/BF02291170
 
 ---
 

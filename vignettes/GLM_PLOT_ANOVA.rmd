@@ -24,6 +24,7 @@ load(paste0(directory, "data/df_blood_pressure.rda"))
 load(paste0(directory, "data/df_crop_yield.rda"))
 library(reshape)
 library(ggplot2)
+library(ggfortify)
 ```
 
 ## Description
