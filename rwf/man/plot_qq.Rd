@@ -28,10 +28,10 @@ Produces one quantile-quantile plot per numeric column of
   skipped silently. A progress bar is printed to the console.
 }
 \examples{
-vector <- generate_missing(rnorm(1000), missing = 10)
+vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 plot_qq(df = vector)
 plot_qq(df = df)
-plot_multiplot(plotlist = plot_qq(df = mtcars), cols = 4)
+plot_multiplot(plotlist = plot_qq(df = mtcars[,1:4]), cols = 2)
 }
 \keyword{assumptions}

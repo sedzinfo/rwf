@@ -50,7 +50,7 @@ For each numeric column of \code{df}, produces a 2×2 panel of
   \code{\link{report_pdf}}.
 }
 \examples{
-vector <- generate_missing(rnorm(1000), missing = 10)
+vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 plot_normality_diagnostics(df = vector, file = "rnorm", breaks = 30)
 plot_normality_diagnostics(df = vector)

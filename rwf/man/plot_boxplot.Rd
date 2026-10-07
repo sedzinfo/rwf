@@ -24,7 +24,7 @@ Melts all numeric columns of \code{df} into a single long
   Non-numeric columns are silently dropped.
 }
 \examples{
-vector <- generate_missing(rnorm(1000), missing = 10)
+vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 plot_boxplot(df = vector)
 plot_boxplot(df = df)

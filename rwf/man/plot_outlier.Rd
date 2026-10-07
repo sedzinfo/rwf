@@ -41,7 +41,7 @@ For each numeric column of \code{df}, draws a dot plot with
   overlaid on each plot.
 }
 \examples{
-vector <- generate_missing(rnorm(1000), missing = 10)
+vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 plot_outlier(df = vector, method = "mean", title = "random vector")
 plot_outlier(df = vector, method = "median")
@@ -49,7 +49,7 @@ plot_outlier(df = vector, method = "boxplot")
 plot_outlier(df = df, method = "mean", title = "random vector")
 plot_outlier(df = df, method = "median")
 plot_outlier(df = df, method = "boxplot")
-plot_multiplot(plotlist = plot_outlier(df = mtcars[, 2:5], method = "mean"), cols = 2)
+plot_multiplot(plotlist = plot_outlier(df = mtcars[1:5, 2:5], method = "mean"), cols = 2)
 }
 \author{
 unknown

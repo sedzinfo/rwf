@@ -257,7 +257,7 @@ call_to_string <- function(model) {
 #'   the heading and the output, followed by a shorter separator. Default is
 #'   \code{NULL}.
 #' @param length Numeric. Width of the main separator in characters. Default is
-#'   half the current console width (\code{getOption("width") / 2}).
+#'   one quarter of the current console width (\code{getOption("width") / 4}).
 #'
 #' @return Called for its side effects. Returns \code{NULL} invisibly.
 #' @keywords strings
@@ -267,7 +267,7 @@ call_to_string <- function(model) {
 #' output_separator(string = "TEST", instruction = "TEST", length = 100)
 #' output_separator(string = "TEST", output = "TEST", length = 100)
 #' output_separator(string = "TEST")
-output_separator <- function(string, output = NULL, instruction = NULL, length = getOption("width") / 2) {
+output_separator <- function(string, output = NULL, instruction = NULL, length = getOption("width") / 4) {
   separator_title <- paste0(rep("#", length), sep = "", collapse = "")
   separator_subtitle <- paste0(rep("#", length / 2), sep = "", collapse = "")
   print(separator_title)
@@ -280,6 +280,7 @@ output_separator <- function(string, output = NULL, instruction = NULL, length =
   if (!is.null(output)) {
     print(output)
   }
+  invisible(NULL)
 }
 ##########################################################################################
 # BASE R REPLACEMENTS FOR stringr FUNCTIONS
@@ -397,8 +398,8 @@ str_replace <- function(string, pattern, replacement) {
 #' str_wrap(labels, width = 20)
 str_wrap <- function(string, width = 80) {
   vapply(string, function(x) paste(strwrap(x, width = width), collapse = "\n"),
-    character(1),
-    USE.NAMES = FALSE
+         character(1),
+         USE.NAMES = FALSE
   )
 }
 ##########################################################################################

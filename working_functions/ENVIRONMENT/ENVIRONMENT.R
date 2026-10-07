@@ -1,9 +1,9 @@
 ##########################################################################################
 # DIRECTORIES
 ##########################################################################################
+rm(list=ls())
 directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
 setwd(gsub("/working_functions/ENVIRONMENT/","",directory))
-rm(list=ls())
 lapply(paste0('package:',names(sessionInfo()$otherPkgs)),detach,character.only=TRUE,unload=TRUE)
 graphics.off()
 cat("\014")

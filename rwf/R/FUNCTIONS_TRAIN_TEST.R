@@ -667,7 +667,6 @@ plot_confusion_extended <- function(observed, predicted, positive = NULL, base_s
   fdr         <- FP / (TP + FP)
   
   pct <- function(x) paste0(sprintf("%.1f", x * 100), "%")
-  
   seq_ramp <- grDevices::colorRampPalette(c("#cde2fb", "#0d366b"))(100)
   fill_for <- function(n) seq_ramp[pmax(1, pmin(100, round(n / total * 99) + 1))]
   

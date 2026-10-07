@@ -32,7 +32,7 @@
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_normality_diagnostics(df = vector, file = "rnorm", breaks = 30)
 #' plot_normality_diagnostics(df = vector)
@@ -123,7 +123,7 @@ plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NUL
 #' @author unknown
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_outlier(df = vector, method = "mean", title = "random vector")
 #' plot_outlier(df = vector, method = "median")
@@ -131,7 +131,7 @@ plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NUL
 #' plot_outlier(df = df, method = "mean", title = "random vector")
 #' plot_outlier(df = df, method = "median")
 #' plot_outlier(df = df, method = "boxplot")
-#' plot_multiplot(plotlist = plot_outlier(df = mtcars[, 2:5], method = "mean"), cols = 2)
+#' plot_multiplot(plotlist = plot_outlier(df = mtcars[1:5, 2:5], method = "mean"), cols = 2)
 plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = FALSE) {
   obs <- Outlier <- NULL
   plot <- list()
@@ -231,12 +231,12 @@ plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = F
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_histogram(df = vector)
 #' plot_histogram(df = df, xlims = c(0, 50))
 #' plot_histogram(df = df)
-#' plot_multiplot(plotlist = plot_histogram(df = mtcars), cols = 4)
+#' plot_multiplot(plotlist = plot_histogram(df = mtcars[,1:4]), cols = 2)
 plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NULL, fill = "gray25", color = "gray50", ylab = "Count", pb = FALSE) {
   data <- NULL
   plot <- list()
@@ -281,7 +281,7 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
 #'   \code{df}, comparing the empirical distribution to the theoretical normal.
 #'   A reference line is fitted through the 25th and 75th percentiles (the same
 #'   convention used by \code{\link[stats]{qqline}}). Non-numeric columns are
-#'   skipped silently. Missing and infinite values are dropped before plotting.
+#'   skipped silently. A progress bar is printed to the console.
 #' @param df Data frame or vector. Non-numeric columns are skipped.
 #' @param title Character string used as the plot title. Default is \code{""}.
 #' @param base_size Base font size passed to \code{theme_bw()}. Default is
@@ -294,11 +294,11 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_qq(df = vector)
 #' plot_qq(df = df)
-#' plot_multiplot(plotlist = plot_qq(df = mtcars), cols = 4)
+#' plot_multiplot(plotlist = plot_qq(df = mtcars[,1:4]), cols = 2)
 plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
   resids <- NULL
   data_name <- deparse(substitute(df))
@@ -345,8 +345,7 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
 #' @title Side-by-side boxplots for all numeric columns
 #' @description Melts all numeric columns of \code{df} into a single long
 #'   format and draws them as side-by-side horizontal boxplots on one plot.
-#'   Non-numeric columns are silently dropped. Missing and infinite values are
-#'   dropped before plotting.
+#'   Non-numeric columns are silently dropped.
 #' @param df Data frame or numeric vector. Non-numeric columns are silently
 #'   dropped.
 #' @param title Character string used as the plot title. Default is \code{""}.
@@ -358,7 +357,7 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_boxplot(df = vector)
 #' plot_boxplot(df = df)
@@ -404,13 +403,12 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' report_normality_tests(df = df)
 #' report_normality_tests(df = vector, file = "normality_tests")
 report_normality_tests <- function(df, file = NULL) {
   df <- data.frame(df)
-  n <- nrow(df)
   instruction_shapiro <- "Shapiro-Wilk Composite null hypothesis: any normal distribution"
   instruction_anderson <- "Anderson-Darling Composite null hypothesis: any normal distribution"
   instruction_crammer <- "Cramer-von-Mises Composite null hypothesis: any normal distribution"
@@ -420,41 +418,45 @@ report_normality_tests <- function(df, file = NULL) {
   instruction_kolmogorov <- "Kolmogorov-Smirnov Exact null hypothesis: fully specified normal distribution"
   instruction_pearson <- "Pearson X2 Tests weaker null hypothesis: any distribution with the same probabilities for the given class intervals"
   result_df <- data.frame()
+  test_row <- function(test, variable, N, instruction) {
+    df_test <- if (!is.null(test$parameter)) test$parameter else test$df
+    data.frame(
+      variable = variable,
+      n = N,
+      statistic = unname(test$statistic),
+      df = if (is.null(df_test)) NA else unname(df_test)[1],
+      p = test$p.value,
+      method = test$method[1],
+      alternative = if (is.null(test$alternative)) NA else test$alternative,
+      n.classes = if (is.null(test$n.classes)) NA else test$n.classes,
+      instruction = instruction
+    )
+  }
   for (i in names(df)) {
     vector <- compute_standard(stats::na.omit(df[, i]), type = "z")
     N <- length(vector)
     if (length(vector) < 5000 & length(vector) > 7 & var(vector) != 0) {
-      result_shapiro <- data.frame(variable = i, N = N, t(unlist(shapiro.test(vector))), instruction = instruction_shapiro)
-      result_anderson <- data.frame(variable = i, N = N, t(unlist(DescTools::AndersonDarlingTest(vector))), instruction = instruction_anderson)
-      result_cramer <- data.frame(variable = i, N = N, t(unlist(DescTools::CramerVonMisesTest(vector))), instruction = instruction_crammer)
-      result_francia <- data.frame(variable = i, N = N, t(unlist(DescTools::ShapiroFranciaTest(vector))), instruction = instruction_shapiro_francia)
-      result_jarque <- data.frame(variable = i, N = N, t(unlist(DescTools::JarqueBeraTest(vector))), instruction = instruction_jarque)
-      result_lillie <- data.frame(variable = i, N = N, t(unlist(DescTools::LillieTest(vector))), instruction = instruction_lilliefors)
-      result_kolmogorov <- data.frame(variable = i, N = N, t(unlist(stats::ks.test(vector, "pnorm", mean = mean(vector), sd = stats::sd(vector), alternative = "two.sided"))), instruction = instruction_kolmogorov)
-      result_pearson <- data.frame(variable = i, N = N, t(unlist(DescTools::PearsonTest(vector, n.classes = ceiling(2 * (n^(2 / 5))), adjust = TRUE))), instruction = instruction_pearson)
-      
-      names(result_shapiro) <- c("variable", "n", "statistic", "p", "method", "data.name", "instruction")
-      names(result_anderson) <- c("variable", "n", "statistic", "p", "method", "method1", "data.name", "instruction")
-      names(result_cramer) <- c("variable", "n", "statistic", "p", "method", "data.name", "instruction")
-      names(result_francia) <- c("variable", "n", "statistic", "p", "method", "data.name", "instruction")
-      names(result_jarque) <- c("variable", "n", "statistic", "df", "p", "method", "data.name", "instruction")
-      names(result_lillie) <- c("variable", "n", "statistic", "p", "method", "data.name", "instruction")
-      names(result_kolmogorov) <- c("variable", "n", "statistic", "p", "alternative", "method", "data.name", "exact", "instruction")
-      names(result_pearson) <- c("variable", "n", "statistic", "p", "method", "data.name", "n.classes", "df", "instruction")
-      
-      result <- plyr::rbind.fill(
-        result_shapiro,
-        result_anderson,
-        result_cramer,
-        result_francia,
-        result_jarque,
-        result_lillie,
-        result_kolmogorov,
-        result_pearson
+      # ties make the Kolmogorov-Smirnov p value approximate, so say so in the output instead of warning
+      if (anyDuplicated(vector)) {
+        instruction_kolmogorov_i <- paste(instruction_kolmogorov, "(ties present, p value is approximate)")
+      } else {
+        instruction_kolmogorov_i <- instruction_kolmogorov
+      }
+      result_kolmogorov <- withCallingHandlers(
+        stats::ks.test(vector, "pnorm", mean = mean(vector), sd = stats::sd(vector), alternative = "two.sided"),
+        warning = function(w) if (grepl("ties", conditionMessage(w))) invokeRestart("muffleWarning")
       )
-      result_df <- plyr::rbind.fill(result_df, result)
-      
-      result_df <- result_df[, c("variable", "n", "statistic", "df", "p", "method", "method1", "alternative", "n.classes", "instruction")]
+      result <- rbind(
+        test_row(shapiro.test(vector), i, N, instruction_shapiro),
+        test_row(DescTools::AndersonDarlingTest(vector, null = "pnorm"), i, N, instruction_anderson),
+        test_row(DescTools::CramerVonMisesTest(vector), i, N, instruction_crammer),
+        test_row(DescTools::ShapiroFranciaTest(vector), i, N, instruction_shapiro_francia),
+        test_row(DescTools::JarqueBeraTest(vector), i, N, instruction_jarque),
+        test_row(DescTools::LillieTest(vector), i, N, instruction_lilliefors),
+        test_row(result_kolmogorov, i, N, instruction_kolmogorov_i),
+        test_row(DescTools::PearsonTest(vector, n.classes = ceiling(2 * (N^(2 / 5))), adjust = TRUE), i, N, instruction_pearson)
+      )
+      result_df <- rbind(result_df, result)
     } else {
       cat("NORMALITY INDICES NOT CALCULATED DUE TO OUT OF BOUNDS SAMPLE SIZE FOR", i, "\n")
     }
@@ -495,7 +497,7 @@ report_normality_tests <- function(df, file = NULL) {
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' outlier_summary(vector)
 #' data.frame(sapply(mtcars, outlier_summary))
@@ -542,7 +544,7 @@ outlier_summary <- function(vector) {
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' remove_outliers(vector)
 #' data.frame(sapply(df, remove_outliers))

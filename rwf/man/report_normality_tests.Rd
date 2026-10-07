@@ -28,7 +28,7 @@ Runs eight normality tests on each numeric column of \code{df}:
   with significant p-values (\eqn{p \le 0.05}) highlighted.
 }
 \examples{
-vector <- generate_missing(rnorm(1000), missing = 10)
+vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 report_normality_tests(df = df)
 report_normality_tests(df = vector, file = "normality_tests")

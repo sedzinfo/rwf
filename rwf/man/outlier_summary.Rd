@@ -26,7 +26,7 @@ Z-standardises \code{vector} and counts the percentage of
   \code{sapply}.
 }
 \examples{
-vector <- generate_missing(rnorm(1000), missing = 10)
+vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 outlier_summary(vector)
 data.frame(sapply(mtcars, outlier_summary))

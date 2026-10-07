@@ -8,7 +8,7 @@ output_separator(
   string,
   output = NULL,
   instruction = NULL,
-  length = getOption("width")/2
+  length = getOption("width")/4
 )
 }
 \arguments{
@@ -23,7 +23,7 @@ the heading and the output, followed by a shorter separator. Default is
 \code{NULL}.}
 
 \item{length}{Numeric. Width of the main separator in characters. Default is
-half the current console width (\code{getOption("width") / 2}).}
+one quarter of the current console width (\code{getOption("width") / 4}).}
 }
 \value{
 Called for its side effects. Returns \code{NULL} invisibly.

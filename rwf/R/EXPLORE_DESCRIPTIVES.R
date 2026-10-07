@@ -140,8 +140,8 @@ compute_descriptives <- function(df, dv, iv = NULL, file = NULL) {
 #' @examples
 #' compute_aggregate(df = mtcars, iv = 9)
 #' compute_aggregate(df = mtcars, iv = 9:10)
-#' compute_aggregate(df = mtcars, iv = 9:11)
-#' compute_aggregate(df = mtcars, iv = 9:11, file = "descriptives")
+#' compute_aggregate(df = mtcars, iv = 11)
+#' compute_aggregate(df = mtcars, iv = 11, file = "descriptives")
 compute_aggregate <- function(df, iv, file = NULL) {
   result_df_mean <- result_df_sd <- result_df_obs <- list()
   factornames <- names(df)[iv]
@@ -457,7 +457,8 @@ plot_crosstable <- function(df, factor_index, combinations = NULL, shape = 16, a
     }
   }
   if(pb) close(progress)
-  return(plot)
+  invisible(lapply(plot,print))
+  return(invisible(plot))
 }
 ##########################################################################################
 # PLOT MOSAIC
@@ -542,7 +543,8 @@ plot_mosaic <- function(df, factor_index, base_size = 10, title = "", pb = FALSE
     }
   }
   if (pb) close(progress)
-  return(plot)
+  invisible(lapply(plot,print))
+  return(invisible(plot))
 }
 ##########################################################################################
 # PLOT RESPONSE FREQUENCY
@@ -597,5 +599,6 @@ plot_response_frequencies <- function(df, factor_index, base_size = 10, title = 
       }
     }
   }
-  return(plots)
+  invisible(lapply(plots,print))
+  return(invisible(plots))
 }
