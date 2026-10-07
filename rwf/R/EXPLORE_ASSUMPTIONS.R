@@ -281,7 +281,7 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
 #'   \code{df}, comparing the empirical distribution to the theoretical normal.
 #'   A reference line is fitted through the 25th and 75th percentiles (the same
 #'   convention used by \code{\link[stats]{qqline}}). Non-numeric columns are
-#'   skipped silently. A progress bar is printed to the console.
+#'   skipped silently. Missing and infinite values are dropped before plotting.
 #' @param df Data frame or vector. Non-numeric columns are skipped.
 #' @param title Character string used as the plot title. Default is \code{""}.
 #' @param base_size Base font size passed to \code{theme_bw()}. Default is
@@ -313,11 +313,12 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
   for (i in 1:length(df)) {
     if(pb) setTxtProgressBar(progress, i)
     if (is.numeric(df[, i])) {
-      y <- stats::quantile(df[, i][!is.na(df[, i])], c(0.25, 0.75))
+      values <- df[, i][is.finite(df[, i])]
+      y <- stats::quantile(values, c(0.25, 0.75))
       x <- stats::qnorm(c(0.25, 0.75))
       slope <- diff(y) / diff(x)
       intercept <- y[1L] - slope * x[1L]
-      d <- data.frame(resids = df[, i])
+      d <- data.frame(resids = values)
       plot[[names(df)[i]]] <- ggplot(d, aes(sample = resids)) +
         stat_qq(alpha = .1) +
         geom_abline(slope = slope, intercept = intercept) +
@@ -326,10 +327,10 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
           title = title,
           caption = paste0(
             "\nVariable=", names(df)[i],
-            "\nObservations=", nrow(df),
-            "\nMean=", round(mean(df[, i]), 2),
-            "\nSD=", round(stats::sd(df[, i]), 2),
-            "\nMedian=", round(stats::median(df[, i]), 2)
+            "\nObservations=", length(values),
+            "\nMean=", round(mean(values), 2),
+            "\nSD=", round(stats::sd(values), 2),
+            "\nMedian=", round(stats::median(values), 2)
           )
         )
     }
@@ -344,7 +345,8 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
 #' @title Side-by-side boxplots for all numeric columns
 #' @description Melts all numeric columns of \code{df} into a single long
 #'   format and draws them as side-by-side horizontal boxplots on one plot.
-#'   Non-numeric columns are silently dropped.
+#'   Non-numeric columns are silently dropped. Missing and infinite values are
+#'   dropped before plotting.
 #' @param df Data frame or numeric vector. Non-numeric columns are silently
 #'   dropped.
 #' @param title Character string used as the plot title. Default is \code{""}.
@@ -369,6 +371,7 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
     names(df) <- data_name
   }
   vector <- reshape2::melt(df, measure.vars = names(df), value.name = "value", variable.name = "variable")
+  vector <- vector[is.finite(vector$value), ]
   plot <- ggplot(vector, aes(x = variable, y = value)) +
     geom_boxplot() +
     labs(title = title, y = "", x = "", caption = paste("Observations=", nrow(df))) +

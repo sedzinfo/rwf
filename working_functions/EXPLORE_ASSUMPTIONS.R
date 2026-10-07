@@ -32,7 +32,7 @@
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_normality_diagnostics(df = vector, file = "rnorm", breaks = 30)
 #' plot_normality_diagnostics(df = vector)
@@ -123,7 +123,7 @@ plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NUL
 #' @author unknown
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_outlier(df = vector, method = "mean", title = "random vector")
 #' plot_outlier(df = vector, method = "median")
@@ -131,7 +131,7 @@ plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NUL
 #' plot_outlier(df = df, method = "mean", title = "random vector")
 #' plot_outlier(df = df, method = "median")
 #' plot_outlier(df = df, method = "boxplot")
-#' plot_multiplot(plotlist = plot_outlier(df = mtcars[, 2:5], method = "mean"), cols = 2)
+#' plot_multiplot(plotlist = plot_outlier(df = mtcars[1:5, 2:5], method = "mean"), cols = 2)
 plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = FALSE) {
   obs <- Outlier <- NULL
   plot <- list()
@@ -231,12 +231,12 @@ plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = F
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_histogram(df = vector)
 #' plot_histogram(df = df, xlims = c(0, 50))
 #' plot_histogram(df = df)
-#' plot_multiplot(plotlist = plot_histogram(df = mtcars), cols = 4)
+#' plot_multiplot(plotlist = plot_histogram(df = mtcars[,1:4]), cols = 2)
 plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NULL, fill = "gray25", color = "gray50", ylab = "Count", pb = FALSE) {
   data <- NULL
   plot <- list()
@@ -294,11 +294,11 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_qq(df = vector)
 #' plot_qq(df = df)
-#' plot_multiplot(plotlist = plot_qq(df = mtcars), cols = 4)
+#' plot_multiplot(plotlist = plot_qq(df = mtcars[,1:4]), cols = 2)
 plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
   resids <- NULL
   data_name <- deparse(substitute(df))
@@ -313,11 +313,12 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
   for (i in 1:length(df)) {
     if(pb) setTxtProgressBar(progress, i)
     if (is.numeric(df[, i])) {
-      y <- stats::quantile(df[, i][!is.na(df[, i])], c(0.25, 0.75))
+      values <- df[, i][is.finite(df[, i])]
+      y <- stats::quantile(values, c(0.25, 0.75))
       x <- stats::qnorm(c(0.25, 0.75))
       slope <- diff(y) / diff(x)
       intercept <- y[1L] - slope * x[1L]
-      d <- data.frame(resids = df[, i])
+      d <- data.frame(resids = values)
       plot[[names(df)[i]]] <- ggplot(d, aes(sample = resids)) +
         stat_qq(alpha = .1) +
         geom_abline(slope = slope, intercept = intercept) +
@@ -326,10 +327,10 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
           title = title,
           caption = paste0(
             "\nVariable=", names(df)[i],
-            "\nObservations=", nrow(df),
-            "\nMean=", round(mean(df[, i]), 2),
-            "\nSD=", round(stats::sd(df[, i]), 2),
-            "\nMedian=", round(stats::median(df[, i]), 2)
+            "\nObservations=", length(values),
+            "\nMean=", round(mean(values), 2),
+            "\nSD=", round(stats::sd(values), 2),
+            "\nMedian=", round(stats::median(values), 2)
           )
         )
     }
@@ -356,7 +357,7 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_boxplot(df = vector)
 #' plot_boxplot(df = df)
@@ -369,6 +370,7 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
     names(df) <- data_name
   }
   vector <- reshape2::melt(df, measure.vars = names(df), value.name = "value", variable.name = "variable")
+  vector <- vector[is.finite(vector$value), ]
   plot <- ggplot(vector, aes(x = variable, y = value)) +
     geom_boxplot() +
     labs(title = title, y = "", x = "", caption = paste("Observations=", nrow(df))) +
@@ -401,7 +403,7 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' report_normality_tests(df = df)
 #' report_normality_tests(df = vector, file = "normality_tests")
@@ -492,7 +494,7 @@ report_normality_tests <- function(df, file = NULL) {
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' outlier_summary(vector)
 #' data.frame(sapply(mtcars, outlier_summary))
@@ -539,7 +541,7 @@ outlier_summary <- function(vector) {
 #' @keywords assumptions
 #' @export
 #' @examples
-#' vector <- generate_missing(rnorm(1000), missing = 10)
+#' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' remove_outliers(vector)
 #' data.frame(sapply(df, remove_outliers))
