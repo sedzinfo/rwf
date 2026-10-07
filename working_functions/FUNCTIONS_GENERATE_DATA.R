@@ -230,7 +230,6 @@ generate_correlation_matrix <- function(correlation_martix, nrows = 10) {
 #' @examples
 #' correlation_matrix <- generate_correlation_matrix()
 #' stats::cor(correlation_matrix)
-#' simulate_correlation_from_sample(correlation_matrix, nrows = 1000)
 #' stats::cor(simulate_correlation_from_sample(correlation_matrix, nrows = 1000))
 simulate_correlation_from_sample <- function(cordata, nrows = 10) {
   cordata_cov <- cov(cordata, use = "pairwise.complete.obs")

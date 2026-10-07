@@ -30,7 +30,6 @@ Accuracy of the reproduced correlations improves with larger \code{nrows}.
 \examples{
 correlation_matrix <- generate_correlation_matrix()
 stats::cor(correlation_matrix)
-simulate_correlation_from_sample(correlation_matrix, nrows = 1000)
 stats::cor(simulate_correlation_from_sample(correlation_matrix, nrows = 1000))
 }
 \seealso{

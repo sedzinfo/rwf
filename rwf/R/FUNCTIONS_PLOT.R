@@ -42,11 +42,10 @@
 #'   facet_grid(Diet ~ .) +
 #'   ggtitle("Final weight, by diet") +
 #'   theme_bw()
-#' cars_plot <- plot_histogram(mtcars)
+#' cars_plot <- plot_histogram(mtcars[1:4])
 #' plot_multiplot(p1, p2, p3, p4, cols = 2)
 #' plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
 #' plot_multiplot(plotlist = plot_histogram(mtcars), layout = matrix(1:4, ncol = 2, byrow = TRUE))
-#' plot_multiplot(plotlist = plot_scatterplot(mtcars[, 1:4]), cols = 2)
 #' plot_multiplot(plotlist = cars_plot, layout = matrix(1:4, ncol = 2, byrow = TRUE))
 #' plot_multiplot(plotlist = cars_plot, cols = 3)
 plot_multiplot <- function(..., plotlist = NULL, cols = 2, layout = NULL) {
