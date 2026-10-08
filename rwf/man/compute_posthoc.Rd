@@ -2,20 +2,94 @@
 % Please edit documentation in R/GLM_ANOVA.R
 \name{compute_posthoc}
 \alias{compute_posthoc}
-\title{Games Howell Tukey post hoc tests}
+\title{Tukey and Games-Howell Post Hoc Tests}
+\source{
+Adapted from \code{posthocTGH()} in the \code{userfriendlyscience}
+package by Gjalt-Jorn Peters (Open University of the Netherlands) and Jeff
+Baggett (University of Wisconsin - La Crosse), licensed GPL (>= 3),
+\url{https://github.com/Matherion/userfriendlyscience}. \code{posthocTGH()} was
+in turn based on \code{games_howell.R}, a script hosted on the course page of
+Robert Cribbie (York University) at
+\code{http://www.psych.yorku.ca/cribbie/6130/games_howell.R}, which is no
+longer available.
+}
 \usage{
 compute_posthoc(y, x)
 }
 \arguments{
-\item{y}{Vector continous variable}
+\item{y}{A numeric vector with the outcome.}
 
-\item{x}{Vector factor}
+\item{x}{A vector with the group of each value of \code{y}, a factor or a vector
+that can be converted to one.}
+}
+\value{
+A list with:
+\itemize{
+  \item \code{input}: list with the \code{x} and \code{y} supplied
+  \item \code{output}: list with two matrices, \code{tukey} and
+  \code{games.howell}, each with one row per pair of groups (named
+  \code{"group1:group2"} in the order of the factor levels) and the columns:
+  \itemize{
+    \item \code{t}: absolute t statistic of the pair
+    \item \code{df}: degrees of freedom
+    \item \code{p}: p-value, adjusted for all the pairwise comparisons
+  }
+}
 }
 \description{
-Based on http://www.psych.yorku.ca/cribbie/6130/games_howell.R
+Compares every pair of group means after a one-way ANOVA with two
+post hoc tests:
+\itemize{
+  \item \code{tukey}: the Tukey-Kramer test, which pools the variances of all
+  groups and assumes they are equal
+  \item \code{games.howell}: the Games-Howell test, which uses the variances of
+  the two groups being compared and does not assume equal variances
+}
+
+In simple terms, after an ANOVA shows that the group means differ, this shows
+which pairs of groups differ, while keeping the chance of any false positive
+across all the pairs at 5\%.
+}
+\details{
+For groups \eqn{i} and \eqn{j} with means \eqn{\bar{y}}, variances \eqn{s^2} and
+sizes \eqn{n}, out of \eqn{k} groups and \eqn{N} observations:
+
+Tukey-Kramer (Tukey, 1953; Kramer, 1956) uses the pooled error variance
+\eqn{MS_{error}=\sum (n_j-1)s_j^2/(N-k)}:
+\deqn{t_{ij}=\frac{|\bar{y}_i-\bar{y}_j|}{\sqrt{MS_{error}(1/n_i+1/n_j)}},\qquad df=N-k}
+
+Games-Howell (Games & Howell, 1976) uses the two group variances and the
+Welch-Satterthwaite degrees of freedom for each pair:
+\deqn{t_{ij}=\frac{|\bar{y}_i-\bar{y}_j|}{\sqrt{s_i^2/n_i+s_j^2/n_j}},\qquad
+df_{ij}=\frac{(s_i^2/n_i+s_j^2/n_j)^2}{\frac{(s_i^2/n_i)^2}{n_i-1}+\frac{(s_j^2/n_j)^2}{n_j-1}}}
+
+In both tests the p-value comes from the studentized range distribution,
+\eqn{p=P(q_{k,df}\ge\sqrt{2}\,t_{ij})}, which already accounts for the number of
+groups. Do not adjust these p-values again.
+
+Use Tukey after Fisher's F test (\code{compute_one_way_test(var.equal = TRUE)})
+and Games-Howell after Welch's F test (\code{var.equal = FALSE}). Games-Howell
+is the safer choice when the group variances or sizes differ.
+
+\code{t} is an absolute value; the direction of a difference comes from the
+group means. The p-values match \code{stats::TukeyHSD} and
+\code{rstatix::games_howell_test}.
+
+Missing values are not removed: a missing value in \code{y} makes every
+result \code{NA}. Remove incomplete cases before calling the function, as
+\code{report_oneway} does.
 }
 \examples{
+TukeyHSD(aov(bp_before ~ agegrp, data = df_blood_pressure))
+rstatix::games_howell_test(df_blood_pressure, bp_before ~ agegrp)
 compute_posthoc(y = df_blood_pressure$bp_before, x = df_blood_pressure$agegrp)
 compute_posthoc(y = df_blood_pressure$bp_after, x = df_blood_pressure$agegrp)
+}
+\references{
+Games, P. A., & Howell, J. F. (1976). Pairwise multiple comparison procedures with unequal n's and/or variances: A Monte Carlo study. Journal of Educational Statistics, 1(2), 113-125. \doi{10.3102/10769986001002113}
+
+Kramer, C. Y. (1956). Extension of multiple range tests to group means with unequal numbers of replications. Biometrics, 12(3), 307-310. \doi{10.2307/3001469}
+
+Tukey, J. W. (1953). The problem of multiple comparisons. Unpublished manuscript, Princeton University.
 }
 \keyword{ANOVA}

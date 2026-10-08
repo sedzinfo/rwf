@@ -598,63 +598,25 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 ##########################################################################################
 # FACTORIAL ANOVA
 ##########################################################################################
-#' @title Factorial ANOVA report for one or more dependent variables
-#' @description Runs a factorial (within, between or mixed) ANOVA with
-#'   \code{ez::ezANOVA} for every dependent variable in \code{dv}, adds effect
-#'   sizes (\code{sjstats::anova_stats}) and pairwise post hoc comparisons for
-#'   every factor and every combination of factors (\code{emmeans}), and
-#'   optionally writes everything to an Excel workbook.
-#'
-#'   Before the analysis the data are collapsed to one mean per participant and
-#'   design cell (every column named in \code{wid}, \code{within},
-#'   \code{within_full}, \code{between} and the covariates is treated as a
-#'   factor). Sum-to-zero contrasts are set with \code{options(contrasts = ...)},
-#'   which changes the session option.
-#' @param df data frame in long format, one row per observation.
-#' @param dv character vector, names of the dependent variables. One ANOVA is
-#'   run per variable.
-#' @param wid name of the column that identifies participants (the subject id).
-#' @param within character vector, names of the within-subject factors, or \code{NULL}.
-#' @param within_full character vector, names of the within-subject factors after
-#'   the data are collapsed to means per condition, or \code{NULL}. Usually the
-#'   same as \code{within}.
-#' @param between character vector, names of the between-subject factors, or \code{NULL}.
-#' @param within_covariates character vector, names of the within-subject
-#'   covariates, or \code{NULL}.
-#' @param between_covariates character vector, names of the between-subject
-#'   covariates, or \code{NULL}.
-#' @param observed character vector, names of variables already listed in
-#'   \code{within} or \code{between} that are observed (measured) rather than
-#'   manipulated. Used by \code{ezANOVA} for the generalized eta squared.
-#' @param diff character vector, names of within variables to collapse into a
-#'   difference score.
-#' @param reverse_diff logical. If \code{TRUE}, reverses the direction of the
-#'   difference requested in \code{diff}.
-#' @param type sum of squares type: 1, 2 or 3. Default 3.
-#' @param white.adjust logical. If \code{TRUE}, uses a heteroscedasticity-corrected
-#'   covariance matrix (between-subject designs only).
-#' @param detailed logical. If \code{TRUE}, \code{ezANOVA} returns sums of squares.
-#' @param return_aov logical. If \code{TRUE}, keeps the \code{aov} object; it is
-#'   needed for the effect sizes and post hoc tests, so leave it \code{TRUE}.
-#' @param post_hoc_test logical. If \code{TRUE}, adds the post hoc comparisons
-#'   as a sheet in the Excel file. Post hoc comparisons are always computed and
-#'   returned; this only controls whether they are written to \code{file}.
-#' @param base_size base font size. Currently unused (the diagnostic plot that
-#'   used it is commented out).
-#' @param file output file name without extension. If not \code{NULL}, the
-#'   results are written to \code{<file>.xlsx}, replacing any existing file.
-#' @return A list with:
-#'   \describe{
-#'     \item{omnibus}{data frame, the ANOVA table of every dependent variable,
-#'       with Levene's (\code{[L]}) and Mauchly's (\code{[M]}) tests and
-#'       sphericity corrections where they apply.}
-#'     \item{omnibus_effect_size}{data frame, effect sizes per term (eta squared,
-#'       partial eta squared, omega squared, Cohen's f, power, ...).}
-#'     \item{post_hoc}{data frame, pairwise comparisons for every factor and
-#'       combination of factors.}
-#'     \item{object}{list, the raw \code{ezANOVA} result per dependent variable,
-#'       including the \code{aov} object.}
-#'   }
+#' @title Plot means with standard error for every level in a dataframe
+#' @param df dataframe
+#' @param dv names of dependent variables
+#' @param wid names of
+#' @param within names of within factors
+#' @param within_full names of within factors after data are collapsed to means per condition
+#' @param between names of between factors
+#' @param within_covariates names of within covariates
+#' @param between_covariates mames of between covariates
+#' @param observed names in data that are already specified in either within or between that contain predictor variables that are observed variables (not manipulated)
+#' @param diff names of variables to collapse in a different score
+#' @param reverse_diff If TRUE, triggers reversal of the difference collapse requested by diff
+#' @param type sum of squares 1 2 3
+#' @param white.adjust if TRUE corrects for heteroscedasticity
+#' @param detailed if TRUE returns detailed information
+#' @param return_aov if TRUE returns aov object
+#' @param post_hoc_test if TRUE outputs post hoc in file
+#' @param base_size base font size
+#' @param file output filename
 #' @importFrom ez ezANOVA
 #' @keywords ANOVA
 #' @export
@@ -687,7 +649,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #'   between = NULL,
 #'   within_covariates = NULL, between_covariates = NULL,
 #'   file = "anova_within",
-#'   post_hoc_test = TRUE
+#'   post_hoc = TRUE
 #' )
 #' r2 <- report_factorial_anova(
 #'   df = df, wid = "id", dv = c("DV1", "DV2"),
@@ -695,7 +657,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #'   between = c("IV1", "IV2"),
 #'   within_covariates = NULL, between_covariates = NULL,
 #'   file = "anova_between",
-#'   post_hoc_test = TRUE
+#'   post_hoc = TRUE
 #' )
 #' r3 <- report_factorial_anova(
 #'   df = df, wid = "id", dv = c("DV1", "DV2"),
@@ -703,7 +665,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #'   between = c("IV1", "IV2"),
 #'   within_covariates = NULL, between_covariates = NULL,
 #'   file = "anova_mixed",
-#'   post_hoc_test = FALSE
+#'   post_hoc = FALSE
 #' )
 #' r4 <- report_factorial_anova(
 #'   df = df, wid = "id", dv = c("DV1", "DV2"),
@@ -711,7 +673,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #'   between = NULL,
 #'   within_covariates = c("DV3", "DV4"), between_covariates = NULL,
 #'   file = "anova_within_cov",
-#'   post_hoc_test = TRUE
+#'   post_hoc = TRUE
 #' )
 report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NULL, between = NULL, within_covariates = NULL, between_covariates = NULL,
                                    observed = NULL, diff = NULL, reverse_diff = FALSE, type = 3, white.adjust = TRUE, detailed = TRUE, return_aov = TRUE,
@@ -1016,15 +978,88 @@ compute_aov_es <- function(model, ss = "I") {
 ##########################################################################################
 # POST HOC
 ##########################################################################################
-#' @title Games Howell Tukey post hoc tests
-#' @description Based on http://www.psych.yorku.ca/cribbie/6130/games_howell.R
-#' @param y Vector continous variable
-#' @param x Vector factor
+#' @title Tukey and Games-Howell Post Hoc Tests
+#' @description Compares every pair of group means after a one-way ANOVA with two
+#' post hoc tests:
+#' \itemize{
+#'   \item \code{tukey}: the Tukey-Kramer test, which pools the variances of all
+#'   groups and assumes they are equal
+#'   \item \code{games.howell}: the Games-Howell test, which uses the variances of
+#'   the two groups being compared and does not assume equal variances
+#' }
+#'
+#' In simple terms, after an ANOVA shows that the group means differ, this shows
+#' which pairs of groups differ, while keeping the chance of any false positive
+#' across all the pairs at 5\%.
+#'
+#' @param y A numeric vector with the outcome.
+#' @param x A vector with the group of each value of \code{y}, a factor or a vector
+#' that can be converted to one.
+#'
+#' @return A list with:
+#' \itemize{
+#'   \item \code{input}: list with the \code{x} and \code{y} supplied
+#'   \item \code{output}: list with two matrices, \code{tukey} and
+#'   \code{games.howell}, each with one row per pair of groups (named
+#'   \code{"group1:group2"} in the order of the factor levels) and the columns:
+#'   \itemize{
+#'     \item \code{t}: absolute t statistic of the pair
+#'     \item \code{df}: degrees of freedom
+#'     \item \code{p}: p-value, adjusted for all the pairwise comparisons
+#'   }
+#' }
+#'
+#' @details
+#' For groups \eqn{i} and \eqn{j} with means \eqn{\bar{y}}, variances \eqn{s^2} and
+#' sizes \eqn{n}, out of \eqn{k} groups and \eqn{N} observations:
+#'
+#' Tukey-Kramer (Tukey, 1953; Kramer, 1956) uses the pooled error variance
+#' \eqn{MS_{error}=\sum (n_j-1)s_j^2/(N-k)}:
+#' \deqn{t_{ij}=\frac{|\bar{y}_i-\bar{y}_j|}{\sqrt{MS_{error}(1/n_i+1/n_j)}},\qquad df=N-k}
+#'
+#' Games-Howell (Games & Howell, 1976) uses the two group variances and the
+#' Welch-Satterthwaite degrees of freedom for each pair:
+#' \deqn{t_{ij}=\frac{|\bar{y}_i-\bar{y}_j|}{\sqrt{s_i^2/n_i+s_j^2/n_j}},\qquad
+#' df_{ij}=\frac{(s_i^2/n_i+s_j^2/n_j)^2}{\frac{(s_i^2/n_i)^2}{n_i-1}+\frac{(s_j^2/n_j)^2}{n_j-1}}}
+#'
+#' In both tests the p-value comes from the studentized range distribution,
+#' \eqn{p=P(q_{k,df}\ge\sqrt{2}\,t_{ij})}, which already accounts for the number of
+#' groups. Do not adjust these p-values again.
+#'
+#' Use Tukey after Fisher's F test (\code{compute_one_way_test(var.equal = TRUE)})
+#' and Games-Howell after Welch's F test (\code{var.equal = FALSE}). Games-Howell
+#' is the safer choice when the group variances or sizes differ.
+#'
+#' \code{t} is an absolute value; the direction of a difference comes from the
+#' group means. The p-values match \code{stats::TukeyHSD} and
+#' \code{rstatix::games_howell_test}.
+#'
+#' Missing values are not removed: a missing value in \code{y} makes every
+#' result \code{NA}. Remove incomplete cases before calling the function, as
+#' \code{report_oneway} does.
+#'
+#' @source Adapted from \code{posthocTGH()} in the \code{userfriendlyscience}
+#' package by Gjalt-Jorn Peters (Open University of the Netherlands) and Jeff
+#' Baggett (University of Wisconsin - La Crosse), licensed GPL (>= 3),
+#' \url{https://github.com/Matherion/userfriendlyscience}. \code{posthocTGH()} was
+#' in turn based on \code{games_howell.R}, a script hosted on the course page of
+#' Robert Cribbie (York University) at
+#' \code{http://www.psych.yorku.ca/cribbie/6130/games_howell.R}, which is no
+#' longer available.
+#'
+#' @references
+#' Games, P. A., & Howell, J. F. (1976). Pairwise multiple comparison procedures with unequal n's and/or variances: A Monte Carlo study. Journal of Educational Statistics, 1(2), 113-125. \doi{10.3102/10769986001002113}
+#'
+#' Kramer, C. Y. (1956). Extension of multiple range tests to group means with unequal numbers of replications. Biometrics, 12(3), 307-310. \doi{10.2307/3001469}
+#'
+#' Tukey, J. W. (1953). The problem of multiple comparisons. Unpublished manuscript, Princeton University.
 #' @importFrom utils combn
-#' @importFrom stats ptukey
+#' @importFrom stats ptukey complete.cases
 #' @keywords ANOVA
 #' @export
 #' @examples
+#' TukeyHSD(aov(bp_before ~ agegrp, data = df_blood_pressure))
+#' rstatix::games_howell_test(df_blood_pressure, bp_before ~ agegrp)
 #' compute_posthoc(y = df_blood_pressure$bp_before, x = df_blood_pressure$agegrp)
 #' compute_posthoc(y = df_blood_pressure$bp_after, x = df_blood_pressure$agegrp)
 compute_posthoc <- function(y, x) {
