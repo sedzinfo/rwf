@@ -161,7 +161,7 @@ reference:
       - generate_matrix_A
       - generate_matrix_lambda_hat
       - generate_missing
-      - generate_multiple_responce_vector
+      - generate_multiple_response_vector
       - generate_string
       - generate_unique_comparisons_index
 
