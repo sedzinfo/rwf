@@ -4,10 +4,6 @@
 #' @title Report for MASS::lda
 #' @param model object from MASS::lda
 #' @param file output filename
-#' @param w width of pdf file
-#' @param h height of pdf file
-#' @param base_size base font size
-#' @param title plot title
 #' @importFrom stats get_all_vars
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @keywords ML
@@ -18,7 +14,7 @@
 #' result<-report_lda(model=model,file="lda")
 #' model<-MASS::lda(Species~.,data=iris)
 #' result<-report_lda(model=model,file="lda")
-report_lda<-function(model,file=NULL,w=10,h=10,base_size=10,title="") {
+report_lda<-function(model,file=NULL) {
   prior_counts<-data.frame(prior=model$prior,counts=model$counts,mean=model$means)
   terms<-model$terms
   scaling<-model$scaling

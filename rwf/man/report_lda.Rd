@@ -4,20 +4,12 @@
 \alias{report_lda}
 \title{Report for MASS::lda}
 \usage{
-report_lda(model, file = NULL, w = 10, h = 10, base_size = 10, title = "")
+report_lda(model, file = NULL)
 }
 \arguments{
 \item{model}{object from MASS::lda}
 
 \item{file}{output filename}
-
-\item{w}{width of pdf file}
-
-\item{h}{height of pdf file}
-
-\item{base_size}{base font size}
-
-\item{title}{plot title}
 }
 \description{
 Report for MASS::lda

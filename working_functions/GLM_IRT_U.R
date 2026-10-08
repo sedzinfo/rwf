@@ -17,24 +17,24 @@
 #' @examples
 #' compute_unidimensional_theta(a=10,b=0)
 #' x<-seq(-3,3,by=.01)
-#' plot(compute_unidimensional_theta(a=5,b=0,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=5,b=-1,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=5,b=1,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=.1,b=0,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=1,b=0,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=0,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=.1,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=.5,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=1,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=.9,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=.6,theta=x),x=x)
-compute_unidimensional_theta<-function(a,b=0,g=0,i=1,d=1.702,theta=0) {
-  e<-exp(-a*d*(theta-b))
-  denom<-1+e
-  renum<-1-g
-  denom[denom==0]<-1e-22
-  result<-g+renum/denom
+#' plot(compute_unidimensional_theta(a=5,b=0,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=5,b=-1,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=5,b=1,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=0,b=0,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=1,b=0,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=0,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=.1,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=.5,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=1,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=.9,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=.5,theta=x),x=x, ylim = c(0, 1))
+compute_unidimensional_theta <- function(a, b = 0, g = 0, i = 1, d = 1.702, theta = 0) {
+  e <- exp(-a * d * (theta - b))
+  denom <- 1 + e
+  renum <- i - g
+  denom[denom == 0] <- 1e-22
+  result <- g + renum / denom
   return(result)
 }
 ##########################################################################################

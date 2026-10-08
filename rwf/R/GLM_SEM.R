@@ -444,6 +444,6 @@ simulate_cfa_fit<-function(model_sim=NULL,model=NULL,df=NULL,minnobs=50,maxnobs=
   combinations<-data.frame(X1=rep("observations",length(names(plot_data))),X2=names(plot_data),stringsAsFactors=FALSE)
   plots<-plot_scatterplot(df=plot_data,combinations=combinations)
   report_dataframe(sim_results,sheet="simulation",file=file)
-  report_pdf(plotlist=plots,w=w,h=w,file=file)
+  report_pdf(plotlist=plots,w=w,h=h,file=file)
   return(list(sim_results,plots))
 }

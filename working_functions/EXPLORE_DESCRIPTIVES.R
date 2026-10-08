@@ -177,8 +177,6 @@ compute_aggregate <- function(df, iv, file = NULL) {
 #'   exported to an Excel file.
 #' @param df A data frame whose columns are the categorical variables to
 #'   tabulate. All columns are processed regardless of class.
-#' @param ordered Logical. When \code{TRUE} (default) the rows within each
-#'   variable are sorted by frequency in descending order.
 #' @param file Character string naming the output Excel file (without
 #'   extension). When \code{NULL} (default) no file is written.
 #' @return A data frame in long format with one row per observed level per
@@ -198,7 +196,7 @@ compute_aggregate <- function(df, iv, file = NULL) {
 #' compute_frequencies(df = df)
 #' compute_frequencies(df = generate_factor())
 #' compute_frequencies(df = generate_factor(), file = "descriptives")
-compute_frequencies <- function(df, ordered = TRUE, file = NULL) {
+compute_frequencies <- function(df, file = NULL) {
   frequency <- data.frame()
   for (i in names(df)) {
     mytable <- table(df[i])

@@ -4,14 +4,11 @@
 \alias{compute_frequencies}
 \title{Frequency table for categorical variables}
 \usage{
-compute_frequencies(df, ordered = TRUE, file = NULL)
+compute_frequencies(df, file = NULL)
 }
 \arguments{
 \item{df}{A data frame whose columns are the categorical variables to
 tabulate. All columns are processed regardless of class.}
-
-\item{ordered}{Logical. When \code{TRUE} (default) the rows within each
-variable are sorted by frequency in descending order.}
 
 \item{file}{Character string naming the output Excel file (without
 extension). When \code{NULL} (default) no file is written.}

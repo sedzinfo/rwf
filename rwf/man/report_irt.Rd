@@ -4,12 +4,10 @@
 \alias{report_irt}
 \title{Output for irt model}
 \usage{
-report_irt(model, m2 = TRUE, file = NULL)
+report_irt(model, file = NULL)
 }
 \arguments{
 \item{model}{object mirt}
-
-\item{m2}{if TRUE report m2 statistics}
 
 \item{file}{output filename}
 }

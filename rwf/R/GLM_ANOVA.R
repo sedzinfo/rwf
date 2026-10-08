@@ -405,11 +405,11 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
     ss_error <- ms_error * df_error
     method <- "Assuming heteroscedasticity"
   }
-
+  
   ss_total <- sum(ss_effect + ss_error)
   statistic <- ms_effect / ms_error
   p <- stats::pf(q = statistic, df1 = df_effect, df2 = df_error, lower.tail = FALSE)
-
+  
   etasq <- ss_effect / ss_total
   partial.etasq <- ss_effect / (ss_effect + ss_error)
   omegasq <- (ss_effect - df_effect * ms_error) / (ss_total + ms_error)

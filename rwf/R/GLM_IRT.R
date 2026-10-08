@@ -64,7 +64,6 @@ plot_irt_onefactor<-function(model,theta=seq(-6,6,.1),title="",base_size=10) {
 ##########################################################################################
 #' @title Output for irt model
 #' @param model object mirt
-#' @param m2 if TRUE report m2 statistics
 #' @param file output filename
 #' @importFrom mirt coef residuals itemfit M2
 #' @importFrom openxlsx createWorkbook saveWorkbook
@@ -79,7 +78,7 @@ plot_irt_onefactor<-function(model,theta=seq(-6,6,.1),title="",base_size=10) {
 #' report_irt(model=irt_onefactor,file="one_factor")
 #' report_irt(model=irt_twofactor,file="two_factors")
 #' report_irt(model=irt_threefactor,file="three_factors")
-report_irt<-function(model,m2=TRUE,file=NULL) {
+report_irt<-function(model,file=NULL) {
   comment<-list(a1="discrimination",
                 d="difficulty",
                 g="guessing",

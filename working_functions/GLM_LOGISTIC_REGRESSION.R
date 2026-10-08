@@ -55,7 +55,7 @@ plot_logistic_model<-function(df,outcome="outcome",title="",base_size=10) {
   temp<-melt(df,id.vars=outcome)
   names(temp)<-c(outcome,"Predictor","Value")
   plot<-ggplot(temp,aes(x=Value,y=outcome,color=Predictor))+
-    labs(x="Observed value",y=paste("Outcome"),title=paste("Logistic function"),caption=paste0("Observations:",nrow(df)))+
+    labs(x="Observed value",y=paste("Outcome"),title=paste("Logistic function", title),caption=paste0("Observations:",nrow(df)))+
     stat_smooth(method="glm",method.args=list(family="binomial"),se=FALSE,alpha=0.1)+
     geom_count(alpha=.5)+
     theme_bw(base_size=base_size)
