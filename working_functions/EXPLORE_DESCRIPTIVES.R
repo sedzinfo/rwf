@@ -55,7 +55,7 @@ compute_descriptives <- function(df, dv, iv = NULL, file = NULL) {
     mean = "measure of central tendency\n\nmean",
     sd = "measure of dispersion\nstandard deviation\n\nlow values indicate low dispersion of observations from the mean",
     median = "measure of central tendency\n\nmedian\n\nvalue separating lower half from higher half of ordered observations",
-    trimmed = "measure of central tendency\n\ntrimmed mean\n\nmean after droping .1 of minimum and maximum values in data",
+    trimmed = "measure of central tendency\n\ntrimmed mean\n\nmean after dropping .1 of minimum and maximum values in data",
     mad = "measure of dispersion\n\nmedian absolute deviation\n\nlow values indicate low dispersion of observations from the median",
     min = "minimum value observed",
     max = "maximum value observed",
@@ -149,7 +149,7 @@ compute_aggregate <- function(df, iv, file = NULL) {
   result_sd <- data.frame(statistic = "SD", plyr::ddply(df, factornames, plyr::numcolwise(sd, na.rm = TRUE)))
   result_median <- data.frame(statistic = "median", plyr::ddply(df, factornames, plyr::numcolwise(median, na.rm = TRUE)))
   result_mad <- data.frame(statistic = "mad", plyr::ddply(df, factornames, plyr::numcolwise(stats::mad, na.rm = TRUE)))
-  result_trimmed_mean <- data.frame(statistic = "trmmed mean", plyr::ddply(df, factornames, plyr::numcolwise(mean, trim = .5, na.rm = TRUE)))
+  result_trimmed_mean <- data.frame(statistic = "trimmed mean", plyr::ddply(df, factornames, plyr::numcolwise(mean, trim = .5, na.rm = TRUE)))
   result_obs <- data.frame(statistic = "N", plyr::ddply(df, factornames, plyr::numcolwise(length)))
   result_min <- data.frame(statistic = "min", plyr::ddply(df, factornames, plyr::numcolwise(min, na.rm = TRUE)))
   result_max <- data.frame(statistic = "max", plyr::ddply(df, factornames, plyr::numcolwise(max, na.rm = TRUE)))

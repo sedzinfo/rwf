@@ -125,7 +125,7 @@ key_to_cfa_model <- function(key) {
     model <- c(model, c(i, "=~", paste0(key[[i]], collapse = "+"), "\n"))
   }
   model <- (gsub(",", "", toString(model)))
-  # model<-nake.names(stringi::stri_trans_general(model,"latin"))
+  # model<-make.names(stringi::stri_trans_general(model,"latin"))
   return(model)
 }
 ##########################################################################################
@@ -337,7 +337,7 @@ report_alpha <- function(df, key = NULL, questions = NULL, reverse = NULL, mini 
       "\n\n0.56-0.60 Marginally Acceptable",
       "\n\n0.01-0.55 Unacceptable"
     )),
-    std_alpha = "standarized alpha based on correlations",
+    std_alpha = "standardized alpha based on correlations",
     "g6(smc)" = toString(c(
       "Guttman's Lambda 6 reliability",
       "\nsquared multiple correlation",

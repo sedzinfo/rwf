@@ -1,5 +1,5 @@
 ##########################################################################################
-# KRUSKALL WALLIS TEST WITH EFFECT SIZE
+# KRUSKAL WALLIS TEST WITH EFFECT SIZE
 ##########################################################################################
 #' @title Kruskal-Wallis Test with Effect Sizes
 #' @description Runs a one-way Kruskal-Wallis rank-sum test and returns the test
@@ -296,7 +296,7 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 #'   \item \code{etasq}: eta-squared, \eqn{SS_{effect}/SS_{total}}
 #'   \item \code{partial.etasq}: partial eta-squared, \eqn{SS_{effect}/(SS_{effect}+SS_{error})}
 #'   \item \code{omegasq}: omega-squared, \eqn{(SS_{effect}-df_{effect} MS_{error})/(SS_{total}+MS_{error})}
-#'   \item \code{partial.omegasq}: partial omega-squared, \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(N-df_{effect}) MS_{error})}
+#'   \item \code{partial.omegasq}: partial omega-squared, \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(df_{error}+1) MS_{error})}
 #'   \item \code{cohens.f}: Cohen's f, \eqn{\sqrt{\eta^2/(1-\eta^2)}}
 #'   \item \code{power}: observed power of the F test at \eqn{\alpha = 0.05}
 #'   \item \code{statistic}: F statistic, \eqn{MS_{effect}/MS_{error}}
@@ -306,8 +306,8 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 #' }
 #'
 #' @details
-#' In a one-way design \code{partial.etasq} equals \code{etasq}, and with equal
-#' variances \code{partial.omegasq} equals \code{omegasq}. \code{etasq} and
+#' In a one-way design \code{partial.etasq} equals \code{etasq} and
+#' \code{partial.omegasq} equals \code{omegasq}. \code{etasq} and
 #' \code{partial.etasq} are in [0, 1] and are biased upwards in small samples, by
 #' about \eqn{(k-1)/(N-1)} when there is no effect. \code{omegasq} and
 #' \code{partial.omegasq} remove most of that bias and are negative when \eqn{F < 1}.
@@ -337,12 +337,10 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 #' Welch's test (Welch, 1951) has no sums of squares. With \code{var.equal = FALSE},
 #' \code{ms_effect} and \code{ms_error} are the numerator and denominator of the
 #' Welch F statistic and \code{ss_effect} and \code{ss_error} are \eqn{MS \times df}.
-#' The resulting \code{etasq}, \code{omegasq} and \code{cohens.f} equal the
-#' conversions of the Welch F statistic in \code{effectsize::F_to_eta2},
-#' \code{effectsize::F_to_omega2} and \code{effectsize::F_to_f}.
-#' \code{partial.omegasq} uses the actual sample size instead of the Welch degrees
-#' of freedom and differs from \code{omegasq}. Treat the Welch effect sizes as
-#' approximations.
+#' The resulting \code{etasq}, \code{omegasq}, \code{partial.omegasq} and
+#' \code{cohens.f} equal the conversions of the Welch F statistic in
+#' \code{effectsize::F_to_eta2}, \code{effectsize::F_to_omega2} and
+#' \code{effectsize::F_to_f}. Treat the Welch effect sizes as approximations.
 #'
 #' Rows with a missing value in the outcome or the grouping variable are
 #' removed before the test, as in \code{stats::oneway.test}.
@@ -415,7 +413,7 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
   etasq <- ss_effect / ss_total
   partial.etasq <- ss_effect / (ss_effect + ss_error)
   omegasq <- (ss_effect - df_effect * ms_error) / (ss_total + ms_error)
-  partial.omegasq <- (df_effect * (ms_effect - ms_error)) / (df_effect * ms_effect + (n - df_effect) * ms_error)
+  partial.omegasq <- (df_effect * (ms_effect - ms_error)) / (df_effect * ms_effect + (df_error + 1) * ms_error)
   cohens.f <- sqrt(etasq / (1 - etasq))
   lambda <- cohens.f^2 * n
   power <- stats::pf(stats::qf(0.05, df_effect, df_error, lower.tail = FALSE), df_effect, df_error, lambda, lower.tail = FALSE)
@@ -429,24 +427,111 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 ##########################################################################################
 # REPORT ONEWAY
 ##########################################################################################
-#' @title One way
-#' @inheritParams plot_oneway_diagnostics
-#' @param file output filename
-#' @param w width of pdf file
-#' @param h height of pdf file
-#' @param base_size base font size
-#' @param note text for footnote
-#' @param title plot title
-#' @param type type of bar to display "se" "ci" "sd" ""
-#' @param plot_means if TRUE it will output mean plots and descriptives for plots
-#' @param plot_diagnostics if TRUE it will output ANOVA diagnostics plots
-#' @note (1) The Fisher procedure assumes heteroscedasticity \cr
-#'       (2) The Welch procedure does not assume heteroscedasticity \cr
-#'       (3) The Kruskal Wallis procedure does not assume normality but it is not an alternative for violations of heteroscedasticity \cr
-#'       (4) Posthoc Tuckey: not good for unequal sample sizes or heteroscedasticity \cr
-#'       (5) Posthoc Games Howell: good for unequal sample sizes and heteroscedasticity
+#' @title One-Way ANOVA Report for Several Variables
+#' @description For every combination of a dependent variable (\code{dv}) and a
+#' grouping variable (\code{iv}), runs and collects in one report:
+#' \itemize{
+#'   \item Fisher's F test, assuming equal variances (\code{compute_one_way_test})
+#'   \item Welch's F test, not assuming equal variances (\code{compute_one_way_test})
+#'   \item the Kruskal-Wallis test (\code{compute_kruskal_wallis_test})
+#'   \item Levene's and Bartlett's tests of equal variances
+#'   \item Tukey and Games-Howell post hoc comparisons (\code{compute_posthoc})
+#' }
+#' with effect sizes, and a Bonferroni adjustment for the number of combinations.
+#' The report can also be written to an Excel workbook, with optional PDF plots.
+#'
+#' In simple terms, this compares the group means of several outcomes across
+#' several grouping variables at once, checks whether the groups have equal
+#' variances, and shows which groups differ from which.
+#'
+#' @param df A data frame.
+#' @param dv Integer vector with the column indices of the numeric dependent
+#' variables.
+#' @param iv Integer vector with the column indices of the grouping variables.
+#' @param file Name of the output file, without the extension. If \code{NULL}
+#' (default), nothing is written.
+#' @param w Width of the PDF pages, in inches.
+#' @param h Height of the PDF pages, in inches.
+#' @param base_size Base font size of the plots.
+#' @param note Text for the footnote of the mean plots.
+#' @param title Title of the mean plots.
+#' @param type Error bars of the mean plots: \code{"ci"} (95\% confidence
+#' interval, default), \code{"se"} (standard error), \code{"sd"} (standard
+#' deviation) or \code{""} (none).
+#' @param plot_means If TRUE, writes plots of the group means to a PDF file.
+#' @param plot_diagnostics If TRUE, writes ANOVA diagnostic plots to a PDF file.
+#' @param pb Logical; whether to display a progress bar in the console.
+#'
+#' @return A list with:
+#' \itemize{
+#'   \item \code{instructions}: short notes on when to use each test
+#'   \item \code{fisher}, \code{welch}: one row per combination, with the output of
+#'   \code{compute_one_way_test} (sums of squares, F, degrees of freedom, p-value,
+#'   effect sizes and power)
+#'   \item \code{kruskal_wallis}: one row per combination, with the output of
+#'   \code{compute_kruskal_wallis_test}
+#'   \item \code{tukey}, \code{games_howell}: one row per pair of groups in each
+#'   combination, with the output of \code{compute_posthoc} (\code{LEVEL} names the
+#'   pair)
+#'   \item \code{homogeneity}: Levene's and Bartlett's tests for every combination
+#' }
+#' Every table has the columns \code{DV} and \code{IV}, \code{bonferroni_p} (the
+#' Bonferroni-adjusted critical p-value) and \code{significant} (whether
+#' \code{p < bonferroni_p}).
+#'
+#' @details
+#' For each combination, rows with a missing value in the dependent or the
+#' grouping variable are removed, and groups with a single observation are dropped,
+#' because their variance cannot be estimated. Combinations left with fewer than
+#' two groups are skipped.
+#'
+#' The Bonferroni adjustment divides 0.05 by the number of combinations of
+#' \code{dv} and \code{iv}; \code{significant} compares each p-value with that
+#' critical value. The post hoc p-values are already adjusted for the pairs within
+#' each combination.
+#'
+#' Levene's test uses the deviations from the group means. Bartlett's test is more
+#' powerful when the data are normal but sensitive to non-normality. A significant
+#' result in either suggests unequal variances.
+#'
+#' Which test to read:
+#' \itemize{
+#'   \item Fisher's F assumes equal variances (homoscedasticity); use it with the
+#'   Tukey post hoc test.
+#'   \item Welch's F does not assume equal variances; use it with the Games-Howell
+#'   post hoc test. It is the safer default when the variances or the group sizes
+#'   differ.
+#'   \item The Kruskal-Wallis test does not assume normality and suits ordinal or
+#'   skewed outcomes, but it is not a remedy for unequal variances.
+#'   \item The Tukey test (Tukey-Kramer) handles unequal group sizes but assumes
+#'   equal variances.
+#'   \item The Games-Howell test handles unequal group sizes and unequal variances.
+#' }
+#'
+#' The Excel workbook has the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
+#' "Tukey", "Games-Howell" and "Descriptives". The plots are written to PDF files
+#' named after \code{file}. With \code{pb = TRUE}, a progress bar is printed
+#' to the console while the tests run.
+#'
+#' @seealso \code{\link{compute_one_way_test}}, \code{\link{compute_kruskal_wallis_test}},
+#' \code{\link{compute_posthoc}}
+#' @references
+#' Bartlett, M. S. (1937). Properties of sufficiency and statistical tests. Proceedings of the Royal Society of London. Series A, 160(901), 268-282. \doi{10.1098/rspa.1937.0109}
+#'
+#' Dunn, O. J. (1961). Multiple comparisons among means. Journal of the American Statistical Association, 56(293), 52-64. \doi{10.1080/01621459.1961.10482090}
+#'
+#' Games, P. A., & Howell, J. F. (1976). Pairwise multiple comparison procedures with unequal n's and/or variances: A Monte Carlo study. Journal of Educational Statistics, 1(2), 113-125. \doi{10.3102/10769986001002113}
+#'
+#' Kramer, C. Y. (1956). Extension of multiple range tests to group means with unequal numbers of replications. Biometrics, 12(3), 307-310. \doi{10.2307/3001469}
+#'
+#' Kruskal, W. H., & Wallis, W. A. (1952). Use of ranks in one-criterion variance analysis. Journal of the American Statistical Association, 47(260), 583-621. \doi{10.1080/01621459.1952.10483441}
+#'
+#' Levene, H. (1960). Robust tests for equality of variances. In I. Olkin (Ed.), Contributions to probability and statistics: Essays in honor of Harold Hotelling (pp. 278-292). Stanford University Press.
+#'
+#' Welch, B. L. (1951). On the comparison of several mean values: An alternative approach. Biometrika, 38(3/4), 330-336. \doi{10.2307/2332579}
 #' @importFrom car leveneTest
 #' @importFrom stats bartlett.test
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom plyr rbind.fill
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @keywords ANOVA
@@ -472,12 +557,12 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #'   df = mtcars, dv = 2:4, iv = 9, file = "anova_oneway_one_factor",
 #'   plot_means = TRUE, plot_diagnostics = TRUE
 #' )
-report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 10, note = "", title = "", type = "ci", plot_means = FALSE, plot_diagnostics = FALSE) {
+report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 10, note = "", title = "", type = "ci", plot_means = FALSE, plot_diagnostics = FALSE, pb = FALSE) {
   instruction <- list(
-    fisher = "Fisher assumes heteroscedasticity",
-    welch = "Welch does not assume heteroscedasticity",
+    fisher = "Fisher assumes homoscedasticity (equal variances)",
+    welch = "Welch does not assume homoscedasticity (it allows unequal variances)",
     kruskal = "Kruskal Wallis procedure does not assume normality but it is not an alternative for violations of heteroscedasticity",
-    tukey = "Posthoc Tuckey: not good for unequal sample sizes or heteroscedasticity",
+    tukey = "Posthoc Tukey (Tukey-Kramer): handles unequal sample sizes but assumes equal variances",
     games_howell = "Posthoc Games Howell: good for unequal sample sizes and heteroscedasticity",
     homogeneity_instruction = "significant tests show heteroscedasticity and suggest the use of Welch or alternative procedures. Levene test depends on normality: Non normal distributions may result in false significant results. Sample size may affect test results"
   )
@@ -488,10 +573,10 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
   names(combinations) <- c("iv", "dv")
   row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
   combinations <- change_data_type(combinations, type = "character")
-  pb <- txtProgressBar(min = 0, max = length(iv) * length(dv), style = 3)
+  if (pb) progress <- txtProgressBar(min = 0, max = length(iv) * length(dv), style = 3)
 
   for (i in 1:nrow(combinations)) {
-    setTxtProgressBar(pb, i)
+    if (pb) setTxtProgressBar(progress, i)
     factors <- combinations$iv[i]
     cors <- combinations$dv[i]
 
@@ -532,7 +617,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
       df_games_howell <- rbind(df_games_howell, games.howell)
     }
   }
-  close(pb)
+  if (pb) close(progress)
 
   adjustment <- compute_adjustment(0.05, i)$bonferroni
   df_fisher$bonferroni_p <- df_welch$bonferroni_p <- df_kruskal$bonferroni_p <- df_levene$bonferroni_p <- df_bartlett$bonferroni_p <- adjustment
@@ -566,12 +651,12 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
   comment_text <- list(
     DV = "Dependent Variable",
     IV = "Independent Variable",
-    bonferroni_p = "Bonferonni adjustment\nadjusted critical value of p for familiwise error",
-    significant = "Significant test after familiwise error (Bonferonni) adjustment"
+    bonferroni_p = "Bonferroni adjustment\nadjusted critical value of p for familywise error",
+    significant = "Significant test after familywise error (Bonferroni) adjustment"
   )
 
   comment_fisher_welch <- c(comment_text, list(
-    formula = "Model spesification",
+    formula = "Model specification",
     ss_effect = "Sum of Squares\nfor Effect",
     ss_error = "Sum of Squares\nfor Error",
     ms_effect = "Mean Sum of Squares\nfor Effect",
@@ -582,7 +667,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
     partial.etasq = "Effect size\npartial eta squared\n0.01 ~ small\n0.06 ~ medium\n0.14 ~ large",
     omegasq = "Effect size\nomega squared\n0.01 ~ small\n0.06 ~ medium\n0.14 ~ large",
     partial.omegasq = "Effect size\npartial omega squared",
-    cohens.f = "Effect size\nCohen's f\n0.14 ~ small\n0.39 ~ medium\n0.59 ~ large",
+    cohens.f = "Effect size\nCohen's f\n0.10 ~ small\n0.25 ~ medium\n0.40 ~ large",
     statistic = "F"
   ))
 
@@ -602,7 +687,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
       critical = list(p = "<0.05"),
       title = instruction$kruskal,
       comment = c(comment_text, list(
-        formula = "Model spesification",
+        formula = "Model specification",
         etasq = "Effect size\neta squared\n0.01 ~ small\n0.06 ~ medium\n0.14 ~ large",
         df = "Degrees of Freedom"
       ))
@@ -610,6 +695,10 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
     excel_critical_value(result$homogeneity, wb, "Homogeneity",
       critical = list(p = "<0.05"),
       title = instruction$homogeneity, comment = comment_text
+    )
+    excel_critical_value(result$tukey, wb, "Tukey",
+      critical = list(p = "<0.05"),
+      title = instruction$tukey, comment = comment_text
     )
     excel_critical_value(result$games_howell, wb, "Games-Howell",
       critical = list(p = "<0.05"),
@@ -623,86 +712,181 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 ##########################################################################################
 # FACTORIAL ANOVA
 ##########################################################################################
-#' @title Plot means with standard error for every level in a dataframe
-#' @param df dataframe
-#' @param dv names of dependent variables
-#' @param wid names of
-#' @param within names of within factors
-#' @param within_full names of within factors after data are collapsed to means per condition
-#' @param between names of between factors
-#' @param within_covariates names of within covariates
-#' @param between_covariates mames of between covariates
-#' @param observed names in data that are already specified in either within or between that contain predictor variables that are observed variables (not manipulated)
-#' @param diff names of variables to collapse in a different score
-#' @param reverse_diff If TRUE, triggers reversal of the difference collapse requested by diff
-#' @param type sum of squares 1 2 3
-#' @param white.adjust if TRUE corrects for heteroscedasticity
-#' @param detailed if TRUE returns detailed information
-#' @param return_aov if TRUE returns aov object
-#' @param post_hoc_test if TRUE outputs post hoc in file
-#' @param base_size base font size
-#' @param file output filename
+#' @title Factorial, Repeated Measures and Mixed ANOVA Report
+#' @description Runs a factorial ANOVA for one or more dependent variables with
+#' \code{ez::ezANOVA}, for between-subjects, within-subjects (repeated measures)
+#' and mixed designs, and collects in one report:
+#' \itemize{
+#'   \item the ANOVA table with the assumption tests: Levene's test for
+#'   between-subjects designs, Mauchly's test and the Greenhouse-Geisser and
+#'   Huynh-Feldt corrections for within-subjects designs
+#'   \item effect sizes for every term from \code{sjstats::anova_stats}
+#'   \item pairwise post hoc comparisons for every main effect and interaction
+#'   from \code{emmeans}
+#' }
+#' The report can also be written to an Excel workbook.
+#'
+#' In simple terms, this tests whether the means differ across the levels of
+#' several factors and their combinations, checks the assumptions of the test and
+#' shows which conditions differ from which.
+#'
+#' @param df A data frame in long format, with one row per observation.
+#' @param dv Character vector with the names of the dependent variables. Each one
+#' is analysed separately.
+#' @param wid Name of the column that identifies the participant (subject). Each
+#' participant needs a unique value.
+#' @param within Character vector with the names of the within-subjects factors.
+#' @param within_full Character vector with the names of all the within-subjects
+#' factors of the full design, when \code{within} lists only a subset of them and
+#' the data have not been averaged per condition yet.
+#' @param between Character vector with the names of the between-subjects factors.
+#' @param within_covariates Character vector with the names of within-subjects
+#' covariates.
+#' @param between_covariates Character vector with the names of between-subjects
+#' covariates.
+#' @param observed Character vector with the names of factors, already listed in
+#' \code{within} or \code{between}, that are observed rather than manipulated
+#' (for example sex). They change the generalized eta-squared that
+#' \code{ez::ezANOVA} reports.
+#' @param diff Character vector with the names of factors to collapse into a
+#' difference score.
+#' @param reverse_diff If TRUE, reverses the direction of the difference score
+#' requested by \code{diff}.
+#' @param type Type of sums of squares, 1, 2 or 3 (default 3).
+#' @param white.adjust If TRUE (default), uses heteroscedasticity-corrected F tests
+#' (HC3). It affects only designs with between-subjects factors alone.
+#' @param detailed If TRUE (default), adds the sums of squares and the intercept to
+#' the ANOVA table.
+#' @param return_aov Must be TRUE (default): the effect sizes and the post hoc
+#' comparisons are computed from the \code{aov} object that \code{ez::ezANOVA}
+#' returns.
+#' @param file Name of the Excel file to write, without the extension. If
+#' \code{NULL} (default), nothing is written.
+#' @param post_hoc_test If TRUE (default), writes the post hoc comparisons to the
+#' Excel file.
+#'
+#' @return A list with:
+#' \itemize{
+#'   \item \code{omnibus}: the ANOVA table of every dependent variable (\code{dv}),
+#'   with \code{DFn} and \code{DFd} (degrees of freedom of the effect and the
+#'   error), \code{SSn} and \code{SSd} (sums of squares, when reported), \code{F},
+#'   \code{p} and \code{ges} (generalized eta-squared, when reported). Levene's
+#'   test is added with the suffix \code{[L]}, Mauchly's test with \code{[M]}, and
+#'   the sphericity corrections as \code{GGe}, \code{p[GG]}, \code{HFe} and
+#'   \code{p[HF]}.
+#'   \item \code{omnibus_effect_size}: eta-squared, partial eta-squared,
+#'   omega-squared, partial omega-squared, epsilon-squared, Cohen's f and power
+#'   for every term, from \code{sjstats::anova_stats}
+#'   \item \code{post_hoc}: pairwise comparisons for every main effect and
+#'   interaction, with the estimate, standard error, degrees of freedom,
+#'   t ratio and p-value
+#'   \item \code{object}: the full output of \code{ez::ezANOVA} for every
+#'   dependent variable, including the \code{aov} object
+#' }
+#'
+#' @details
+#' Before the analysis, the columns in \code{wid}, \code{within},
+#' \code{within_full}, \code{between} and the covariates are converted to factors,
+#' and the data are averaged per participant and condition. If a participant has
+#' several observations in a condition, the ANOVA uses their mean.
+#'
+#' The models are fitted with sum-to-zero contrasts (\code{contr.sum}), which
+#' Type III sums of squares need. The previous \code{contrasts} option is restored
+#' when the function returns.
+#'
+#' Assumption tests:
+#' \itemize{
+#'   \item Levene's test (between-subjects designs): a significant result means
+#'   that the variances differ across groups.
+#'   \item Mauchly's test (within-subjects factors with more than two levels): a
+#'   significant result means that sphericity is violated; then use the
+#'   Greenhouse-Geisser (\code{p[GG]}) or Huynh-Feldt (\code{p[HF]}) corrected
+#'   p-values.
+#' }
+#'
+#' The effect sizes in \code{omnibus_effect_size} are computed by
+#' \code{sjstats::anova_stats} from the \code{aov} object, rounded to three
+#' decimals. They use sequential (Type I) sums of squares and no
+#' heteroscedasticity correction, whatever \code{type} and \code{white.adjust}
+#' are, so their F values can differ from those in \code{omnibus} when the design
+#' is unbalanced or \code{white.adjust = TRUE}.
+#'
+#' The post hoc comparisons are the \code{emmeans} pairwise comparisons for every
+#' main effect and every interaction, with the p-values adjusted (Tukey) within
+#' each effect.
+#'
+#' The Excel workbook has a sheet for the ANOVA table ("ANOVA within", "ANOVA
+#' between" or "ANOVA"), "effect size", "post hoc" (if \code{post_hoc_test = TRUE}),
+#' "descriptives" and "call".
+#'
+#' @source A wrapper around \code{ez::ezANOVA} (Lawrence, 2026), with effect
+#' sizes from \code{sjstats::anova_stats} (\enc{Lüdecke}{Ludecke}, 2025) and post
+#' hoc comparisons from \code{emmeans} (Lenth & Piaskowski, 2026).
+#'
+#' @references
+#' Bakeman, R. (2005). Recommended effect size statistics for repeated measures designs. Behavior Research Methods, 37(3), 379-384. \doi{10.3758/BF03192707}
+#'
+#' Greenhouse, S. W., & Geisser, S. (1959). On methods in the analysis of profile data. Psychometrika, 24(2), 95-112. \doi{10.1007/BF02289823}
+#'
+#' Huynh, H., & Feldt, L. S. (1976). Estimation of the Box correction for degrees of freedom from sample data in randomized block and split-plot designs. Journal of Educational Statistics, 1(1), 69-82. \doi{10.3102/10769986001001069}
+#'
+#' Lawrence, M. A. (2026). ez: Easy analysis and visualization of factorial experiments (R package version 4.5-0). \doi{10.32614/CRAN.package.ez}
+#'
+#' Lenth, R., & Piaskowski, J. (2026). emmeans: Estimated marginal means, aka least-squares means (R package version 2.0.4). \doi{10.32614/CRAN.package.emmeans}
+#'
+#' Long, J. S., & Ervin, L. H. (2000). Using heteroscedasticity consistent standard errors in the linear regression model. The American Statistician, 54(3), 217-224. \doi{10.1080/00031305.2000.10474549}
+#'
+#' \enc{Lüdecke}{Ludecke}, D. (2025). sjstats: Statistical functions for regression models (R package version 0.19.1). \doi{10.5281/zenodo.1284472}
+#'
+#' Mauchly, J. W. (1940). Significance test for sphericity of a normal n-variate distribution. The Annals of Mathematical Statistics, 11(2), 204-209. \doi{10.1214/aoms/1177731915}
 #' @importFrom ez ezANOVA
 #' @keywords ANOVA
 #' @export
 #' @examples
+#' # 36 participants: B1 and B2 vary between participants (4 per cell),
+#' # W1 and W2 vary within participants (every participant has all 9 conditions)
 #' set.seed(12345)
-#' df <- data.frame(
-#'   id = rep(seq(1, 80), each = 81, 1),
-#'   IV1 = rep(LETTERS[1:3], each = 1, 2160),
-#'   IV2 = rep(LETTERS[4:6], each = 3, 720),
-#'   IV3 = rep(LETTERS[7:9], each = 9, 240),
-#'   IV4 = rep(LETTERS[10:12], each = 27, 80),
-#'   stringsAsFactors = FALSE
-#' )
-#' cdf <- data.frame(matrix(.01, ncol = 4, nrow = 4))
-#' correlation_martix <- as.matrix(cdf)
-#' diag(correlation_martix) <- 1
-#' cdf <- generate_correlation_matrix(correlation_martix, nrows = nrow(df)) + 10
-#' names(cdf) <- paste0("DV", 1:4)
-#' df <- data.frame(df, cdf)
-#' df$DV2 <- df$DV2 + 10
-#' df$DV3 <- df$DV3 + 20
-#' df$DV4 <- df$DV4 + 30
-#' df[df$IV1 %in% "A", ]$DV1 <- df[df$IV1 %in% "A", ]$DV1 + 1
-#' df[df$IV1 %in% "B", ]$DV1 <- df[df$IV1 %in% "B", ]$DV1 + 2
-#' df[df$IV1 %in% "C", ]$DV1 <- df[df$IV1 %in% "C", ]$DV1 + 3
-#' cdf(df)
+#' df <- expand.grid(W1 = c("A", "B", "C"), W2 = c("D", "E", "F"), id = 1:36, stringsAsFactors = FALSE)
+#' df$B1 <- c("G", "H", "I")[(df$id - 1) %% 3 + 1]
+#' df$B2 <- c("J", "K", "L")[(df$id - 1) %/% 3 %% 3 + 1]
+#' df <- df[, c("id", "B1", "B2", "W1", "W2")]
+#' correlation_matrix <- matrix(0.01, ncol = 4, nrow = 4)
+#' diag(correlation_matrix) <- 1
+#' dvs <- generate_correlation_matrix(correlation_matrix, nrows = nrow(df)) + 10
+#' names(dvs) <- paste0("DV", 1:4)
+#' df <- data.frame(df, dvs)
+#' # DV1 differs across the levels of W1 and B1
+#' df$DV1 <- df$DV1 + match(df$W1, c("A", "B", "C")) + match(df$B1, c("G", "H", "I"))
+#' # within-subjects design
 #' r1 <- report_factorial_anova(
 #'   df = df, wid = "id", dv = c("DV1", "DV2"),
-#'   within = c("IV1", "IV2"), within_full = c("IV1", "IV2"),
-#'   between = NULL,
-#'   within_covariates = NULL, between_covariates = NULL,
-#'   file = "anova_within",
-#'   post_hoc = TRUE
+#'   within = c("W1", "W2"), within_full = c("W1", "W2"),
+#'   file = file.path(tempdir(), "anova_within")
 #' )
+#' # between-subjects design
 #' r2 <- report_factorial_anova(
 #'   df = df, wid = "id", dv = c("DV1", "DV2"),
-#'   within = NULL, within_full = NULL,
-#'   between = c("IV1", "IV2"),
-#'   within_covariates = NULL, between_covariates = NULL,
-#'   file = "anova_between",
-#'   post_hoc = TRUE
+#'   between = c("B1", "B2"),
+#'   file = file.path(tempdir(), "anova_between")
 #' )
+#' # mixed design
 #' r3 <- report_factorial_anova(
 #'   df = df, wid = "id", dv = c("DV1", "DV2"),
-#'   within = c("IV3", "IV4"), within_full = c("IV3", "IV4"),
-#'   between = c("IV1", "IV2"),
-#'   within_covariates = NULL, between_covariates = NULL,
-#'   file = "anova_mixed",
-#'   post_hoc = FALSE
+#'   within = c("W1", "W2"), within_full = c("W1", "W2"),
+#'   between = c("B1", "B2"),
+#'   file = file.path(tempdir(), "anova_mixed"),
+#'   post_hoc_test = FALSE
 #' )
+#' # within-subjects design with within-subjects covariates
 #' r4 <- report_factorial_anova(
 #'   df = df, wid = "id", dv = c("DV1", "DV2"),
-#'   within = c("IV1", "IV2"), within_full = c("IV1", "IV2"),
-#'   between = NULL,
-#'   within_covariates = c("DV3", "DV4"), between_covariates = NULL,
-#'   file = "anova_within_cov",
-#'   post_hoc = TRUE
+#'   within = c("W1", "W2"), within_full = c("W1", "W2"),
+#'   within_covariates = c("DV3", "DV4"),
+#'   file = file.path(tempdir(), "anova_within_cov")
 #' )
 report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NULL, between = NULL, within_covariates = NULL, between_covariates = NULL,
                                    observed = NULL, diff = NULL, reverse_diff = FALSE, type = 3, white.adjust = TRUE, detailed = TRUE, return_aov = TRUE,
-                                   file = NULL, post_hoc_test = TRUE, base_size = 15) {
+                                   file = NULL, post_hoc_test = TRUE) {
   comment <- list(
     DFn = "Degrees of Freedom\nfor numerator",
     DFd = "Degrees of Freedom\nfor denominator",
@@ -714,12 +898,12 @@ report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NUL
     meansq = "Mean sum of squares",
     statistic = "F value",
     p.value = "p for F value",
-    etasq = "Effect size\neta squared\n  0.01 ~ small\n  0.06 ~ medium\n0.014 ~ large",
+    etasq = "Effect size\neta squared\n0.01 ~ small\n0.06 ~ medium\n0.14 ~ large",
     partial.etasq = "Effect size\npartial eta squared",
-    omegasq = "Effect size\nomega squared\n  0.01 ~ small\n  0.06 ~ medium\n0.014 ~ large",
+    omegasq = "Effect size\nomega squared\n0.01 ~ small\n0.06 ~ medium\n0.14 ~ large",
     partial.omegasq = "Effect size\npartial omega squared",
     epsilonsq = "Effect size\nepsilon squared",
-    cohens.f = "Effect size\nCohen's f\n0.14 ~ small\n0.39 ~ medium\n0.59 ~ large",
+    cohens.f = "Effect size\nCohen's f\n0.10 ~ small\n0.25 ~ medium\n0.40 ~ large",
     power = "power",
     "DFn[L]" = "Levene test\nDegrees of Freedom\nfor numerator",
     "DFd[L]" = "Levene test\nDegrees of Freedom\nfor denominator",
@@ -731,14 +915,14 @@ report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NUL
     "p[M]" = "Mauchly's Test\np\nIf significant, the assumption of sphericity is violated",
     "GGe" = "Greenhouse-Geisser\nepsilon",
     "p[GG]" = "Greenhouse-Geisser\np adjusted for violated sphericity",
-    "HFe" = "Huynd-Feldt\n epsilon",
-    "p[HF]" = "Huynd-Feldt\np adjusted for violated sphericity"
+    "HFe" = "Huynh-Feldt\n epsilon",
+    "p[HF]" = "Huynh-Feldt\np adjusted for violated sphericity"
   )
   testdata <- df
   call_arguments <- match.call()
   call_string <- gsub(" ", "", gsub("\"", " ", gsub(", ,", ",", toString(unlist(deparse(call_arguments))))))
-  options(contrasts = c("contr.sum", "contr.poly"))
-  bonferroni <- compute_adjustment(0.05, length(dv))$bonferroni
+  old_options <- options(contrasts = c("contr.sum", "contr.poly"))
+  on.exit(options(old_options), add = TRUE)
   result <- emf <- list()
   post_hoc <- omnibus <- omnibus_effect_size <- data.frame()
   collumn_design <- unique(c(wid, within, within_full, between, within_covariates, between_covariates))
@@ -806,8 +990,8 @@ report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NUL
       emf[[i]] <- combn(iv, i)
     }
     for (cf in emf) {
-      for (rcf in 1:nrow(cf)) {
-        means <- emmeans::emmeans(ez$aov, formula(paste("~", paste(as.character(cf[rcf, ]), collapse = "*"))))
+      for (rcf in 1:ncol(cf)) {
+        means <- emmeans::emmeans(ez$aov, formula(paste("~", paste(as.character(cf[, rcf]), collapse = "*"))))
         paired_comparison <- data.frame(dv = dependent, graphics::pairs(means), check.names = FALSE)
         post_hoc <- plyr::rbind.fill(post_hoc, paired_comparison)
       }
@@ -855,24 +1039,76 @@ report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NUL
 ##########################################################################################
 # MANOVA RESULT
 ##########################################################################################
-#' @title Manova result
-#' @param model object of manova model
-#' @param file output filename
+#' @title MANOVA Report
+#' @description Reports the four multivariate test statistics (Pillai's trace,
+#' Wilks' lambda, the Hotelling-Lawley trace and Roy's largest root) with their
+#' approximate F tests for every term of a \code{manova} model, and the Type III
+#' MANOVA table from \code{car::Anova}. The tables are printed and can also be
+#' written to an Excel workbook.
+#'
+#' In simple terms, this tests whether groups differ on several outcomes considered
+#' together, rather than on each outcome separately.
+#'
+#' @param model A model fitted with \code{stats::manova}.
+#' @param file Name of the Excel file to write, without the extension. If
+#' \code{NULL} (default), nothing is written.
+#'
+#' @return Invisibly, a list with:
+#' \itemize{
+#'   \item \code{multivariate}: data frame with the Pillai, Wilks, Hotelling-Lawley and Roy
+#'   statistics, their approximate F tests and p-values (column \code{type} names the test)
+#'   \item \code{type_three}: Type III MANOVA table from \code{car::Anova}
+#'   \item \code{call}: the model call
+#' }
+#'
+#' @details
+#' With \eqn{\lambda_1, \dots, \lambda_s} the eigenvalues of \eqn{HE^{-1}}, where
+#' \eqn{H} is the hypothesis and \eqn{E} the error sums of squares and
+#' cross-products matrix of a term:
+#' \itemize{
+#'   \item Pillai's trace, \eqn{V=\sum \lambda_i/(1+\lambda_i)}: the sum of the
+#'   proportions of variance explained on the discriminant functions. It is the
+#'   most robust of the four to violations of the assumptions and a good default.
+#'   \item Wilks' lambda, \eqn{\Lambda=\prod 1/(1+\lambda_i)}: the proportion of
+#'   variance not explained; smaller values mean larger effects.
+#'   \item Hotelling-Lawley trace, \eqn{T=\sum \lambda_i}: the sum of the ratios of
+#'   explained to unexplained variance.
+#'   \item Roy's largest root, \eqn{\lambda_1}: uses only the first discriminant
+#'   function. Its F statistic is an upper bound, so its p-value is a lower bound
+#'   and the test is liberal.
+#' }
+#' The four tests agree when the term has one degree of freedom. The table also
+#' includes the intercept.
+#'
+#' The Type III table tests each term adjusted for all the others, so it needs
+#' sum-to-zero contrasts such as \code{contr.sum} or \code{contr.helmert}. Set them
+#' with \code{options(contrasts = c("contr.sum", "contr.poly"))} before fitting the
+#' model with \code{manova}; \code{report_manova} does not change them.
+#'
+#' Assumptions of MANOVA:
+#' \itemize{
+#'   \item independent observations, randomly sampled
+#'   \item dependent variables measured on an interval scale
+#'   \item multivariate normality of the dependent variables within each group
+#'   \item equal variance-covariance matrices across groups: equal variances of
+#'   each dependent variable and equal correlations between them in every group
+#' }
+#'
+#' The Excel workbook has the sheets "critical" (the four tests) and "call".
+#'
+#' @references
+#' Fox, J., & Weisberg, S. (2019). An R companion to applied regression (3rd ed.). Sage. \url{https://www.john-fox.ca/Companion/}
+#'
+#' Hotelling, H. (1951). A generalized T test and measure of multivariate dispersion. In J. Neyman (Ed.), Proceedings of the Second Berkeley Symposium on Mathematical Statistics and Probability (pp. 23-41). University of California Press.
+#'
+#' Olson, C. L. (1976). On choosing a test statistic in multivariate analysis of variance. Psychological Bulletin, 83(4), 579-586. \doi{10.1037/0033-2909.83.4.579}
+#'
+#' Pillai, K. C. S. (1955). Some new test criteria in multivariate analysis. The Annals of Mathematical Statistics, 26(1), 117-121. \doi{10.1214/aoms/1177728599}
+#'
+#' Roy, S. N. (1953). On a heuristic method of test construction and its use in multivariate analysis. The Annals of Mathematical Statistics, 24(2), 220-238. \doi{10.1214/aoms/1177729029}
+#'
+#' Wilks, S. S. (1932). Certain generalizations in the analysis of variance. Biometrika, 24(3/4), 471-494. \doi{10.2307/2331979}
 #' @keywords ANOVA
-#' @note
-#' Pillai-Bartlett trace (V): Represents the sum of the proportion of explained variance on the discriminant functions.
-#' As such,it is similar to the ratio of SS M /SS T,which is known as R 2. \cr
-#' Hotelling-s T 2: Represents the sum of the eigenvalues for each variate it compares directly to the F-ratio in ANOVA  \cr
-#' Wilks-s lambda (L): Represents the ratio of error variance to total variance (SS R /SS T ) for each variate.  \cr
-#' Roy-s largest root: Represents the proportion of explained variance to unexplained variance (SS M /SS R ) for the first discriminant function.  \cr
-#' ASSUMPTIONS  \cr
-#' Independence: Observations should be statistically independent.  \cr
-#' Random sampling: Data should be randomly sampled from the population of interest and measured at an interval level.  \cr
-#' Multivariate normality: In ANOVA,we assume that our dependent variable is normally distributed within each group.
-#' In the case of MANOVA,we assume that the dependent variables (collectively) have multivariate normality within groups.  \cr
-#' Homogeneity of covariance matrices: In ANOVA,it is assumed that the variances in each group are roughly equal (homogeneity of variance).
-#' In MANOVA we must assume that this is true for each dependent variable,but also that the correlation between any two dependent variables is the same in all groups.
-#' This assumption is examined by testing whether the population variance-covariance matrices of the different groups in the analysis are equal.
 #' @importFrom car Anova
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @export
@@ -882,7 +1118,10 @@ report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NUL
 #' model_mixed <- manova(cbind(yield, foo) ~ N * P * K, within(npk, foo <- rnorm(24)))
 #' model_between <- manova(cbind(rnorm(24), rnorm(24)) ~ round(rnorm(24), 0) * round(rnorm(24), 0))
 #' report_manova(model = model_mixed)
-#' report_manova(model = model_between)
+#' result <- report_manova(model = model_between)
+#' result$multivariate
+#' ## Restore the previous contrasts.
+#' options(op)
 report_manova <- function(model, file = NULL) {
   pillai <- data.frame(Group = row.names(summary(model, intercept = TRUE, test = c("Pillai"))$stats), summary(model, intercept = TRUE, test = c("Pillai"))$stats, check.names = FALSE)
   wilks <- data.frame(Group = row.names(summary(model, intercept = TRUE, test = c("Wilks"))$stats), summary(model, intercept = TRUE, test = c("Wilks"))$stats, check.names = FALSE)
@@ -907,6 +1146,8 @@ report_manova <- function(model, file = NULL) {
     excel_critical_value(call, wb, "call", numFmt = "#0.00")
     openxlsx::saveWorkbook(wb = wb, file = filename, overwrite = TRUE)
   }
+  result <- list(multivariate = pwhr, type_three = type_three, call = call)
+  return(invisible(result))
 }
 ##########################################################################################
 # ETA PARTIAL ETA OMEGA PARTIAL OMEGA FOR AOV

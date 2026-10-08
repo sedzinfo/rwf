@@ -168,6 +168,8 @@ test_that("compute_one_way_test effect sizes match effectsize", {
   welch <- compute_one_way_test(formula = weight ~ feed, df = chickwts, var.equal = FALSE)
   expect_equal(welch$etasq, effectsize::F_to_eta2(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Eta2_partial)
   expect_equal(welch$omegasq, effectsize::F_to_omega2(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Omega2_partial)
+  expect_equal(welch$partial.omegasq, welch$omegasq)
+  expect_equal(fisher$partial.omegasq, fisher$omegasq)
   expect_equal(welch$cohens.f, effectsize::F_to_f(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Cohens_f_partial)
 })
 

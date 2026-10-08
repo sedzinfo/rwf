@@ -377,8 +377,8 @@ compute_moving_average <- function(df, w) {
 # One autoregressive (p) and one moving average (q) parameter: ACF - exponential decay starting at lag 1; PACF - exponential decay starting at lag 1.
 # ARIMA (p,d,q) p=Autoregressive Parameters,d=Differencing Passes,q=Moving Average Parameters.
 # CHECK FOR MODEL
-# Look at the significance of the coefficients. In R, p-values arent given. For each coefficient,calculate z=estimated coeff. / std. error of coeff. If |z| > 1.96,the estimated coefficient is significantly different from 0.
-# Look at the ACF of the residuals. For a good model,all autocorrelations for the residual series should be non-significant. If this isnt the case,you need to try a different model.
+# Look at the significance of the coefficients. In R, p-values aren't given. For each coefficient,calculate z=estimated coeff. / std. error of coeff. If |z| > 1.96,the estimated coefficient is significantly different from 0.
+# Look at the ACF of the residuals. For a good model,all autocorrelations for the residual series should be non-significant. If this isn't the case,you need to try a different model.
 # Look at Box-Pierce (Ljung) tests for possible residual autocorrelation at various lags (see Lesson 3.2 for a description of this test).
 # If non-constant variance is a concern,look at a plot of residuals versus fits and/or a time series plot of the residuals.
 ##########################################################################################

@@ -5,13 +5,13 @@
 #' @param a numeric discrimination parameter
 #' @param b numeric difficulty parameter
 #' @param g numeric guessing parameter
-#' @param i numeric innatentiveness parameter
+#' @param i numeric inattentiveness parameter
 #' @param d numeric scaling constant usually a value 1.749 or 1.702
 #' @param theta numeric or vector theta
 #' @note when scaling constant=1 it has no effect in equation\cr
-#'       when innatentiveness=1 and guessing=0 function computes a 2PL score\cr
-#'       when innatentiveness=1 and guessing!=0 function computes a 3PL score\cr
-#'       when innatentiveness!=1 and guessing!=0 function computes a 4PL score\cr
+#'       when inattentiveness=1 and guessing=0 function computes a 2PL score\cr
+#'       when inattentiveness=1 and guessing!=0 function computes a 3PL score\cr
+#'       when inattentiveness!=1 and guessing!=0 function computes a 4PL score\cr
 #' @keywords IRT unidimensional
 #' @export
 #' @examples

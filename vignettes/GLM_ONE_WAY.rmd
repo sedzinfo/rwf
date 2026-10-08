@@ -156,9 +156,9 @@ $\eta^2$ is the proportion of the total variance explained by the groups, the $R
 
 ### Omega-squared
 
-$$\omega^2=\frac{SS_{\text{effect}}-df_{\text{effect}}\,MS_{\text{error}}}{SS_{\text{total}}+MS_{\text{error}}},\qquad \omega^2_p=\frac{df_{\text{effect}}\left(MS_{\text{effect}}-MS_{\text{error}}\right)}{df_{\text{effect}}\,MS_{\text{effect}}+\left(N-df_{\text{effect}}\right)MS_{\text{error}}}$$
+$$\omega^2=\frac{SS_{\text{effect}}-df_{\text{effect}}\,MS_{\text{error}}}{SS_{\text{total}}+MS_{\text{error}}},\qquad \omega^2_p=\frac{df_{\text{effect}}\left(MS_{\text{effect}}-MS_{\text{error}}\right)}{df_{\text{effect}}\,MS_{\text{effect}}+\left(df_{\text{error}}+1\right)MS_{\text{error}}}$$
 
-$\omega^2$ (Hays, 1963) estimates the proportion of variance explained in the population. It subtracts the part of $SS_{\text{effect}}$ expected by chance, $df_{\text{effect}}\,MS_{\text{error}}$, which removes most of the bias of $\eta^2$. It is negative when $F<1$. Partial omega-squared $\omega^2_p$ (Olejnik & Algina, 2003) is again the same as $\omega^2$ in a one-way design with equal variances, because the two denominators are equal when $N-df_{\text{effect}}=df_{\text{error}}+1$.
+$\omega^2$ (Hays, 1963) estimates the proportion of variance explained in the population. It subtracts the part of $SS_{\text{effect}}$ expected by chance, $df_{\text{effect}}\,MS_{\text{error}}$, which removes most of the bias of $\eta^2$. It is negative when $F<1$. Partial omega-squared $\omega^2_p$ (Olejnik & Algina, 2003) is again the same as $\omega^2$ in a one-way design, because $SS_{\text{total}}+MS_{\text{error}}=df_{\text{effect}}\,MS_{\text{effect}}+(df_{\text{error}}+1)\,MS_{\text{error}}$. With equal variances $df_{\text{error}}+1=N-df_{\text{effect}}$, the form usually given for $\omega^2_p$; rwf uses $df_{\text{error}}+1$ so that the Welch version also follows the Welch degrees of freedom.
 
 ### Cohen's f
 
@@ -275,7 +275,7 @@ cohens_f <- sqrt(etasq / (1 - etasq))
 power <- pf(qf(0.95, df_effect, df_error), df_effect, df_error, ncp = cohens_f^2 * N, lower.tail = FALSE)
 by_hand <- data.frame(ss_effect, ss_error, ms_effect, ms_error,
                       etasq, partial.etasq = ss_effect / (ss_effect + ss_error),
-                      omegasq, partial.omegasq = df_effect * (ms_effect - ms_error) / (df_effect * ms_effect + (N - df_effect) * ms_error),
+                      omegasq, partial.omegasq = df_effect * (ms_effect - ms_error) / (df_effect * ms_effect + (df_error + 1) * ms_error),
                       cohens.f = cohens_f, power,
                       statistic = F_value, df_effect, df_error,
                       p = pf(F_value, df_effect, df_error, lower.tail = FALSE))
@@ -327,20 +327,21 @@ fisher$power
 
 ### Welch effect sizes
 
-For Welch's test, `etasq`, `omegasq` and `cohens.f` are the conversions of the F statistic into effect sizes with the Welch degrees of freedom, the same as `effectsize::F_to_eta2`, `F_to_omega2` and `F_to_f`:
+For Welch's test, `etasq`, `omegasq`, `partial.omegasq` and `cohens.f` are the conversions of the F statistic into effect sizes with the Welch degrees of freedom, the same as `effectsize::F_to_eta2`, `F_to_omega2` and `F_to_f`:
 
 $$\eta^2=\frac{F\,df_{\text{effect}}}{F\,df_{\text{effect}}+df_{\text{error}}},\qquad \omega^2=\frac{df_{\text{effect}}(F-1)}{F\,df_{\text{effect}}+df_{\text{error}}+1},\qquad f=\sqrt{\frac{F\,df_{\text{effect}}}{df_{\text{error}}}}$$
 
 ```{r check_welch_effect_sizes}
 data.frame(
-  statistic = c("etasq", "omegasq", "cohens.f"),
-  rwf = c(welch$etasq, welch$omegasq, welch$cohens.f),
+  statistic = c("etasq", "omegasq", "partial.omegasq", "cohens.f"),
+  rwf = c(welch$etasq, welch$omegasq, welch$partial.omegasq, welch$cohens.f),
   effectsize = c(effectsize::F_to_eta2(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Eta2_partial,
+                 effectsize::F_to_omega2(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Omega2_partial,
                  effectsize::F_to_omega2(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Omega2_partial,
                  effectsize::F_to_f(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Cohens_f_partial))
 ```
 
-`partial.omegasq` for Welch uses the actual sample size $N$ in place of $df_{\text{effect}}+df_{\text{error}}+1$, so it differs from `omegasq` (`r round(welch$partial.omegasq, 3)` against `r round(welch$omegasq, 3)` here). These Welch effect sizes are approximations; report `omegasq` or `etasq` with the Welch degrees of freedom, and treat `partial.omegasq` with caution.
+In a one-way design `partial.omegasq` equals `omegasq` for Welch's test too. These Welch effect sizes are approximations: report them together with the Welch degrees of freedom.
 
 ### A test function
 

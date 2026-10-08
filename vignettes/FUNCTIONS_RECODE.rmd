@@ -110,11 +110,11 @@ Single responses work the same way. Because columns are sorted as text, numeric 
 dummy_arrange(c("1,10", "2", "10,2"))
 ```
 
-`generate_multiple_responce_vector` from rwf simulates multiple-response data; `gsub` removes the spaces after the commas:
+`generate_multiple_response_vector` from rwf simulates multiple-response data; `gsub` removes the spaces after the commas:
 
 ```{r dummy_arrange_generated}
 set.seed(1)
-responses <- gsub(" ", "", generate_multiple_responce_vector(responces = c("Agree", "Hi", "All"), responded = 1:3, length = 6), fixed = TRUE)
+responses <- gsub(" ", "", generate_multiple_response_vector(responses = c("Agree", "Hi", "All"), responded = 1:3, length = 6), fixed = TRUE)
 responses
 dummy_arrange(responses)
 ```

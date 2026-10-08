@@ -411,7 +411,7 @@ excel_critical_value <- function(df, workbook, sheet = "output", title = NULL, c
 # DATAFRAME TO EXCEL CONFUSION MATRIX
 ##########################################################################################
 #' @title Write matrix or dataframe to excel sheet
-#' @description Usefull for correlation matrices since it uses conditional formatting for matrices
+#' @description Useful for correlation matrices since it uses conditional formatting for matrices
 #' @param df dataframe or matrix
 #' @param workbook workbook
 #' @param title comment
@@ -450,7 +450,7 @@ excel_confusion_matrix <- function(df, workbook, title = "Rows: Expected Collumn
 # DATAFRAME TO EXCEL
 ##########################################################################################
 #' @title Write matrix or dataframe to excel sheet
-#' @description Usefull for generic data where conditional formating of a spesific collumn is required
+#' @description Useful for generic data where conditional formatting of a specific column is required
 #' @param df dataframe or matrix
 #' @param file output filename of excel file
 #' @param type "critical_value" "matrix"

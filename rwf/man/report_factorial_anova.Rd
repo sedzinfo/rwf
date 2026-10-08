@@ -2,7 +2,12 @@
 % Please edit documentation in R/GLM_ANOVA.R
 \name{report_factorial_anova}
 \alias{report_factorial_anova}
-\title{Plot means with standard error for every level in a dataframe}
+\title{Factorial, Repeated Measures and Mixed ANOVA Report}
+\source{
+A wrapper around \code{ez::ezANOVA} (Lawrence, 2026), with effect
+sizes from \code{sjstats::anova_stats} (\enc{Lüdecke}{Ludecke}, 2025) and post
+hoc comparisons from \code{emmeans} (Lenth & Piaskowski, 2026).
+}
 \usage{
 report_factorial_anova(
   df,
@@ -26,99 +31,190 @@ report_factorial_anova(
 )
 }
 \arguments{
-\item{df}{dataframe}
+\item{df}{A data frame in long format, with one row per observation.}
 
-\item{dv}{names of dependent variables}
+\item{dv}{Character vector with the names of the dependent variables. Each one
+is analysed separately.}
 
-\item{wid}{names of}
+\item{wid}{Name of the column that identifies the participant (subject). Each
+participant needs a unique value.}
 
-\item{within}{names of within factors}
+\item{within}{Character vector with the names of the within-subjects factors.}
 
-\item{within_full}{names of within factors after data are collapsed to means per condition}
+\item{within_full}{Character vector with the names of all the within-subjects
+factors of the full design, when \code{within} lists only a subset of them and
+the data have not been averaged per condition yet.}
 
-\item{between}{names of between factors}
+\item{between}{Character vector with the names of the between-subjects factors.}
 
-\item{within_covariates}{names of within covariates}
+\item{within_covariates}{Character vector with the names of within-subjects
+covariates.}
 
-\item{between_covariates}{mames of between covariates}
+\item{between_covariates}{Character vector with the names of between-subjects
+covariates.}
 
-\item{observed}{names in data that are already specified in either within or between that contain predictor variables that are observed variables (not manipulated)}
+\item{observed}{Character vector with the names of factors, already listed in
+\code{within} or \code{between}, that are observed rather than manipulated
+(for example sex). They change the generalized eta-squared that
+\code{ez::ezANOVA} reports.}
 
-\item{diff}{names of variables to collapse in a different score}
+\item{diff}{Character vector with the names of factors to collapse into a
+difference score.}
 
-\item{reverse_diff}{If TRUE, triggers reversal of the difference collapse requested by diff}
+\item{reverse_diff}{If TRUE, reverses the direction of the difference score
+requested by \code{diff}.}
 
-\item{type}{sum of squares 1 2 3}
+\item{type}{Type of sums of squares, 1, 2 or 3 (default 3).}
 
-\item{white.adjust}{if TRUE corrects for heteroscedasticity}
+\item{white.adjust}{If TRUE (default), uses heteroscedasticity-corrected F tests
+(HC3). It affects only designs with between-subjects factors alone.}
 
-\item{detailed}{if TRUE returns detailed information}
+\item{detailed}{If TRUE (default), adds the sums of squares and the intercept to
+the ANOVA table.}
 
-\item{return_aov}{if TRUE returns aov object}
+\item{return_aov}{Must be TRUE (default): the effect sizes and the post hoc
+comparisons are computed from the \code{aov} object that \code{ez::ezANOVA}
+returns.}
 
-\item{file}{output filename}
+\item{file}{Name of the Excel file to write, without the extension. If
+\code{NULL} (default), nothing is written.}
 
-\item{post_hoc_test}{if TRUE outputs post hoc in file}
+\item{post_hoc_test}{If TRUE (default), writes the post hoc comparisons to the
+Excel file.}
 
-\item{base_size}{base font size}
+\item{base_size}{Base font size for plots. Not used at present.}
+}
+\value{
+A list with:
+\itemize{
+  \item \code{omnibus}: the ANOVA table of every dependent variable (\code{dv}),
+  with \code{DFn} and \code{DFd} (degrees of freedom of the effect and the
+  error), \code{SSn} and \code{SSd} (sums of squares, when reported), \code{F},
+  \code{p} and \code{ges} (generalized eta-squared, when reported). Levene's
+  test is added with the suffix \code{[L]}, Mauchly's test with \code{[M]}, and
+  the sphericity corrections as \code{GGe}, \code{p[GG]}, \code{HFe} and
+  \code{p[HF]}.
+  \item \code{omnibus_effect_size}: eta-squared, partial eta-squared,
+  omega-squared, partial omega-squared, epsilon-squared, Cohen's f and power
+  for every term, from \code{sjstats::anova_stats}
+  \item \code{post_hoc}: pairwise comparisons for every main effect and
+  interaction, with the estimate, standard error, degrees of freedom,
+  t ratio and p-value
+  \item \code{object}: the full output of \code{ez::ezANOVA} for every
+  dependent variable, including the \code{aov} object
+}
 }
 \description{
-Plot means with standard error for every level in a dataframe
+Runs a factorial ANOVA for one or more dependent variables with
+\code{ez::ezANOVA}, for between-subjects, within-subjects (repeated measures)
+and mixed designs, and collects in one report:
+\itemize{
+  \item the ANOVA table with the assumption tests: Levene's test for
+  between-subjects designs, Mauchly's test and the Greenhouse-Geisser and
+  Huynh-Feldt corrections for within-subjects designs
+  \item effect sizes for every term from \code{sjstats::anova_stats}
+  \item pairwise post hoc comparisons for every main effect and interaction
+  from \code{emmeans}
+}
+The report can also be written to an Excel workbook.
+
+In simple terms, this tests whether the means differ across the levels of
+several factors and their combinations, checks the assumptions of the test and
+shows which conditions differ from which.
+}
+\details{
+Before the analysis, the columns in \code{wid}, \code{within},
+\code{within_full}, \code{between} and the covariates are converted to factors,
+and the data are averaged per participant and condition. If a participant has
+several observations in a condition, the ANOVA uses their mean.
+
+The models are fitted with sum-to-zero contrasts (\code{contr.sum}), which
+Type III sums of squares need. The previous \code{contrasts} option is restored
+when the function returns.
+
+Assumption tests:
+\itemize{
+  \item Levene's test (between-subjects designs): a significant result means
+  that the variances differ across groups.
+  \item Mauchly's test (within-subjects factors with more than two levels): a
+  significant result means that sphericity is violated; then use the
+  Greenhouse-Geisser (\code{p[GG]}) or Huynh-Feldt (\code{p[HF]}) corrected
+  p-values.
+}
+
+The effect sizes in \code{omnibus_effect_size} are computed by
+\code{sjstats::anova_stats} from the \code{aov} object, rounded to three
+decimals. They use sequential (Type I) sums of squares and no
+heteroscedasticity correction, whatever \code{type} and \code{white.adjust}
+are, so their F values can differ from those in \code{omnibus} when the design
+is unbalanced or \code{white.adjust = TRUE}.
+
+The post hoc comparisons are the \code{emmeans} pairwise comparisons for every
+main effect and every interaction, with the p-values adjusted (Tukey) within
+each effect.
+
+The Excel workbook has a sheet for the ANOVA table ("ANOVA within", "ANOVA
+between" or "ANOVA"), "effect size", "post hoc" (if \code{post_hoc_test = TRUE}),
+"descriptives" and "call".
 }
 \examples{
+# 36 participants: B1 and B2 vary between participants (4 per cell),
+# W1 and W2 vary within participants (every participant has all 9 conditions)
 set.seed(12345)
-df <- data.frame(
-  id = rep(seq(1, 80), each = 81, 1),
-  IV1 = rep(LETTERS[1:3], each = 1, 2160),
-  IV2 = rep(LETTERS[4:6], each = 3, 720),
-  IV3 = rep(LETTERS[7:9], each = 9, 240),
-  IV4 = rep(LETTERS[10:12], each = 27, 80),
-  stringsAsFactors = FALSE
-)
-cdf <- data.frame(matrix(.01, ncol = 4, nrow = 4))
-correlation_martix <- as.matrix(cdf)
-diag(correlation_martix) <- 1
-cdf <- generate_correlation_matrix(correlation_martix, nrows = nrow(df)) + 10
-names(cdf) <- paste0("DV", 1:4)
-df <- data.frame(df, cdf)
-df$DV2 <- df$DV2 + 10
-df$DV3 <- df$DV3 + 20
-df$DV4 <- df$DV4 + 30
-df[df$IV1 \%in\% "A", ]$DV1 <- df[df$IV1 \%in\% "A", ]$DV1 + 1
-df[df$IV1 \%in\% "B", ]$DV1 <- df[df$IV1 \%in\% "B", ]$DV1 + 2
-df[df$IV1 \%in\% "C", ]$DV1 <- df[df$IV1 \%in\% "C", ]$DV1 + 3
-cdf(df)
+df <- expand.grid(W1 = c("A", "B", "C"), W2 = c("D", "E", "F"), id = 1:36, stringsAsFactors = FALSE)
+df$B1 <- c("G", "H", "I")[(df$id - 1) \%\% 3 + 1]
+df$B2 <- c("J", "K", "L")[(df$id - 1) \%/\% 3 \%\% 3 + 1]
+df <- df[, c("id", "B1", "B2", "W1", "W2")]
+correlation_matrix <- matrix(0.01, ncol = 4, nrow = 4)
+diag(correlation_matrix) <- 1
+dvs <- generate_correlation_matrix(correlation_matrix, nrows = nrow(df)) + 10
+names(dvs) <- paste0("DV", 1:4)
+df <- data.frame(df, dvs)
+# DV1 differs across the levels of W1 and B1
+df$DV1 <- df$DV1 + match(df$W1, c("A", "B", "C")) + match(df$B1, c("G", "H", "I"))
+# within-subjects design
 r1 <- report_factorial_anova(
   df = df, wid = "id", dv = c("DV1", "DV2"),
-  within = c("IV1", "IV2"), within_full = c("IV1", "IV2"),
-  between = NULL,
-  within_covariates = NULL, between_covariates = NULL,
-  file = "anova_within",
-  post_hoc = TRUE
+  within = c("W1", "W2"), within_full = c("W1", "W2"),
+  file = file.path(tempdir(), "anova_within")
 )
+# between-subjects design
 r2 <- report_factorial_anova(
   df = df, wid = "id", dv = c("DV1", "DV2"),
-  within = NULL, within_full = NULL,
-  between = c("IV1", "IV2"),
-  within_covariates = NULL, between_covariates = NULL,
-  file = "anova_between",
-  post_hoc = TRUE
+  between = c("B1", "B2"),
+  file = file.path(tempdir(), "anova_between")
 )
+# mixed design
 r3 <- report_factorial_anova(
   df = df, wid = "id", dv = c("DV1", "DV2"),
-  within = c("IV3", "IV4"), within_full = c("IV3", "IV4"),
-  between = c("IV1", "IV2"),
-  within_covariates = NULL, between_covariates = NULL,
-  file = "anova_mixed",
-  post_hoc = FALSE
+  within = c("W1", "W2"), within_full = c("W1", "W2"),
+  between = c("B1", "B2"),
+  file = file.path(tempdir(), "anova_mixed"),
+  post_hoc_test = FALSE
 )
+# within-subjects design with within-subjects covariates
 r4 <- report_factorial_anova(
   df = df, wid = "id", dv = c("DV1", "DV2"),
-  within = c("IV1", "IV2"), within_full = c("IV1", "IV2"),
-  between = NULL,
-  within_covariates = c("DV3", "DV4"), between_covariates = NULL,
-  file = "anova_within_cov",
-  post_hoc = TRUE
+  within = c("W1", "W2"), within_full = c("W1", "W2"),
+  within_covariates = c("DV3", "DV4"),
+  file = file.path(tempdir(), "anova_within_cov")
 )
+}
+\references{
+Bakeman, R. (2005). Recommended effect size statistics for repeated measures designs. Behavior Research Methods, 37(3), 379-384. \doi{10.3758/BF03192707}
+
+Greenhouse, S. W., & Geisser, S. (1959). On methods in the analysis of profile data. Psychometrika, 24(2), 95-112. \doi{10.1007/BF02289823}
+
+Huynh, H., & Feldt, L. S. (1976). Estimation of the Box correction for degrees of freedom from sample data in randomized block and split-plot designs. Journal of Educational Statistics, 1(1), 69-82. \doi{10.3102/10769986001001069}
+
+Lawrence, M. A. (2026). ez: Easy analysis and visualization of factorial experiments (R package version 4.5-0). \doi{10.32614/CRAN.package.ez}
+
+Lenth, R., & Piaskowski, J. (2026). emmeans: Estimated marginal means, aka least-squares means (R package version 2.0.4). \doi{10.32614/CRAN.package.emmeans}
+
+Long, J. S., & Ervin, L. H. (2000). Using heteroscedasticity consistent standard errors in the linear regression model. The American Statistician, 54(3), 217-224. \doi{10.1080/00031305.2000.10474549}
+
+\enc{Lüdecke}{Ludecke}, D. (2025). sjstats: Statistical functions for regression models (R package version 0.19.1). \doi{10.5281/zenodo.1284472}
+
+Mauchly, J. W. (1940). Significance test for sphericity of a normal n-variate distribution. The Annals of Mathematical Statistics, 11(2), 204-209. \doi{10.1214/aoms/1177731915}
 }
 \keyword{ANOVA}

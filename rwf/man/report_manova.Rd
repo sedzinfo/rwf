@@ -2,32 +2,69 @@
 % Please edit documentation in R/GLM_ANOVA.R
 \name{report_manova}
 \alias{report_manova}
-\title{Manova result}
+\title{MANOVA Report}
 \usage{
 report_manova(model, file = NULL)
 }
 \arguments{
-\item{model}{object of manova model}
+\item{model}{A model fitted with \code{stats::manova}.}
 
-\item{file}{output filename}
+\item{file}{Name of the Excel file to write, without the extension. If
+\code{NULL} (default), nothing is written.}
+}
+\value{
+Invisibly, a list with:
+\itemize{
+  \item \code{multivariate}: data frame with the Pillai, Wilks, Hotelling-Lawley and Roy
+  statistics, their approximate F tests and p-values (column \code{type} names the test)
+  \item \code{type_three}: Type III MANOVA table from \code{car::Anova}
+  \item \code{call}: the model call
+}
 }
 \description{
-Manova result
+Reports the four multivariate test statistics (Pillai's trace,
+Wilks' lambda, the Hotelling-Lawley trace and Roy's largest root) with their
+approximate F tests for every term of a \code{manova} model, and the Type III
+MANOVA table from \code{car::Anova}. The tables are printed and can also be
+written to an Excel workbook.
+
+In simple terms, this tests whether groups differ on several outcomes considered
+together, rather than on each outcome separately.
 }
-\note{
-Pillai-Bartlett trace (V): Represents the sum of the proportion of explained variance on the discriminant functions.
-As such,it is similar to the ratio of SS M /SS T,which is known as R 2. \cr
-Hotelling-s T 2: Represents the sum of the eigenvalues for each variate it compares directly to the F-ratio in ANOVA  \cr
-Wilks-s lambda (L): Represents the ratio of error variance to total variance (SS R /SS T ) for each variate.  \cr
-Roy-s largest root: Represents the proportion of explained variance to unexplained variance (SS M /SS R ) for the first discriminant function.  \cr
-ASSUMPTIONS  \cr
-Independence: Observations should be statistically independent.  \cr
-Random sampling: Data should be randomly sampled from the population of interest and measured at an interval level.  \cr
-Multivariate normality: In ANOVA,we assume that our dependent variable is normally distributed within each group.
-In the case of MANOVA,we assume that the dependent variables (collectively) have multivariate normality within groups.  \cr
-Homogeneity of covariance matrices: In ANOVA,it is assumed that the variances in each group are roughly equal (homogeneity of variance).
-In MANOVA we must assume that this is true for each dependent variable,but also that the correlation between any two dependent variables is the same in all groups.
-This assumption is examined by testing whether the population variance-covariance matrices of the different groups in the analysis are equal.
+\details{
+With \eqn{\lambda_1, \dots, \lambda_s} the eigenvalues of \eqn{HE^{-1}}, where
+\eqn{H} is the hypothesis and \eqn{E} the error sums of squares and
+cross-products matrix of a term:
+\itemize{
+  \item Pillai's trace, \eqn{V=\sum \lambda_i/(1+\lambda_i)}: the sum of the
+  proportions of variance explained on the discriminant functions. It is the
+  most robust of the four to violations of the assumptions and a good default.
+  \item Wilks' lambda, \eqn{\Lambda=\prod 1/(1+\lambda_i)}: the proportion of
+  variance not explained; smaller values mean larger effects.
+  \item Hotelling-Lawley trace, \eqn{T=\sum \lambda_i}: the sum of the ratios of
+  explained to unexplained variance.
+  \item Roy's largest root, \eqn{\lambda_1}: uses only the first discriminant
+  function. Its F statistic is an upper bound, so its p-value is a lower bound
+  and the test is liberal.
+}
+The four tests agree when the term has one degree of freedom. The table also
+includes the intercept.
+
+The Type III table tests each term adjusted for all the others, so it needs
+sum-to-zero contrasts such as \code{contr.sum} or \code{contr.helmert}. Set them
+with \code{options(contrasts = c("contr.sum", "contr.poly"))} before fitting the
+model with \code{manova}; \code{report_manova} does not change them.
+
+Assumptions of MANOVA:
+\itemize{
+  \item independent observations, randomly sampled
+  \item dependent variables measured on an interval scale
+  \item multivariate normality of the dependent variables within each group
+  \item equal variance-covariance matrices across groups: equal variances of
+  each dependent variable and equal correlations between them in every group
+}
+
+The Excel workbook has the sheets "critical" (the four tests) and "call".
 }
 \examples{
 ## Set orthogonal contrasts.
@@ -35,6 +72,22 @@ op <- options(contrasts = c("contr.helmert", "contr.poly"))
 model_mixed <- manova(cbind(yield, foo) ~ N * P * K, within(npk, foo <- rnorm(24)))
 model_between <- manova(cbind(rnorm(24), rnorm(24)) ~ round(rnorm(24), 0) * round(rnorm(24), 0))
 report_manova(model = model_mixed)
-report_manova(model = model_between)
+result <- report_manova(model = model_between)
+result$multivariate
+## Restore the previous contrasts.
+options(op)
+}
+\references{
+Fox, J., & Weisberg, S. (2019). An R companion to applied regression (3rd ed.). Sage. \url{https://www.john-fox.ca/Companion/}
+
+Hotelling, H. (1951). A generalized T test and measure of multivariate dispersion. In J. Neyman (Ed.), Proceedings of the Second Berkeley Symposium on Mathematical Statistics and Probability (pp. 23-41). University of California Press.
+
+Olson, C. L. (1976). On choosing a test statistic in multivariate analysis of variance. Psychological Bulletin, 83(4), 579-586. \doi{10.1037/0033-2909.83.4.579}
+
+Pillai, K. C. S. (1955). Some new test criteria in multivariate analysis. The Annals of Mathematical Statistics, 26(1), 117-121. \doi{10.1214/aoms/1177728599}
+
+Roy, S. N. (1953). On a heuristic method of test construction and its use in multivariate analysis. The Annals of Mathematical Statistics, 24(2), 220-238. \doi{10.1214/aoms/1177729029}
+
+Wilks, S. S. (1932). Certain generalizations in the analysis of variance. Biometrika, 24(3/4), 471-494. \doi{10.2307/2331979}
 }
 \keyword{ANOVA}

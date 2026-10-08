@@ -30,7 +30,7 @@ A one-row data frame with:
   \item \code{etasq}: eta-squared, \eqn{SS_{effect}/SS_{total}}
   \item \code{partial.etasq}: partial eta-squared, \eqn{SS_{effect}/(SS_{effect}+SS_{error})}
   \item \code{omegasq}: omega-squared, \eqn{(SS_{effect}-df_{effect} MS_{error})/(SS_{total}+MS_{error})}
-  \item \code{partial.omegasq}: partial omega-squared, \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(N-df_{effect}) MS_{error})}
+  \item \code{partial.omegasq}: partial omega-squared, \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(df_{error}+1) MS_{error})}
   \item \code{cohens.f}: Cohen's f, \eqn{\sqrt{\eta^2/(1-\eta^2)}}
   \item \code{power}: observed power of the F test at \eqn{\alpha = 0.05}
   \item \code{statistic}: F statistic, \eqn{MS_{effect}/MS_{error}}
@@ -56,8 +56,8 @@ In simple terms, this tests whether the group means differ, and quantifies
 how much of the variance in the outcome the groups explain.
 }
 \details{
-In a one-way design \code{partial.etasq} equals \code{etasq}, and with equal
-variances \code{partial.omegasq} equals \code{omegasq}. \code{etasq} and
+In a one-way design \code{partial.etasq} equals \code{etasq} and
+\code{partial.omegasq} equals \code{omegasq}. \code{etasq} and
 \code{partial.etasq} are in [0, 1] and are biased upwards in small samples, by
 about \eqn{(k-1)/(N-1)} when there is no effect. \code{omegasq} and
 \code{partial.omegasq} remove most of that bias and are negative when \eqn{F < 1}.
@@ -87,12 +87,10 @@ plan a study, for example with \code{pwr::pwr.anova.test}.
 Welch's test (Welch, 1951) has no sums of squares. With \code{var.equal = FALSE},
 \code{ms_effect} and \code{ms_error} are the numerator and denominator of the
 Welch F statistic and \code{ss_effect} and \code{ss_error} are \eqn{MS \times df}.
-The resulting \code{etasq}, \code{omegasq} and \code{cohens.f} equal the
-conversions of the Welch F statistic in \code{effectsize::F_to_eta2},
-\code{effectsize::F_to_omega2} and \code{effectsize::F_to_f}.
-\code{partial.omegasq} uses the actual sample size instead of the Welch degrees
-of freedom and differs from \code{omegasq}. Treat the Welch effect sizes as
-approximations.
+The resulting \code{etasq}, \code{omegasq}, \code{partial.omegasq} and
+\code{cohens.f} equal the conversions of the Welch F statistic in
+\code{effectsize::F_to_eta2}, \code{effectsize::F_to_omega2} and
+\code{effectsize::F_to_f}. Treat the Welch effect sizes as approximations.
 
 Rows with a missing value in the outcome or the grouping variable are
 removed before the test, as in \code{stats::oneway.test}.

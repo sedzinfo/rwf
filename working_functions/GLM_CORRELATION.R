@@ -116,7 +116,7 @@ compute_power_r_matrix<-function(m,...) {
 #' @param adjust "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
 #' @param alpha	alpha level of confidence intervals
 #' @param ci By default, confidence intervals are found. However, this leads to a great slowdown of speed. So, for just the rs, ts and ps, set ci=FALSE
-#' @param scatterplot if TRUE it will outpu scatterplots
+#' @param scatterplot if TRUE it will output scatterplots
 #' @importFrom psych corr.test
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @keywords correlation
@@ -182,7 +182,7 @@ report_correlation<-function(x,y=NULL,use="pairwise",method="pearson",adjust="ho
 ##########################################################################################
 #' @title Report polychoric tetrachoric polyserial biserial correlation
 #' @param x The input may be in one of four forms:\cr
-#' a) a data frame or matrix of dichotmous data (e.g., the lsat6 from the bock data set) or discrete numerical (i.e., not too many levels, e.g., the big 5 data set, bfi) for polychoric, or continuous for the case of biserial and polyserial\cr
+#' a) a data frame or matrix of dichotomous data (e.g., the lsat6 from the bock data set) or discrete numerical (i.e., not too many levels, e.g., the big 5 data set, bfi) for polychoric, or continuous for the case of biserial and polyserial\cr
 #' b) a 2 x 2 table of cell counts or cell frequencies (for tetrachoric) or an n x m table of cell counts (for both tetrachoric and polychoric)\cr
 #' c) a vector with elements corresponding to the four cell frequencies (for tetrachoric)\cr
 #' d) a vector with elements of the two marginal frequencies (row and column) and the comorbidity (for tetrachoric)\cr
