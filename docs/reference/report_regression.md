@@ -149,9 +149,9 @@ res <- report_regression(model = multipleregressionmodel)
 
 #> GVIFs computed for predictors
 #> Warning: longer object length is not a multiple of shorter object length
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Summary"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> 
 #> Call:
 #> lm(formula = mpg ~ qsec * hp * wt * drat, data = mtcars)
@@ -183,14 +183,14 @@ res <- report_regression(model = multipleregressionmodel)
 #> Multiple R-squared:  0.926,  Adjusted R-squared:  0.857 
 #> F-statistic: 13.4 on 15 and 16 DF,  p-value: 0.0000025
 #> 
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Coefficients"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Unstandardized coefficients (b's) indicate the change in the outcome resulting from a unit change in the predictor"                                            
 #> [2] "Standardized coefficients (for more than one predictors), indicate the change in outcome as a result of a unit change by a standard deviation of the predictor"
 #> [3] "t-test checks if coefficients are significantly different from 0. Coefficients of 0 indicate no predictor effects"                                             
 #> [4] "Significance value for t-test"                                                                                                                                 
-#> [1] "##################################################"
+#> [1] "#########################"
 #>          Row.names standardized   Estimate Std. Error t value Pr(>|t|)       2.5 %    97.5 %
 #> 1             qsec   -27.177538  -91.66358   72.94035  -1.257   0.2269  -246.29022   62.9631
 #> 2               hp  -170.367350  -14.97597   10.14812  -1.476   0.1594   -36.48901    6.5371
@@ -208,13 +208,13 @@ res <- report_regression(model = multipleregressionmodel)
 #> 14      hp:wt:drat   -12.701878   -1.11655    0.73401  -1.521   0.1477    -2.67258    0.4395
 #> 15 qsec:hp:wt:drat     0.009913    0.06106    0.03947   1.547   0.1414    -0.02261    0.1447
 #> 16     (Intercept)           NA 1754.76788 1332.32671   1.317   0.2064 -1069.63857 4579.1743
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "ANOVA"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "ANOVA tests for differences between the baseline model (model with no coefficient) and the predictive model (model with coefficient). A significant F shows that the predictor(s) significantly changes model predictability"
 #> [2] "Significance value for ANOVA"                                                                                                                                                                                                
 #> [3] "Null hypothesis: no variance explained by the predictor"                                                                                                                                                                     
-#> [1] "##################################################"
+#> [1] "#########################"
 #> Analysis of Variance Table
 #> 
 #> Response: mpg
@@ -237,33 +237,32 @@ res <- report_regression(model = multipleregressionmodel)
 #> Residuals       16     83       5                        
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Deviance"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #>   deviance
 #> 1    83.03
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Outliers"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #>                rstudent       p bonf.p signif cutoff
 #> Ford Pantera L   -2.842 0.01237 0.3958  FALSE   0.05
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Durbin Watson"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Test the assumption of independent errors.\nTest values may vary between 0 and 4.\nValues above 3 and bellow 1 are problematic.\nValues of 2 are ideal indicating uncorrelated residuals.\n                        \nA value greater than 2 indicates a negative correlation between adjacent residuals.\nA value less than 2 indicates a positive correlation between adjacent residuals."
 #> [2] "Autocorrelation"                                                                                                                                                                                                                                                                                                                                                                           
 #> [3] "Durbin-Watson Statistic"                                                                                                                                                                                                                                                                                                                                                                   
 #> [4] "Significance value for Durbin-Watson Statistic"                                                                                                                                                                                                                                                                                                                                            
+#> [1] "#########################"
+#>     dw.r dw.dw dw.p dw.alternative
+#> 1 -0.191 2.327 0.82      two.sided
 #> [1] "##################################################"
-#>     dw.r dw.dw  dw.p dw.alternative
-#> 1 -0.191 2.327 0.752      two.sided
-#> [1] "####################################################################################################"
 #> [1] "CALL"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #>                                          call
 #> 1 lm(mpg ~ qsec * hp * wt * drat,data=mtcars)
-#>                                          call
-#> 1 lm(mpg ~ qsec * hp * wt * drat,data=mtcars)
+#> NULL
 res <- report_regression(model = regressionmodel, file = "regression")
 
 #> Error in eval(model$call$formula): object 'form' not found
@@ -275,9 +274,9 @@ res <- report_regression(
 
 #> GVIFs computed for predictors
 #> Warning: longer object length is not a multiple of shorter object length
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Summary"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> 
 #> Call:
 #> lm(formula = mpg ~ qsec * hp * wt * drat, data = mtcars)
@@ -309,14 +308,14 @@ res <- report_regression(
 #> Multiple R-squared:  0.926,  Adjusted R-squared:  0.857 
 #> F-statistic: 13.4 on 15 and 16 DF,  p-value: 0.0000025
 #> 
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Coefficients"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Unstandardized coefficients (b's) indicate the change in the outcome resulting from a unit change in the predictor"                                            
 #> [2] "Standardized coefficients (for more than one predictors), indicate the change in outcome as a result of a unit change by a standard deviation of the predictor"
 #> [3] "t-test checks if coefficients are significantly different from 0. Coefficients of 0 indicate no predictor effects"                                             
 #> [4] "Significance value for t-test"                                                                                                                                 
-#> [1] "##################################################"
+#> [1] "#########################"
 #>          Row.names standardized   Estimate Std. Error t value Pr(>|t|)       2.5 %    97.5 %
 #> 1             qsec   -27.177538  -91.66358   72.94035  -1.257   0.2269  -246.29022   62.9631
 #> 2               hp  -170.367350  -14.97597   10.14812  -1.476   0.1594   -36.48901    6.5371
@@ -334,13 +333,13 @@ res <- report_regression(
 #> 14      hp:wt:drat   -12.701878   -1.11655    0.73401  -1.521   0.1477    -2.67258    0.4395
 #> 15 qsec:hp:wt:drat     0.009913    0.06106    0.03947   1.547   0.1414    -0.02261    0.1447
 #> 16     (Intercept)           NA 1754.76788 1332.32671   1.317   0.2064 -1069.63857 4579.1743
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "ANOVA"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "ANOVA tests for differences between the baseline model (model with no coefficient) and the predictive model (model with coefficient). A significant F shows that the predictor(s) significantly changes model predictability"
 #> [2] "Significance value for ANOVA"                                                                                                                                                                                                
 #> [3] "Null hypothesis: no variance explained by the predictor"                                                                                                                                                                     
-#> [1] "##################################################"
+#> [1] "#########################"
 #> Analysis of Variance Table
 #> 
 #> Response: mpg
@@ -363,31 +362,30 @@ res <- report_regression(
 #> Residuals       16     83       5                        
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Deviance"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #>   deviance
 #> 1    83.03
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Outliers"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #>                rstudent       p bonf.p signif cutoff
 #> Ford Pantera L   -2.842 0.01237 0.3958  FALSE   0.05
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Durbin Watson"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "Test the assumption of independent errors.\nTest values may vary between 0 and 4.\nValues above 3 and bellow 1 are problematic.\nValues of 2 are ideal indicating uncorrelated residuals.\n                        \nA value greater than 2 indicates a negative correlation between adjacent residuals.\nA value less than 2 indicates a positive correlation between adjacent residuals."
 #> [2] "Autocorrelation"                                                                                                                                                                                                                                                                                                                                                                           
 #> [3] "Durbin-Watson Statistic"                                                                                                                                                                                                                                                                                                                                                                   
 #> [4] "Significance value for Durbin-Watson Statistic"                                                                                                                                                                                                                                                                                                                                            
+#> [1] "#########################"
+#>     dw.r dw.dw  dw.p dw.alternative
+#> 1 -0.191 2.327 0.838      two.sided
 #> [1] "##################################################"
-#>     dw.r dw.dw dw.p dw.alternative
-#> 1 -0.191 2.327 0.82      two.sided
-#> [1] "####################################################################################################"
 #> [1] "CALL"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #>                                          call
 #> 1 lm(mpg ~ qsec * hp * wt * drat,data=mtcars)
-#>                                          call
-#> 1 lm(mpg ~ qsec * hp * wt * drat,data=mtcars)
+#> NULL
 ```

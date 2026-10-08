@@ -39,24 +39,16 @@ A named list of `ggplot` objects, one per numeric column.
 ## Examples
 
 ``` r
-vector <- generate_missing(rnorm(1000), missing = 10)
+vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 plot_qq(df = vector)
-#> $vector
-#> Warning: Removed 10 rows containing non-finite outside the scale range (`stat_qq()`).
 
-#> 
 plot_qq(df = df)
-#> $mpg
-#> Warning: Removed 10 rows containing non-finite outside the scale range (`stat_qq()`).
 
-#> 
-#> $cyl
-#> Warning: Removed 10 rows containing non-finite outside the scale range (`stat_qq()`).
 
-#> 
-plot_multiplot(plotlist = plot_qq(df = mtcars), cols = 4)
+plot_multiplot(plotlist = plot_qq(df = mtcars[,1:4]), cols = 2)
 
-#> [[1]]
-#> 
+
+
+
 ```

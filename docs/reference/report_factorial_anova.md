@@ -1,6 +1,18 @@
-# Plot means with standard error for every level in a dataframe
+# Factorial ANOVA report for one or more dependent variables
 
-Plot means with standard error for every level in a dataframe
+Runs a factorial (within, between or mixed) ANOVA with
+[`ez::ezANOVA`](https://rdrr.io/pkg/ez/man/ezANOVA.html) for every
+dependent variable in `dv`, adds effect sizes
+([`sjstats::anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html))
+and pairwise post hoc comparisons for every factor and every combination
+of factors (`emmeans`), and optionally writes everything to an Excel
+workbook.
+
+Before the analysis the data are collapsed to one mean per participant
+and design cell (every column named in `wid`, `within`, `within_full`,
+`between` and the covariates is treated as a factor). Sum-to-zero
+contrasts are set with `options(contrasts = ...)`, which changes the
+session option.
 
 ## Usage
 
@@ -31,79 +43,113 @@ report_factorial_anova(
 
 - df:
 
-  dataframe
+  data frame in long format, one row per observation.
 
 - dv:
 
-  names of dependent variables
+  character vector, names of the dependent variables. One ANOVA is run
+  per variable.
 
 - wid:
 
-  names of
+  name of the column that identifies participants (the subject id).
 
 - within:
 
-  names of within factors
+  character vector, names of the within-subject factors, or `NULL`.
 
 - within_full:
 
-  names of within factors after data are collapsed to means per
-  condition
+  character vector, names of the within-subject factors after the data
+  are collapsed to means per condition, or `NULL`. Usually the same as
+  `within`.
 
 - between:
 
-  names of between factors
+  character vector, names of the between-subject factors, or `NULL`.
 
 - within_covariates:
 
-  names of within covariates
+  character vector, names of the within-subject covariates, or `NULL`.
 
 - between_covariates:
 
-  mames of between covariates
+  character vector, names of the between-subject covariates, or `NULL`.
 
 - observed:
 
-  names in data that are already specified in either within or between
-  that contain predictor variables that are observed variables (not
-  manipulated)
+  character vector, names of variables already listed in `within` or
+  `between` that are observed (measured) rather than manipulated. Used
+  by `ezANOVA` for the generalized eta squared.
 
 - diff:
 
-  names of variables to collapse in a different score
+  character vector, names of within variables to collapse into a
+  difference score.
 
 - reverse_diff:
 
-  If TRUE, triggers reversal of the difference collapse requested by
-  diff
+  logical. If `TRUE`, reverses the direction of the difference requested
+  in `diff`.
 
 - type:
 
-  sum of squares 1 2 3
+  sum of squares type: 1, 2 or 3. Default 3.
 
 - white.adjust:
 
-  if TRUE corrects for heteroscedasticity
+  logical. If `TRUE`, uses a heteroscedasticity-corrected covariance
+  matrix (between-subject designs only).
 
 - detailed:
 
-  if TRUE returns detailed information
+  logical. If `TRUE`, `ezANOVA` returns sums of squares.
 
 - return_aov:
 
-  if TRUE returns aov object
+  logical. If `TRUE`, keeps the `aov` object; it is needed for the
+  effect sizes and post hoc tests, so leave it `TRUE`.
 
 - file:
 
-  output filename
+  output file name without extension. If not `NULL`, the results are
+  written to `<file>.xlsx`, replacing any existing file.
 
 - post_hoc_test:
 
-  if TRUE outputs post hoc in file
+  logical. If `TRUE`, adds the post hoc comparisons as a sheet in the
+  Excel file. Post hoc comparisons are always computed and returned;
+  this only controls whether they are written to `file`.
 
 - base_size:
 
-  base font size
+  base font size. Currently unused (the diagnostic plot that used it is
+  commented out).
+
+## Value
+
+A list with:
+
+- omnibus:
+
+  data frame, the ANOVA table of every dependent variable, with Levene's
+  (`[L]`) and Mauchly's (`[M]`) tests and sphericity corrections where
+  they apply.
+
+- omnibus_effect_size:
+
+  data frame, effect sizes per term (eta squared, partial eta squared,
+  omega squared, Cohen's f, power, ...).
+
+- post_hoc:
+
+  data frame, pairwise comparisons for every factor and combination of
+  factors.
+
+- object:
+
+  list, the raw `ezANOVA` result per dependent variable, including the
+  `aov` object.
 
 ## Examples
 
@@ -152,7 +198,7 @@ r1 <- report_factorial_anova(
   between = NULL,
   within_covariates = NULL, between_covariates = NULL,
   file = "anova_within",
-  post_hoc = TRUE
+  post_hoc_test = TRUE
 )
 #> Warning: Collapsing data to cell means first using variables supplied to "within_full", then collapsing the resulting means to means for the cells supplied to "within".
 #> NOTE: Results may be misleading due to involvement in interactions
@@ -166,7 +212,7 @@ r2 <- report_factorial_anova(
   between = c("IV1", "IV2"),
   within_covariates = NULL, between_covariates = NULL,
   file = "anova_between",
-  post_hoc = TRUE
+  post_hoc_test = TRUE
 )
 #> Warning: The column supplied as the wid variable contains non-unique values across levels of the supplied between-Ss variables. Automatically fixing this by generating unique wid labels.
 #> Coefficient covariances computed by hccm()
@@ -182,7 +228,7 @@ r3 <- report_factorial_anova(
   between = c("IV1", "IV2"),
   within_covariates = NULL, between_covariates = NULL,
   file = "anova_mixed",
-  post_hoc = FALSE
+  post_hoc_test = FALSE
 )
 #> Warning: The column supplied as the wid variable contains non-unique values across levels of the supplied between-Ss variables. Automatically fixing this by generating unique wid labels.
 #> Warning: Collapsing data to cell means first using variables supplied to "within_full", then collapsing the resulting means to means for the cells supplied to "within".
@@ -212,7 +258,7 @@ r4 <- report_factorial_anova(
   between = NULL,
   within_covariates = c("DV3", "DV4"), between_covariates = NULL,
   file = "anova_within_cov",
-  post_hoc = TRUE
+  post_hoc_test = TRUE
 )
 #> Warning: Implementation of ANCOVA in this version of ez is experimental and not yet fully validated. Also, note that ANCOVA is intended purely as a tool to increase statistical power; ANCOVA can not eliminate confounds in the data. Specifically, covariates should: (1) be uncorrelated with other predictors and (2) should have effects on the DV that are independent of other predictors. Failure to meet these conditions may dramatically increase the rate of false-positives.
 #> Warning: contrasts dropped from factor ezCov due to missing levels

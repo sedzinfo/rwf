@@ -58,36 +58,15 @@ total observations shown in the caption.
 ``` r
 df_ocean_N<-df_ocean[,grep("N",names(df_ocean))]
 plot_response_frequencies(df = df_ocean_N)
-#> $N1
 
-#> 
-#> $N2
 
-#> 
-#> $N3
 
-#> 
-#> $N4
 
-#> 
-#> $N5
 
-#> 
-#> $N6
 
-#> 
-#> $N7
 
-#> 
-#> $N8
 
-#> 
-#> $N9
 
-#> 
-#> $N10
 
-#> 
 plot_response_frequencies(df = df_ocean_N, factor_index = 1)
-#> list()
 ```

@@ -137,8 +137,6 @@ result<-simulate_cfa_fit(model_sim=model_sim, model=model,
 
 plot_multiplot(plotlist=result[[2]], cols=4)
 
-#> [[1]]
-#> 
 # Correlation-based: resample from observed data
 df <- lavaan::simulateData(model=model_sim, model.type="cfa",
                            return.type="data.frame", sample.nobs=1000)
@@ -188,7 +186,4 @@ result<-simulate_cfa_fit(model=model, df=df,
 
 
 plot_multiplot(plotlist=result[[2]], cols=4)
-
-#> [[1]]
-#> 
 ```

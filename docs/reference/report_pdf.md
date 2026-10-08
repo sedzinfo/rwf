@@ -69,6 +69,10 @@ p2 <- ggplot(ChickWeight, aes(x = Time, y = weight, colour = Diet)) +
   theme_bw()
 cars_plot_multiplot <- plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
 
+
+
+
+
 cars_plot_base <- plot_normality_diagnostics(mtcars)
 
 

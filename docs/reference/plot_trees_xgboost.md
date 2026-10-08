@@ -59,26 +59,26 @@ xgb_classification<-xgboost::xgb.train(
 #> Warning: Passed invalid function arguments: eta, nthread. These should be passed as a list to argument 'params'. Conversion from argument to 'params' entry will be done automatically, but this behavior will become an error in a future version.
 #> Warning: Parameter 'watchlist' has been renamed to 'evals'. This warning will become an error in a future version.
 #> Warning: Argument 'objective' is only for custom objectives. For built-in objectives, pass the objective under 'params'. This warning will become an error in a future version.
-#> [1]  train-logloss:0.623700  test-logloss:0.610367 
-#> [2]  train-logloss:0.611266  test-logloss:0.595618 
-#> [3]  train-logloss:0.600792  test-logloss:0.582165 
-#> [4]  train-logloss:0.591913  test-logloss:0.570386 
-#> [5]  train-logloss:0.584361  test-logloss:0.560029 
-#> [6]  train-logloss:0.577734  test-logloss:0.552103 
-#> [7]  train-logloss:0.572031  test-logloss:0.545050 
-#> [8]  train-logloss:0.567115  test-logloss:0.538758 
-#> [9]  train-logloss:0.562765  test-logloss:0.533669 
-#> [10] train-logloss:0.559003  test-logloss:0.529157 
-#> [11] train-logloss:0.555745  test-logloss:0.525152 
-#> [12] train-logloss:0.552922  test-logloss:0.521592 
-#> [13] train-logloss:0.550432  test-logloss:0.518169 
-#> [14] train-logloss:0.548251  test-logloss:0.515073 
-#> [15] train-logloss:0.546337  test-logloss:0.512311 
-#> [16] train-logloss:0.544657  test-logloss:0.509825 
-#> [17] train-logloss:0.543180  test-logloss:0.507585 
-#> [18] train-logloss:0.541881  test-logloss:0.505565 
-#> [19] train-logloss:0.540737  test-logloss:0.503741 
-#> [20] train-logloss:0.539709  test-logloss:0.502292 
+#> [1]  train-logloss:0.610296  test-logloss:0.711680 
+#> [2]  train-logloss:0.594738  test-logloss:0.709760 
+#> [3]  train-logloss:0.581698  test-logloss:0.709494 
+#> [4]  train-logloss:0.570702  test-logloss:0.710505 
+#> [5]  train-logloss:0.561382  test-logloss:0.712583 
+#> [6]  train-logloss:0.553414  test-logloss:0.713634 
+#> [7]  train-logloss:0.546567  test-logloss:0.715436 
+#> [8]  train-logloss:0.540652  test-logloss:0.718083 
+#> [9]  train-logloss:0.535502  test-logloss:0.721219 
+#> [10] train-logloss:0.531007  test-logloss:0.724739 
+#> [11] train-logloss:0.527073  test-logloss:0.728557 
+#> [12] train-logloss:0.523576  test-logloss:0.732111 
+#> [13] train-logloss:0.520376  test-logloss:0.736233 
+#> [14] train-logloss:0.517542  test-logloss:0.740436 
+#> [15] train-logloss:0.515390  test-logloss:0.744895 
+#> [16] train-logloss:0.513455  test-logloss:0.748832 
+#> [17] train-logloss:0.511741  test-logloss:0.752671 
+#> [18] train-logloss:0.510266  test-logloss:0.755962 
+#> [19] train-logloss:0.508954  test-logloss:0.759177 
+#> [20] train-logloss:0.507783  test-logloss:0.762312 
 xgb_regression<-xgboost::xgb.train(
                 data=train_test_regression$xgb$f1$train,
                 watchlist=train_test_regression$xgb$f1$watchlist,
@@ -87,26 +87,26 @@ xgb_regression<-xgboost::xgb.train(
                 nround=20)
 #> Warning: Passed invalid function arguments: eta, nthread. These should be passed as a list to argument 'params'. Conversion from argument to 'params' entry will be done automatically, but this behavior will become an error in a future version.
 #> Warning: Parameter 'watchlist' has been renamed to 'evals'. This warning will become an error in a future version.
-#> [1]  train-rmse:6.854962 test-rmse:6.579069 
-#> [2]  train-rmse:5.174794 test-rmse:5.042426 
-#> [3]  train-rmse:3.989909 test-rmse:4.037522 
-#> [4]  train-rmse:3.149278 test-rmse:3.455290 
-#> [5]  train-rmse:2.534004 test-rmse:3.004020 
-#> [6]  train-rmse:2.124534 test-rmse:2.763111 
-#> [7]  train-rmse:1.795526 test-rmse:2.650973 
-#> [8]  train-rmse:1.576032 test-rmse:2.607866 
-#> [9]  train-rmse:1.411462 test-rmse:2.543309 
-#> [10] train-rmse:1.293250 test-rmse:2.473808 
-#> [11] train-rmse:1.200497 test-rmse:2.432415 
-#> [12] train-rmse:1.090752 test-rmse:2.439590 
-#> [13] train-rmse:1.001736 test-rmse:2.404787 
-#> [14] train-rmse:0.903884 test-rmse:2.416750 
-#> [15] train-rmse:0.853224 test-rmse:2.420861 
-#> [16] train-rmse:0.799464 test-rmse:2.433400 
-#> [17] train-rmse:0.738400 test-rmse:2.418773 
-#> [18] train-rmse:0.718290 test-rmse:2.408886 
-#> [19] train-rmse:0.679221 test-rmse:2.419082 
-#> [20] train-rmse:0.619782 test-rmse:2.409803 
+#> [1]  train-rmse:6.889171 test-rmse:6.079216 
+#> [2]  train-rmse:5.202736 test-rmse:4.907566 
+#> [3]  train-rmse:3.987855 test-rmse:4.129179 
+#> [4]  train-rmse:3.148291 test-rmse:3.586540 
+#> [5]  train-rmse:2.543125 test-rmse:3.378345 
+#> [6]  train-rmse:2.113914 test-rmse:3.301242 
+#> [7]  train-rmse:1.738537 test-rmse:3.143354 
+#> [8]  train-rmse:1.504925 test-rmse:3.095502 
+#> [9]  train-rmse:1.314920 test-rmse:3.052375 
+#> [10] train-rmse:1.198185 test-rmse:3.008031 
+#> [11] train-rmse:1.099226 test-rmse:2.986951 
+#> [12] train-rmse:1.014451 test-rmse:2.955034 
+#> [13] train-rmse:0.947164 test-rmse:2.945596 
+#> [14] train-rmse:0.868464 test-rmse:2.942617 
+#> [15] train-rmse:0.811166 test-rmse:2.971191 
+#> [16] train-rmse:0.767436 test-rmse:2.971298 
+#> [17] train-rmse:0.714092 test-rmse:2.957072 
+#> [18] train-rmse:0.683534 test-rmse:2.975358 
+#> [19] train-rmse:0.644037 test-rmse:2.973739 
+#> [20] train-rmse:0.595661 test-rmse:2.955901 
 # xgboost::xgb.plot.multi.trees(model=xgb_classification,features_keep=2)
 # plot_trees_xgboost(model=xgb_classification,
 #                    train=train_test_classification$xgb$f1,

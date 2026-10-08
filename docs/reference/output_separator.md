@@ -10,7 +10,7 @@ output_separator(
   string,
   output = NULL,
   instruction = NULL,
-  length = getOption("width")/2
+  length = getOption("width")/4
 )
 ```
 
@@ -32,8 +32,8 @@ output_separator(
 
 - length:
 
-  Numeric. Width of the main separator in characters. Default is half
-  the current console width (`getOption("width") / 2`).
+  Numeric. Width of the main separator in characters. Default is one
+  quarter of the current console width (`getOption("width") / 4`).
 
 ## Value
 
@@ -61,7 +61,7 @@ output_separator(string = "TEST", output = "TEST", length = 100)
 #> [1] "####################################################################################################"
 #> [1] "TEST"
 output_separator(string = "TEST")
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 #> [1] "TEST"
-#> [1] "####################################################################################################"
+#> [1] "##################################################"
 ```

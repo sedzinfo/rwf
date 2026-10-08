@@ -70,28 +70,19 @@ A named list of `ggplot` objects, one per numeric column.
 ## Examples
 
 ``` r
-vector <- generate_missing(rnorm(1000), missing = 10)
+vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 plot_histogram(df = vector)
-#> [[1]]
 
-#> 
 plot_histogram(df = df, xlims = c(0, 50))
-#> $mpg
 
-#> 
-#> $cyl
 
-#> 
 plot_histogram(df = df)
-#> $mpg
 
-#> 
-#> $cyl
 
-#> 
-plot_multiplot(plotlist = plot_histogram(df = mtcars), cols = 4)
+plot_multiplot(plotlist = plot_histogram(df = mtcars[,1:4]), cols = 2)
 
-#> [[1]]
-#> 
+
+
+
 ```

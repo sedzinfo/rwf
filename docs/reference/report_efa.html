@@ -96,6 +96,7 @@
 <span class="r-plt img"><img src="report_efa-1.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-2.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-4.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
@@ -105,23 +106,23 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-plt img"><img src="report_efa-4.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-plt img"><img src="report_efa-5.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
-<span class="r-plt img"><img src="report_efa-6.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
+<span class="r-plt img"><img src="report_efa-6.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-7.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
 <span class="r-plt img"><img src="report_efa-8.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-9.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
 <span class="r-plt img"><img src="report_efa-10.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-plt img"><img src="report_efa-11.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          type       mpg           cyl      disp        hp      drat       wt     qsec       vs            am      gear     carb</span>
@@ -260,25 +261,26 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"uls"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="report_efa-11.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-12.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-13.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-14.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-15.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-16.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
 <span class="r-plt img"><img src="report_efa-17.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-18.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
 <span class="r-plt img"><img src="report_efa-19.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-20.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
+<span class="r-plt img"><img src="report_efa-21.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-plt img"><img src="report_efa-22.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          type       mpg           cyl      disp        hp      drat       wt     qsec       vs            am      gear     carb</span>
@@ -417,25 +419,26 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"ols"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="report_efa-21.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-22.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-23.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-24.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-25.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-26.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
 <span class="r-plt img"><img src="report_efa-27.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-28.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-29.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
 <span class="r-plt img"><img src="report_efa-30.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-plt img"><img src="report_efa-31.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
+<span class="r-plt img"><img src="report_efa-32.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-plt img"><img src="report_efa-33.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          type       mpg           cyl      disp        hp      drat       wt     qsec       vs            am      gear     carb</span>
@@ -574,25 +577,26 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"wls"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="report_efa-31.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-32.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-33.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-34.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-35.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-36.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-37.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-38.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-39.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-plt img"><img src="report_efa-40.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-37.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-41.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
-<span class="r-plt img"><img src="report_efa-38.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-42.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-39.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-43.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-plt img"><img src="report_efa-40.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-44.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          type      mpg        cyl     disp         hp      drat       wt      qsec       vs        am      gear     carb</span>
@@ -731,25 +735,26 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"gls"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="report_efa-41.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-42.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-43.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-44.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-45.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-46.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-47.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-48.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-49.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-50.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-plt img"><img src="report_efa-51.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-47.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-52.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
-<span class="r-plt img"><img src="report_efa-48.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-53.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-49.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-54.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-plt img"><img src="report_efa-50.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-55.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          type       mpg        cyl      disp         hp      drat       wt       qsec        vs        am     gear     carb</span>
@@ -888,25 +893,26 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"pa"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="report_efa-51.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-52.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-53.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-54.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-55.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-56.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-57.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-58.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-59.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-60.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-61.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-plt img"><img src="report_efa-62.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-57.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-63.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
-<span class="r-plt img"><img src="report_efa-58.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-64.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-59.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-65.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-plt img"><img src="report_efa-60.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-66.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          type       mpg        cyl      disp        hp      drat       wt     qsec       vs         am      gear     carb</span>
@@ -1045,25 +1051,26 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"ml"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="report_efa-61.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-62.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-63.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-64.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-65.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
-<span class="r-plt img"><img src="report_efa-66.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
 <span class="r-plt img"><img src="report_efa-67.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-68.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-69.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-70.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-71.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-72.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-plt img"><img src="report_efa-73.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-69.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-74.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-plt img"><img src="report_efa-75.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
+<span class="r-plt img"><img src="report_efa-76.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-plt img"><img src="report_efa-70.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-77.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          type       mpg       cyl      disp        hp      drat        wt      qsec        vs        am      gear     carb</span>
@@ -1202,25 +1209,26 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"minchi"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="report_efa-71.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-72.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-73.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-74.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-75.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
-<span class="r-plt img"><img src="report_efa-76.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-77.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
 <span class="r-plt img"><img src="report_efa-78.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-79.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-80.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-81.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-82.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-83.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-plt img"><img src="report_efa-84.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-79.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-85.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-plt img"><img src="report_efa-86.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
+<span class="r-plt img"><img src="report_efa-87.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-plt img"><img src="report_efa-80.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-88.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          type       mpg       cyl       disp        hp      drat        wt       qsec        vs        am      gear     carb</span>
@@ -1360,25 +1368,26 @@
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"minrank"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required namespace: Rcsdp</span>
 <span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="report_efa-81.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-82.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-83.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-84.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-85.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
-<span class="r-plt img"><img src="report_efa-86.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-87.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
-<span class="r-plt img"><img src="report_efa-88.png" alt="" width="700" height="433"></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
 <span class="r-plt img"><img src="report_efa-89.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-90.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-91.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-92.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-93.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-94.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-plt img"><img src="report_efa-95.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
+<span class="r-plt img"><img src="report_efa-96.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
+<span class="r-plt img"><img src="report_efa-97.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
+<span class="r-plt img"><img src="report_efa-98.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-plt img"><img src="report_efa-90.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-99.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          type       mpg       cyl      disp         hp      drat         wt     qsec        vs        am      gear     carb</span>
@@ -1517,25 +1526,26 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"old.min"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="report_efa-91.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-92.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-93.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-94.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="report_efa-95.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-100.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-101.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-102.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-103.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-104.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-105.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
-<span class="r-plt img"><img src="report_efa-96.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-106.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-97.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-107.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlation_loadings</span>
-<span class="r-plt img"><img src="report_efa-98.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-108.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $plot_barplot</span>
-<span class="r-plt img"><img src="report_efa-99.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-109.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
-<span class="r-plt img"><img src="report_efa-100.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_efa-110.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $correlations</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                          type       mpg        cyl      disp        hp      drat       wt     qsec       vs         am      gear     carb</span>

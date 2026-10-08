@@ -26,6 +26,8 @@
   : Compute number of dummy comparisons
 - [`compute_frequencies()`](https://sedzinfo.github.io/rwf/reference/compute_frequencies.md)
   : Frequency table for categorical variables
+- [`compute_friedman_test()`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)
+  : Friedman Test with Effect Size
 - [`compute_icc_thurstonian()`](https://sedzinfo.github.io/rwf/reference/compute_icc_thurstonian.md)
   : Compute item characteristic curves for thurstonian models
 - [`compute_info_1pl()`](https://sedzinfo.github.io/rwf/reference/compute_info_1pl.md)
@@ -45,7 +47,7 @@
 - [`compute_moving_average()`](https://sedzinfo.github.io/rwf/reference/compute_moving_average.md)
   : Centered moving average
 - [`compute_one_way_test()`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)
-  : one way test
+  : One-Way ANOVA with Effect Sizes and Power
 - [`compute_posthoc()`](https://sedzinfo.github.io/rwf/reference/compute_posthoc.md)
   : Games Howell Tukey post hoc tests
 - [`compute_power_r()`](https://sedzinfo.github.io/rwf/reference/compute_power_r.md)
@@ -177,7 +179,7 @@
 - [`report_efa()`](https://sedzinfo.github.io/rwf/reference/report_efa.md)
   : Output EFA model
 - [`report_factorial_anova()`](https://sedzinfo.github.io/rwf/reference/report_factorial_anova.md)
-  : Plot means with standard error for every level in a dataframe
+  : Factorial ANOVA report for one or more dependent variables
 - [`report_hlr()`](https://sedzinfo.github.io/rwf/reference/report_hlr.md)
   : Report HLR
 - [`report_irt()`](https://sedzinfo.github.io/rwf/reference/report_irt.md)

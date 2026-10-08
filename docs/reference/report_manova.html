@@ -75,9 +75,9 @@ This assumption is examined by testing whether the population variance-covarianc
 <span class="r-in"><span><span class="va">model_mixed</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/manova.html" class="external-link">manova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">yield</span>, <span class="va">foo</span><span class="op">)</span> <span class="op">~</span> <span class="va">N</span> <span class="op">*</span> <span class="va">P</span> <span class="op">*</span> <span class="va">K</span>, <span class="fu"><a href="https://rdrr.io/r/base/with.html" class="external-link">within</a></span><span class="op">(</span><span class="va">npk</span>, <span class="va">foo</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">24</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">model_between</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/manova.html" class="external-link">manova</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">24</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">24</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">24</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">24</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">report_manova</span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_mixed</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Pillai,Wilks,Hotelling-Lawley,Roy Statistics"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          Group Df  Statistic    approx F num Df den Df                 Pr(&gt;F)             type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  (Intercept)  1   0.993315 1114.376679      2     15 0.00000000000000004879           Pillai</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2            N  1   0.294620    3.132571      2     15 0.07297470277603194944           Pillai</span>
@@ -115,9 +115,9 @@ This assumption is examined by testing whether the population variance-covarianc
 <span class="r-out co"><span class="r-pr">#&gt;</span> 34         P:K  1   0.001199    0.008994      2     15 0.99105138181217222737              Roy</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 35       N:P:K  1   0.192773    1.445795      2     15 0.26657373353215246814              Roy</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 36   Residuals 16         NA          NA     NA     NA                     NA              Roy</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "type Three"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Type III MANOVA Tests: Pillai test statistic</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df test stat approx F num Df den Df              Pr(&gt;F)    </span>
@@ -132,9 +132,9 @@ This assumption is examined by testing whether the population variance-covarianc
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-in"><span><span class="fu">report_manova</span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_between</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Pillai,Wilks,Hotelling-Lawley,Roy Statistics"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                  Group Df Statistic approx F num Df den Df Pr(&gt;F)             type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1          (Intercept)  1   0.01021   0.1083      2     21 0.8978           Pillai</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2  round(rnorm(24), 0)  1   0.02424   0.2608      2     21 0.7729           Pillai</span>
@@ -148,9 +148,9 @@ This assumption is examined by testing whether the population variance-covarianc
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10         (Intercept)  1   0.01032   0.1083      2     21 0.8978              Roy</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 11 round(rnorm(24), 0)  1   0.02484   0.2608      2     21 0.7729              Roy</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12           Residuals 22        NA       NA     NA     NA     NA              Roy</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "type Three"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "####################################################################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Type III MANOVA Tests: Pillai test statistic</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                     Df test stat approx F num Df den Df Pr(&gt;F)</span>

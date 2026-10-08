@@ -63,27 +63,64 @@ result <- plot_oneway_diagnostics(df = df, dv = 11:15, iv = 1:10)
 #> ℹ The deprecated feature was likely used in the ggfortify package.
 #>   Please report the issue at <https://github.com/sinhrks/ggfortify/issues>.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Single DV, multiple IVs
 plot_oneway_diagnostics(df = mtcars, dv = 1, iv = 9:10)
-#> $am_mpg
 
-#> 
-#> $gear_mpg
 
-#> 
 
 # Multiple DVs and IVs
 plot_oneway_diagnostics(df = mtcars, dv = 1:2, iv = 9:10)
-#> $am_mpg
 
-#> 
-#> $gear_mpg
 
-#> 
-#> $am_cyl
 
-#> 
-#> $gear_cyl
-
-#> 
 ```

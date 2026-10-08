@@ -124,10 +124,10 @@ report_oneway(
 #> 
 #> $fisher
 #>          DV     IV            formula                    method ss_effect ss_error ms_effect ms_error   etasq partial.etasq omegasq partial.omegasq cohens.f  power statistic df_effect df_error
-#> 1 bp_before    sex    bp_before ~ sex Assuming homoscedasticity       952    14486       952    122.8 0.06167       0.06167 0.05329         0.05329   0.2564 0.9998     7.755         1      118
-#> 2 bp_before agegrp bp_before ~ agegrp Assuming homoscedasticity      2486    12952      1243    110.7 0.16101       0.16101 0.14562         0.14562   0.4381 1.0000    11.226         2      117
-#> 3  bp_after    sex     bp_after ~ sex Assuming homoscedasticity      2075    21845      2075    185.1 0.08675       0.08675 0.07840         0.07840   0.3082 1.0000    11.209         1      118
-#> 4  bp_after agegrp  bp_after ~ agegrp Assuming homoscedasticity      4313    19607      2156    167.6 0.18031       0.18031 0.16514         0.16514   0.4690 1.0000    12.868         2      117
+#> 1 bp_before    sex    bp_before ~ sex Assuming homoscedasticity       952    14486       952    122.8 0.06167       0.06167 0.05329         0.05329   0.2564 0.7954     7.755         1      118
+#> 2 bp_before agegrp bp_before ~ agegrp Assuming homoscedasticity      2486    12952      1243    110.7 0.16101       0.16101 0.14562         0.14562   0.4381 0.9926    11.226         2      117
+#> 3  bp_after    sex     bp_after ~ sex Assuming homoscedasticity      2075    21845      2075    185.1 0.08675       0.08675 0.07840         0.07840   0.3082 0.9175    11.209         1      118
+#> 4  bp_after agegrp  bp_after ~ agegrp Assuming homoscedasticity      4313    19607      2156    167.6 0.18031       0.18031 0.16514         0.16514   0.4690 0.9972    12.868         2      117
 #>             p bonferroni_p significant
 #> 1 0.006240699       0.0125        TRUE
 #> 2 0.000034667       0.0125        TRUE
@@ -136,9 +136,9 @@ report_oneway(
 #> 
 #> $welch
 #>          DV     IV            formula                      method ss_effect ss_error ms_effect ms_error   etasq partial.etasq omegasq partial.omegasq cohens.f  power statistic df_effect df_error
-#> 1 bp_before    sex    bp_before ~ sex Assuming heteroscedasticity     7.755    117.6     7.755    1.000 0.06189       0.06189 0.05348         0.05329   0.2568 0.9998     7.755         1   117.56
-#> 2 bp_before agegrp bp_before ~ agegrp Assuming heteroscedasticity    48.007    156.0    24.004    2.017 0.23529       0.23529 0.21341         0.15373   0.5547 1.0000    11.899         2    77.35
-#> 3  bp_after    sex     bp_after ~ sex Assuming heteroscedasticity    11.209    110.8    11.209    1.000 0.09188       0.09188 0.08300         0.07840   0.3181 1.0000    11.209         1   110.79
+#> 1 bp_before    sex    bp_before ~ sex Assuming heteroscedasticity     7.755    117.6     7.755    1.000 0.06189       0.06189 0.05348         0.05329   0.2568 0.7969     7.755         1   117.56
+#> 2 bp_before agegrp bp_before ~ agegrp Assuming heteroscedasticity    48.007    156.0    24.004    2.017 0.23529       0.23529 0.21341         0.15373   0.5547 0.9999    11.899         2    77.35
+#> 3  bp_after    sex     bp_after ~ sex Assuming heteroscedasticity    11.209    110.8    11.209    1.000 0.09188       0.09188 0.08300         0.07840   0.3181 0.9324    11.209         1   110.79
 #> 4  bp_after agegrp  bp_after ~ agegrp Assuming heteroscedasticity    58.834    156.3    29.417    2.017 0.27347       0.27347 0.25235         0.18459   0.6135 1.0000    14.583         2    77.48
 #>             p bonferroni_p significant
 #> 1 0.006244127       0.0125        TRUE
@@ -210,12 +210,12 @@ report_oneway(df = mtcars, dv = 2:4, iv = 9:10, file = "anova_oneway_two_factor"
 #> 
 #> $fisher
 #>     DV   IV     formula                    method ss_effect  ss_error ms_effect  ms_error   etasq partial.etasq omegasq partial.omegasq cohens.f  power statistic df_effect df_error           p
-#> 1  cyl   am    cyl ~ am Assuming homoscedasticity     27.00     71.87     27.00     2.396 0.27312       0.27312 0.24300         0.24300   0.6130 0.9899    11.272         1       30 0.002151207
-#> 2  cyl gear  cyl ~ gear Assuming homoscedasticity     52.47     46.40     26.24     1.600 0.53072       0.53072 0.49042         0.49042   1.0635 0.9993    16.398         2       29 0.000017209
-#> 3 disp   am   disp ~ am Assuming homoscedasticity 166450.12 309734.68 166450.12 10324.489 0.34955       0.34955 0.32091         0.32091   0.7331 0.9968    16.122         1       30 0.000366211
-#> 4 disp gear disp ~ gear Assuming homoscedasticity 280220.63 195964.16 140110.32  6757.385 0.58847       0.58847 0.55225         0.55225   1.1958 0.9998    20.734         2       29 0.000002563
-#> 5   hp   am     hp ~ am Assuming homoscedasticity   8619.50 137107.38   8619.50  4570.246 0.05915       0.05915 0.02694         0.02694   0.2507 0.7826     1.886         1       30 0.179830905
-#> 6   hp gear   hp ~ gear Assuming homoscedasticity  64212.94  81513.93  32106.47  2810.825 0.44064       0.44064 0.39445         0.39445   0.8876 0.9970    11.422         2       29 0.000219552
+#> 1  cyl   am    cyl ~ am Assuming homoscedasticity     27.00     71.87     27.00     2.396 0.27312       0.27312 0.24300         0.24300   0.6130 0.9184    11.272         1       30 0.002151207
+#> 2  cyl gear  cyl ~ gear Assuming homoscedasticity     52.47     46.40     26.24     1.600 0.53072       0.53072 0.49042         0.49042   1.0635 0.9996    16.398         2       29 0.000017209
+#> 3 disp   am   disp ~ am Assuming homoscedasticity 166450.12 309734.68 166450.12 10324.489 0.34955       0.34955 0.32091         0.32091   0.7331 0.9799    16.122         1       30 0.000366211
+#> 4 disp gear disp ~ gear Assuming homoscedasticity 280220.63 195964.16 140110.32  6757.385 0.58847       0.58847 0.55225         0.55225   1.1958 1.0000    20.734         2       29 0.000002563
+#> 5   hp   am     hp ~ am Assuming homoscedasticity   8619.50 137107.38   8619.50  4570.246 0.05915       0.05915 0.02694         0.02694   0.2507 0.2791     1.886         1       30 0.179830905
+#> 6   hp gear   hp ~ gear Assuming homoscedasticity  64212.94  81513.93  32106.47  2810.825 0.44064       0.44064 0.39445         0.39445   0.8876 0.9930    11.422         2       29 0.000219552
 #>   bonferroni_p significant
 #> 1     0.008333        TRUE
 #> 2     0.008333        TRUE
@@ -226,12 +226,12 @@ report_oneway(df = mtcars, dv = 2:4, iv = 9:10, file = "anova_oneway_two_factor"
 #> 
 #> $welch
 #>     DV   IV     formula                      method ss_effect ss_error ms_effect ms_error  etasq partial.etasq omegasq partial.omegasq cohens.f  power statistic df_effect df_error         p
-#> 1  cyl   am    cyl ~ am Assuming heteroscedasticity    11.250    25.85    11.250    1.000 0.3032        0.3032  0.2690          0.2426   0.6597 0.9847    11.250         1   25.854 0.0024647
-#> 2  cyl gear  cyl ~ gear Assuming heteroscedasticity    89.718    21.14    44.859    2.135 0.8093        0.8093  0.7562          0.5557   2.0601 0.9807    21.015         2    9.904 0.0002731
-#> 3 disp   am   disp ~ am Assuming heteroscedasticity    17.621    29.26    17.621    1.000 0.3759        0.3759  0.3471          0.3418   0.7760 0.9974    17.621         1   29.258 0.0002300
-#> 4 disp gear disp ~ gear Assuming heteroscedasticity   115.252    20.05    57.626    2.142 0.8518        0.8518  0.8073          0.6181   2.3973 0.9879    26.897         2    9.360 0.0001317
-#> 5   hp   am     hp ~ am Assuming heteroscedasticity     1.603    18.72     1.603    1.000 0.0789        0.0789  0.0283          0.0185   0.2927 0.6461     1.603         1   18.715 0.2209796
-#> 6   hp gear   hp ~ gear Assuming heteroscedasticity    78.701    19.94    39.350    2.143 0.7978        0.7978  0.7383          0.5204   1.9865 0.9680    18.360         2    9.305 0.0005887
+#> 1  cyl   am    cyl ~ am Assuming heteroscedasticity    11.250    25.85    11.250    1.000 0.3032        0.3032  0.2690          0.2426   0.6597 0.9484    11.250         1   25.854 0.0024647
+#> 2  cyl gear  cyl ~ gear Assuming heteroscedasticity    89.718    21.14    44.859    2.135 0.8093        0.8093  0.7562          0.5557   2.0601 1.0000    21.015         2    9.904 0.0002731
+#> 3 disp   am   disp ~ am Assuming heteroscedasticity    17.621    29.26    17.621    1.000 0.3759        0.3759  0.3471          0.3418   0.7760 0.9888    17.621         1   29.258 0.0002300
+#> 4 disp gear disp ~ gear Assuming heteroscedasticity   115.252    20.05    57.626    2.142 0.8518        0.8518  0.8073          0.6181   2.3973 1.0000    26.897         2    9.360 0.0001317
+#> 5   hp   am     hp ~ am Assuming heteroscedasticity     1.603    18.72     1.603    1.000 0.0789        0.0789  0.0283          0.0185   0.2927 0.3488     1.603         1   18.715 0.2209796
+#> 6   hp gear   hp ~ gear Assuming heteroscedasticity    78.701    19.94    39.350    2.143 0.7978        0.7978  0.7383          0.5204   1.9865 1.0000    18.360         2    9.305 0.0005887
 #>   bonferroni_p significant
 #> 1     0.008333        TRUE
 #> 2     0.008333        TRUE
@@ -318,9 +318,9 @@ report_oneway(df = mtcars, dv = 2:4, iv = 9, file = "anova_oneway_one_factor")
 #> 
 #> $fisher
 #>     DV IV   formula                    method ss_effect  ss_error ms_effect  ms_error   etasq partial.etasq omegasq partial.omegasq cohens.f  power statistic df_effect df_error         p bonferroni_p
-#> 1  cyl am  cyl ~ am Assuming homoscedasticity        27     71.87        27     2.396 0.27312       0.27312 0.24300         0.24300   0.6130 0.9899    11.272         1       30 0.0021512      0.01667
-#> 2 disp am disp ~ am Assuming homoscedasticity    166450 309734.68    166450 10324.489 0.34955       0.34955 0.32091         0.32091   0.7331 0.9968    16.122         1       30 0.0003662      0.01667
-#> 3   hp am   hp ~ am Assuming homoscedasticity      8619 137107.38      8619  4570.246 0.05915       0.05915 0.02694         0.02694   0.2507 0.7826     1.886         1       30 0.1798309      0.01667
+#> 1  cyl am  cyl ~ am Assuming homoscedasticity        27     71.87        27     2.396 0.27312       0.27312 0.24300         0.24300   0.6130 0.9184    11.272         1       30 0.0021512      0.01667
+#> 2 disp am disp ~ am Assuming homoscedasticity    166450 309734.68    166450 10324.489 0.34955       0.34955 0.32091         0.32091   0.7331 0.9799    16.122         1       30 0.0003662      0.01667
+#> 3   hp am   hp ~ am Assuming homoscedasticity      8619 137107.38      8619  4570.246 0.05915       0.05915 0.02694         0.02694   0.2507 0.2791     1.886         1       30 0.1798309      0.01667
 #>   significant
 #> 1        TRUE
 #> 2        TRUE
@@ -328,9 +328,9 @@ report_oneway(df = mtcars, dv = 2:4, iv = 9, file = "anova_oneway_one_factor")
 #> 
 #> $welch
 #>     DV IV   formula                      method ss_effect ss_error ms_effect ms_error  etasq partial.etasq omegasq partial.omegasq cohens.f  power statistic df_effect df_error        p bonferroni_p
-#> 1  cyl am  cyl ~ am Assuming heteroscedasticity    11.250    25.85    11.250        1 0.3032        0.3032  0.2690          0.2426   0.6597 0.9847    11.250         1    25.85 0.002465      0.01667
-#> 2 disp am disp ~ am Assuming heteroscedasticity    17.621    29.26    17.621        1 0.3759        0.3759  0.3471          0.3418   0.7760 0.9974    17.621         1    29.26 0.000230      0.01667
-#> 3   hp am   hp ~ am Assuming heteroscedasticity     1.603    18.72     1.603        1 0.0789        0.0789  0.0283          0.0185   0.2927 0.6461     1.603         1    18.72 0.220980      0.01667
+#> 1  cyl am  cyl ~ am Assuming heteroscedasticity    11.250    25.85    11.250        1 0.3032        0.3032  0.2690          0.2426   0.6597 0.9484    11.250         1    25.85 0.002465      0.01667
+#> 2 disp am disp ~ am Assuming heteroscedasticity    17.621    29.26    17.621        1 0.3759        0.3759  0.3471          0.3418   0.7760 0.9888    17.621         1    29.26 0.000230      0.01667
+#> 3   hp am   hp ~ am Assuming heteroscedasticity     1.603    18.72     1.603        1 0.0789        0.0789  0.0283          0.0185   0.2927 0.3488     1.603         1    18.72 0.220980      0.01667
 #>   significant
 #> 1        TRUE
 #> 2        TRUE
@@ -368,6 +368,12 @@ report_oneway(
   plot_means = TRUE, plot_diagnostics = TRUE
 )
 #>   |                                                                                                                                                                                                      |                                                                                                                                                                                              |   0%  |                                                                                                                                                                                                      |===============================================================                                                                                                                               |  33%  |                                                                                                                                                                                                      |===============================================================================================================================                                                               |  67%  |                                                                                                                                                                                                      |==============================================================================================================================================================================================| 100%
+
+
+
+
+
+
 #> $instructions
 #> $instructions$fisher
 #> [1] "Fisher assumes heteroscedasticity"
@@ -390,9 +396,9 @@ report_oneway(
 #> 
 #> $fisher
 #>     DV IV   formula                    method ss_effect  ss_error ms_effect  ms_error   etasq partial.etasq omegasq partial.omegasq cohens.f  power statistic df_effect df_error         p bonferroni_p
-#> 1  cyl am  cyl ~ am Assuming homoscedasticity        27     71.87        27     2.396 0.27312       0.27312 0.24300         0.24300   0.6130 0.9899    11.272         1       30 0.0021512      0.01667
-#> 2 disp am disp ~ am Assuming homoscedasticity    166450 309734.68    166450 10324.489 0.34955       0.34955 0.32091         0.32091   0.7331 0.9968    16.122         1       30 0.0003662      0.01667
-#> 3   hp am   hp ~ am Assuming homoscedasticity      8619 137107.38      8619  4570.246 0.05915       0.05915 0.02694         0.02694   0.2507 0.7826     1.886         1       30 0.1798309      0.01667
+#> 1  cyl am  cyl ~ am Assuming homoscedasticity        27     71.87        27     2.396 0.27312       0.27312 0.24300         0.24300   0.6130 0.9184    11.272         1       30 0.0021512      0.01667
+#> 2 disp am disp ~ am Assuming homoscedasticity    166450 309734.68    166450 10324.489 0.34955       0.34955 0.32091         0.32091   0.7331 0.9799    16.122         1       30 0.0003662      0.01667
+#> 3   hp am   hp ~ am Assuming homoscedasticity      8619 137107.38      8619  4570.246 0.05915       0.05915 0.02694         0.02694   0.2507 0.2791     1.886         1       30 0.1798309      0.01667
 #>   significant
 #> 1        TRUE
 #> 2        TRUE
@@ -400,9 +406,9 @@ report_oneway(
 #> 
 #> $welch
 #>     DV IV   formula                      method ss_effect ss_error ms_effect ms_error  etasq partial.etasq omegasq partial.omegasq cohens.f  power statistic df_effect df_error        p bonferroni_p
-#> 1  cyl am  cyl ~ am Assuming heteroscedasticity    11.250    25.85    11.250        1 0.3032        0.3032  0.2690          0.2426   0.6597 0.9847    11.250         1    25.85 0.002465      0.01667
-#> 2 disp am disp ~ am Assuming heteroscedasticity    17.621    29.26    17.621        1 0.3759        0.3759  0.3471          0.3418   0.7760 0.9974    17.621         1    29.26 0.000230      0.01667
-#> 3   hp am   hp ~ am Assuming heteroscedasticity     1.603    18.72     1.603        1 0.0789        0.0789  0.0283          0.0185   0.2927 0.6461     1.603         1    18.72 0.220980      0.01667
+#> 1  cyl am  cyl ~ am Assuming heteroscedasticity    11.250    25.85    11.250        1 0.3032        0.3032  0.2690          0.2426   0.6597 0.9484    11.250         1    25.85 0.002465      0.01667
+#> 2 disp am disp ~ am Assuming heteroscedasticity    17.621    29.26    17.621        1 0.3759        0.3759  0.3471          0.3418   0.7760 0.9888    17.621         1    29.26 0.000230      0.01667
+#> 3   hp am   hp ~ am Assuming heteroscedasticity     1.603    18.72     1.603        1 0.0789        0.0789  0.0283          0.0185   0.2927 0.3488     1.603         1    18.72 0.220980      0.01667
 #>   significant
 #> 1        TRUE
 #> 2        TRUE

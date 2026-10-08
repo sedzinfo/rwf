@@ -35,6 +35,6 @@ df5 <- generate_missing(rnorm(10), missing = 5)
 df <- data.frame(df1, df2, df3, df4, df5)
 row.names(df) <- paste0("A", row.names(df))
 replace_na_with_previous(df1)
-#>  [1] -1.7964 -1.7964 -0.9048 -0.9048 -0.9048 -0.9048 -0.9048  0.7005 -0.7345  0.3397
+#>  [1] -0.3821 -0.3821 -0.3821 -0.3821  1.6417  1.2351  1.2351  1.2351  0.6362  0.6985
 df[] <- lapply(df, replace_na_with_previous)
 ```

@@ -63,6 +63,7 @@ report_efa(model=model,df=mtcars,file="efa")
 
 
 
+
 #> $correlation_loadings
 #> 
 #> $plot_barplot
@@ -232,6 +233,7 @@ report_efa(model=model,df=mtcars)
 
 
 
+
 #> $correlation_loadings
 
 #> 
@@ -384,6 +386,7 @@ report_efa(model=model,df=mtcars)
 #> 
 model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="ols",oblique.scores=TRUE)
 report_efa(model=model,df=mtcars)
+
 
 
 
@@ -546,6 +549,7 @@ report_efa(model=model,df=mtcars)
 
 
 
+
 #> $correlation_loadings
 
 #> 
@@ -698,6 +702,7 @@ report_efa(model=model,df=mtcars)
 #> 
 model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="gls",oblique.scores=TRUE)
 report_efa(model=model,df=mtcars)
+
 
 
 
@@ -860,6 +865,7 @@ report_efa(model=model,df=mtcars)
 
 
 
+
 #> $correlation_loadings
 
 #> 
@@ -1017,6 +1023,7 @@ report_efa(model=model,df=mtcars)
 
 
 
+
 #> $correlation_loadings
 
 #> 
@@ -1169,6 +1176,7 @@ report_efa(model=model,df=mtcars)
 #> 
 model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="minchi",oblique.scores=TRUE)
 report_efa(model=model,df=mtcars)
+
 
 
 
@@ -1332,6 +1340,7 @@ report_efa(model=model,df=mtcars)
 
 
 
+
 #> $correlation_loadings
 
 #> 
@@ -1484,6 +1493,7 @@ report_efa(model=model,df=mtcars)
 #> 
 model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="old.min",oblique.scores=TRUE)
 report_efa(model=model,df=mtcars)
+
 
 
 

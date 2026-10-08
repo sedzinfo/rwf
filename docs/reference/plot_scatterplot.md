@@ -84,8 +84,6 @@ pattern `"x_y"`.
 result <- plot_scatterplot(df = mtcars, title = "", coord_equal = TRUE, base_size = 10)
 plot_multiplot(plotlist = result[1:12], cols = 4)
 
-#> [[1]]
-#> 
 
 # Two-column data frame: first column = predictor, second = outcome
 plot_scatterplot(df = mtcars[, 1:2], base_size = 10, coord_equal = TRUE, all_orders = FALSE)

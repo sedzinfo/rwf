@@ -54,7 +54,13 @@ and quantifies how large that group effect is.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compute_kruskal_wallis_test</span><span class="op">(</span><span class="va">formula</span>, <span class="va">df</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">compute_kruskal_wallis_test</span><span class="op">(</span></span>
+<span>  <span class="va">formula</span>,</span>
+<span>  <span class="va">df</span>,</span>
+<span>  ci <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  nboot <span class="op">=</span> <span class="fl">1000</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -68,22 +74,60 @@ and quantifies how large that group effect is.</p>
 <dt id="arg-df">df<a class="anchor" aria-label="anchor" href="#arg-df"></a></dt>
 <dd><p>A data frame containing the variables in <code>formula</code>.</p></dd>
 
+
+<dt id="arg-ci">ci<a class="anchor" aria-label="anchor" href="#arg-ci"></a></dt>
+<dd><p>If TRUE, adds percentile bootstrap confidence intervals for
+<code>etasq</code> and <code>epsilonsq</code>.</p></dd>
+
+
+<dt id="arg-conf-level">conf.level<a class="anchor" aria-label="anchor" href="#arg-conf-level"></a></dt>
+<dd><p>Confidence level of the intervals.</p></dd>
+
+
+<dt id="arg-nboot">nboot<a class="anchor" aria-label="anchor" href="#arg-nboot"></a></dt>
+<dd><p>Number of bootstrap resamples.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A one-row data frame with:</p><ul><li><p><code>formula</code>: model formula used</p></li>
 <li><p><code>method</code>: test name</p></li>
 <li><p><code>etasq</code>: Kruskal-Wallis eta-squared, \((H-k+1)/(n-k)\)</p></li>
+<li><p><code>etasq_lower</code>, <code>etasq_upper</code>: confidence interval of <code>etasq</code> (only if <code>ci = TRUE</code>)</p></li>
 <li><p><code>epsilonsq</code>: epsilon-squared, \(H/(n-1)\)</p></li>
+<li><p><code>epsilonsq_lower</code>, <code>epsilonsq_upper</code>: confidence interval of <code>epsilonsq</code> (only if <code>ci = TRUE</code>)</p></li>
 <li><p><code>H</code>: Kruskal-Wallis chi-squared statistic</p></li>
 <li><p><code>df</code>: degrees of freedom (\(k-1\))</p></li>
 <li><p><code>p</code>: p-value</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>etasq</code> and <code>epsilonsq</code> are both in [0, 1] in typical use.
+    <p><code>epsilonsq</code> is in [0, 1]. <code>etasq</code> is at most 1 and is negative
+when \(H &lt; k-1\), that is when the groups differ less than expected by chance.
 Multiplying by 100 gives an approximate percentage-style interpretation
 of explained rank variance.</p>
+<p>Rules of thumb for <code>etasq</code> and <code>epsilonsq</code>. Small, medium and large
+are the \(\eta^2\) benchmarks of Cohen (1988); tiny, very large and huge
+convert the Cohen's d benchmarks of Sawilowsky (2009) with \(\eta^2=d^2/(d^2+4)\):</p><ul><li><p>tiny: &lt; 0.01 (d &lt; 0.2)</p></li>
+<li><p>small: 0.01 to &lt; 0.06 (d = 0.2)</p></li>
+<li><p>medium: 0.06 to &lt; 0.14 (d = 0.5)</p></li>
+<li><p>large: 0.14 to &lt; 0.26 (d = 0.8)</p></li>
+<li><p>very large: 0.26 to &lt; 0.50 (d = 1.2)</p></li>
+<li><p>huge: &gt;= 0.50 (d = 2.0)</p></li>
+</ul><p>These are rough guides; what counts as a meaningful effect depends on the field.
+<code>epsilonsq</code> is biased upwards by about \((k-1)/(n-1)\) in small samples.</p>
+<p>Rows with a missing value in the outcome or the grouping variable are
+removed before the test, as in <code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">stats::kruskal.test</a></code>.</p>
+<p>The confidence intervals resample rows with replacement <code>nboot</code> times,
+recompute both effect sizes in each resample and take the
+\((1-conf.level)/2\) and \(1-(1-conf.level)/2\) quantiles. Use
+<code>set.seed</code> for reproducible intervals.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.</p>
+<p>Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. <a href="https://doi.org/10.22237/jmasm/1257035100" class="external-link">doi:10.22237/jmasm/1257035100</a></p>
+<p>Tomczak, M., &amp; Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19-25.</p>
     </div>
 
     <div class="section level2">
@@ -107,15 +151,19 @@ of explained rank variance.</p>
 <span class="r-in"><span>  digits <span class="op">=</span> <span class="fl">3</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   epsilon.squared lower.ci upper.ci</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1           0.164   0.0665    0.305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           0.164   0.0668    0.304</span>
 <span class="r-in"><span><span class="fu">rstatix</span><span class="fu">::</span><span class="fu"><a href="https://rpkgs.datanovia.com/rstatix/reference/kruskal_effsize.html" class="external-link">kruskal_effsize</a></span><span class="op">(</span><span class="va">df_blood_pressure</span>, <span class="va">form</span>, ci <span class="op">=</span> <span class="cn">TRUE</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, ci.type <span class="op">=</span> <span class="st">"perc"</span>, nboot <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   .y.           n effsize conf.low conf.high method  magnitude</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">*</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;ord&gt;</span>    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> bp_before   120   0.150     0.06       0.3 eta2[H] large    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> bp_before   120   0.150     0.04      0.33 eta2[H] large    </span>
 <span class="r-in"><span><span class="fu">compute_kruskal_wallis_test</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">form</span>, df <span class="op">=</span> <span class="va">df_blood_pressure</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              formula                       method     etasq epsilonsq        H df            p</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 bp_before ~ agegrp Kruskal-Wallis rank sum test 0.1501232 0.1644069 19.56442  2 5.644699e-05</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">compute_kruskal_wallis_test</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">form</span>, df <span class="op">=</span> <span class="va">df_blood_pressure</span>, ci <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              formula                       method     etasq etasq_lower etasq_upper epsilonsq epsilonsq_lower epsilonsq_upper        H df            p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 bp_before ~ agegrp Kruskal-Wallis rank sum test 0.1501232  0.05161268   0.2963859 0.1644069      0.06755196       0.3082114 19.56442  2 5.644699e-05</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
