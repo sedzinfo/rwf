@@ -1,0 +1,323 @@
+---
+title: "GLM COMPUTE POSTHOC"
+author: ""
+output:
+  html_document:
+    css: styles.css
+    theme: flatly
+    highlight: tango
+    toc: true
+    toc_float: true
+    code_folding: show
+    self_contained: true
+vignette: >
+  %\VignetteIndexEntry{GLM COMPUTE POSTHOC}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
+source(paste0(directory, "R/code_options.R"))
+source(paste0(directory, "R/code_rwf.R"))
+load(paste0(directory, "data/df_blood_pressure.rda"))
+```
+
+## Description
+
+This shows the output of `compute_posthoc` from the package rwf, which compares every pair of group means after a one-way ANOVA with two post hoc tests: the Tukey-Kramer test (Tukey, 1953; Kramer, 1956), which assumes equal variances, and the Games-Howell test (Games & Howell, 1976), which does not. For each pair of groups the function returns the t statistic, the degrees of freedom and a p value adjusted for all the pairwise comparisons. Each section gives the formulas the function uses, computes them by hand and checks the results against `stats`, `emmeans` and `rstatix`.
+
+`compute_posthoc` is adapted from `posthocTGH()` in the `userfriendlyscience` package by Gjalt-Jorn Peters (Open University of the Netherlands) and Jeff Baggett (University of Wisconsin - La Crosse), which was in turn based on `games_howell.R`, a script hosted on the course page of Robert Cribbie (York University) that is no longer available.
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_ANOVA.R)
+
+## Notation
+
+There are $k$ independent groups and $N$ observations. Group $j$ has $n_j$ observations, mean $\bar{y}_j$ and sample variance $s_j^2$. There are $m=k(k-1)/2$ pairs of groups. $MS_{\text{error}}=\sum_{j=1}^{k}(n_j-1)s_j^2/(N-k)$ is the pooled error variance of the one-way ANOVA. $q_{k,df}$ is the studentized range distribution for $k$ means and $df$ degrees of freedom.
+
+## Why post hoc tests
+
+A significant one-way ANOVA says that at least one group mean differs from the others, not which ones. The obvious next step, a t test for every pair, inflates the chance of a false positive. Each test has a 5% chance of a Type I error, and with $m$ tests the chance that **at least one** of them is a false positive, the family-wise error rate, is up to
+
+$$\text{FWER}=1-(1-\alpha)^m$$
+
+```{r fwer}
+k <- 2:8
+data.frame(groups = k, pairs = k * (k - 1) / 2, fwer = 1 - (1 - 0.05)^(k * (k - 1) / 2))
+```
+
+The formula assumes independent tests. Pairwise comparisons share groups, so the real rate is somewhat lower, but it still grows quickly ([simulation below](#family-wise-error-rate)). Post hoc tests keep the family-wise error rate at 5% across all the pairs.
+
+## The tests
+
+### The studentized range
+
+If $k$ group means come from the same population, the studentized range compares the largest difference between them with the standard error of a mean:
+
+$$q=\frac{\bar{y}_{\max}-\bar{y}_{\min}}{\sqrt{MS_{\text{error}}/n}}$$
+
+and follows the distribution $q_{k,df}$. Tukey's idea was to judge every pair against this distribution of the **largest** difference among $k$ means. If even the largest difference expected by chance is rarely as large as the observed one, the error rate holds for all the pairs together. For a pair, $q=\sqrt{2}\,t$, so
+
+$$p=P\left(q_{k,df}\ge\sqrt{2}\,t_{ij}\right)$$
+
+This p value already accounts for the number of groups. Do not adjust it again.
+
+### Tukey-Kramer
+
+The Tukey-Kramer test uses the pooled error variance of all $k$ groups and the error degrees of freedom of the ANOVA. Kramer's (1956) extension to groups of different sizes uses $1/n_i+1/n_j$:
+
+$$t_{ij}=\frac{\left|\bar{y}_i-\bar{y}_j\right|}{\sqrt{MS_{\text{error}}\left(\frac{1}{n_i}+\frac{1}{n_j}\right)}},\qquad df=N-k$$
+
+### Games-Howell
+
+The Games-Howell test uses only the variances of the two groups being compared, and the Welch-Satterthwaite degrees of freedom of the pair:
+
+$$t_{ij}=\frac{\left|\bar{y}_i-\bar{y}_j\right|}{\sqrt{\frac{s_i^2}{n_i}+\frac{s_j^2}{n_j}}},\qquad df_{ij}=\frac{\left(\frac{s_i^2}{n_i}+\frac{s_j^2}{n_j}\right)^2}{\frac{\left(s_i^2/n_i\right)^2}{n_i-1}+\frac{\left(s_j^2/n_j\right)^2}{n_j-1}}$$
+
+$t_{ij}$ and $df_{ij}$ are those of a Welch t test of the two groups. Only the p value differs, because it comes from $q_{k,df_{ij}}$ rather than from the t distribution.
+
+## When to use it and assumptions
+
+### Which test
+
+- **Tukey-Kramer** after Fisher's F test (`compute_one_way_test(var.equal = TRUE)`), when the group variances are similar. With groups of different sizes it is slightly conservative.
+- **Games-Howell** after Welch's F test (`compute_one_way_test(var.equal = FALSE)`), when the variances differ, and especially when the groups also differ in size. It can be somewhat liberal when the groups are very small.
+
+When in doubt, Games-Howell is the safer choice: with equal variances the two tests give similar results, and with unequal variances Tukey's error rate can be far from 5% ([simulation below](#unequal-variances)).
+
+Tukey's procedure controls the family-wise error rate on its own, so it does not need a significant ANOVA first. In practice it is usually reported after one.
+
+Use a different procedure when:
+
+- **Only some comparisons are of interest**, such as each treatment against one control. Dunnett's test, or a Bonferroni or Holm adjustment for just those comparisons, has more power.
+- **The outcome is ordinal or clearly not normal with small groups.** Use the Kruskal-Wallis test (`compute_kruskal_wallis_test`) followed by Dunn's test.
+- **The same participants are measured more than once.** Use paired comparisons after a repeated measures ANOVA, or Wilcoxon signed-rank tests after the Friedman test (`compute_friedman_test`).
+
+### Assumptions
+
+1. **Independent observations.** Each observation belongs to one group only and does not depend on any other observation.
+2. **Normally distributed outcome within each group**, or groups large enough for the means to be close to normal.
+3. **Equal variances (Tukey-Kramer only).** Games-Howell does not make this assumption.
+
+## Data
+
+`df_blood_pressure` records the blood pressure of 120 patients in three age groups of 40, with similar variances. `chickwts` records the weight of 71 chicks fed six different feeds, with group sizes from 10 to 14 and different variances, giving 15 pairs.
+
+```{r data}
+data.frame(n = tapply(df_blood_pressure$bp_before, df_blood_pressure$agegrp, length),
+           mean = tapply(df_blood_pressure$bp_before, df_blood_pressure$agegrp, mean),
+           sd = tapply(df_blood_pressure$bp_before, df_blood_pressure$agegrp, sd))
+data.frame(n = tapply(chickwts$weight, chickwts$feed, length),
+           mean = tapply(chickwts$weight, chickwts$feed, mean),
+           sd = tapply(chickwts$weight, chickwts$feed, sd))
+```
+
+## compute_posthoc
+
+```{r compute_posthoc}
+result <- compute_posthoc(y = df_blood_pressure$bp_before, x = df_blood_pressure$agegrp)
+result$output
+```
+
+The function returns a list. `input` holds the `x` and `y` supplied, and `output` holds two matrices, `tukey` and `games.howell`, each with one row per pair of groups, named `group1:group2` in the order of the factor levels:
+
+| Column | Tukey-Kramer | Games-Howell |
+|---|---|---|
+| `t` | $\lvert\bar{y}_i-\bar{y}_j\rvert/\sqrt{MS_{\text{error}}(1/n_i+1/n_j)}$ | $\lvert\bar{y}_i-\bar{y}_j\rvert/\sqrt{s_i^2/n_i+s_j^2/n_j}$ |
+| `df` | $N-k$ | $df_{ij}$, Welch-Satterthwaite |
+| `p` | $P(q_{k,N-k}\ge\sqrt{2}\,t)$ | $P(q_{k,df_{ij}}\ge\sqrt{2}\,t)$ |
+
+`t` is an absolute value, so the direction of a difference comes from the group means. The function does not return the mean differences or their confidence intervals; `stats::TukeyHSD` gives them for the Tukey-Kramer test:
+
+```{r mean_differences}
+stats::TukeyHSD(stats::aov(bp_before ~ agegrp, data = df_blood_pressure))
+```
+
+With six groups and unequal variances, the two tests disagree more. Games-Howell gives larger p values for every pair that includes casein or meatmeal, the two feeds with the largest standard deviations, because their own variances are larger than the pooled one. At the 0.05 level both tests find the same 8 pairs significant here:
+
+```{r compute_posthoc_chickwts}
+chick <- compute_posthoc(y = chickwts$weight, x = chickwts$feed)$output
+data.frame(t_tukey = chick$tukey[, "t"], p_tukey = chick$tukey[, "p"],
+           t_games_howell = chick$games.howell[, "t"], df_games_howell = chick$games.howell[, "df"],
+           p_games_howell = chick$games.howell[, "p"])
+```
+
+## Step by step
+
+Every quantity from the formulas above, computed by hand:
+
+```{r step_descriptives}
+y <- df_blood_pressure$bp_before
+x <- factor(df_blood_pressure$agegrp)
+k <- nlevels(x)
+n_j <- tapply(y, x, length)
+mean_j <- tapply(y, x, mean)
+var_j <- tapply(y, x, var)
+N <- sum(n_j)
+ms_error <- sum((n_j - 1) * var_j) / (N - k)
+pairs <- utils::combn(k, 2)
+pair_names <- utils::combn(levels(x), 2, paste, collapse = ":")
+```
+
+Tukey-Kramer:
+
+```{r step_tukey}
+t_tukey <- apply(pairs, 2, function(p) abs(diff(mean_j[p])) / sqrt(ms_error * sum(1 / n_j[p])))
+tukey <- cbind(t = t_tukey,
+               df = N - k,
+               p = ptukey(sqrt(2) * t_tukey, nmeans = k, df = N - k, lower.tail = FALSE))
+rownames(tukey) <- pair_names
+tukey
+all.equal(tukey, result$output$tukey)
+```
+
+Games-Howell:
+
+```{r step_games_howell}
+se2 <- var_j / n_j
+t_gh <- apply(pairs, 2, function(p) abs(diff(mean_j[p])) / sqrt(sum(se2[p])))
+df_gh <- apply(pairs, 2, function(p) sum(se2[p])^2 / sum(se2[p]^2 / (n_j[p] - 1)))
+games_howell <- cbind(t = t_gh,
+                      df = df_gh,
+                      p = ptukey(sqrt(2) * t_gh, nmeans = k, df = df_gh, lower.tail = FALSE))
+rownames(games_howell) <- pair_names
+games_howell
+all.equal(games_howell, result$output$games.howell)
+```
+
+## Checks against other packages
+
+### stats, emmeans and rstatix
+
+`stats::TukeyHSD`, `emmeans` with `adjust = "tukey"` and `rstatix::tukey_hsd` give the Tukey-Kramer p values, and `emmeans` also gives the t statistics and degrees of freedom. `rstatix::games_howell_test` gives the Games-Howell p values:
+
+```{r check_packages}
+model <- stats::aov(bp_before ~ agegrp, data = df_blood_pressure)
+stats::TukeyHSD(model)
+summary(graphics::pairs(emmeans::emmeans(model, ~agegrp), adjust = "tukey"))
+rstatix::tukey_hsd(df_blood_pressure, bp_before ~ agegrp)
+rstatix::games_howell_test(df_blood_pressure, bp_before ~ agegrp)
+```
+
+The Games-Howell t statistic and degrees of freedom of each pair are those of a Welch t test of the two groups:
+
+```{r check_welch}
+t.test(bp_before ~ agegrp, data = df_blood_pressure[df_blood_pressure$agegrp %in% c("30-45", "60+"), ], var.equal = FALSE)
+result$output$games.howell["30-45:60+", ]
+```
+
+### A test function
+
+`check_posthoc` puts each rwf value next to the value from the other packages and returns the differences, one row per pair. All the packages list the pairs in the same order as rwf.
+
+```{r check_function}
+check_posthoc <- function(y, x) {
+  x <- factor(x)
+  rwf <- compute_posthoc(y = y, x = x)$output
+  pairs <- utils::combn(levels(x), 2)
+  model <- stats::aov(y ~ x)
+  tukey_hsd <- stats::TukeyHSD(model)$x
+  emmeans_tukey <- as.data.frame(summary(graphics::pairs(emmeans::emmeans(model, ~x), adjust = "tukey")))
+  df <- data.frame(y = y, x = x)
+  rstatix_tukey <- as.data.frame(rstatix::tukey_hsd(df, y ~ x))
+  rstatix_games_howell <- as.data.frame(rstatix::games_howell_test(df, y ~ x))
+  welch <- apply(pairs, 2, function(p) {
+    welch_t <- stats::t.test(y[x == p[1]], y[x == p[2]], var.equal = FALSE)
+    c(abs(unname(welch_t$statistic)), unname(welch_t$parameter))
+  })
+  data.frame(pair = rownames(rwf$tukey),
+             tukey_t_emmeans = rwf$tukey[, "t"] - abs(emmeans_tukey$t.ratio),
+             tukey_df_emmeans = rwf$tukey[, "df"] - emmeans_tukey$df,
+             tukey_p_TukeyHSD = rwf$tukey[, "p"] - tukey_hsd[, "p adj"],
+             tukey_p_emmeans = rwf$tukey[, "p"] - emmeans_tukey$p.value,
+             tukey_p_rstatix = rwf$tukey[, "p"] - rstatix_tukey$p.adj,
+             games_howell_t_welch = rwf$games.howell[, "t"] - welch[1, ],
+             games_howell_df_welch = rwf$games.howell[, "df"] - welch[2, ],
+             games_howell_p_rstatix = rwf$games.howell[, "p"] - rstatix_games_howell$p.adj,
+             row.names = NULL)
+}
+check_posthoc(y = df_blood_pressure$bp_before, x = df_blood_pressure$agegrp)
+```
+
+The same check on seven datasets with different numbers of groups, equal and unequal group sizes, and equal and unequal variances. `max_abs_difference` is the largest absolute difference across all the comparisons and pairs for that dataset:
+
+```{r check_datasets}
+datasets <- list(
+  list(name = "bp_before ~ agegrp", y = df_blood_pressure$bp_before, x = df_blood_pressure$agegrp),
+  list(name = "bp_after ~ agegrp", y = df_blood_pressure$bp_after, x = df_blood_pressure$agegrp),
+  list(name = "weight ~ feed", y = chickwts$weight, x = chickwts$feed),
+  list(name = "count ~ spray", y = InsectSprays$count, x = InsectSprays$spray),
+  list(name = "weight ~ group", y = PlantGrowth$weight, x = PlantGrowth$group),
+  list(name = "Sepal.Length ~ Species", y = iris$Sepal.Length, x = iris$Species),
+  list(name = "qsec ~ cyl", y = mtcars$qsec, x = mtcars$cyl)
+)
+do.call(rbind, lapply(datasets, function(d) {
+  check <- check_posthoc(y = d$y, x = d$x)
+  data.frame(formula = d$name,
+             N = length(d$y),
+             k = length(unique(d$x)),
+             pairs = nrow(check),
+             max_abs_difference = max(abs(as.matrix(check[, -1]))))
+}))
+```
+
+## Family-wise error rate
+
+Five groups of 10 come from the **same** population, so every significant pair is a false positive. The table shows how often at least one of the 10 pairs is significant at 0.05 with unadjusted t tests (`stats::pairwise.t.test` with a pooled standard deviation and `p.adjust.method = "none"`), Tukey-Kramer and Games-Howell:
+
+```{r simulation_fwer}
+set.seed(1)
+any_significant <- t(replicate(2000, {
+  sim <- data.frame(group = rep(letters[1:5], each = 10), score = rnorm(50))
+  unadjusted <- stats::pairwise.t.test(sim$score, sim$group, p.adjust.method = "none")$p.value
+  posthoc <- compute_posthoc(y = sim$score, x = sim$group)$output
+  c(unadjusted = any(unadjusted < 0.05, na.rm = TRUE),
+    tukey = any(posthoc$tukey[, "p"] < 0.05),
+    games_howell = any(posthoc$games.howell[, "p"] < 0.05))
+}))
+colMeans(any_significant)
+```
+
+Unadjusted t tests find a "significant" difference in about a quarter of the studies where none exists. Both post hoc tests stay close to 5%.
+
+## Unequal variances
+
+Three groups have the same population mean, the smallest group has the largest standard deviation, and the largest group the smallest:
+
+```{r simulation_unequal_variances}
+set.seed(1)
+any_significant <- t(replicate(2000, {
+  sim <- data.frame(group = rep(c("a", "b", "c"), times = c(10, 20, 40)),
+                    score = rnorm(70, mean = 0, sd = rep(c(4, 2, 1), times = c(10, 20, 40))))
+  posthoc <- compute_posthoc(y = sim$score, x = sim$group)$output
+  c(tukey = any(posthoc$tukey[, "p"] < 0.05),
+    games_howell = any(posthoc$games.howell[, "p"] < 0.05))
+}))
+colMeans(any_significant)
+```
+
+Tukey-Kramer pools the variances, so it underestimates the standard error of the pairs that involve the small, variable group and rejects far more often than 5%. Games-Howell stays close to 5%.
+
+## Missing values
+
+`compute_posthoc` does not remove missing values: a missing value in `y` makes every result `NA`. Remove incomplete cases before the call, as `report_oneway` does:
+
+```{r missing_values}
+y_missing <- df_blood_pressure$bp_before
+y_missing[1] <- NA
+compute_posthoc(y = y_missing, x = df_blood_pressure$agegrp)$output$tukey
+complete <- stats::complete.cases(y_missing, df_blood_pressure$agegrp)
+compute_posthoc(y = y_missing[complete], x = df_blood_pressure$agegrp[complete])$output
+```
+
+## References
+
+Games, P. A., & Howell, J. F. (1976). Pairwise multiple comparison procedures with unequal n's and/or variances: A Monte Carlo study. *Journal of Educational Statistics, 1*(2), 113–125. https://doi.org/10.3102/10769986001002113
+
+Kramer, C. Y. (1956). Extension of multiple range tests to group means with unequal numbers of replications. *Biometrics, 12*(3), 307–310. https://doi.org/10.2307/3001469
+
+Peters, G.-J. Y. *userfriendlyscience: Quantitative analysis made accessible* (R package version 0.7.2). https://github.com/Matherion/userfriendlyscience
+
+Tukey, J. W. (1953). *The problem of multiple comparisons*. Unpublished manuscript, Princeton University.
