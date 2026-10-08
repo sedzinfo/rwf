@@ -64,6 +64,14 @@ and quantifies how large that group effect is.</p>
     </div>
 
     <div class="section level2">
+    <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
+    <p>The computation of <code>H</code>, including the correction for ties, is
+adapted from <code><a href="https://rdrr.io/r/stats/kruskal.test.html" class="external-link">stats::kruskal.test</a></code> (R Core Team, R package <code>stats</code>,
+licensed GPL-2 | GPL-3). <code>etasq</code> and <code>epsilonsq</code> use the same
+formulas as <code><a href="https://rpkgs.datanovia.com/rstatix/reference/kruskal_effsize.html" class="external-link">rstatix::kruskal_effsize</a></code> and
+<code><a href="https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html" class="external-link">effectsize::rank_epsilon_squared</a></code>.</p>
+    </div>
+    <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
@@ -125,7 +133,10 @@ recompute both effect sizes in each resample and take the
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.</p>
+    <p>Ben-Shachar, M. S., Lüdecke, D., &amp; Makowski, D. (2020). effectsize: Estimation of effect size indices and standardized parameters. Journal of Open Source Software, 5(56), 2815. <a href="https://doi.org/10.21105/joss.02815" class="external-link">doi:10.21105/joss.02815</a></p>
+<p>Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.</p>
+<p>Kassambara, A. (2026). rstatix: Pipe-friendly framework for basic statistical tests (R package version 1.1.0). <a href="https://doi.org/10.32614/CRAN.package.rstatix" class="external-link">doi:10.32614/CRAN.package.rstatix</a></p>
+<p>R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. <a href="https://doi.org/10.32614/R.manuals" class="external-link">doi:10.32614/R.manuals</a></p>
 <p>Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. <a href="https://doi.org/10.22237/jmasm/1257035100" class="external-link">doi:10.22237/jmasm/1257035100</a></p>
 <p>Tomczak, M., &amp; Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19-25.</p>
     </div>

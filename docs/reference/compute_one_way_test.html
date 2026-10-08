@@ -73,6 +73,13 @@ how much of the variance in the outcome the groups explain.</p>
     </div>
 
     <div class="section level2">
+    <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
+    <p>The group statistics and the Welch test (the weights, the Welch F
+statistic and its degrees of freedom) are adapted from <code><a href="https://rdrr.io/r/stats/oneway.test.html" class="external-link">stats::oneway.test</a></code>
+(R Core Team, R package <code>stats</code>, licensed GPL-2 | GPL-3). The sums of
+squares, effect sizes and power are added in rwf.</p>
+    </div>
+    <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
@@ -98,7 +105,7 @@ uses Welch's F test.</p></dd>
 <li><p><code>etasq</code>: eta-squared, \(SS_{effect}/SS_{total}\)</p></li>
 <li><p><code>partial.etasq</code>: partial eta-squared, \(SS_{effect}/(SS_{effect}+SS_{error})\)</p></li>
 <li><p><code>omegasq</code>: omega-squared, \((SS_{effect}-df_{effect} MS_{error})/(SS_{total}+MS_{error})\)</p></li>
-<li><p><code>partial.omegasq</code>: partial omega-squared, \(df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(N-df_{effect}) MS_{error})\)</p></li>
+<li><p><code>partial.omegasq</code>: partial omega-squared, \(df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(df_{error}+1) MS_{error})\)</p></li>
 <li><p><code>cohens.f</code>: Cohen's f, \(\sqrt{\eta^2/(1-\eta^2)}\)</p></li>
 <li><p><code>power</code>: observed power of the F test at \(\alpha = 0.05\)</p></li>
 <li><p><code>statistic</code>: F statistic, \(MS_{effect}/MS_{error}\)</p></li>
@@ -108,8 +115,8 @@ uses Welch's F test.</p></dd>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>In a one-way design <code>partial.etasq</code> equals <code>etasq</code>, and with equal
-variances <code>partial.omegasq</code> equals <code>omegasq</code>. <code>etasq</code> and
+    <p>In a one-way design <code>partial.etasq</code> equals <code>etasq</code> and
+<code>partial.omegasq</code> equals <code>omegasq</code>. <code>etasq</code> and
 <code>partial.etasq</code> are in [0, 1] and are biased upwards in small samples, by
 about \((k-1)/(N-1)\) when there is no effect. <code>omegasq</code> and
 <code>partial.omegasq</code> remove most of that bias and are negative when \(F &lt; 1\).
@@ -133,12 +140,10 @@ plan a study, for example with <code><a href="https://rdrr.io/pkg/pwr/man/pwr.an
 <p>Welch's test (Welch, 1951) has no sums of squares. With <code>var.equal = FALSE</code>,
 <code>ms_effect</code> and <code>ms_error</code> are the numerator and denominator of the
 Welch F statistic and <code>ss_effect</code> and <code>ss_error</code> are \(MS \times df\).
-The resulting <code>etasq</code>, <code>omegasq</code> and <code>cohens.f</code> equal the
-conversions of the Welch F statistic in <code><a href="https://easystats.github.io/effectsize/reference/F_to_eta2.html" class="external-link">effectsize::F_to_eta2</a></code>,
-<code><a href="https://easystats.github.io/effectsize/reference/F_to_eta2.html" class="external-link">effectsize::F_to_omega2</a></code> and <code><a href="https://easystats.github.io/effectsize/reference/F_to_eta2.html" class="external-link">effectsize::F_to_f</a></code>.
-<code>partial.omegasq</code> uses the actual sample size instead of the Welch degrees
-of freedom and differs from <code>omegasq</code>. Treat the Welch effect sizes as
-approximations.</p>
+The resulting <code>etasq</code>, <code>omegasq</code>, <code>partial.omegasq</code> and
+<code>cohens.f</code> equal the conversions of the Welch F statistic in
+<code><a href="https://easystats.github.io/effectsize/reference/F_to_eta2.html" class="external-link">effectsize::F_to_eta2</a></code>, <code><a href="https://easystats.github.io/effectsize/reference/F_to_eta2.html" class="external-link">effectsize::F_to_omega2</a></code> and
+<code><a href="https://easystats.github.io/effectsize/reference/F_to_eta2.html" class="external-link">effectsize::F_to_f</a></code>. Treat the Welch effect sizes as approximations.</p>
 <p>Rows with a missing value in the outcome or the grouping variable are
 removed before the test, as in <code><a href="https://rdrr.io/r/stats/oneway.test.html" class="external-link">stats::oneway.test</a></code>.</p>
     </div>
@@ -147,6 +152,7 @@ removed before the test, as in <code><a href="https://rdrr.io/r/stats/oneway.tes
     <p>Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.</p>
 <p>Hoenig, J. M., &amp; Heisey, D. M. (2001). The abuse of power: The pervasive fallacy of power calculations for data analysis. The American Statistician, 55(1), 19-24. <a href="https://doi.org/10.1198/000313001300339897" class="external-link">doi:10.1198/000313001300339897</a></p>
 <p>Olejnik, S., &amp; Algina, J. (2003). Generalized eta and omega squared statistics: Measures of effect size for some common research designs. Psychological Methods, 8(4), 434-447. <a href="https://doi.org/10.1037/1082-989X.8.4.434" class="external-link">doi:10.1037/1082-989X.8.4.434</a></p>
+<p>R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. <a href="https://doi.org/10.32614/R.manuals" class="external-link">doi:10.32614/R.manuals</a></p>
 <p>Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. <a href="https://doi.org/10.22237/jmasm/1257035100" class="external-link">doi:10.22237/jmasm/1257035100</a></p>
 <p>Welch, B. L. (1951). On the comparison of several mean values: An alternative approach. Biometrika, 38(3/4), 330-336. <a href="https://doi.org/10.2307/2332579" class="external-link">doi:10.2307/2332579</a></p>
     </div>
@@ -199,7 +205,7 @@ removed before the test, as in <code><a href="https://rdrr.io/r/stats/oneway.tes
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 bp_before ~ agegrp Assuming homoscedasticity   2485.55 12952.15  1242.775 110.7021 0.1610052     0.1610052 0.1456192       0.1456192 0.4380668 0.9925726   11.2263         2      117 3.466707e-05</span>
 <span class="r-in"><span><span class="fu">compute_one_way_test</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">form</span>, df <span class="op">=</span> <span class="va">df_blood_pressure</span>, var.equal <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              formula                      method ss_effect ss_error ms_effect ms_error     etasq partial.etasq   omegasq partial.omegasq  cohens.f     power statistic df_effect df_error            p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 bp_before ~ agegrp Assuming heteroscedasticity  48.00725 156.0266  24.00362 2.017238 0.2352906     0.2352906 0.2134071       0.1537287 0.5546947 0.9998626  11.89925         2 77.34665 3.121909e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 bp_before ~ agegrp Assuming heteroscedasticity  48.00725 156.0266  24.00362 2.017238 0.2352906     0.2352906 0.2134071       0.2134071 0.5546947 0.9998626  11.89925         2 77.34665 3.121909e-05</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
