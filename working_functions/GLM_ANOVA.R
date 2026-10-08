@@ -14,24 +14,59 @@
 #'
 #' @param formula A one-way formula in the form \code{y ~ group}.
 #' @param df A data frame containing the variables in \code{formula}.
+#' @param ci If TRUE, adds percentile bootstrap confidence intervals for
+#' \code{etasq} and \code{epsilonsq}.
+#' @param conf.level Confidence level of the intervals.
+#' @param nboot Number of bootstrap resamples.
 #'
 #' @return A one-row data frame with:
 #' \itemize{
 #'   \item \code{formula}: model formula used
 #'   \item \code{method}: test name
 #'   \item \code{etasq}: Kruskal-Wallis eta-squared, \eqn{(H-k+1)/(n-k)}
+#'   \item \code{etasq_lower}, \code{etasq_upper}: confidence interval of \code{etasq} (only if \code{ci = TRUE})
 #'   \item \code{epsilonsq}: epsilon-squared, \eqn{H/(n-1)}
+#'   \item \code{epsilonsq_lower}, \code{epsilonsq_upper}: confidence interval of \code{epsilonsq} (only if \code{ci = TRUE})
 #'   \item \code{H}: Kruskal-Wallis chi-squared statistic
 #'   \item \code{df}: degrees of freedom (\eqn{k-1})
 #'   \item \code{p}: p-value
 #' }
 #'
 #' @details
-#' \code{etasq} and \code{epsilonsq} are both in [0, 1] in typical use.
+#' \code{epsilonsq} is in [0, 1]. \code{etasq} is at most 1 and is negative
+#' when \eqn{H < k-1}, that is when the groups differ less than expected by chance.
 #' Multiplying by 100 gives an approximate percentage-style interpretation
 #' of explained rank variance.
 #'
-#' @importFrom stats pchisq
+#' Rules of thumb for \code{etasq} and \code{epsilonsq}. Small, medium and large
+#' are the \eqn{\eta^2} benchmarks of Cohen (1988); tiny, very large and huge
+#' convert the Cohen's d benchmarks of Sawilowsky (2009) with \eqn{\eta^2=d^2/(d^2+4)}:
+#' \itemize{
+#'   \item tiny: < 0.01 (d < 0.2)
+#'   \item small: 0.01 to < 0.06 (d = 0.2)
+#'   \item medium: 0.06 to < 0.14 (d = 0.5)
+#'   \item large: 0.14 to < 0.26 (d = 0.8)
+#'   \item very large: 0.26 to < 0.50 (d = 1.2)
+#'   \item huge: >= 0.50 (d = 2.0)
+#' }
+#' These are rough guides; what counts as a meaningful effect depends on the field.
+#' \code{epsilonsq} is biased upwards by about \eqn{(k-1)/(n-1)} in small samples.
+#'
+#' Rows with a missing value in the outcome or the grouping variable are
+#' removed before the test, as in \code{stats::kruskal.test}.
+#'
+#' The confidence intervals resample rows with replacement \code{nboot} times,
+#' recompute both effect sizes in each resample and take the
+#' \eqn{(1-conf.level)/2} and \eqn{1-(1-conf.level)/2} quantiles. Use
+#' \code{set.seed} for reproducible intervals.
+#'
+#' @importFrom stats pchisq quantile na.omit
+#' @references
+#' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
+#'
+#' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
+#'
+#' Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19-25.
 #' @keywords ANOVA nonparametric kruskal
 #' @export
 #'
@@ -50,22 +85,164 @@
 #' )
 #' rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
 #' compute_kruskal_wallis_test(formula = form, df = df_blood_pressure)
-compute_kruskal_wallis_test <- function(formula, df) {
+#' set.seed(1)
+#' compute_kruskal_wallis_test(formula = form, df = df_blood_pressure, ci = TRUE)
+compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nboot = 1000) {
+  df <- stats::na.omit(df[, all.vars(formula)])
   x <- df[, all.vars(formula)[1]]
   g <- factor(df[, all.vars(formula)[2]])
-  g <- factor(g)
+  kruskal_h <- function(x, g) {
+    n <- length(x)
+    r <- rank(x)
+    ties <- table(x)
+    h <- sum(tapply(r, g, "sum")^2 / tapply(r, g, "length"))
+    ((12 * h / (n * (n + 1)) - 3 * (n + 1)) / (1 - sum(ties^3 - ties) / (n^3 - n)))
+  }
   k <- nlevels(g)
   n <- length(x)
-  r <- rank(x)
-  ties <- table(x)
-  h <- sum(tapply(r, g, "sum")^2 / tapply(r, g, "length"))
-  H <- ((12 * h / (n * (n + 1)) - 3 * (n + 1)) / (1 - sum(ties^3 - ties) / (n^3 - n)))
+  H <- kruskal_h(x, g)
   df <- (k - 1)
   p <- stats::pchisq(H, df, lower.tail = FALSE)
   etasq <- (H - k + 1) / (n - k)
   epsilonsq <- H / ((n^2 - 1) / (n + 1))
   method <- "Kruskal-Wallis rank sum test"
-  result <- data.frame(formula = deparse(formula), method, etasq, epsilonsq, H = H, df = df, p = p, check.names = FALSE)
+  if (!ci) {
+    result <- data.frame(formula = deparse(formula), method, etasq, epsilonsq, H = H, df = df, p = p, check.names = FALSE)
+    return(result)
+  }
+  boot_effects <- t(replicate(nboot, {
+    i <- sample.int(n, replace = TRUE)
+    g_boot <- droplevels(g[i])
+    k_boot <- nlevels(g_boot)
+    H_boot <- kruskal_h(x[i], g_boot)
+    c(etasq = (H_boot - k_boot + 1) / (n - k_boot), epsilonsq = H_boot / (n - 1))
+  }))
+  probs <- c((1 - conf.level) / 2, 1 - (1 - conf.level) / 2)
+  etasq_ci <- stats::quantile(boot_effects[, "etasq"], probs, na.rm = TRUE, names = FALSE)
+  epsilonsq_ci <- stats::quantile(boot_effects[, "epsilonsq"], probs, na.rm = TRUE, names = FALSE)
+  result <- data.frame(formula = deparse(formula), method,
+                       etasq, etasq_lower = etasq_ci[1], etasq_upper = etasq_ci[2],
+                       epsilonsq, epsilonsq_lower = epsilonsq_ci[1], epsilonsq_upper = epsilonsq_ci[2],
+                       H = H, df = df, p = p, check.names = FALSE)
+  return(result)
+}
+##########################################################################################
+# FRIEDMAN TEST WITH EFFECT SIZE
+##########################################################################################
+#' @title Friedman Test with Effect Size
+#' @description Runs the Friedman rank-sum test for a complete block design
+#' (repeated measures) and returns the test statistic, p-value, and Kendall's W
+#' (\code{kendall_w}) as the effect size.
+#'
+#' In simple terms, this tests whether the same subjects (blocks) respond
+#' differently across conditions (groups), and quantifies how consistently the
+#' subjects rank the conditions in the same order.
+#'
+#' @param formula A formula in the form \code{y ~ group | block}, where
+#' \code{group} is the repeated condition and \code{block} identifies the subject.
+#' @param df A data frame in long format containing the variables in \code{formula},
+#' with one row per block and group.
+#' @param ci If TRUE, adds a percentile bootstrap confidence interval for \code{kendall_w}.
+#' @param conf.level Confidence level of the interval.
+#' @param nboot Number of bootstrap resamples.
+#'
+#' @return A one-row data frame with:
+#' \itemize{
+#'   \item \code{formula}: model formula used
+#'   \item \code{method}: test name
+#'   \item \code{kendall_w}: Kendall's coefficient of concordance, \eqn{Q/(n(k-1))}
+#'   \item \code{kendall_w_lower}, \code{kendall_w_upper}: confidence interval of \code{kendall_w} (only if \code{ci = TRUE})
+#'   \item \code{Q}: Friedman chi-squared statistic, corrected for ties
+#'   \item \code{df}: degrees of freedom (\eqn{k-1})
+#'   \item \code{n}: number of complete blocks used
+#'   \item \code{p}: p-value
+#' }
+#'
+#' @details
+#' The observations are ranked within each block. With \eqn{n} blocks, \eqn{k}
+#' groups, \eqn{R_j} the rank sum of group \eqn{j} and \eqn{t} the sizes of the
+#' groups of tied values within blocks,
+#' \deqn{Q=\frac{12\sum_{j=1}^{k}\left(R_j-n(k+1)/2\right)^2}{nk(k+1)-\sum(t^3-t)/(k-1)}}
+#' Under the null hypothesis \eqn{Q} approximately follows a chi-squared
+#' distribution with \eqn{k-1} degrees of freedom.
+#'
+#' \code{kendall_w} is in [0, 1]. 0 means the blocks rank the groups in no consistent
+#' order; 1 means every block ranks the groups in the same order.
+#'
+#' Rules of thumb for \code{kendall_w}, the Cohen (1988) benchmarks for correlations
+#' that \code{rstatix::friedman_effsize} also uses:
+#' \itemize{
+#'   \item tiny: < 0.1
+#'   \item small: 0.1 to < 0.3
+#'   \item medium: 0.3 to < 0.5
+#'   \item large: >= 0.5
+#' }
+#' These are rough guides; what counts as a meaningful effect depends on the field.
+#'
+#' Rows with a missing group or block are removed. Blocks with a missing value
+#' in any group are removed, as in the default method of \code{stats::friedman.test};
+#' \code{n} reports how many blocks remain. A block with more than one observation
+#' for the same group is an error.
+#'
+#' The confidence interval resamples blocks with replacement \code{nboot} times,
+#' recomputes \code{kendall_w} in each resample and takes the
+#' \eqn{(1-conf.level)/2} and \eqn{1-(1-conf.level)/2} quantiles. Use
+#' \code{set.seed} for reproducible intervals.
+#'
+#' @importFrom stats pchisq quantile complete.cases
+#' @references
+#' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
+#'
+#' Friedman, M. (1937). The use of ranks to avoid the assumption of normality implicit in the analysis of variance. Journal of the American Statistical Association, 32(200), 675-701. \doi{10.1080/01621459.1937.10503522}
+#'
+#' Kendall, M. G., & Babington Smith, B. (1939). The problem of m rankings. The Annals of Mathematical Statistics, 10(3), 275-287. \doi{10.1214/aoms/1177732186}
+#' @keywords ANOVA nonparametric friedman
+#' @export
+#'
+#' @examples
+#' form <- formula(uptake ~ conc | Plant)
+#' friedman.test(formula = form, data = df_co2)
+#' rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
+#' effectsize::kendalls_w(form, data = df_co2)
+#' compute_friedman_test(formula = form, df = df_co2)
+#' set.seed(1)
+#' compute_friedman_test(formula = form, df = df_co2, ci = TRUE)
+compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nboot = 1000) {
+  vars <- all.vars(formula)
+  df <- df[stats::complete.cases(df[, vars[2:3]]), vars]
+  g <- factor(df[, vars[2]])
+  b <- factor(df[, vars[3]])
+  if (any(table(b, g) > 1)) stop("each block must have at most one observation per group")
+  y <- matrix(NA, nrow = nlevels(b), ncol = nlevels(g))
+  y[cbind(as.integer(b), as.integer(g))] <- df[, vars[1]]
+  y <- y[stats::complete.cases(y), , drop = FALSE]
+  friedman_q <- function(y) {
+    n <- nrow(y)
+    k <- ncol(y)
+    r <- t(apply(y, 1, rank))
+    ties <- sum(apply(y, 1, function(u) {
+      t <- table(u)
+      sum(t^3 - t)
+    }))
+    12 * sum((colSums(r) - n * (k + 1) / 2)^2) / (n * k * (k + 1) - ties / (k - 1))
+  }
+  n <- nrow(y)
+  k <- ncol(y)
+  Q <- friedman_q(y)
+  df <- (k - 1)
+  p <- stats::pchisq(Q, df, lower.tail = FALSE)
+  kendall_w <- Q / (n * (k - 1))
+  method <- "Friedman rank sum test"
+  if (!ci) {
+    result <- data.frame(formula = deparse(formula), method, kendall_w, Q = Q, df = df, n = n, p = p, check.names = FALSE)
+    return(result)
+  }
+  boot_kendall_w <- replicate(nboot, friedman_q(y[sample.int(n, replace = TRUE), , drop = FALSE]) / (n * (k - 1)))
+  probs <- c((1 - conf.level) / 2, 1 - (1 - conf.level) / 2)
+  kendall_w_ci <- stats::quantile(boot_kendall_w, probs, na.rm = TRUE, names = FALSE)
+  result <- data.frame(formula = deparse(formula), method,
+                       kendall_w, kendall_w_lower = kendall_w_ci[1], kendall_w_upper = kendall_w_ci[2],
+                       Q = Q, df = df, n = n, p = p, check.names = FALSE)
   return(result)
 }
 ##########################################################################################

@@ -4,12 +4,25 @@
 \alias{compute_kruskal_wallis_test}
 \title{Kruskal-Wallis Test with Effect Sizes}
 \usage{
-compute_kruskal_wallis_test(formula, df)
+compute_kruskal_wallis_test(
+  formula,
+  df,
+  ci = FALSE,
+  conf.level = 0.95,
+  nboot = 1000
+)
 }
 \arguments{
 \item{formula}{A one-way formula in the form \code{y ~ group}.}
 
 \item{df}{A data frame containing the variables in \code{formula}.}
+
+\item{ci}{If TRUE, adds percentile bootstrap confidence intervals for
+\code{etasq} and \code{epsilonsq}.}
+
+\item{conf.level}{Confidence level of the intervals.}
+
+\item{nboot}{Number of bootstrap resamples.}
 }
 \value{
 A one-row data frame with:
@@ -17,7 +30,9 @@ A one-row data frame with:
   \item \code{formula}: model formula used
   \item \code{method}: test name
   \item \code{etasq}: Kruskal-Wallis eta-squared, \eqn{(H-k+1)/(n-k)}
+  \item \code{etasq_lower}, \code{etasq_upper}: confidence interval of \code{etasq} (only if \code{ci = TRUE})
   \item \code{epsilonsq}: epsilon-squared, \eqn{H/(n-1)}
+  \item \code{epsilonsq_lower}, \code{epsilonsq_upper}: confidence interval of \code{epsilonsq} (only if \code{ci = TRUE})
   \item \code{H}: Kruskal-Wallis chi-squared statistic
   \item \code{df}: degrees of freedom (\eqn{k-1})
   \item \code{p}: p-value
@@ -35,9 +50,32 @@ In simple terms, this tests whether groups differ in their distributions,
 and quantifies how large that group effect is.
 }
 \details{
-\code{etasq} and \code{epsilonsq} are both in [0, 1] in typical use.
+\code{epsilonsq} is in [0, 1]. \code{etasq} is at most 1 and is negative
+when \eqn{H < k-1}, that is when the groups differ less than expected by chance.
 Multiplying by 100 gives an approximate percentage-style interpretation
 of explained rank variance.
+
+Rules of thumb for \code{etasq} and \code{epsilonsq}. Small, medium and large
+are the \eqn{\eta^2} benchmarks of Cohen (1988); tiny, very large and huge
+convert the Cohen's d benchmarks of Sawilowsky (2009) with \eqn{\eta^2=d^2/(d^2+4)}:
+\itemize{
+  \item tiny: < 0.01 (d < 0.2)
+  \item small: 0.01 to < 0.06 (d = 0.2)
+  \item medium: 0.06 to < 0.14 (d = 0.5)
+  \item large: 0.14 to < 0.26 (d = 0.8)
+  \item very large: 0.26 to < 0.50 (d = 1.2)
+  \item huge: >= 0.50 (d = 2.0)
+}
+These are rough guides; what counts as a meaningful effect depends on the field.
+\code{epsilonsq} is biased upwards by about \eqn{(k-1)/(n-1)} in small samples.
+
+Rows with a missing value in the outcome or the grouping variable are
+removed before the test, as in \code{stats::kruskal.test}.
+
+The confidence intervals resample rows with replacement \code{nboot} times,
+recompute both effect sizes in each resample and take the
+\eqn{(1-conf.level)/2} and \eqn{1-(1-conf.level)/2} quantiles. Use
+\code{set.seed} for reproducible intervals.
 }
 \examples{
 form <- formula(bp_before ~ agegrp)
@@ -54,6 +92,15 @@ rcompanion::epsilonSquared(
 )
 rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
 compute_kruskal_wallis_test(formula = form, df = df_blood_pressure)
+set.seed(1)
+compute_kruskal_wallis_test(formula = form, df = df_blood_pressure, ci = TRUE)
+}
+\references{
+Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
+
+Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
+
+Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19-25.
 }
 \keyword{ANOVA}
 \keyword{kruskal}
