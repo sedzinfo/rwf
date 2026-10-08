@@ -598,25 +598,63 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 ##########################################################################################
 # FACTORIAL ANOVA
 ##########################################################################################
-#' @title Plot means with standard error for every level in a dataframe
-#' @param df dataframe
-#' @param dv names of dependent variables
-#' @param wid names of
-#' @param within names of within factors
-#' @param within_full names of within factors after data are collapsed to means per condition
-#' @param between names of between factors
-#' @param within_covariates names of within covariates
-#' @param between_covariates mames of between covariates
-#' @param observed names in data that are already specified in either within or between that contain predictor variables that are observed variables (not manipulated)
-#' @param diff names of variables to collapse in a different score
-#' @param reverse_diff If TRUE, triggers reversal of the difference collapse requested by diff
-#' @param type sum of squares 1 2 3
-#' @param white.adjust if TRUE corrects for heteroscedasticity
-#' @param detailed if TRUE returns detailed information
-#' @param return_aov if TRUE returns aov object
-#' @param post_hoc_test if TRUE outputs post hoc in file
-#' @param base_size base font size
-#' @param file output filename
+#' @title Factorial ANOVA report for one or more dependent variables
+#' @description Runs a factorial (within, between or mixed) ANOVA with
+#'   \code{ez::ezANOVA} for every dependent variable in \code{dv}, adds effect
+#'   sizes (\code{sjstats::anova_stats}) and pairwise post hoc comparisons for
+#'   every factor and every combination of factors (\code{emmeans}), and
+#'   optionally writes everything to an Excel workbook.
+#'
+#'   Before the analysis the data are collapsed to one mean per participant and
+#'   design cell (every column named in \code{wid}, \code{within},
+#'   \code{within_full}, \code{between} and the covariates is treated as a
+#'   factor). Sum-to-zero contrasts are set with \code{options(contrasts = ...)},
+#'   which changes the session option.
+#' @param df data frame in long format, one row per observation.
+#' @param dv character vector, names of the dependent variables. One ANOVA is
+#'   run per variable.
+#' @param wid name of the column that identifies participants (the subject id).
+#' @param within character vector, names of the within-subject factors, or \code{NULL}.
+#' @param within_full character vector, names of the within-subject factors after
+#'   the data are collapsed to means per condition, or \code{NULL}. Usually the
+#'   same as \code{within}.
+#' @param between character vector, names of the between-subject factors, or \code{NULL}.
+#' @param within_covariates character vector, names of the within-subject
+#'   covariates, or \code{NULL}.
+#' @param between_covariates character vector, names of the between-subject
+#'   covariates, or \code{NULL}.
+#' @param observed character vector, names of variables already listed in
+#'   \code{within} or \code{between} that are observed (measured) rather than
+#'   manipulated. Used by \code{ezANOVA} for the generalized eta squared.
+#' @param diff character vector, names of within variables to collapse into a
+#'   difference score.
+#' @param reverse_diff logical. If \code{TRUE}, reverses the direction of the
+#'   difference requested in \code{diff}.
+#' @param type sum of squares type: 1, 2 or 3. Default 3.
+#' @param white.adjust logical. If \code{TRUE}, uses a heteroscedasticity-corrected
+#'   covariance matrix (between-subject designs only).
+#' @param detailed logical. If \code{TRUE}, \code{ezANOVA} returns sums of squares.
+#' @param return_aov logical. If \code{TRUE}, keeps the \code{aov} object; it is
+#'   needed for the effect sizes and post hoc tests, so leave it \code{TRUE}.
+#' @param post_hoc_test logical. If \code{TRUE}, adds the post hoc comparisons
+#'   as a sheet in the Excel file. Post hoc comparisons are always computed and
+#'   returned; this only controls whether they are written to \code{file}.
+#' @param base_size base font size. Currently unused (the diagnostic plot that
+#'   used it is commented out).
+#' @param file output file name without extension. If not \code{NULL}, the
+#'   results are written to \code{<file>.xlsx}, replacing any existing file.
+#' @return A list with:
+#'   \describe{
+#'     \item{omnibus}{data frame, the ANOVA table of every dependent variable,
+#'       with Levene's (\code{[L]}) and Mauchly's (\code{[M]}) tests and
+#'       sphericity corrections where they apply.}
+#'     \item{omnibus_effect_size}{data frame, effect sizes per term (eta squared,
+#'       partial eta squared, omega squared, Cohen's f, power, ...).}
+#'     \item{post_hoc}{data frame, pairwise comparisons for every factor and
+#'       combination of factors.}
+#'     \item{object}{list, the raw \code{ezANOVA} result per dependent variable,
+#'       including the \code{aov} object.}
+#'   }
 #' @importFrom ez ezANOVA
 #' @keywords ANOVA
 #' @export
@@ -649,7 +687,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #'   between = NULL,
 #'   within_covariates = NULL, between_covariates = NULL,
 #'   file = "anova_within",
-#'   post_hoc = TRUE
+#'   post_hoc_test = TRUE
 #' )
 #' r2 <- report_factorial_anova(
 #'   df = df, wid = "id", dv = c("DV1", "DV2"),
@@ -657,7 +695,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #'   between = c("IV1", "IV2"),
 #'   within_covariates = NULL, between_covariates = NULL,
 #'   file = "anova_between",
-#'   post_hoc = TRUE
+#'   post_hoc_test = TRUE
 #' )
 #' r3 <- report_factorial_anova(
 #'   df = df, wid = "id", dv = c("DV1", "DV2"),
@@ -665,7 +703,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #'   between = c("IV1", "IV2"),
 #'   within_covariates = NULL, between_covariates = NULL,
 #'   file = "anova_mixed",
-#'   post_hoc = FALSE
+#'   post_hoc_test = FALSE
 #' )
 #' r4 <- report_factorial_anova(
 #'   df = df, wid = "id", dv = c("DV1", "DV2"),
@@ -673,7 +711,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #'   between = NULL,
 #'   within_covariates = c("DV3", "DV4"), between_covariates = NULL,
 #'   file = "anova_within_cov",
-#'   post_hoc = TRUE
+#'   post_hoc_test = TRUE
 #' )
 report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NULL, between = NULL, within_covariates = NULL, between_covariates = NULL,
                                    observed = NULL, diff = NULL, reverse_diff = FALSE, type = 3, white.adjust = TRUE, detailed = TRUE, return_aov = TRUE,

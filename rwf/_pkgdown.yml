@@ -42,6 +42,7 @@ reference:
       - compute_dissatenuation
       - compute_dummy_comparisons
       - compute_frequencies
+      - compute_friedman_test
       - compute_icc_thurstonian
       - compute_info_1pl
       - compute_info_2pl
