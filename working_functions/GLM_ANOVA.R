@@ -248,24 +248,113 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 ##########################################################################################
 # ONE WAY TEST WITH SS AND MS
 ##########################################################################################
-#' @title one way test
-#' @inheritParams compute_kruskal_wallis_test
-#' @param var.equal if TRUE it assumes equal variances
-#' @note eta and omega for Welch statistics are not adequately tested and they should not be consulted
-#' @importFrom stats pf
+#' @title One-Way ANOVA with Effect Sizes and Power
+#' @description Runs a one-way analysis of variance for two or more independent
+#' groups, assuming equal variances (Fisher's F test) or not (Welch's F test),
+#' and returns the sums of squares, mean squares, F statistic, p-value, observed
+#' power, and five effect sizes:
+#' \itemize{
+#'   \item \code{etasq}: eta-squared (\eqn{\eta^2})
+#'   \item \code{partial.etasq}: partial eta-squared (\eqn{\eta^2_p})
+#'   \item \code{omegasq}: omega-squared (\eqn{\omega^2})
+#'   \item \code{partial.omegasq}: partial omega-squared (\eqn{\omega^2_p})
+#'   \item \code{cohens.f}: Cohen's f
+#' }
+#'
+#' In simple terms, this tests whether the group means differ, and quantifies
+#' how much of the variance in the outcome the groups explain.
+#'
+#' @param formula A one-way formula in the form \code{y ~ group}.
+#' @param df A data frame containing the variables in \code{formula}.
+#' @param var.equal If TRUE, assumes equal variances (Fisher's F test). If FALSE,
+#' uses Welch's F test.
+#'
+#' @return A one-row data frame with:
+#' \itemize{
+#'   \item \code{formula}: model formula used
+#'   \item \code{method}: "Assuming homoscedasticity" (Fisher) or "Assuming heteroscedasticity" (Welch)
+#'   \item \code{ss_effect}, \code{ss_error}: sums of squares between and within groups
+#'   \item \code{ms_effect}, \code{ms_error}: mean squares, \eqn{SS/df}
+#'   \item \code{etasq}: eta-squared, \eqn{SS_{effect}/SS_{total}}
+#'   \item \code{partial.etasq}: partial eta-squared, \eqn{SS_{effect}/(SS_{effect}+SS_{error})}
+#'   \item \code{omegasq}: omega-squared, \eqn{(SS_{effect}-df_{effect} MS_{error})/(SS_{total}+MS_{error})}
+#'   \item \code{partial.omegasq}: partial omega-squared, \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(N-df_{effect}) MS_{error})}
+#'   \item \code{cohens.f}: Cohen's f, \eqn{\sqrt{\eta^2/(1-\eta^2)}}
+#'   \item \code{power}: observed power of the F test at \eqn{\alpha = 0.05}
+#'   \item \code{statistic}: F statistic, \eqn{MS_{effect}/MS_{error}}
+#'   \item \code{df_effect}: degrees of freedom of the effect (\eqn{k-1})
+#'   \item \code{df_error}: degrees of freedom of the error (\eqn{N-k}, or the Welch degrees of freedom)
+#'   \item \code{p}: p-value
+#' }
+#'
+#' @details
+#' In a one-way design \code{partial.etasq} equals \code{etasq}, and with equal
+#' variances \code{partial.omegasq} equals \code{omegasq}. \code{etasq} and
+#' \code{partial.etasq} are in [0, 1] and are biased upwards in small samples, by
+#' about \eqn{(k-1)/(N-1)} when there is no effect. \code{omegasq} and
+#' \code{partial.omegasq} remove most of that bias and are negative when \eqn{F < 1}.
+#' Multiplying \code{etasq} or \code{omegasq} by 100 gives the percentage of
+#' variance explained by the groups.
+#'
+#' Rules of thumb for \code{etasq}, \code{omegasq} and \code{cohens.f}. Small,
+#' medium and large are the benchmarks of Cohen (1988); tiny, very large and huge
+#' convert the Cohen's d benchmarks of Sawilowsky (2009) with
+#' \eqn{\eta^2=d^2/(d^2+4)} and \eqn{f=d/2}:
+#' \itemize{
+#'   \item tiny: \eqn{\eta^2} < 0.01, f < 0.10 (d < 0.2)
+#'   \item small: \eqn{\eta^2} 0.01 to < 0.06, f 0.10 to < 0.25 (d = 0.2)
+#'   \item medium: \eqn{\eta^2} 0.06 to < 0.14, f 0.25 to < 0.40 (d = 0.5)
+#'   \item large: \eqn{\eta^2} 0.14 to < 0.26, f 0.40 to < 0.60 (d = 0.8)
+#'   \item very large: \eqn{\eta^2} 0.26 to < 0.50, f 0.60 to < 1.00 (d = 1.2)
+#'   \item huge: \eqn{\eta^2} >= 0.50, f >= 1.00 (d = 2.0)
+#' }
+#' These are rough guides; what counts as a meaningful effect depends on the field.
+#'
+#' \code{power} uses the noncentral F distribution with noncentrality parameter
+#' \eqn{\lambda = f^2 N} (Cohen, 1988), evaluated at the observed \code{cohens.f}.
+#' Observed power is a function of the p-value and adds no information to it
+#' (Hoenig & Heisey, 2001); use power analysis with an expected effect size to
+#' plan a study, for example with \code{pwr::pwr.anova.test}.
+#'
+#' Welch's test (Welch, 1951) has no sums of squares. With \code{var.equal = FALSE},
+#' \code{ms_effect} and \code{ms_error} are the numerator and denominator of the
+#' Welch F statistic and \code{ss_effect} and \code{ss_error} are \eqn{MS \times df}.
+#' The resulting \code{etasq}, \code{omegasq} and \code{cohens.f} equal the
+#' conversions of the Welch F statistic in \code{effectsize::F_to_eta2},
+#' \code{effectsize::F_to_omega2} and \code{effectsize::F_to_f}.
+#' \code{partial.omegasq} uses the actual sample size instead of the Welch degrees
+#' of freedom and differs from \code{omegasq}. Treat the Welch effect sizes as
+#' approximations.
+#'
+#' Rows with a missing value in the outcome or the grouping variable are
+#' removed before the test, as in \code{stats::oneway.test}.
+#'
+#' @importFrom stats pf qf na.omit
+#' @references
+#' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
+#'
+#' Hoenig, J. M., & Heisey, D. M. (2001). The abuse of power: The pervasive fallacy of power calculations for data analysis. The American Statistician, 55(1), 19-24. \doi{10.1198/000313001300339897}
+#'
+#' Olejnik, S., & Algina, J. (2003). Generalized eta and omega squared statistics: Measures of effect size for some common research designs. Psychological Methods, 8(4), 434-447. \doi{10.1037/1082-989X.8.4.434}
+#'
+#' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
+#'
+#' Welch, B. L. (1951). On the comparison of several mean values: An alternative approach. Biometrika, 38(3/4), 330-336. \doi{10.2307/2332579}
 #' @keywords ANOVA
 #' @export
+#'
 #' @examples
 #' form <- formula(bp_before ~ agegrp)
-#' compute_one_way_test(formula = form, df = df_blood_pressure, var.equal = TRUE)
-#' compute_one_way_test(formula = form, df = df_blood_pressure, var.equal = FALSE)
 #' oneway.test(formula = form, data = df_blood_pressure, var.equal = TRUE)
 #' oneway.test(formula = form, data = df_blood_pressure, var.equal = FALSE)
 #' car::Anova(aov(form, data = df_blood_pressure), type = 2)
-#' model <- lm(form, data = df_blood_pressure)
 #' lsr::etaSquared(aov(form, data = df_blood_pressure), type = 3, anova = TRUE)
-#' sjstats::anova_stats(model, digits = 22)
+#' effectsize::omega_squared(aov(form, data = df_blood_pressure), partial = FALSE)
+#' sjstats::anova_stats(lm(form, data = df_blood_pressure), digits = 22)
+#' compute_one_way_test(formula = form, df = df_blood_pressure, var.equal = TRUE)
+#' compute_one_way_test(formula = form, df = df_blood_pressure, var.equal = FALSE)
 compute_one_way_test <- function(formula, df, var.equal = TRUE) {
+  df <- stats::na.omit(df[, all.vars(formula)])
   y <- df[, all.vars(formula)[1]]
   g <- factor(df[, all.vars(formula)[2]])
   k <- nlevels(g)
@@ -303,8 +392,8 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
   omegasq <- (ss_effect - df_effect * ms_error) / (ss_total + ms_error)
   partial.omegasq <- (df_effect * (ms_effect - ms_error)) / (df_effect * ms_effect + (n - df_effect) * ms_error)
   cohens.f <- sqrt(etasq / (1 - etasq))
-  lambda <- cohens.f * (df_effect + df_error + 1)
-  power <- stats::pf(stats::qf(0.05, df_effect, df_error, lower = FALSE), df_effect, df_error, lambda, lower = FALSE)
+  lambda <- cohens.f^2 * n
+  power <- stats::pf(stats::qf(0.05, df_effect, df_error, lower.tail = FALSE), df_effect, df_error, lambda, lower.tail = FALSE)
   result <- data.frame(
     formula = deparse(formula), method, ss_effect, ss_error, ms_effect, ms_error,
     etasq, partial.etasq, omegasq, partial.omegasq, cohens.f, power,

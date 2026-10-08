@@ -260,7 +260,7 @@ effectsize::kendalls_w(form, data = df_co2)
 
 ### A test function
 
-`check_friedman` puts each rwf value next to the value from the other packages and returns the difference. The other packages need complete blocks, so incomplete blocks are dropped first, as rwf does.
+`check_friedman` puts each rwf value next to the value from the other packages and returns the difference. The other packages need complete blocks, so incomplete blocks are dropped first, as rwf does. The rows are also sorted by block and group, because `effectsize::kendalls_w` depends on the row order (see [effectsize and row order](#effectsize-and-row-order)).
 
 ```{r check_function}
 check_friedman <- function(formula, df) {
@@ -268,6 +268,7 @@ check_friedman <- function(formula, df) {
   df <- data.frame(y = df[[vars[1]]], g = factor(df[[vars[2]]]), b = factor(df[[vars[3]]]))
   incomplete <- unique(df$b[is.na(df$y)])
   df <- droplevels(df[!df$b %in% incomplete, ])
+  df <- df[order(df$b, df$g), ]
   rwf <- compute_friedman_test(formula = y ~ g | b, df = df)
   fr <- stats::friedman.test(y ~ g | b, data = df)
   comparison <- data.frame(
@@ -322,6 +323,28 @@ do.call(rbind, lapply(datasets, function(d) {
 }))
 ```
 
+### effectsize and row order
+
+With the formula interface, `effectsize::kendalls_w` (version `r packageVersion("effectsize")` here) returns a different $W$ when the rows are not sorted by block. `OrchardSprays` is a Latin square stored in field order, so within each row position the treatments appear in a different order. rwf, `stats`, `coin` and `rstatix` give the same result in any row order, and so does `effectsize` when it is given sorted rows or the blocks by groups matrix:
+
+```{r effectsize_row_order}
+orchard <- data.frame(decrease = OrchardSprays$decrease,
+                      treatment = factor(OrchardSprays$treatment),
+                      rowpos = factor(OrchardSprays$rowpos))
+orchard_sorted <- orchard[order(orchard$rowpos, orchard$treatment), ]
+orchard_matrix <- tapply(orchard$decrease, list(orchard$rowpos, orchard$treatment), identity)
+suppressWarnings(data.frame(
+  input = c("original order", "sorted by block", "matrix"),
+  rwf = c(compute_friedman_test(decrease ~ treatment | rowpos, df = orchard)$kendall_w,
+          compute_friedman_test(decrease ~ treatment | rowpos, df = orchard_sorted)$kendall_w,
+          NA),
+  effectsize = c(effectsize::kendalls_w(decrease ~ treatment | rowpos, data = orchard, ci = NULL)$Kendalls_W,
+                 effectsize::kendalls_w(decrease ~ treatment | rowpos, data = orchard_sorted, ci = NULL)$Kendalls_W,
+                 effectsize::kendalls_w(orchard_matrix, ci = NULL)$Kendalls_W)))
+```
+
+When you use `effectsize::kendalls_w` with a formula, sort the data by block and group first.
+
 ## Confidence intervals
 
 With `ci = TRUE` the function adds a percentile bootstrap confidence interval for $W$. It draws `nboot` samples of $n$ **blocks** with replacement, so each resampled subject keeps all of its repeated measurements, and computes $W$ in each, giving $W^{*}_1,\dots,W^{*}_B$. The interval is
@@ -354,7 +377,7 @@ data.frame(package = c("rwf", "rstatix::friedman_effsize", "effectsize::kendalls
 
 ## p values shrink, effect sizes do not
 
-Each simulated subject has its own overall level (standard deviation 1) and is measured under three conditions whose means differ by 0.3 standard deviations, with 10 to 1,000 subjects. The population effect is the same in every row. As the number of subjects grows, $Q$ grows and the p value drops towards 0, while $W$ settles around the same value:
+Each simulated subject has its own overall level (standard deviation 1) and is measured under three conditions whose means differ by 0.5 standard deviations, with 10 to 1,000 subjects. The population effect is the same in every row. As the number of subjects grows, $Q$ grows and the p value drops towards 0, while $W$ settles around the same value:
 
 ```{r simulation_sample_size}
 set.seed(1)
@@ -365,12 +388,12 @@ simulate_blocks <- function(n_subjects, shift) {
              score = rep(subject_level, times = 3) + rep(c(0, 1, 2) * shift, each = n_subjects) + rnorm(3 * n_subjects))
 }
 do.call(rbind, lapply(c(10, 30, 100, 300, 1000), function(n_subjects) {
-  sim <- simulate_blocks(n_subjects, shift = 0.3)
+  sim <- simulate_blocks(n_subjects, shift = 0.5)
   cbind(n_subjects, compute_friedman_test(formula = score ~ condition | subject, df = sim)[, c("Q", "p", "kendall_w")])
 }))
 ```
 
-A p value from one study says little about the size of the effect. The effect size does.
+$W$ with 10 subjects is higher than the rest partly because of its small-sample bias of about $1/n$ ([below](#bias-of-kendalls-w)). A p value from one study says little about the size of the effect. The effect size does.
 
 ## Bias of Kendall's W
 
