@@ -24,14 +24,14 @@ not.
 }
 \examples{
 vector1 <- gsub(" ", "",
-  generate_multiple_responce_vector(
-    responces = c("Agree", "Hi", "All"),
+  generate_multiple_response_vector(
+    responses = c("Agree", "Hi", "All"),
     responded = 1:3, length = 10
   ),
   fixed = TRUE
 )
 vector2 <- gsub(" ", "",
-  generate_multiple_responce_vector(responces = 1:4, responded = 1:4, length = 10),
+  generate_multiple_response_vector(responses = 1:4, responded = 1:4, length = 10),
   fixed = TRUE
 )
 vector3 <- sample(1:4, 10, replace = TRUE)
@@ -42,6 +42,6 @@ dummy_arrange(vector = vector3)
 dummy_arrange(vector = vector4)
 }
 \seealso{
-\code{\link{generate_multiple_responce_vector}}
+\code{\link{generate_multiple_response_vector}}
 }
 \keyword{recode}

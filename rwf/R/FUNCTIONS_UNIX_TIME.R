@@ -23,7 +23,7 @@ convert_excel_unix_timestamp <- function(timestamp) {
 #' @param tz Timezone
 #' @param extended if TRUE it will display additional day time categories \cr
 #' WEEKDAY MONTH JULIAN QUARTER DAY_PERIOD
-#' @param breaks Numeric vector Breaks define hour of day for classifiying into  \cr
+#' @param breaks Numeric vector Breaks define hour of day for classifying into  \cr
 #' "Night", "Morning", "Noon", "Afternoon", "Evening". \cr
 #' @param ... arguments passed to as.POSIXct
 #' This argument is used if extended=TRUE

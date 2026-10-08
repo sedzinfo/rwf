@@ -42,7 +42,7 @@ report_correlation(
 
 \item{base_size}{base font size}
 
-\item{scatterplot}{if TRUE it will outpu scatterplots}
+\item{scatterplot}{if TRUE it will output scatterplots}
 }
 \description{
 Report correlation matrix

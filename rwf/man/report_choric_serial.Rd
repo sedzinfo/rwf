@@ -16,7 +16,7 @@ report_choric_serial(
 }
 \arguments{
 \item{x}{The input may be in one of four forms:\cr
-a) a data frame or matrix of dichotmous data (e.g., the lsat6 from the bock data set) or discrete numerical (i.e., not too many levels, e.g., the big 5 data set, bfi) for polychoric, or continuous for the case of biserial and polyserial\cr
+a) a data frame or matrix of dichotomous data (e.g., the lsat6 from the bock data set) or discrete numerical (i.e., not too many levels, e.g., the big 5 data set, bfi) for polychoric, or continuous for the case of biserial and polyserial\cr
 b) a 2 x 2 table of cell counts or cell frequencies (for tetrachoric) or an n x m table of cell counts (for both tetrachoric and polychoric)\cr
 c) a vector with elements corresponding to the four cell frequencies (for tetrachoric)\cr
 d) a vector with elements of the two marginal frequencies (row and column) and the comorbidity (for tetrachoric)\cr}

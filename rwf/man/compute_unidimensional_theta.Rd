@@ -13,7 +13,7 @@ compute_unidimensional_theta(a, b = 0, g = 0, i = 1, d = 1.702, theta = 0)
 
 \item{g}{numeric guessing parameter}
 
-\item{i}{numeric innatentiveness parameter}
+\item{i}{numeric inattentiveness parameter}
 
 \item{d}{numeric scaling constant usually a value 1.749 or 1.702}
 
@@ -24,9 +24,9 @@ Compute theta for unidimensional models
 }
 \note{
 when scaling constant=1 it has no effect in equation\cr
-      when innatentiveness=1 and guessing=0 function computes a 2PL score\cr
-      when innatentiveness=1 and guessing!=0 function computes a 3PL score\cr
-      when innatentiveness!=1 and guessing!=0 function computes a 4PL score\cr
+      when inattentiveness=1 and guessing=0 function computes a 2PL score\cr
+      when inattentiveness=1 and guessing!=0 function computes a 3PL score\cr
+      when inattentiveness!=1 and guessing!=0 function computes a 4PL score\cr
 }
 \examples{
 compute_unidimensional_theta(a=10,b=0)

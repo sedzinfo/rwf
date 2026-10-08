@@ -1,5 +1,5 @@
 ##########################################################################################
-# KRUSKALL WALLIS TEST WITH EFFECT SIZE
+# KRUSKAL WALLIS TEST WITH EFFECT SIZE
 ##########################################################################################
 #' @title Kruskal-Wallis Test with Effect Sizes
 #' @description Runs a one-way Kruskal-Wallis rank-sum test and returns the test
@@ -460,6 +460,7 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #' deviation) or \code{""} (none).
 #' @param plot_means If TRUE, writes plots of the group means to a PDF file.
 #' @param plot_diagnostics If TRUE, writes ANOVA diagnostic plots to a PDF file.
+#' @param pb Logical; whether to display a progress bar in the console.
 #'
 #' @return A list with:
 #' \itemize{
@@ -509,7 +510,8 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #'
 #' The Excel workbook has the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
 #' "Tukey", "Games-Howell" and "Descriptives". The plots are written to PDF files
-#' named after \code{file}. A progress bar is printed while the tests run.
+#' named after \code{file}. With \code{pb = TRUE}, a progress bar is printed
+#' to the console while the tests run.
 #'
 #' @seealso \code{\link{compute_one_way_test}}, \code{\link{compute_kruskal_wallis_test}},
 #' \code{\link{compute_posthoc}}
@@ -529,6 +531,7 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #' Welch, B. L. (1951). On the comparison of several mean values: An alternative approach. Biometrika, 38(3/4), 330-336. \doi{10.2307/2332579}
 #' @importFrom car leveneTest
 #' @importFrom stats bartlett.test
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom plyr rbind.fill
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @keywords ANOVA
@@ -554,7 +557,7 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #'   df = mtcars, dv = 2:4, iv = 9, file = "anova_oneway_one_factor",
 #'   plot_means = TRUE, plot_diagnostics = TRUE
 #' )
-report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 10, note = "", title = "", type = "ci", plot_means = FALSE, plot_diagnostics = FALSE) {
+report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 10, note = "", title = "", type = "ci", plot_means = FALSE, plot_diagnostics = FALSE, pb = FALSE) {
   instruction <- list(
     fisher = "Fisher assumes homoscedasticity (equal variances)",
     welch = "Welch does not assume homoscedasticity (it allows unequal variances)",
@@ -570,10 +573,10 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
   names(combinations) <- c("iv", "dv")
   row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
   combinations <- change_data_type(combinations, type = "character")
-  pb <- txtProgressBar(min = 0, max = length(iv) * length(dv), style = 3)
+  if (pb) progress <- txtProgressBar(min = 0, max = length(iv) * length(dv), style = 3)
 
   for (i in 1:nrow(combinations)) {
-    setTxtProgressBar(pb, i)
+    if (pb) setTxtProgressBar(progress, i)
     factors <- combinations$iv[i]
     cors <- combinations$dv[i]
 
@@ -614,7 +617,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
       df_games_howell <- rbind(df_games_howell, games.howell)
     }
   }
-  close(pb)
+  if (pb) close(progress)
 
   adjustment <- compute_adjustment(0.05, i)$bonferroni
   df_fisher$bonferroni_p <- df_welch$bonferroni_p <- df_kruskal$bonferroni_p <- df_levene$bonferroni_p <- df_bartlett$bonferroni_p <- adjustment
@@ -648,12 +651,12 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
   comment_text <- list(
     DV = "Dependent Variable",
     IV = "Independent Variable",
-    bonferroni_p = "Bonferonni adjustment\nadjusted critical value of p for familiwise error",
-    significant = "Significant test after familiwise error (Bonferonni) adjustment"
+    bonferroni_p = "Bonferroni adjustment\nadjusted critical value of p for familywise error",
+    significant = "Significant test after familywise error (Bonferroni) adjustment"
   )
 
   comment_fisher_welch <- c(comment_text, list(
-    formula = "Model spesification",
+    formula = "Model specification",
     ss_effect = "Sum of Squares\nfor Effect",
     ss_error = "Sum of Squares\nfor Error",
     ms_effect = "Mean Sum of Squares\nfor Effect",
@@ -684,7 +687,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
       critical = list(p = "<0.05"),
       title = instruction$kruskal,
       comment = c(comment_text, list(
-        formula = "Model spesification",
+        formula = "Model specification",
         etasq = "Effect size\neta squared\n0.01 ~ small\n0.06 ~ medium\n0.14 ~ large",
         df = "Degrees of Freedom"
       ))
@@ -761,7 +764,6 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #' \code{NULL} (default), nothing is written.
 #' @param post_hoc_test If TRUE (default), writes the post hoc comparisons to the
 #' Excel file.
-#' @param base_size Base font size for plots. Not used at present.
 #'
 #' @return A list with:
 #' \itemize{
@@ -884,7 +886,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #' )
 report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NULL, between = NULL, within_covariates = NULL, between_covariates = NULL,
                                    observed = NULL, diff = NULL, reverse_diff = FALSE, type = 3, white.adjust = TRUE, detailed = TRUE, return_aov = TRUE,
-                                   file = NULL, post_hoc_test = TRUE, base_size = 15) {
+                                   file = NULL, post_hoc_test = TRUE) {
   comment <- list(
     DFn = "Degrees of Freedom\nfor numerator",
     DFd = "Degrees of Freedom\nfor denominator",
@@ -913,15 +915,14 @@ report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NUL
     "p[M]" = "Mauchly's Test\np\nIf significant, the assumption of sphericity is violated",
     "GGe" = "Greenhouse-Geisser\nepsilon",
     "p[GG]" = "Greenhouse-Geisser\np adjusted for violated sphericity",
-    "HFe" = "Huynd-Feldt\n epsilon",
-    "p[HF]" = "Huynd-Feldt\np adjusted for violated sphericity"
+    "HFe" = "Huynh-Feldt\n epsilon",
+    "p[HF]" = "Huynh-Feldt\np adjusted for violated sphericity"
   )
   testdata <- df
   call_arguments <- match.call()
   call_string <- gsub(" ", "", gsub("\"", " ", gsub(", ,", ",", toString(unlist(deparse(call_arguments))))))
   old_options <- options(contrasts = c("contr.sum", "contr.poly"))
   on.exit(options(old_options), add = TRUE)
-  bonferroni <- compute_adjustment(0.05, length(dv))$bonferroni
   result <- emf <- list()
   post_hoc <- omnibus <- omnibus_effect_size <- data.frame()
   collumn_design <- unique(c(wid, within, within_full, between, within_covariates, between_covariates))

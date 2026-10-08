@@ -49,7 +49,7 @@ matrix_triangle<-function(m,off_diagonal=NA,diagonal=NULL,type="lower") {
 #' @title Return upper diagonal from one matrix and lower diagonal from another matrix
 #' @param m_upper matrix
 #' @param m_lower matrix
-#' @param diagonal if "upper" it returns upper diagonal if "lower" it returns lower diagonal if NA returns NA in diagonal otherwise it returns any value spesified
+#' @param diagonal if "upper" it returns upper diagonal if "lower" it returns lower diagonal if NA returns NA in diagonal otherwise it returns any value specified
 #' @keywords functions matrix
 #' @export
 #' @examples

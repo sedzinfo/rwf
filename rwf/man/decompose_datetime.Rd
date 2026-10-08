@@ -26,7 +26,7 @@ decompose_datetime(
 \item{extended}{if TRUE it will display additional day time categories \cr
 WEEKDAY MONTH JULIAN QUARTER DAY_PERIOD}
 
-\item{breaks}{Numeric vector Breaks define hour of day for classifiying into  \cr
+\item{breaks}{Numeric vector Breaks define hour of day for classifying into  \cr
 "Night", "Morning", "Noon", "Afternoon", "Evening". \cr}
 
 \item{...}{arguments passed to as.POSIXct

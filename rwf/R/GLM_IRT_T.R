@@ -108,7 +108,7 @@ generate_comparisons_matrix<-function(items) {
 ##########################################################################################
 # GENERATE MATRIX lambda HAT
 ##########################################################################################
-#' @title Generate matrix lambda for spesified number of comparisons
+#' @title Generate matrix lambda for specified number of comparisons
 #' @inheritParams generate_matrix_A
 #' @keywords tirt irt
 #' @export

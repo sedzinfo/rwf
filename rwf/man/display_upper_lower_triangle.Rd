@@ -11,7 +11,7 @@ display_upper_lower_triangle(m_upper, m_lower, diagonal = NA)
 
 \item{m_lower}{matrix}
 
-\item{diagonal}{if "upper" it returns upper diagonal if "lower" it returns lower diagonal if NA returns NA in diagonal otherwise it returns any value spesified}
+\item{diagonal}{if "upper" it returns upper diagonal if "lower" it returns lower diagonal if NA returns NA in diagonal otherwise it returns any value specified}
 }
 \description{
 Return upper diagonal from one matrix and lower diagonal from another matrix

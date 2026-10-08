@@ -123,14 +123,14 @@ generate_string <- function(vector = c(LETTERS, letters, 0:9), vector_length = 1
   return(result)
 }
 ##########################################################################################
-# GENERATE MULTIPLE RESPONCE VECTOR
+# GENERATE MULTIPLE RESPONSE VECTOR
 ##########################################################################################
 #' @title Generate a multiple response vector
 #'
 #' @description Creates a character vector where each element contains a comma-separated
 #' string of randomly sampled categories, simulating multiple response survey data.
 #'
-#' @param responces Integer or character vector. The pool of unique response
+#' @param responses Integer or character vector. The pool of unique response
 #'   categories to sample from. Default is \code{1:4}.
 #' @param responded Integer vector. Controls how many categories are selected
 #'   per observation — one value is sampled from this vector at each iteration.
@@ -142,11 +142,11 @@ generate_string <- function(vector = c(LETTERS, letters, 0:9), vector_length = 1
 #'
 #' @export
 #' @examples
-#' generate_multiple_responce_vector(responces = 1:4, responded = 1:4, length = 10)
-generate_multiple_responce_vector <- function(responces = 1:4, responded = 1:4, length = 10) {
+#' generate_multiple_response_vector(responses = 1:4, responded = 1:4, length = 10)
+generate_multiple_response_vector <- function(responses = 1:4, responded = 1:4, length = 10) {
   result <- c()
   for (i in 1:length) {
-    result <- c(result, toString(paste0(sample(responces, sample(responded, 1)))))
+    result <- c(result, toString(paste0(sample(responses, sample(responded, 1)))))
   }
   return(result)
 }

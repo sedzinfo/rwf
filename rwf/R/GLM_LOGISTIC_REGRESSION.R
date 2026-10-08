@@ -1,13 +1,13 @@
 ##########################################################################################
 # LOGISTIC REGRESSION
 ##########################################################################################
-# Maximum likelihood estimation selects coefficients that make observed variables most likely to have occured
+# Maximum likelihood estimation selects coefficients that make observed variables most likely to have occurred
 # Deviance=-2LL=-2xloglikelihood has a chi square distribution and thus can be tested for significance
 # Likelihood ratio=(model deviance) - (deviance for the baseline model where the constant is removed)
 # R statistic=partial correlation between the outcome variable and each of the predictor variables range=-1,1 R=sqrt((z^2-2df)/-2LL(baseline))
 # R^2L is the proportional reduction in the absolute value of the log likelihood measure R^2L=-2LL(model)/-2LL(baseline)
 # Akaike Information Criterion: AIC=-2LL+2k k=number of predictors
-# Baesian Information Criterion: BIC=-2LL+2k log(n) k=number of predictors
+# Bayesian Information Criterion: BIC=-2LL+2k log(n) k=number of predictors
 # z=b/SEb tells is whether the b coefficient differs significantly from zero also called wald statistic
 # The Z statistic should be interpreted cautiously when b is large the standard error inflates resulting in underestimated z statistic
 # The Null deviance describes the model with no predictors=-2LL(baseline)
@@ -117,7 +117,7 @@ output_compare_model_logistic<-function(model1,model2) {
 #' Stevens (2002) recommends investigating cases with values greater than three times the average (3(k+1)/n) \cr
 #' (4) Problematic values for VIFs > 10 \cr
 #' ASSUMPTIONS  \cr
-#' (1) Linearity between continous predictors and the logit (test wether the interaction term between the predictor and its log transformation is significant) \cr
+#' (1) Linearity between continuous predictors and the logit (test whether the interaction term between the predictor and its log transformation is significant) \cr
 #' (2) Independence of errors \cr
 #' (3) No multicolinearity \cr
 #' @import ggfortify

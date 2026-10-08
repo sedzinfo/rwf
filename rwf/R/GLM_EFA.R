@@ -464,7 +464,7 @@ report_efa<-function(model,df,file=NULL,w=10,h=5,cut=0,base_size=10,scores=FALSE
 # reproducedcorrelations<-factor.model(model$loadings)
 # residuals<-factor.residuals(correlationmatrix,model$loadings)
 # Factor loading = The pearson correlation between a factor and a variable
-# If we square a factor loading we obtain a measure of substansive importance of a particular variable to a factor
+# If we square a factor loading we obtain a measure of substantive importance of a particular variable to a factor
 # Communality = The proportion of common variance of a variable
 # A communality of 1 has 0 random variance and 0 unique variance
 ##########################################################################################

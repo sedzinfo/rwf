@@ -18,7 +18,7 @@ excel_confusion_matrix(
 \item{title}{comment}
 }
 \description{
-Usefull for correlation matrices since it uses conditional formatting for matrices
+Useful for correlation matrices since it uses conditional formatting for matrices
 }
 \examples{
 filename <- "excel_confusion_matrix.xlsx"

@@ -26,8 +26,7 @@ report_factorial_anova(
   detailed = TRUE,
   return_aov = TRUE,
   file = NULL,
-  post_hoc_test = TRUE,
-  base_size = 15
+  post_hoc_test = TRUE
 )
 }
 \arguments{
@@ -81,8 +80,6 @@ returns.}
 
 \item{post_hoc_test}{If TRUE (default), writes the post hoc comparisons to the
 Excel file.}
-
-\item{base_size}{Base font size for plots. Not used at present.}
 }
 \value{
 A list with:

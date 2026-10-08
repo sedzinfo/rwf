@@ -16,7 +16,8 @@ report_oneway(
   title = "",
   type = "ci",
   plot_means = FALSE,
-  plot_diagnostics = FALSE
+  plot_diagnostics = FALSE,
+  pb = FALSE
 )
 }
 \arguments{
@@ -47,6 +48,8 @@ deviation) or \code{""} (none).}
 \item{plot_means}{If TRUE, writes plots of the group means to a PDF file.}
 
 \item{plot_diagnostics}{If TRUE, writes ANOVA diagnostic plots to a PDF file.}
+
+\item{pb}{Logical; whether to display a progress bar in the console.}
 }
 \value{
 A list with:
@@ -114,7 +117,8 @@ Which test to read:
 
 The Excel workbook has the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
 "Tukey", "Games-Howell" and "Descriptives". The plots are written to PDF files
-named after \code{file}. A progress bar is printed while the tests run.
+named after \code{file}. With \code{pb = TRUE}, a progress bar is printed
+to the console while the tests run.
 }
 \examples{
 report_oneway(

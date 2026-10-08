@@ -51,7 +51,7 @@ Hoaglin and Welsch (1978) recommends investigating cases with values greater tha
 Stevens (2002) recommends investigating cases with values greater than three times the average (3(k+1)/n) \cr
 (4) Problematic values for VIFs > 10 \cr
 ASSUMPTIONS  \cr
-(1) Linearity between continous predictors and the logit (test wether the interaction term between the predictor and its log transformation is significant) \cr
+(1) Linearity between continuous predictors and the logit (test whether the interaction term between the predictor and its log transformation is significant) \cr
 (2) Independence of errors \cr
 (3) No multicolinearity \cr
 }

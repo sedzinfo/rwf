@@ -16,7 +16,7 @@ report_dataframe(df, file = NULL, type = "critical_value", ...)
 \item{...}{arguments passed to excel_critical_value or to excel_matrix}
 }
 \description{
-Usefull for generic data where conditional formating of a spesific collumn is required
+Useful for generic data where conditional formatting of a specific column is required
 }
 \examples{
 comment <- list(

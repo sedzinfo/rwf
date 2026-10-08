@@ -56,7 +56,7 @@ Leverage values lie between 0 (no influence) and 1 (complete influence over pred
 \strong{T-tests}: test the hypothesis that b's are different from 0 \cr
 \strong{Multiple R^2}: Variance Explained \cr
 \strong{Adjusted R^2}: Indicates how much variance in Y would be accounted for if the model is derived from the population from which the sample was taken.
-Idealy, R^2 = Adjusted R^2 \cr
+Ideally, R^2 = Adjusted R^2 \cr
 \strong{F-Statistic}: tests the null hypothesis is that the overall model has no effect \cr
 \strong{Covariance ratios}: critical values CVR>1+[3(k+1)/n] CRV<1-[3(k+1)/n]. In general we should obtain small values or we may have to remove cases \cr\cr\cr
 \strong{ASSUMPTIONS}

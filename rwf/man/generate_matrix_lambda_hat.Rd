@@ -2,7 +2,7 @@
 % Please edit documentation in R/GLM_IRT_T.R
 \name{generate_matrix_lambda_hat}
 \alias{generate_matrix_lambda_hat}
-\title{Generate matrix lambda for spesified number of comparisons}
+\title{Generate matrix lambda for specified number of comparisons}
 \usage{
 generate_matrix_lambda_hat(blocks = 3, items = 3)
 }
@@ -12,7 +12,7 @@ generate_matrix_lambda_hat(blocks = 3, items = 3)
 \item{items}{number of items per block}
 }
 \description{
-Generate matrix lambda for spesified number of comparisons
+Generate matrix lambda for specified number of comparisons
 }
 \examples{
 generate_matrix_lambda_hat(blocks=3,items=4)
