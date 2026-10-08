@@ -27,6 +27,8 @@ load(paste0(directory, "data/df_blood_pressure.rda"))
 
 This shows the output of `compute_one_way_test` from the package rwf, which runs the one-way analysis of variance for two or more independent groups, either assuming equal variances (Fisher's F test) or not (Welch's F test, Welch, 1951). The function returns the sums of squares and mean squares, the F statistic with its degrees of freedom and p value, five effect sizes (eta-squared, partial eta-squared, omega-squared, partial omega-squared and Cohen's f) and the observed power. Each section gives the formulas the function uses, computes them by hand and checks the results against `stats`, `car`, `lsr`, `effectsize`, `sjstats` and `pwr`.
 
+The group statistics and the Welch test (the weights, the Welch F statistic and its degrees of freedom) are adapted from `stats::oneway.test` (R Core Team, 2026). The sums of squares, effect sizes and power are added in rwf.
+
 Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
 
 The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_ANOVA.R)
@@ -488,6 +490,8 @@ Hoenig, J. M., & Heisey, D. M. (2001). The abuse of power: The pervasive fallacy
 Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science: A practical primer for t-tests and ANOVAs. *Frontiers in Psychology, 4*, 863. https://doi.org/10.3389/fpsyg.2013.00863
 
 Olejnik, S., & Algina, J. (2003). Generalized eta and omega squared statistics: Measures of effect size for some common research designs. *Psychological Methods, 8*(4), 434–447. https://doi.org/10.1037/1082-989X.8.4.434
+
+R Core Team. (2026). *R: A language and environment for statistical computing*. R Foundation for Statistical Computing, Vienna, Austria. https://doi.org/10.32614/R.manuals
 
 Sawilowsky, S. S. (2009). New effect size rules of thumb. *Journal of Modern Applied Statistical Methods, 8*(2), 597–599. https://doi.org/10.22237/jmasm/1257035100
 

@@ -3,6 +3,12 @@
 \name{compute_one_way_test}
 \alias{compute_one_way_test}
 \title{One-Way ANOVA with Effect Sizes and Power}
+\source{
+The group statistics and the Welch test (the weights, the Welch F
+statistic and its degrees of freedom) are adapted from \code{stats::oneway.test}
+(R Core Team, R package \code{stats}, licensed GPL-2 | GPL-3). The sums of
+squares, effect sizes and power are added in rwf.
+}
 \usage{
 compute_one_way_test(formula, df, var.equal = TRUE)
 }
@@ -108,6 +114,8 @@ Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed
 Hoenig, J. M., & Heisey, D. M. (2001). The abuse of power: The pervasive fallacy of power calculations for data analysis. The American Statistician, 55(1), 19-24. \doi{10.1198/000313001300339897}
 
 Olejnik, S., & Algina, J. (2003). Generalized eta and omega squared statistics: Measures of effect size for some common research designs. Psychological Methods, 8(4), 434-447. \doi{10.1037/1082-989X.8.4.434}
+
+R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}
 
 Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
 

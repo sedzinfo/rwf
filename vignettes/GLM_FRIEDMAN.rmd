@@ -28,6 +28,8 @@ load(paste0(directory, "data/df_blood_pressure.rda"))
 
 This shows the output of `compute_friedman_test` from the package rwf, which runs the Friedman rank-sum test (Friedman, 1937), the non-parametric alternative to the one-way repeated measures ANOVA. The function returns the test statistic $Q$ with its degrees of freedom and p value, Kendall's coefficient of concordance $W$ (Kendall & Babington Smith, 1939) as the effect size and, optionally, a bootstrap confidence interval for $W$. Each section gives the formulas the function uses, computes them by hand and checks the results against `stats`, `coin`, `rstatix` and `effectsize`.
 
+$Q$ is computed with the same tie-corrected formula as `stats::friedman.test` (R Core Team, 2026).
+
 Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
 
 The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_ANOVA.R)
@@ -444,5 +446,7 @@ Kendall, M. G., & Babington Smith, B. (1939). The problem of m rankings. *The An
 Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science: A practical primer for t-tests and ANOVAs. *Frontiers in Psychology, 4*, 863. https://doi.org/10.3389/fpsyg.2013.00863
 
 Landis, J. R., & Koch, G. G. (1977). The measurement of observer agreement for categorical data. *Biometrics, 33*(1), 159–174. https://doi.org/10.2307/2529310
+
+R Core Team. (2026). *R: A language and environment for statistical computing*. R Foundation for Statistical Computing, Vienna, Austria. https://doi.org/10.32614/R.manuals
 
 Wilkinson, L., & Task Force on Statistical Inference. (1999). Statistical methods in psychology journals: Guidelines and explanations. *American Psychologist, 54*(8), 594–604. https://doi.org/10.1037/0003-066X.54.8.594

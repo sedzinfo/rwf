@@ -6749,9 +6749,21 @@ plot_oneway_diagnostics <- function(df, dv, iv, base_size = 10) {
 #' \eqn{(1-conf.level)/2} and \eqn{1-(1-conf.level)/2} quantiles. Use
 #' \code{set.seed} for reproducible intervals.
 #'
+#' @source The computation of \code{H}, including the correction for ties, is
+#' adapted from \code{stats::kruskal.test} (R Core Team, R package \code{stats},
+#' licensed GPL-2 | GPL-3). \code{etasq} and \code{epsilonsq} use the same
+#' formulas as \code{rstatix::kruskal_effsize} and
+#' \code{effectsize::rank_epsilon_squared}.
+#'
 #' @importFrom stats pchisq quantile na.omit
 #' @references
+#' Ben-Shachar, M. S., \enc{Lüdecke}{Ludecke}, D., & Makowski, D. (2020). effectsize: Estimation of effect size indices and standardized parameters. Journal of Open Source Software, 5(56), 2815. \doi{10.21105/joss.02815}
+#'
 #' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
+#'
+#' Kassambara, A. (2026). rstatix: Pipe-friendly framework for basic statistical tests (R package version 1.1.0). \doi{10.32614/CRAN.package.rstatix}
+#'
+#' R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}
 #'
 #' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
 #'
@@ -6878,6 +6890,10 @@ compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.
 #' \eqn{(1-conf.level)/2} and \eqn{1-(1-conf.level)/2} quantiles. Use
 #' \code{set.seed} for reproducible intervals.
 #'
+#' @source \code{Q} is computed with the same tie-corrected formula as
+#' \code{stats::friedman.test} (R Core Team, R package \code{stats}, licensed
+#' GPL-2 | GPL-3).
+#'
 #' @importFrom stats pchisq quantile complete.cases
 #' @references
 #' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
@@ -6885,6 +6901,8 @@ compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.
 #' Friedman, M. (1937). The use of ranks to avoid the assumption of normality implicit in the analysis of variance. Journal of the American Statistical Association, 32(200), 675-701. \doi{10.1080/01621459.1937.10503522}
 #'
 #' Kendall, M. G., & Babington Smith, B. (1939). The problem of m rankings. The Annals of Mathematical Statistics, 10(3), 275-287. \doi{10.1214/aoms/1177732186}
+#'
+#' R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}
 #' @keywords ANOVA nonparametric friedman
 #' @export
 #'
@@ -7018,6 +7036,11 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 #' Rows with a missing value in the outcome or the grouping variable are
 #' removed before the test, as in \code{stats::oneway.test}.
 #'
+#' @source The group statistics and the Welch test (the weights, the Welch F
+#' statistic and its degrees of freedom) are adapted from \code{stats::oneway.test}
+#' (R Core Team, R package \code{stats}, licensed GPL-2 | GPL-3). The sums of
+#' squares, effect sizes and power are added in rwf.
+#'
 #' @importFrom stats pf qf na.omit
 #' @references
 #' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
@@ -7025,6 +7048,8 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 #' Hoenig, J. M., & Heisey, D. M. (2001). The abuse of power: The pervasive fallacy of power calculations for data analysis. The American Statistician, 55(1), 19-24. \doi{10.1198/000313001300339897}
 #'
 #' Olejnik, S., & Algina, J. (2003). Generalized eta and omega squared statistics: Measures of effect size for some common research designs. Psychological Methods, 8(4), 434-447. \doi{10.1037/1082-989X.8.4.434}
+#'
+#' R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}
 #'
 #' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
 #'
@@ -7575,49 +7600,147 @@ report_manova <- function(model, file = NULL) {
 ##########################################################################################
 # ETA PARTIAL ETA OMEGA PARTIAL OMEGA FOR AOV
 ##########################################################################################
-#' @title Compute eta and omega
-#' @description Computes omega using aov object. Based on http://stats.stackexchange.com/a/126520
-#' @param model object aov
-#' @param ss Character type of sums of squares "I" "II" "III"
+#' @title Effect Sizes for ANOVA Models
+#' @description Builds the ANOVA table of a between-subjects \code{aov} model with
+#' Type I, II or III sums of squares and adds six effect sizes for every term:
+#' \itemize{
+#'   \item \code{etasq}: eta-squared (\eqn{\eta^2})
+#'   \item \code{partial_etasq}: partial eta-squared (\eqn{\eta^2_p})
+#'   \item \code{omegasq}: omega-squared (\eqn{\omega^2})
+#'   \item \code{partial_omegasq}: partial omega-squared (\eqn{\omega^2_p})
+#'   \item \code{epsilonsq}: epsilon-squared (\eqn{\epsilon^2})
+#'   \item \code{cohens_f}: Cohen's f, computed from \eqn{\eta^2_p}
+#' }
+#'
+#' In simple terms, this shows for every factor and interaction of an ANOVA how
+#' much of the variance in the outcome it explains.
+#'
+#' @param model An \code{aov} model of a between-subjects design (without an
+#' \code{Error()} term).
+#' @param ss Type of sums of squares: \code{"I"} (sequential, the default),
+#' \code{"II"} or \code{"III"}.
+#'
+#' @return A data frame with one row per term, one for the residuals and, with
+#' \code{ss = "III"}, one for the intercept:
+#' \itemize{
+#'   \item \code{call}: model formula
+#'   \item \code{ss}: type of sums of squares
+#'   \item \code{comparisons}: term
+#'   \item \code{Df}, \code{Sum Sq}, \code{Mean Sq}, \code{F value}, \code{Pr(>F)}: the ANOVA table
+#'   \item \code{etasq}: \eqn{SS_{effect}/SS_{total}}
+#'   \item \code{partial_etasq}: \eqn{SS_{effect}/(SS_{effect}+SS_{error})}
+#'   \item \code{omegasq}: \eqn{(SS_{effect}-df_{effect} MS_{error})/(SS_{total}+MS_{error})}
+#'   \item \code{partial_omegasq}: \eqn{df_{effect}(MS_{effect}-MS_{error})/(SS_{effect}+(N-df_{effect}) MS_{error})}
+#'   \item \code{epsilonsq}: \eqn{(SS_{effect}-df_{effect} MS_{error})/SS_{total}}
+#'   \item \code{cohens_f}: \eqn{\sqrt{\eta^2_p/(1-\eta^2_p)}}
+#' }
+#' The effect sizes are \code{NA} for the residuals and the intercept.
+#'
+#' @details
+#' \eqn{SS_{total}} is the sum of the sums of squares of all the terms and the
+#' residuals in the table, \eqn{MS_{error}} the residual mean square and \eqn{N}
+#' the number of observations used by the model.
+#'
+#' The non-partial measures (\code{etasq}, \code{omegasq}, \code{epsilonsq}) divide
+#' by the total variance, so they depend on the other factors in the design. The
+#' partial measures (\code{partial_etasq}, \code{partial_omegasq}, \code{cohens_f})
+#' divide by the variance of the term and the error only, which makes them easier
+#' to compare across designs. In a one-way design the two are the same.
+#' \code{etasq} and \code{partial_etasq} are biased upwards in small samples;
+#' \code{omegasq}, \code{partial_omegasq} and \code{epsilonsq} correct for that and
+#' are negative when \eqn{F < 1}. Negative values are returned as they are, as in
+#' \code{sjstats::anova_stats}; \code{effectsize} reports them as 0.
+#'
+#' Types of sums of squares:
+#' \itemize{
+#'   \item \code{"I"}: sequential; each term is adjusted for the terms before it,
+#'   so the result depends on the order of the terms in the formula.
+#'   \item \code{"II"}: each term is adjusted for all the other terms that do not
+#'   contain it (main effects are not adjusted for their interactions).
+#'   \item \code{"III"}: each term is adjusted for all the other terms. It needs
+#'   sum-to-zero contrasts, set with
+#'   \code{options(contrasts = c("contr.sum", "contr.poly"))} before the model is
+#'   fitted; with the default treatment contrasts the Type III sums of squares of
+#'   main effects are not meaningful.
+#' }
+#' In a balanced design the three types give the same results. In an unbalanced
+#' design Type II and III sums of squares do not add up to the total variance of
+#' the outcome; \eqn{SS_{total}} is then the sum of the table, as in
+#' \code{effectsize}.
+#'
+#' Rules of thumb for \code{etasq}, \code{omegasq}, \code{epsilonsq} and
+#' \code{cohens_f}. Small, medium and large are the benchmarks of Cohen (1988);
+#' tiny, very large and huge convert the Cohen's d benchmarks of Sawilowsky (2009)
+#' with \eqn{\eta^2=d^2/(d^2+4)} and \eqn{f=d/2}:
+#' \itemize{
+#'   \item tiny: \eqn{\eta^2} < 0.01, f < 0.10 (d < 0.2)
+#'   \item small: \eqn{\eta^2} 0.01 to < 0.06, f 0.10 to < 0.25 (d = 0.2)
+#'   \item medium: \eqn{\eta^2} 0.06 to < 0.14, f 0.25 to < 0.40 (d = 0.5)
+#'   \item large: \eqn{\eta^2} 0.14 to < 0.26, f 0.40 to < 0.60 (d = 0.8)
+#'   \item very large: \eqn{\eta^2} 0.26 to < 0.50, f 0.60 to < 1.00 (d = 1.2)
+#'   \item huge: \eqn{\eta^2} >= 0.50, f >= 1.00 (d = 2.0)
+#' }
+#' These are rough guides; what counts as a meaningful effect depends on the field.
+#'
+#' The effect sizes match \code{effectsize::eta_squared},
+#' \code{effectsize::omega_squared}, \code{effectsize::epsilon_squared} and
+#' \code{effectsize::cohens_f} (apart from the truncation of negative values) and
+#' \code{sjstats::anova_stats}.
+#'
+#' @source The computation of \code{partial_omegasq} is adapted from the answer
+#' of Stephen Martin (2014) to the question "Omega squared for measure of effect
+#' in R?" on Cross Validated, \url{https://stats.stackexchange.com/a/126520},
+#' licensed CC BY-SA 3.0. The Type II and III sums of squares come from
+#' \code{car::Anova} (Fox & Weisberg, 2019).
+#'
 #' @importFrom car Anova
-#' @importFrom stats model.frame
+#' @importFrom stats model.frame formula
+#' @references
+#' Ben-Shachar, M. S., \enc{Lüdecke}{Ludecke}, D., & Makowski, D. (2020). effectsize: Estimation of effect size indices and standardized parameters. Journal of Open Source Software, 5(56), 2815. \doi{10.21105/joss.02815}
+#'
+#' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
+#'
+#' Fox, J., & Weisberg, S. (2019). An R companion to applied regression (3rd ed.). Sage. \url{https://www.john-fox.ca/Companion/}
+#'
+#' Hays, W. L. (1963). Statistics for psychologists. Holt, Rinehart and Winston.
+#'
+#' Kelley, T. L. (1935). An unbiased correlation ratio measure. Proceedings of the National Academy of Sciences, 21(9), 554-559. \doi{10.1073/pnas.21.9.554}
+#'
+#' Martin, S. (2014, December 3). Answer to "Omega squared for measure of effect in R?" Cross Validated. \url{https://stats.stackexchange.com/a/126520}
+#'
+#' Olejnik, S., & Algina, J. (2003). Generalized eta and omega squared statistics: Measures of effect size for some common research designs. Psychological Methods, 8(4), 434-447. \doi{10.1037/1082-989X.8.4.434}
+#'
+#' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
 #' @keywords ANOVA
 #' @export
 #' @examples
-#' form <- formula(uptake ~ Treatment)
-#' one_way_between <- aov(form, CO2)
-#' factorial_between <- aov(uptake ~ Treatment * Type, CO2)
+#' one_way_between <- aov(uptake ~ Treatment, data = CO2)
 #' compute_aov_es(model = one_way_between, ss = "I")
 #' sjstats::anova_stats(one_way_between, digits = 10)
-#' compute_aov_es(model = one_way_between, ss = "II")
-#' sjstats::anova_stats(one_way_between, digits = 10)
-#' compute_aov_es(model = one_way_between, ss = "III")
-#' sjstats::anova_stats(one_way_between, digits = 10)
+#' effectsize::omega_squared(one_way_between, partial = FALSE)
+#'
+#' # Type III sums of squares need sum-to-zero contrasts
+#' old_contrasts <- options(contrasts = c("contr.sum", "contr.poly"))
+#' factorial_between <- aov(uptake ~ Treatment * Type, data = CO2)
 #' compute_aov_es(model = factorial_between, ss = "I")
-#' sjstats::anova_stats(factorial_between, digits = 10)
 #' compute_aov_es(model = factorial_between, ss = "II")
-#' sjstats::anova_stats(factorial_between, digits = 10)
 #' compute_aov_es(model = factorial_between, ss = "III")
-#' sjstats::anova_stats(car::Anova(factorial_between, Type = 3), digits = 10)
+#' sjstats::anova_stats(car::Anova(factorial_between, type = 3), digits = 10)
+#' effectsize::omega_squared(car::Anova(factorial_between, type = 3), partial = TRUE)
+#' options(old_contrasts)
 compute_aov_es <- function(model, ss = "I") {
+  ss <- match.arg(ss, c("I", "II", "III"))
   n_total <- nrow(stats::model.frame(model))
-  ss1 <- data.frame(summary(model)[[1]], check.names = FALSE)
-  ss2 <- data.frame(car::Anova(model, type = "II"), check.names = FALSE)
-  ss3 <- data.frame(car::Anova(model, type = "III"), check.names = FALSE)
-  ss2$`Mean Sq` <- ss2$`Sum Sq` / ss2$Df
-  ss3$`Mean Sq` <- ss3$`Sum Sq` / ss3$Df
-  ss2 <- ss2[, c("Df", "Sum Sq", "Mean Sq", "F value", "Pr(>F)")]
-  ss3 <- ss3[, c("Df", "Sum Sq", "Mean Sq", "F value", "Pr(>F)")]
-
   if (ss == "I") {
-    summary_aov <- ss1
-  }
-  if (ss == "II") {
-    summary_aov <- ss2
+    summary_aov <- data.frame(summary(model)[[1]], check.names = FALSE)
+  } else {
+    summary_aov <- data.frame(car::Anova(model, type = ss), check.names = FALSE)
+    summary_aov$`Mean Sq` <- summary_aov$`Sum Sq` / summary_aov$Df
+    summary_aov <- summary_aov[, c("Df", "Sum Sq", "Mean Sq", "F value", "Pr(>F)")]
   }
   if (ss == "III") {
-    summary_aov <- ss3[2:nrow(ss3), ]
-    intercept <- ss3[1, ]
+    intercept <- summary_aov[1, ]
+    summary_aov <- summary_aov[2:nrow(summary_aov), ]
   }
 
   residual_row <- nrow(summary_aov)
@@ -7629,8 +7752,8 @@ compute_aov_es <- function(model, ss = "I") {
   ss_error <- summary_aov[residual_row, 2]
   ss_total <- rep(sum(summary_aov[1:residual_row, 2]), residual_row - 1)
 
-  omega <- abs((ss_effect - df_effect * ms_error) / (ss_total + ms_error))
-  partial_omega <- abs((df_effect * (ms_effect - ms_error)) / (ss_effect + (n_total - df_effect) * ms_error))
+  omega <- (ss_effect - df_effect * ms_error) / (ss_total + ms_error)
+  partial_omega <- (df_effect * (ms_effect - ms_error)) / (ss_effect + (n_total - df_effect) * ms_error)
   names(omega) <- names(partial_omega) <- trimws(rownames(summary_aov)[1:(residual_row - 1)])
   eta <- ss_effect / ss_total
   partial_eta <- ss_effect / (ss_effect + ss_error)
@@ -7642,7 +7765,7 @@ compute_aov_es <- function(model, ss = "I") {
   }
 
   summary_aov <- data.frame(
-    call = deparse(eval(model$call$formula)),
+    call = paste(deparse(stats::formula(model)), collapse = ""),
     ss = ss,
     comparisons = trimws(row.names(summary_aov)),
     summary_aov,
@@ -7650,7 +7773,7 @@ compute_aov_es <- function(model, ss = "I") {
   )
 
   result <- data.frame(
-    call = deparse(eval(model$call$formula)),
+    call = paste(deparse(stats::formula(model)), collapse = ""),
     ss = ss,
     comparisons = names(omega),
     etasq = eta,
@@ -7740,6 +7863,8 @@ compute_aov_es <- function(model, ss = "I") {
 #' Games, P. A., & Howell, J. F. (1976). Pairwise multiple comparison procedures with unequal n's and/or variances: A Monte Carlo study. Journal of Educational Statistics, 1(2), 113-125. \doi{10.3102/10769986001002113}
 #'
 #' Kramer, C. Y. (1956). Extension of multiple range tests to group means with unequal numbers of replications. Biometrics, 12(3), 307-310. \doi{10.2307/3001469}
+#'
+#' Peters, G.-J. Y. userfriendlyscience: Quantitative analysis made accessible (R package version 0.7.2). \url{https://github.com/Matherion/userfriendlyscience}
 #'
 #' Tukey, J. W. (1953). The problem of multiple comparisons. Unpublished manuscript, Princeton University.
 #' @importFrom utils combn

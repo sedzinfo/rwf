@@ -3,6 +3,13 @@
 \name{compute_kruskal_wallis_test}
 \alias{compute_kruskal_wallis_test}
 \title{Kruskal-Wallis Test with Effect Sizes}
+\source{
+The computation of \code{H}, including the correction for ties, is
+adapted from \code{stats::kruskal.test} (R Core Team, R package \code{stats},
+licensed GPL-2 | GPL-3). \code{etasq} and \code{epsilonsq} use the same
+formulas as \code{rstatix::kruskal_effsize} and
+\code{effectsize::rank_epsilon_squared}.
+}
 \usage{
 compute_kruskal_wallis_test(
   formula,
@@ -96,7 +103,13 @@ set.seed(1)
 compute_kruskal_wallis_test(formula = form, df = df_blood_pressure, ci = TRUE)
 }
 \references{
+Ben-Shachar, M. S., \enc{Lüdecke}{Ludecke}, D., & Makowski, D. (2020). effectsize: Estimation of effect size indices and standardized parameters. Journal of Open Source Software, 5(56), 2815. \doi{10.21105/joss.02815}
+
 Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
+
+Kassambara, A. (2026). rstatix: Pipe-friendly framework for basic statistical tests (R package version 1.1.0). \doi{10.32614/CRAN.package.rstatix}
+
+R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}
 
 Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
 

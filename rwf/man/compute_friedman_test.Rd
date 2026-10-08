@@ -3,6 +3,11 @@
 \name{compute_friedman_test}
 \alias{compute_friedman_test}
 \title{Friedman Test with Effect Size}
+\source{
+\code{Q} is computed with the same tie-corrected formula as
+\code{stats::friedman.test} (R Core Team, R package \code{stats}, licensed
+GPL-2 | GPL-3).
+}
 \usage{
 compute_friedman_test(formula, df, ci = FALSE, conf.level = 0.95, nboot = 1000)
 }
@@ -87,6 +92,8 @@ Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed
 Friedman, M. (1937). The use of ranks to avoid the assumption of normality implicit in the analysis of variance. Journal of the American Statistical Association, 32(200), 675-701. \doi{10.1080/01621459.1937.10503522}
 
 Kendall, M. G., & Babington Smith, B. (1939). The problem of m rankings. The Annals of Mathematical Statistics, 10(3), 275-287. \doi{10.1214/aoms/1177732186}
+
+R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}
 }
 \keyword{ANOVA}
 \keyword{friedman}

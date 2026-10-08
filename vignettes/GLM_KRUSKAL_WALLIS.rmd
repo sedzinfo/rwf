@@ -27,6 +27,8 @@ load(paste0(directory, "data/df_blood_pressure.rda"))
 
 This shows the output of `compute_kruskal_wallis_test` from the package rwf, which runs the Kruskal-Wallis rank-sum test (Kruskal & Wallis, 1952), the non-parametric alternative to the one-way ANOVA. The function returns the test statistic $H$ with its degrees of freedom and p value, two effect sizes (rank eta-squared $\eta^2_H$ and rank epsilon-squared $\varepsilon^2_R$) and, optionally, bootstrap confidence intervals for both effect sizes. Each section gives the formulas the function uses, computes them by hand and checks the results against `stats`, `coin`, `rcompanion`, `rstatix` and `effectsize`.
 
+The computation of $H$, including the correction for ties, is adapted from `stats::kruskal.test` (R Core Team, 2026), and the effect sizes use the same formulas as `rstatix::kruskal_effsize` (Kassambara, 2026) and `effectsize::rank_epsilon_squared` (Ben-Shachar, Lüdecke & Makowski, 2020).
+
 Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
 
 The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_ANOVA.R)
@@ -429,17 +431,23 @@ check_kruskal_wallis(formula = form, df = df_missing)
 
 ## References
 
+Ben-Shachar, M. S., Lüdecke, D., & Makowski, D. (2020). effectsize: Estimation of effect size indices and standardized parameters. *Journal of Open Source Software, 5*(56), 2815. https://doi.org/10.21105/joss.02815
+
 Cohen, J. (1988). *Statistical power analysis for the behavioral sciences* (2nd ed.). Lawrence Erlbaum Associates.
 
 Dunn, O. J. (1964). Multiple comparisons using rank sums. *Technometrics, 6*(3), 241–252. https://doi.org/10.1080/00401706.1964.10490181
 
 Hollander, M., Wolfe, D. A., & Chicken, E. (2014). *Nonparametric statistical methods* (3rd ed.). Wiley.
 
+Kassambara, A. (2026). *rstatix: Pipe-friendly framework for basic statistical tests* (R package version 1.1.0). https://doi.org/10.32614/CRAN.package.rstatix
+
 King, B. M., Rosopa, P. J., & Minium, E. W. (2018). *Statistical reasoning in the behavioral sciences* (7th ed.). Wiley.
 
 Kruskal, W. H., & Wallis, W. A. (1952). Use of ranks in one-criterion variance analysis. *Journal of the American Statistical Association, 47*(260), 583–621. https://doi.org/10.1080/01621459.1952.10483441
 
 Lakens, D. (2013). Calculating and reporting effect sizes to facilitate cumulative science: A practical primer for t-tests and ANOVAs. *Frontiers in Psychology, 4*, 863. https://doi.org/10.3389/fpsyg.2013.00863
+
+R Core Team. (2026). *R: A language and environment for statistical computing*. R Foundation for Statistical Computing, Vienna, Austria. https://doi.org/10.32614/R.manuals
 
 Sawilowsky, S. S. (2009). New effect size rules of thumb. *Journal of Modern Applied Statistical Methods, 8*(2), 597–599. https://doi.org/10.22237/jmasm/1257035100
 

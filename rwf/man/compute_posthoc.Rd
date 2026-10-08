@@ -90,6 +90,8 @@ Games, P. A., & Howell, J. F. (1976). Pairwise multiple comparison procedures wi
 
 Kramer, C. Y. (1956). Extension of multiple range tests to group means with unequal numbers of replications. Biometrics, 12(3), 307-310. \doi{10.2307/3001469}
 
+Peters, G.-J. Y. userfriendlyscience: Quantitative analysis made accessible (R package version 0.7.2). \url{https://github.com/Matherion/userfriendlyscience}
+
 Tukey, J. W. (1953). The problem of multiple comparisons. Unpublished manuscript, Princeton University.
 }
 \keyword{ANOVA}
