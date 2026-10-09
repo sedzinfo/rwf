@@ -7,13 +7,22 @@ Maintainer: Dimitrios Zacharatos <dzacharatos@yahoo.com>
 Description: Utilities for psychological data analysis, including automated statistical reporting and visualization for common inferential and modeling workflows. Helps users run analyses faster with less repetitive code and more standardized output.
 Depends: R (>= 3.5), ggplot2
 Imports: MASS, future, future.apply, gtools, irr, openxlsx, pROC, plyr, psych, reshape2, xgboost, DescTools, Rmisc, ggfortify, ggrepel, car, sjstats, ggpubr, gridExtra, scales, pwr, mirt, nlme, NLP, openNLP, tm, spelling, lavaan, ggExtra, QuantPsyc, purrr, emmeans, ez, htmlwidgets, mixlm, rstudioapi, igraph, stopwords, gtable, stringr, rlang
-Suggests: 
+Suggests:
+    caret,
     coin,
+    DiagrammeR,
     e1071,
     effectsize,
     forecast,
+    GPArotation,
+    lme4,
     lsr,
+    Matrix,
+    nortest,
+    openNLPdata,
     rcompanion,
+    rJava,
+    rmarkdown,
     rstatix,
     testthat (>= 3.0.0),
     thurstonianIRT,

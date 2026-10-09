@@ -482,3 +482,73 @@ test_that("report_manova returns the multivariate tests invisibly", {
   }
   expect_s3_class(result$type_three, "Anova.mlm")
 })
+
+##########################################################################################
+# report_oneway: options not covered above
+##########################################################################################
+test_that("report_oneway writes the means and diagnostics plots to PDF files", {
+  skip_on_cran()
+  withr::local_dir(withr::local_tempdir())
+  withr::local_pdf("device.pdf")
+  result <- quietly(report_oneway(df = mtcars, dv = 1, iv = 9:10, file = "anova", plot_means = TRUE, plot_diagnostics = TRUE))
+  expect_true(all(file.exists(c("anova.xlsx", "anova_means.pdf", "anova_diagnostics.pdf"))))
+  expect_gt(file.size("anova_means.pdf"), 0)
+  expect_gt(file.size("anova_diagnostics.pdf"), 0)
+  expect_equal(result$fisher$statistic[result$fisher$IV == "am"],
+               compute_one_way_test(formula = mpg ~ am, df = transform(mtcars, am = factor(am)))$statistic)
+})
+
+test_that("report_oneway prints a progress bar with pb = TRUE without changing the results", {
+  output <- utils::capture.output(with_bar <- report_oneway(df = df_blood_pressure, dv = 4:5, iv = 2:3, pb = TRUE))
+  expect_true(any(grepl("100%", output)))
+  without_bar <- quietly(report_oneway(df = df_blood_pressure, dv = 4:5, iv = 2:3, pb = FALSE))
+  expect_equal(with_bar, without_bar)
+})
+
+##########################################################################################
+# report_factorial_anova: options not covered above
+##########################################################################################
+test_that("report_factorial_anova passes observed, type and white.adjust to ez::ezANOVA", {
+  tooth <- transform(ToothGrowth, id = factor(seq_len(nrow(ToothGrowth))), dose = factor(dose))
+  observed <- quietly(report_factorial_anova(df = tooth, dv = "len", wid = "id", between = c("supp", "dose"),
+                                             observed = "supp", white.adjust = FALSE))
+  ez_observed <- quietly(ez::ezANOVA(data = tooth, dv = len, wid = id, between = .(supp, dose), observed = supp,
+                                     type = 3, white.adjust = FALSE, detailed = TRUE))
+  omnibus <- observed$omnibus[match(ez_observed$ANOVA$Effect, observed$omnibus$Effect), ]
+  expect_equal(omnibus$ges, ez_observed$ANOVA$ges)
+  expect_equal(omnibus$F, ez_observed$ANOVA$F)
+  type_two <- quietly(report_factorial_anova(df = tooth, dv = "len", wid = "id", between = c("supp", "dose"),
+                                             type = 2, white.adjust = FALSE))
+  ez_type_two <- quietly(ez::ezANOVA(data = tooth, dv = len, wid = id, between = .(supp, dose), type = 2,
+                                     white.adjust = FALSE, detailed = TRUE))
+  omnibus <- type_two$omnibus[match(ez_type_two$ANOVA$Effect, type_two$omnibus$Effect), ]
+  expect_equal(omnibus$F, ez_type_two$ANOVA$F)
+  expect_equal(omnibus$p, ez_type_two$ANOVA$p)
+  # Type II and the classical F tests agree with car::Anova on the aov model
+  car_table <- car::Anova(stats::lm(len ~ supp * dose, data = tooth), type = 2)
+  expect_equal(omnibus$F, car_table[ez_type_two$ANOVA$Effect, "F value"])
+})
+
+test_that("report_factorial_anova analyses every dependent variable separately", {
+  withr::local_seed(3)
+  tooth <- transform(ToothGrowth, id = factor(seq_len(nrow(ToothGrowth))), dose = factor(dose))
+  tooth$noise <- stats::rnorm(nrow(tooth))
+  both <- quietly(report_factorial_anova(df = tooth, dv = c("len", "noise"), wid = "id", between = "dose"))
+  noise <- quietly(report_factorial_anova(df = tooth, dv = "noise", wid = "id", between = "dose"))
+  expect_equal(unique(both$omnibus$dv), c("len", "noise"))
+  expect_named(both$object, c("len", "noise"))
+  expect_equal(both$omnibus$F[both$omnibus$dv == "noise"], noise$omnibus$F)
+  expect_equal(both$post_hoc$p.value[both$post_hoc$dv == "noise"], noise$post_hoc$p.value)
+  expect_equal(nrow(both$post_hoc), 2 * 3)
+})
+
+test_that("report_factorial_anova names the workbook sheet by design and can leave out the post hoc sheet", {
+  withr::local_dir(withr::local_tempdir())
+  co2 <- transform(df_co2, conc = factor(conc), Plant = factor(Plant))
+  result <- quietly(report_factorial_anova(df = co2, dv = "uptake", wid = "Plant", within = "conc", within_full = "conc",
+                                           file = "within", post_hoc_test = FALSE))
+  expect_equal(openxlsx::getSheetNames("within.xlsx"), c("ANOVA within", "effect size", "descriptives", "call"))
+  # the comparisons are still returned: 7 concentrations give 21 pairs
+  expect_equal(nrow(result$post_hoc), 21)
+  expect_true(all(c("W[M]", "p[M]", "GGe", "p[GG]", "HFe", "p[HF]") %in% names(result$omnibus)))
+})
