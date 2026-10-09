@@ -162,7 +162,6 @@ test_that("report_ttests passes var.equal and alternative to stats::t.test", {
 })
 
 test_that("report_ttests t statistic and interval refer to level1 minus level2", {
-  skip("rwf bug: t, CI, W follow the sorted factor levels while level1/level2 follow the order of appearance")
   # In df_blood_pressure "Male" appears before "Female", the reverse of the sorted order
   result <- quietly(report_ttests(df = df_blood_pressure, dv = 4, iv = 2))
   x <- df_blood_pressure$bp_before[df_blood_pressure$sex == result$level1]
@@ -274,7 +273,6 @@ test_that("report_wtests effect size r does not depend on the alternative hypoth
 })
 
 test_that("report_wtests W statistic refers to level1", {
-  skip("rwf bug: t, CI, W follow the sorted factor levels while level1/level2 follow the order of appearance")
   result <- quietly(report_wtests(df = df_blood_pressure, dv = 4, iv = 2))
   x <- df_blood_pressure$bp_before[df_blood_pressure$sex == result$level1]
   y <- df_blood_pressure$bp_before[df_blood_pressure$sex == result$level2]

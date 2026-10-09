@@ -204,9 +204,9 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
     bonferroni_p = "bonferroni adjusted critical value for a=0.05",
     significant = "if TRUE result is significant after bonferroni adjustment"
   )
-
+  
   critical <- list(p = "<0.05", "p[bartlett]" = "<0.05")
-
+  
   df_ttest <- data.frame()
   combinations <- expand.grid(names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv", "dv")
@@ -219,7 +219,8 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
     # setTxtProgressBar(pb,i)
     tempdata <- df[complete.cases(df[, c(dependent, independent)]), ]
     tempdata[, independent] <- factor(tempdata[, independent])
-    combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsFactors = FALSE)
+    # combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsFactors = FALSE)
+    combinations_levels <- data.frame(t(utils::combn(levels(tempdata[, independent]), 2)), stringsAsFactors = FALSE)
     tempdata_all_levels <- df[complete.cases(df[, c(dependent, independent)]), ]
     for (l in 1:nrow(combinations_levels)) {
       f1 <- as.character(combinations_levels$X1[l])
@@ -315,10 +316,10 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
 #'   data = df_blood_pressure[df_blood_pressure$agegrp %in% c("30-45", "46-59"), ]
 #' )
 compute_wilcoxon_effect_size <- function(formula, data,
-                                          mu = 0,
-                                          exact = NULL,
-                                          correct = TRUE,
-                                          ...) {
+                                         mu = 0,
+                                         exact = NULL,
+                                         correct = TRUE,
+                                         ...) {
   wtest <- stats::wilcox.test(
     formula,
     data = data,
@@ -464,9 +465,9 @@ report_wtests <- function(df, dv, iv, file = NULL, ...) {
     bonferroni_p = "bonferroni adjusted critical value for a=0.05",
     significant = "if TRUE result is significant after bonferroni adjustment"
   )
-
+  
   critical <- list(p = "<0.05", "p[bartlett]" = "<0.05")
-
+  
   df_wtest <- data.frame()
   combinations <- expand.grid(names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv", "dv")
@@ -479,7 +480,8 @@ report_wtests <- function(df, dv, iv, file = NULL, ...) {
     # setTxtProgressBar(pb,i)
     tempdata <- df[complete.cases(df[, c(dependent, independent)]), ]
     tempdata[, independent] <- factor(tempdata[, independent])
-    combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsFactors = FALSE)
+    # combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsFactors = FALSE)
+    combinations_levels <- data.frame(t(utils::combn(levels(tempdata[, independent]), 2)), stringsAsFactors = FALSE)
     tempdata_all_levels <- df[complete.cases(df[, c(dependent, independent)]), ]
     for (l in 1:nrow(combinations_levels)) {
       f1 <- as.character(combinations_levels$X1[l])
