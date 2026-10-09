@@ -173,15 +173,21 @@ test_that("report_ttests t statistic and interval refer to level1 minus level2",
   expect_equal(sign(result$t), sign(result$mean1 - result$mean2))
 })
 
-test_that("report_ttests converts d to r with r = d / sqrt(d^2 + (n1 + n2)^2 / (n1 * n2))", {
-  skip("rwf bug: r is computed as d / (sqrt(d^2) + a) instead of d / sqrt(d^2 + a)")
-  result <- quietly(report_ttests(df = df_blood_pressure, dv = 4:5, iv = 2:3))
-  a <- (result$n1 + result$n2)^2 / (result$n1 * result$n2)
-  expect_equal(result$r, result$d / sqrt(result$d^2 + a))
+test_that("report_ttests r is the point-biserial correlation", {
+  skip_if_not_installed("effectsize")
+  result <- quietly(report_ttests(df = df_blood_pressure, dv = 4, iv = 2))
+  y <- df_blood_pressure$bp_before
+  group <- as.numeric(df_blood_pressure$sex == "Male")
+  # r is the correlation between the outcome and group membership (coded 0/1)
+  expect_equal(result$r, abs(cor(y, group)))
+  # the same value from effectsize, converting d with the two sample sizes
+  expect_equal(result$r, effectsize::d_to_r(result$d, n1 = result$n1, n2 = result$n2))
+  # and from the Student t statistic, independently of d
+  t_student <- stats::t.test(y ~ group, var.equal = TRUE)
+  expect_equal(result$r, abs(effectsize::t_to_r(t_student$statistic, t_student$parameter)$r), ignore_attr = TRUE)
 })
 
 test_that("report_ttests stores the dependent variable in DV and the grouping variable in IV", {
-  skip("rwf bug: the DV column holds the independent variable name and IV the dependent variable name")
   result <- quietly(report_ttests(df = df_blood_pressure, dv = 4, iv = 2))
   expect_equal(result$DV, "bp_before")
   expect_equal(result$IV, "sex")

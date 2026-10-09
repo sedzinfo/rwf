@@ -91,7 +91,6 @@ test_that("compute_standard 'uz' inverts a z transformation with the supplied me
 })
 
 test_that("compute_standard 'normal_density' matches stats::dnorm", {
-  skip("rwf bug: normal_density uses 1/sqrt(sd*pi) instead of 1/(sd*sqrt(2*pi))")
   x <- seq(-4, 4, by = 0.1)
   expect_equal(compute_standard(x, type = "normal_density"), stats::dnorm(x))
   expect_equal(compute_standard(x, mean = 1, sd = 2, type = "normal_density"), stats::dnorm(x, mean = 1, sd = 2))

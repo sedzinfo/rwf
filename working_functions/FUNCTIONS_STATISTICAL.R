@@ -126,7 +126,8 @@ compute_standard <- function(vector, mean = 0, sd = 1, type = "z", input = "non_
     result <- (vector - min(vector, na.rm = TRUE)) / (max(vector, na.rm = TRUE) - min(vector, na.rm = TRUE))
   }
   if (type == "normal_density") {
-    result <- (1 / (sqrt(sd * pi))) * exp(-0.5 * ((vector - mean) / sd)^2)
+    # result <- (1 / (sqrt(sd * pi))) * exp(-0.5 * ((vector - mean) / sd)^2)
+    result <- (1 / (sd * sqrt(2 * pi))) * exp(-0.5 * ((vector - mean) / sd)^2)
   }
   if (type == "cumulative_density") {
     result <- cumsum(vector)
