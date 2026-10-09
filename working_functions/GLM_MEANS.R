@@ -500,7 +500,11 @@ report_wtests <- function(df, dv, iv, file = NULL, ...) {
       sd_pooled <- sqrt((sd1^2 + sd2^2) / 2)
       cohen_d <- abs(mean2 - mean1) / sd_pooled
       n <- nrow(stats::model.frame(form, data = tempdata))
-      z <- stats::qnorm(wtest$p.value / 2, lower.tail = FALSE)
+      # z <- stats::qnorm(wtest$p.value / 2, lower.tail = FALSE)
+      args_two_sided <- list(...)
+      args_two_sided$alternative <- "two.sided"
+      wtest_two_sided <- do.call(stats::wilcox.test, c(list(formula = form, data = tempdata), args_two_sided))
+      z <- stats::qnorm(wtest_two_sided$p.value / 2, lower.tail = FALSE)
       r <- as.numeric(abs(z) / sqrt(n))
       wtest_r <- data.frame(
         DV = dependent,

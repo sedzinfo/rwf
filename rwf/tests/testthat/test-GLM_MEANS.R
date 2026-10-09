@@ -266,7 +266,6 @@ test_that("report_wtests passes extra arguments to stats::wilcox.test", {
 })
 
 test_that("report_wtests effect size r does not depend on the alternative hypothesis", {
-  skip("rwf bug: report_wtests computes r from the one-sided p-value when alternative is not two.sided")
   two_sided <- quietly(report_wtests(df = df_blood_pressure, dv = 4, iv = 3, exact = FALSE))
   less <- quietly(report_wtests(df = df_blood_pressure, dv = 4, iv = 3, alternative = "less", exact = FALSE))
   expect_equal(less$r, two_sided$r)
