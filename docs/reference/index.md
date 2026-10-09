@@ -11,7 +11,7 @@
 - [`compute_alpha_diagnostics()`](https://sedzinfo.github.io/rwf/reference/compute_alpha_diagnostics.md)
   : Item-total correlations and alpha-if-item-removed diagnostics
 - [`compute_aov_es()`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)
-  : Compute eta and omega
+  : Effect Sizes for ANOVA Models
 - [`compute_cohens_d()`](https://sedzinfo.github.io/rwf/reference/compute_cohens_d.md)
   : Compute Cohen's D Effect Size
 - [`compute_confidence_inteval()`](https://sedzinfo.github.io/rwf/reference/compute_confidence_inteval.md)
@@ -49,7 +49,7 @@
 - [`compute_one_way_test()`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)
   : One-Way ANOVA with Effect Sizes and Power
 - [`compute_posthoc()`](https://sedzinfo.github.io/rwf/reference/compute_posthoc.md)
-  : Games Howell Tukey post hoc tests
+  : Tukey and Games-Howell Post Hoc Tests
 - [`compute_power_r()`](https://sedzinfo.github.io/rwf/reference/compute_power_r.md)
   : Compute r power curve
 - [`compute_power_r_matrix()`](https://sedzinfo.github.io/rwf/reference/compute_power_r_matrix.md)
@@ -179,7 +179,7 @@
 - [`report_efa()`](https://sedzinfo.github.io/rwf/reference/report_efa.md)
   : Output EFA model
 - [`report_factorial_anova()`](https://sedzinfo.github.io/rwf/reference/report_factorial_anova.md)
-  : Factorial ANOVA report for one or more dependent variables
+  : Factorial, Repeated Measures and Mixed ANOVA Report
 - [`report_hlr()`](https://sedzinfo.github.io/rwf/reference/report_hlr.md)
   : Report HLR
 - [`report_irt()`](https://sedzinfo.github.io/rwf/reference/report_irt.md)
@@ -189,11 +189,11 @@
 - [`report_logistic()`](https://sedzinfo.github.io/rwf/reference/report_logistic.md)
   : Report logistic regression
 - [`report_manova()`](https://sedzinfo.github.io/rwf/reference/report_manova.md)
-  : Manova result
+  : MANOVA Report
 - [`report_normality_tests()`](https://sedzinfo.github.io/rwf/reference/report_normality_tests.md)
   : Battery of normality tests
 - [`report_oneway()`](https://sedzinfo.github.io/rwf/reference/report_oneway.md)
-  : One way
+  : One-Way ANOVA Report for Several Variables
 - [`report_pdf()`](https://sedzinfo.github.io/rwf/reference/report_pdf.md)
   : Save or display a list of plots as a multi-page PDF
 - [`report_regression()`](https://sedzinfo.github.io/rwf/reference/report_regression.md)
@@ -250,10 +250,10 @@
 - [`generate_matrix_A()`](https://sedzinfo.github.io/rwf/reference/generate_matrix_A.md)
   : Generate Matrix A
 - [`generate_matrix_lambda_hat()`](https://sedzinfo.github.io/rwf/reference/generate_matrix_lambda_hat.md)
-  : Generate matrix lambda for spesified number of comparisons
+  : Generate matrix lambda for specified number of comparisons
 - [`generate_missing()`](https://sedzinfo.github.io/rwf/reference/generate_missing.md)
   : Introduce missing values into a vector or data frame
-- [`generate_multiple_responce_vector()`](https://sedzinfo.github.io/rwf/reference/generate_multiple_responce_vector.md)
+- [`generate_multiple_response_vector()`](https://sedzinfo.github.io/rwf/reference/generate_multiple_response_vector.md)
   : Generate a multiple response vector
 - [`generate_string()`](https://sedzinfo.github.io/rwf/reference/generate_string.md)
   : Generate random strings

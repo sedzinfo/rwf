@@ -1,7 +1,7 @@
 # Write matrix or dataframe to excel sheet
 
-Usefull for generic data where conditional formating of a spesific
-collumn is required
+Useful for generic data where conditional formatting of a specific
+column is required
 
 ## Usage
 

@@ -14,6 +14,12 @@ the subjects rank the conditions in the same order.
 compute_friedman_test(formula, df, ci = FALSE, conf.level = 0.95, nboot = 1000)
 ```
 
+## Source
+
+`Q` is computed with the same tie-corrected formula as
+[`stats::friedman.test`](https://rdrr.io/r/stats/friedman.test.html) (R
+Core Team, R package `stats`, licensed GPL-2 \| GPL-3).
+
 ## Arguments
 
 - formula:
@@ -113,6 +119,10 @@ Statistical Association, 32(200), 675-701.
 Kendall, M. G., & Babington Smith, B. (1939). The problem of m rankings.
 The Annals of Mathematical Statistics, 10(3), 275-287.
 [doi:10.1214/aoms/1177732186](https://doi.org/10.1214/aoms/1177732186)
+
+R Core Team (2026). R: A language and environment for statistical
+computing. R Foundation for Statistical Computing, Vienna, Austria.
+[doi:10.32614/R.manuals](https://doi.org/10.32614/R.manuals)
 
 ## Examples
 

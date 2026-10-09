@@ -5,7 +5,7 @@ Output for irt model
 ## Usage
 
 ``` r
-report_irt(model, m2 = TRUE, file = NULL)
+report_irt(model, file = NULL)
 ```
 
 ## Arguments
@@ -13,10 +13,6 @@ report_irt(model, m2 = TRUE, file = NULL)
 - model:
 
   object mirt
-
-- m2:
-
-  if TRUE report m2 statistics
 
 - file:
 

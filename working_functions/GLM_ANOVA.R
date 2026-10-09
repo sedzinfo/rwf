@@ -566,9 +566,9 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
     games_howell = "Posthoc Games Howell: good for unequal sample sizes and heteroscedasticity",
     homogeneity_instruction = "significant tests show heteroscedasticity and suggest the use of Welch or alternative procedures. Levene test depends on normality: Non normal distributions may result in false significant results. Sample size may affect test results"
   )
-
+  
   df_fisher <- df_welch <- df_kruskal <- df_tukey <- df_games_howell <- df_levene <- df_bartlett <- data.frame()
-
+  
   combinations <- expand.grid(names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv", "dv")
   row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)

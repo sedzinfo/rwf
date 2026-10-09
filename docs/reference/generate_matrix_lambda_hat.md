@@ -1,6 +1,6 @@
-# Generate matrix lambda for spesified number of comparisons
+# Generate matrix lambda for specified number of comparisons
 
-Generate matrix lambda for spesified number of comparisons
+Generate matrix lambda for specified number of comparisons
 
 ## Usage
 

@@ -10,7 +10,7 @@ to an Excel file.
 ## Usage
 
 ``` r
-compute_frequencies(df, ordered = TRUE, file = NULL)
+compute_frequencies(df, file = NULL)
 ```
 
 ## Arguments
@@ -19,11 +19,6 @@ compute_frequencies(df, ordered = TRUE, file = NULL)
 
   A data frame whose columns are the categorical variables to tabulate.
   All columns are processed regardless of class.
-
-- ordered:
-
-  Logical. When `TRUE` (default) the rows within each variable are
-  sorted by frequency in descending order.
 
 - file:
 

@@ -23,7 +23,7 @@ display_upper_lower_triangle(m_upper, m_lower, diagonal = NA)
 
   if "upper" it returns upper diagonal if "lower" it returns lower
   diagonal if NA returns NA in diagonal otherwise it returns any value
-  spesified
+  specified
 
 ## Examples
 

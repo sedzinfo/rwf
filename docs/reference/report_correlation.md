@@ -71,7 +71,7 @@ report_correlation(
 
 - scatterplot:
 
-  if TRUE it will outpu scatterplots
+  if TRUE it will output scatterplots
 
 ## Examples
 

@@ -85,7 +85,7 @@ report_regression(
 **Multiple R^2**: Variance Explained\
 **Adjusted R^2**: Indicates how much variance in Y would be accounted
 for if the model is derived from the population from which the sample
-was taken. Idealy, R^2 = Adjusted R^2\
+was taken. Ideally, R^2 = Adjusted R^2\
 **F-Statistic**: tests the null hypothesis is that the overall model has
 no effect\
 **Covariance ratios**: critical values CVR\>1+\[3(k+1)/n\]

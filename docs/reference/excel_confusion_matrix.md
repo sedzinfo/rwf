@@ -1,7 +1,7 @@
 # Write matrix or dataframe to excel sheet
 
-Usefull for correlation matrices since it uses conditional formatting
-for matrices
+Useful for correlation matrices since it uses conditional formatting for
+matrices
 
 ## Usage
 

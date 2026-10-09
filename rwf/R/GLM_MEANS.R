@@ -219,7 +219,7 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
     # setTxtProgressBar(pb,i)
     tempdata <- df[complete.cases(df[, c(dependent, independent)]), ]
     tempdata[, independent] <- factor(tempdata[, independent])
-    combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsindependent = FALSE)
+    combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsFactors = FALSE)
     tempdata_all_levels <- df[complete.cases(df[, c(dependent, independent)]), ]
     for (l in 1:nrow(combinations_levels)) {
       f1 <- as.character(combinations_levels$X1[l])
@@ -241,8 +241,8 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
       # hedges_g<-J*cohen_d
       # r_from_d<-cohen_d/sqrt(cohen_d^2+((n1+n2)^2/(n1*n2)))
       ttest_r <- data.frame(
-        DV = independent,
-        IV = dependent,
+        DV = dependent,
+        IV = independent,
         level1 = f1,
         level2 = f2,
         n1 = n1,
@@ -260,7 +260,7 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
         sd2 = sd2,
         sd_pooled = sd_pooled,
         d = cohen_d,
-        r = cohen_d / (sqrt(cohen_d^2) + (((n1 + n2)^2) / (n1 * n2))),
+        r = cohen_d / sqrt(cohen_d^2 + (n1 + n2 - 2) * (1 / n1 + 1 / n2)),
         "k_squared[bartlett]" = bartlett.test$statistic,
         "df[bartlett]" = as.numeric(bartlett.test$parameter),
         "p[bartlett]" = bartlett.test$p.value,
@@ -479,7 +479,7 @@ report_wtests <- function(df, dv, iv, file = NULL, ...) {
     # setTxtProgressBar(pb,i)
     tempdata <- df[complete.cases(df[, c(dependent, independent)]), ]
     tempdata[, independent] <- factor(tempdata[, independent])
-    combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsindependent = FALSE)
+    combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsFactors = FALSE)
     tempdata_all_levels <- df[complete.cases(df[, c(dependent, independent)]), ]
     for (l in 1:nrow(combinations_levels)) {
       f1 <- as.character(combinations_levels$X1[l])
@@ -501,8 +501,8 @@ report_wtests <- function(df, dv, iv, file = NULL, ...) {
       z <- stats::qnorm(wtest$p.value / 2, lower.tail = FALSE)
       r <- as.numeric(abs(z) / sqrt(n))
       wtest_r <- data.frame(
-        DV = independent,
-        IV = dependent,
+        DV = dependent,
+        IV = independent,
         level1 = f1,
         level2 = f2,
         n1 = n1,

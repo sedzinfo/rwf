@@ -24,6 +24,14 @@ quantifies how much of the variance in the outcome the groups explain.
 compute_one_way_test(formula, df, var.equal = TRUE)
 ```
 
+## Source
+
+The group statistics and the Welch test (the weights, the Welch F
+statistic and its degrees of freedom) are adapted from
+[`stats::oneway.test`](https://rdrr.io/r/stats/oneway.test.html) (R Core
+Team, R package `stats`, licensed GPL-2 \| GPL-3). The sums of squares,
+effect sizes and power are added in rwf.
+
 ## Arguments
 
 - formula:
@@ -62,7 +70,7 @@ A one-row data frame with:
 
 - `partial.omegasq`: partial omega-squared,
   \\df\_{effect}(MS\_{effect}-MS\_{error})/(df\_{effect}
-  MS\_{effect}+(N-df\_{effect}) MS\_{error})\\
+  MS\_{effect}+(df\_{error}+1) MS\_{error})\\
 
 - `cohens.f`: Cohen's f, \\\sqrt{\eta^2/(1-\eta^2)}\\
 
@@ -79,13 +87,12 @@ A one-row data frame with:
 
 ## Details
 
-In a one-way design `partial.etasq` equals `etasq`, and with equal
-variances `partial.omegasq` equals `omegasq`. `etasq` and
-`partial.etasq` are in \[0, 1\] and are biased upwards in small samples,
-by about \\(k-1)/(N-1)\\ when there is no effect. `omegasq` and
-`partial.omegasq` remove most of that bias and are negative when \\F \<
-1\\. Multiplying `etasq` or `omegasq` by 100 gives the percentage of
-variance explained by the groups.
+In a one-way design `partial.etasq` equals `etasq` and `partial.omegasq`
+equals `omegasq`. `etasq` and `partial.etasq` are in \[0, 1\] and are
+biased upwards in small samples, by about \\(k-1)/(N-1)\\ when there is
+no effect. `omegasq` and `partial.omegasq` remove most of that bias and
+are negative when \\F \< 1\\. Multiplying `etasq` or `omegasq` by 100
+gives the percentage of variance explained by the groups.
 
 Rules of thumb for `etasq`, `omegasq` and `cohens.f`. Small, medium and
 large are the benchmarks of Cohen (1988); tiny, very large and huge
@@ -117,15 +124,13 @@ size to plan a study, for example with
 Welch's test (Welch, 1951) has no sums of squares. With
 `var.equal = FALSE`, `ms_effect` and `ms_error` are the numerator and
 denominator of the Welch F statistic and `ss_effect` and `ss_error` are
-\\MS \times df\\. The resulting `etasq`, `omegasq` and `cohens.f` equal
-the conversions of the Welch F statistic in
+\\MS \times df\\. The resulting `etasq`, `omegasq`, `partial.omegasq`
+and `cohens.f` equal the conversions of the Welch F statistic in
 [`effectsize::F_to_eta2`](https://easystats.github.io/effectsize/reference/F_to_eta2.html),
 [`effectsize::F_to_omega2`](https://easystats.github.io/effectsize/reference/F_to_eta2.html)
 and
 [`effectsize::F_to_f`](https://easystats.github.io/effectsize/reference/F_to_eta2.html).
-`partial.omegasq` uses the actual sample size instead of the Welch
-degrees of freedom and differs from `omegasq`. Treat the Welch effect
-sizes as approximations.
+Treat the Welch effect sizes as approximations.
 
 Rows with a missing value in the outcome or the grouping variable are
 removed before the test, as in
@@ -145,6 +150,10 @@ Olejnik, S., & Algina, J. (2003). Generalized eta and omega squared
 statistics: Measures of effect size for some common research designs.
 Psychological Methods, 8(4), 434-447.
 [doi:10.1037/1082-989X.8.4.434](https://doi.org/10.1037/1082-989X.8.4.434)
+
+R Core Team (2026). R: A language and environment for statistical
+computing. R Foundation for Statistical Computing, Vienna, Austria.
+[doi:10.32614/R.manuals](https://doi.org/10.32614/R.manuals)
 
 Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of
 Modern Applied Statistical Methods, 8(2), 597-599.
@@ -203,5 +212,5 @@ compute_one_way_test(formula = form, df = df_blood_pressure, var.equal = TRUE)
 #> 1 bp_before ~ agegrp Assuming homoscedasticity   2485.55 12952.15  1242.775 110.7021 0.1610052     0.1610052 0.1456192       0.1456192 0.4380668 0.9925726   11.2263         2      117 3.466707e-05
 compute_one_way_test(formula = form, df = df_blood_pressure, var.equal = FALSE)
 #>              formula                      method ss_effect ss_error ms_effect ms_error     etasq partial.etasq   omegasq partial.omegasq  cohens.f     power statistic df_effect df_error            p
-#> 1 bp_before ~ agegrp Assuming heteroscedasticity  48.00725 156.0266  24.00362 2.017238 0.2352906     0.2352906 0.2134071       0.1537287 0.5546947 0.9998626  11.89925         2 77.34665 3.121909e-05
+#> 1 bp_before ~ agegrp Assuming heteroscedasticity  48.00725 156.0266  24.00362 2.017238 0.2352906     0.2352906 0.2134071       0.2134071 0.5546947 0.9998626  11.89925         2 77.34665 3.121909e-05
 ```

@@ -41,7 +41,7 @@ decompose_datetime(
 
 - breaks:
 
-  Numeric vector Breaks define hour of day for classifiying into\
+  Numeric vector Breaks define hour of day for classifying into\
   "Night", "Morning", "Noon", "Afternoon", "Evening".\
 
 - ...:
@@ -60,13 +60,13 @@ decompose_datetime(x = d1)
 #> 1 2026            10          08 2026-10-08
 decompose_datetime(x = d2)
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME
-#> 1 2026            10          08   09     03     25      328185 2026-10-08     09:03
+#> 1 2026            10          08   14     38     26      099735 2026-10-08     14:38
 decompose_datetime(x = d1, extended = TRUE)
 #>   QUARTER   MONTH     JULIAN  WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
 #> 1      Q4 October 20734 days Thursday       <NA> 2026            10          08 2026-10-08
 decompose_datetime(x = d2, extended = TRUE)
 #>   QUARTER   MONTH        JULIAN  WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME
-#> 1      Q4 October 20734.38 days Thursday    Morning 2026            10          08   09     03     25      328185 2026-10-08     09:03
+#> 1      Q4 October 20734.61 days Thursday       Noon 2026            10          08   14     38     26      099735 2026-10-08     14:38
 decompose_datetime(x = "01/15/1900", format = "%m/%e/%Y")
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
 #> 1 1900            01          15 1900-01-15

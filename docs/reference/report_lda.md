@@ -5,7 +5,7 @@ Report for MASS::lda
 ## Usage
 
 ``` r
-report_lda(model, file = NULL, w = 10, h = 10, base_size = 10, title = "")
+report_lda(model, file = NULL)
 ```
 
 ## Arguments
@@ -17,22 +17,6 @@ report_lda(model, file = NULL, w = 10, h = 10, base_size = 10, title = "")
 - file:
 
   output filename
-
-- w:
-
-  width of pdf file
-
-- h:
-
-  height of pdf file
-
-- base_size:
-
-  base font size
-
-- title:
-
-  plot title
 
 ## Examples
 
