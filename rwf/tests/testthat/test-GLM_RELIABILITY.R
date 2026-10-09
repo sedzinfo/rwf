@@ -217,6 +217,9 @@ test_that("report_alpha appends the question labels", {
 })
 
 test_that("report_alpha returns the psych::alpha bootstrap interval", {
+  # psych::alpha runs the bootstrap with parallel::mclapply, which set.seed() alone
+  # cannot make reproducible; a single core makes the draws depend only on the seed
+  withr::local_options(mc.cores = 1)
   items <- bfi_reversed()
   withr::local_seed(42)
   result <- quietly(report_alpha(df = items, key = alpha_key["A"], check.keys = FALSE, n.iter = 20))
