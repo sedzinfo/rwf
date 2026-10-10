@@ -195,16 +195,16 @@ remove_nc <- function(df, value = NA, remove_rows = FALSE, aggressive = FALSE, r
   df[df == ""] <- value
   if (remove_rows) {
     if (aggressive) {
-      df <- df[rowSums(is.na(df)) == 0, ]
+      df <- df[rowSums(is.na(df)) == 0, , drop = FALSE]
     } else {
-      df <- df[apply(df, 1, function(x) any(!is.na(x))), ]
+      df <- df[apply(df, 1, function(x) any(!is.na(x))), , drop = FALSE]
     }
   }
   if (remove_cols) {
-    df <- df[, colSums(!is.na(df)) > 0]
+    df <- df[, colSums(!is.na(df)) > 0, drop = FALSE]
     if (remove_zero_variance) {
       # df<-df[,!0==apply(df,2,function(x) stats::sd(x,na.rm=TRUE))]
-      df <- df[, apply(df, 2, function(x) length(table(x))) > 1]
+      df <- df[, apply(df, 2, function(x) length(table(x))) > 1, drop = FALSE]
     }
   }
   return(df)

@@ -188,7 +188,6 @@ test_that("remove_nc removes all-NA columns and, optionally, zero-variance colum
 })
 
 test_that("remove_nc returns a data frame when a single column survives", {
-  skip("rwf bug: column subsetting without drop = FALSE returns a vector when one column is left")
   rwf <- remove_nc(df = non_computable_frame(), remove_cols = TRUE, remove_zero_variance = TRUE)
   expect_s3_class(rwf, "data.frame")
   expect_identical(names(rwf), "b")
