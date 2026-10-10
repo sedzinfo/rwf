@@ -208,21 +208,19 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 #' )
 #' cdff(df = df)
 cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques = 0, parralel = FALSE, file = NULL) {
+  # plain lapply unless parallel is requested; restore the caller's future plan afterwards
   if (parralel) {
-    future::plan(future::multisession,
-      gc = TRUE, .cleanup = TRUE,
-      workers = future::availableCores("mc.cores")
-    )
+    old_plan <- future::plan(future::multisession, gc = TRUE, .cleanup = TRUE, workers = future::availableCores("mc.cores"))
+    on.exit(future::plan(old_plan), add = TRUE)
+    apply_fun <- future.apply::future_lapply
   } else {
-    future::plan(future::sequential)
+    apply_fun <- lapply
   }
 
-  check_df <- future.apply::future_lapply(df, function(y) {
+  check_df <- apply_fun(df, function(y) {
     # --- cache expensive operations ---
     y_na <- is.na(y)
     y_notna <- !y_na
-    y_clean <- y[y_notna] # non-NA values only
-    y_char <- as.character(y) # once only
     y_unlisted <- unlist(y) # once only
     u <- unique(y) # once only
 
@@ -242,7 +240,8 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
     }
 
     list(
-      EMPTY   = sum(y_char == "", na.rm = TRUE),
+      # only text can be empty; converting numbers to text just to count "" was the slow part
+      EMPTY   = if (is.character(y) || is.factor(y)) sum(y == "", na.rm = TRUE) else 0L,
       null    = sum(is.null(y)), # always 0 for df columns; kept for parity
       na      = sum(y_na),
       NOT_NA  = sum(y_notna),
@@ -289,7 +288,7 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
 
   # Uniques / Levels — single pass, pre-allocated with lapply
   if (nuniques > 0) {
-    uniques_list <- future.apply::future_lapply(df, function(y) {
+    uniques_list <- apply_fun(df, function(y) {
       u <- unique(y)
       lv <- levels(y)
 
