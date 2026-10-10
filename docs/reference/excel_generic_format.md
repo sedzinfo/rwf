@@ -59,11 +59,11 @@ Called for its side effects. Modifies `workbook` in place; returns
 
 ## Details
 
-The function assumes that data has already been written to the worksheet
-via
+The function assumes that
 [`openxlsx::writeData()`](https://rdrr.io/pkg/openxlsx/man/writeData.html)
-with both `colNames = TRUE` and `rowNames = TRUE`, as it offsets column
-indices by 1 to account for the row name column.
+has already been used to write the data to the worksheet, with both
+`colNames = TRUE` and `rowNames = TRUE`, as it offsets column indices by
+1 to account for the row name column.
 
 Formatting applied:
 

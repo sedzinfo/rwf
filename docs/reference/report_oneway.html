@@ -151,8 +151,8 @@ deviation) or <code>""</code> (none).</p></dd>
 <li><p><code>fisher</code>, <code>welch</code>: one row per combination, with the output of
   <code>compute_one_way_test</code> (sums of squares, F, degrees of freedom, p-value,
   effect sizes and power)</p></li>
-<li><p><code>kruskal_wallis</code>: one row per combination, with the output of
-  <code>compute_kruskal_wallis_test</code></p></li>
+<li><p><code>kruskal_wallis</code>: the output of <code>compute_kruskal_wallis_test</code>,
+  with one row per combination</p></li>
 <li><p><code>tukey</code>, <code>games_howell</code>: one row per pair of groups in each
   combination, with the output of <code>compute_posthoc</code> (<code>LEVEL</code> names the
   pair)</p></li>
@@ -184,7 +184,7 @@ result in either suggests unequal variances.</p>
 <li><p>The Tukey test (Tukey-Kramer) handles unequal group sizes but assumes
   equal variances.</p></li>
 <li><p>The Games-Howell test handles unequal group sizes and unequal variances.</p></li>
-</ul><p>The Excel workbook has the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
+</ul><p>The Excel workbook contains the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
 "Tukey", "Games-Howell" and "Descriptives". The plots are written to PDF files
 named after <code>file</code>. With <code>pb = TRUE</code>, a progress bar is printed
 to the console while the tests run.</p>

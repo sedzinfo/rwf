@@ -52,13 +52,18 @@ string of randomly sampled categories, simulating multiple response survey data.
 
 <dl><dt id="arg-responses">responses<a class="anchor" aria-label="anchor" href="#arg-responses"></a></dt>
 <dd><p>Integer or character vector. The pool of unique response
-categories to sample from. Default is <code>1:4</code>.</p></dd>
+categories to sample from. A single number <code>n</code> means the categories
+<code>1:n</code> (e.g. <code>responses = 4</code> is the same as <code>1:4</code>).
+Default is <code>1:4</code>.</p></dd>
 
 
 <dt id="arg-responded">responded<a class="anchor" aria-label="anchor" href="#arg-responded"></a></dt>
 <dd><p>Integer vector. Controls how many categories are selected
 per observation — one value is sampled from this vector at each iteration.
-Default is <code>1:4</code>.</p></dd>
+A single number <code>k</code> means "up to <code>k</code>": each observation gets a
+random number of categories between 1 and <code>k</code> (e.g.
+<code>responded = 3</code> gives 1, 2 or 3 categories). The values should not
+exceed the number of categories in <code>responses</code>. Default is <code>1:4</code>.</p></dd>
 
 
 <dt id="arg-length">length<a class="anchor" aria-label="anchor" href="#arg-length"></a></dt>

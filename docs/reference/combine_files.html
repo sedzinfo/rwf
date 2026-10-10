@@ -4,12 +4,14 @@
   output_file. Each file's contents are preceded by a
   # FILE: &amp;lt;path&amp;gt; header block so the origin of every section is
   visible. If output_file lies inside input_dir, it is
-  excluded so the file does not include itself."><meta property="og:description" content="Lists the files in input_dir that match pattern,
+  excluded so the file does not include itself. If no file matches,
+  an empty output_file is written."><meta property="og:description" content="Lists the files in input_dir that match pattern,
   reads each one and writes their contents, in alphabetical order, to
   output_file. Each file's contents are preceded by a
   # FILE: &amp;lt;path&amp;gt; header block so the origin of every section is
   visible. If output_file lies inside input_dir, it is
-  excluded so the file does not include itself."></head><body>
+  excluded so the file does not include itself. If no file matches,
+  an empty output_file is written."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -46,7 +48,8 @@
   <code>output_file</code>. Each file's contents are preceded by a
   <code># FILE: &lt;path&gt;</code> header block so the origin of every section is
   visible. If <code>output_file</code> lies inside <code>input_dir</code>, it is
-  excluded so the file does not include itself.</p>
+  excluded so the file does not include itself. If no file matches,
+  an empty <code>output_file</code> is written.</p>
     </div>
 
     <div class="section level2">
@@ -74,8 +77,8 @@ An existing file is overwritten. Default <code>"all_functions.R"</code>.</p></dd
 
 
 <dt id="arg-pattern">pattern<a class="anchor" aria-label="anchor" href="#arg-pattern"></a></dt>
-<dd><p>Regular expression passed to <code><a href="https://rdrr.io/r/base/list.files.html" class="external-link">list.files</a></code>
-to select files. Default <code>"\\.[Rr]$"</code> selects R scripts. Use
+<dd><p>Regular expression that selects the files, passed to
+<code><a href="https://rdrr.io/r/base/list.files.html" class="external-link">base::list.files()</a></code>. Default <code>"\\.[Rr]$"</code> selects R scripts. Use
 <code>NULL</code> to include every file.</p></dd>
 
 

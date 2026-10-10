@@ -66,13 +66,13 @@ excluded).</p></dd>
 <dt id="arg-combinations">combinations<a class="anchor" aria-label="anchor" href="#arg-combinations"></a></dt>
 <dd><p>A data frame with two character columns named
 <code>index1</code> and <code>index2</code>, each row specifying one variable pair to
-cross-tabulate. Takes precedence over <code>factor_index</code>.</p></dd>
+cross-tabulate. This argument takes precedence over <code>factor_index</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame with one row per combination of variable-pair levels,
-  containing the following columns:</p><dl><dt>f1</dt>
+    <p>A data frame with one row for each combination of levels of each
+  pair of variables, with the following columns:</p><dl><dt>f1</dt>
 <dd><p>Name of the first variable.</p></dd>
 
     <dt>f2</dt>

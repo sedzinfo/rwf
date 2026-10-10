@@ -38,11 +38,11 @@ A data frame with the following variables:
 
 - sibsp:
 
-  Number of siblings/spouses aboard the Titanic
+  Number of siblings / spouses aboard the Titanic
 
 - parch:
 
-  Number of parents/children aboard the Titanic
+  Number of parents / children aboard the Titanic
 
 - ticket:
 

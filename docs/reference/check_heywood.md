@@ -18,10 +18,10 @@ check_heywood(fit_model, verbose = TRUE)
 
 - fit_model:
 
-  A fitted lavaan model object (for example, from
+  A fitted lavaan model object, for example the result of a call to
   [`lavaan::cfa()`](https://rdrr.io/pkg/lavaan/man/cfa.html),
-  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html), or related
-  wrappers).
+  [`lavaan::sem()`](https://rdrr.io/pkg/lavaan/man/sem.html) or related
+  wrappers.
 
 - verbose:
 
@@ -34,10 +34,10 @@ An invisible list with:
 
 - `has_issues`: Logical, `TRUE` if any issue was detected.
 
-- `issues`: Named list of detected issue tables/messages.
+- `issues`: Named list of detected issue tables / messages.
 
-- `converged`: Logical convergence flag from
-  `lavaan::lavInspect(fit_model, "converged")`.
+- `converged`: `lavaan::lavInspect(fit_model, "converged")`, the logical
+  convergence flag of the fit.
 
 ## Details
 

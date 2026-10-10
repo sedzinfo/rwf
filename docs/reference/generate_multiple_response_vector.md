@@ -19,13 +19,17 @@ generate_multiple_response_vector(
 - responses:
 
   Integer or character vector. The pool of unique response categories to
-  sample from. Default is `1:4`.
+  sample from. A single number `n` means the categories `1:n` (e.g.
+  `responses = 4` is the same as `1:4`). Default is `1:4`.
 
 - responded:
 
   Integer vector. Controls how many categories are selected per
   observation — one value is sampled from this vector at each iteration.
-  Default is `1:4`.
+  A single number `k` means "up to `k`": each observation gets a random
+  number of categories between 1 and `k` (e.g. `responded = 3` gives 1,
+  2 or 3 categories). The values should not exceed the number of
+  categories in `responses`. Default is `1:4`.
 
 - length:
 

@@ -32,7 +32,7 @@ serves as a test set once,while the remaining k-1 folds form the
 training set.
 
 The function prepares data objects for xgboost model training and
-evaluation,including train,test,and validation datasets and xgboost
+evaluation, including train, test, and validation datasets and xgboost
 DMatrix objects.
 
 The output is a list containing the following elements: -\`f\`: List of

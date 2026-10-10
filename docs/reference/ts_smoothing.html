@@ -109,13 +109,13 @@ produce more curves. Default is <code>0.001</code>.</p></dd>
 <dd><p>Friedman's super-smoother via <code><a href="https://rdrr.io/r/stats/supsmu.html" class="external-link">supsmu()</a></code> — span must be in (0, 1).</p></dd>
 
   <dt><code>"splines"</code></dt>
-<dd><p>Smoothing splines via <code><a href="https://rdrr.io/r/stats/smooth.spline.html" class="external-link">smooth.spline()</a></code> — <code>spar</code> controls the penalty.</p></dd>
+<dd><p>Smoothing splines via <code><a href="https://rdrr.io/r/stats/smooth.spline.html" class="external-link">smooth.spline()</a></code>, where <code>spar</code> controls the penalty.</p></dd>
 
   <dt><code>"default"</code></dt>
 <dd><p>Running mean filter via <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code> — bandwidth rounded to an integer window width.</p></dd>
 
   <dt><code>"polynomial"</code></dt>
-<dd><p>Fits a centred cubic polynomial trend with and without seasonal (cos/sin) terms via <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p></dd>
+<dd><p>Fits a centred cubic polynomial trend with and without seasonal (cos / sin) terms via <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code>.</p></dd>
 
   <dt><code>"linear"</code></dt>
 <dd><p>Fits a simple linear trend via <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> and draws the regression line.</p></dd>

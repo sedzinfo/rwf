@@ -68,7 +68,7 @@ A one-row data frame with:
 - `omegasq`: omega-squared, \\(SS\_{effect}-df\_{effect}
   MS\_{error})/(SS\_{total}+MS\_{error})\\
 
-- `partial.omegasq`: partial omega-squared,
+- `partial.omegasq`: partial omega-squared,\
   \\df\_{effect}(MS\_{effect}-MS\_{error})/(df\_{effect}
   MS\_{effect}+(df\_{error}+1) MS\_{error})\\
 

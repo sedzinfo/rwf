@@ -1,8 +1,9 @@
-# Get off-diagonal indices for a square matrix
+# Row and column indices around the diagonal of a square matrix
 
-Returns a data frame of row/column index pairs for navigating just above
-and below the diagonal, useful for accessing or modifying off-diagonal
-neighbours.
+For each diagonal position `i` of a `length` x `length` matrix, returns
+the indices of the diagonal cell and of its two neighbours in the same
+row: the cell to the right (just above the diagonal, column `i + 1`) and
+the cell to the left (just below the diagonal, column `i - 1`).
 
 ## Usage
 
@@ -14,28 +15,33 @@ off_diagonal_index(length)
 
 - length:
 
-  Integer. The size of the diagonal (i.e. number of rows/columns in the
-  square matrix).
+  Integer (at least 1). Number of rows and columns of the square matrix.
 
 ## Value
 
-A data frame with `length` rows and four columns:
+A data frame (not a matrix) with `length` rows and four numeric columns:
 
 - x1:
 
-  Row index.
+  Row index `i`.
 
 - x2:
 
-  Column index (same as `x1`, i.e. the diagonal position).
+  Column index of the diagonal cell (same as `x1`).
 
 - x3:
 
-  Index of the element just above (`i + 1`).
+  Column index of the cell to the right, `i + 1`; in the last row this
+  is `length + 1`, outside the matrix.
 
 - x4:
 
-  Index of the element just below (`i - 1`).
+  Column index of the cell to the left, `i - 1`; in the first row this
+  is `0`, outside the matrix.
+
+## See also
+
+[`matrix_triangle`](https://sedzinfo.github.io/rwf/reference/matrix_triangle.md)
 
 ## Examples
 

@@ -1,8 +1,8 @@
 # Apply gsub for multiple patterns with a single replacement
 
 Iterates over a vector of patterns, applying
-[`gsub`](https://rdrr.io/r/base/grep.html) sequentially with the same
-replacement string for each.
+[`base::gsub()`](https://rdrr.io/r/base/grep.html) sequentially with the
+same replacement string for each.
 
 ## Usage
 
@@ -27,7 +27,7 @@ str_mgsub(mydata, pattern, replacement, ...)
 - ...:
 
   Additional arguments passed to
-  [`gsub`](https://rdrr.io/r/base/grep.html),
+  [`base::gsub()`](https://rdrr.io/r/base/grep.html),
 
 ## Value
 

@@ -56,11 +56,52 @@ report_xgboost(
 
   if TRUE error values are not saved in output
 
+## Value
+
+Invisibly, a list with
+
+- plots:
+
+  ggplot objects: `regression` (observed vs predicted on the validation
+  data), `performance` (cut-point diagnostics, not for regression
+  objectives), `depth`, `cover`, `weight` (tree structure), `error`
+  (training log) and `importance`.
+
+- result:
+
+  tables: `importance` (from
+  [`xgboost::xgb.importance`](https://rdrr.io/pkg/xgboost/man/xgb.importance.html)),
+  `parameters` (hyperparameters), `model_call`, `evaluation_log`,
+  `model_summary` (objective, boosting rounds, number of features, and
+  with early stopping the best iteration and score). With validation
+  data, there is also `validation_metrics` (regression: N, RMSE, MAE,
+  mean error, R squared; binary classification: N, AUC, log loss and
+  accuracy at a 0.5 cut-off).
+
+- observed, predicted:
+
+  validation outcome and predictions (`NULL` without `validation_data`).
+
+- feature_names:
+
+  the model's features, in the model's order.
+
+## Details
+
+Works with xgboost 3, which stores the call, parameters and evaluation
+log as attributes of the model, and with older versions that store them
+as list elements. Validation predictions use the model's own feature
+order. When `file` is given, the plots are written to `<file>.pdf` and
+the tables to `<file>.xlsx` (sheets: confusion matrix for
+classification, Model Summary, Validation Metrics, Feature Importance,
+Hyperparameters and, unless `fast = TRUE`, Evaluation Log).
+
 ## Examples
 
 ``` r
 infert_formula<-formula(case~education+spontaneous+induced)
-boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+dis+rad+tax+ptratio+black+lstat)
+boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+
+                         dis+rad+tax+ptratio+black+lstat)
 train_test_classification<-k_fold(df=infert,model_formula=infert_formula)
 #> Fold Cases: 1 Train: 223 Test: 25 Total: 248 Unique Train: 223 Unique Test: 25 
 #> Fold Cases: 2 Train: 223 Test: 25 Total: 248 Unique Train: 223 Unique Test: 25 
@@ -132,14 +173,72 @@ xgb_regression<-xgboost::xgb.train(
 #> [18] train-rmse:0.731270 test-rmse:3.686072 
 #> [19] train-rmse:0.691505 test-rmse:3.695998 
 #> [20] train-rmse:0.676991 test-rmse:3.684742 
-if (FALSE) { # \dontrun{
 report_xgboost(model=xgb_classification,
                validation_data=train_test_classification$f$test$f1,
                label=train_test_classification$outcome,
                file="Classification")
+#> $observed_predicted
+#> 
+#> $plot_performance
+#> 
+#> $cut_performance
+#>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion
+#> 1   0.07838    0.40               1.00               0.25            0.25             1.0          0.6250
+#> 2   0.17838    0.68               0.88               0.33            0.70             0.6          0.6275
+#> 3   0.27838    0.68               0.83               0.29            0.75             0.4          0.5675
+#> 4   0.37838    0.60               0.75               0.00            0.75             0.0          0.3750
+#> 5   0.47838    0.60               0.75               0.00            0.75             0.0          0.3750
+#> 
+#> $cut
+#> [1] 0.1784
+#> 
+#> $confusion_matrix
+#>         0    1   sum    p
+#> 0   14.00 2.00 16.00 0.88
+#> 1    6.00 3.00  9.00 0.33
+#> sum 20.00 5.00 25.00 1.00
+#> p    0.70 0.60  1.00 0.68
+#> 
+#> $observed_predicted
+
+#> 
+#> $plot_performance
+
+#> 
+#> $cut_performance
+#>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion
+#> 1   0.07838    0.40               1.00               0.25            0.25             1.0          0.6250
+#> 2   0.17838    0.68               0.88               0.33            0.70             0.6          0.6275
+#> 3   0.27838    0.68               0.83               0.29            0.75             0.4          0.5675
+#> 4   0.37838    0.60               0.75               0.00            0.75             0.0          0.3750
+#> 5   0.47838    0.60               0.75               0.00            0.75             0.0          0.3750
+#> 
+#> $cut
+#> [1] 0.1784
+#> 
+#> $confusion_matrix
+#>         0    1   sum    p
+#> 0   14.00 2.00 16.00 0.88
+#> 1    6.00 3.00  9.00 0.33
+#> sum 20.00 5.00 25.00 1.00
+#> p    0.70 0.60  1.00 0.68
+#> 
+
+
+
+
+
 report_xgboost(model=xgb_regression,
                validation_data=train_test_regression$f$test$f1,
                label=train_test_regression$outcome,
                file="Regression")
-} # }
+#> $observed_predicted
+#> 
+#> $observed_predicted
+
+#> 
+
+
+
+
 ```

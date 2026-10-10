@@ -85,7 +85,7 @@ variables.</p></dd>
 
 <dt id="arg-iv">iv<a class="anchor" aria-label="anchor" href="#arg-iv"></a></dt>
 <dd><p>Integer vector of column indices for the categorical independent
-variables. Columns are coerced to factors automatically.</p></dd>
+variables. The columns are coerced to factors automatically.</p></dd>
 
 
 <dt id="arg-base-size">base_size<a class="anchor" aria-label="anchor" href="#arg-base-size"></a></dt>
@@ -148,7 +148,8 @@ sorted by the group mean of the DV (descending). Default <code>TRUE</code>.</p><
 <span class="r-plt img"><img src="plot_interaction-14.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># No error bars, unordered factor axis</span></span></span>
-<span class="r-in"><span><span class="fu">plot_interaction</span><span class="op">(</span>df <span class="op">=</span> <span class="va">mtcars</span>, dv <span class="op">=</span> <span class="fl">2</span>, iv <span class="op">=</span> <span class="fl">9</span><span class="op">:</span><span class="fl">10</span>, base_size <span class="op">=</span> <span class="fl">20</span>, type <span class="op">=</span> <span class="st">""</span>, order_factor <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_interaction</span><span class="op">(</span>df <span class="op">=</span> <span class="va">mtcars</span>, dv <span class="op">=</span> <span class="fl">2</span>, iv <span class="op">=</span> <span class="fl">9</span><span class="op">:</span><span class="fl">10</span>, base_size <span class="op">=</span> <span class="fl">20</span>, type <span class="op">=</span> <span class="st">""</span>,</span></span>
+<span class="r-in"><span>                 order_factor <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_interaction-15.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="plot_interaction-16.png" alt="" width="700" height="433"></span>
 </code></pre></div>

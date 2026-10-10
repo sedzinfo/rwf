@@ -37,15 +37,15 @@ noted.
 
 - **Rock**: Interest in rock music
 
-- **Metal or Hardrock**: Interest in metal/hardrock
+- **Metal or Hardrock**: Interest in metal / hardrock
 
 - **Punk**: Interest in punk music
 
-- **Hiphop, Rap**: Interest in hiphop/rap
+- **Hiphop, Rap**: Interest in hiphop / rap
 
-- **Reggae, Ska**: Interest in reggae/ska
+- **Reggae, Ska**: Interest in reggae / ska
 
-- **Swing, Jazz**: Interest in swing/jazz
+- **Swing, Jazz**: Interest in swing / jazz
 
 - **Rock n roll**: Interest in rock n roll
 
@@ -53,7 +53,7 @@ noted.
 
 - **Latino**: Interest in Latino music
 
-- **Techno, Trance**: Interest in techno/trance
+- **Techno, Trance**: Interest in techno / trance
 
 - **Opera**: Interest in opera
 
@@ -71,7 +71,7 @@ noted.
 
 - **War**: Interest in war films
 
-- **Fantasy/Fairy tales**: Interest in fantasy films
+- **Fantasy / Fairy tales**: Interest in fantasy films
 
 - **Animated**: Interest in animated films
 
@@ -95,7 +95,7 @@ noted.
 
 - **PC**: Interest in computers
 
-- **Economy Management**: Interest in economy/management
+- **Economy Management**: Interest in economy / management
 
 - **Biology**: Interest in biology
 
@@ -117,7 +117,7 @@ noted.
 
 - **Religion**: Interest in religion
 
-- **Countryside, outdoors**: Interest in countryside/outdoors
+- **Countryside, outdoors**: Interest in countryside / outdoors
 
 - **Dancing**: Interest in dancing
 
@@ -165,9 +165,9 @@ noted.
 
 - **Fear of public speaking**: Fear of public speaking
 
-- **Smoking**: Smoking behaviour/attitude
+- **Smoking**: Smoking behaviour / attitude
 
-- **Alcohol**: Alcohol consumption/attitude
+- **Alcohol**: Alcohol consumption / attitude
 
 - **Healthy eating**: Attitude toward healthy eating
 
@@ -312,7 +312,7 @@ noted.
 
 - **Left - right handed**: 1=Right, 2=Left
 
-- **Education**: 1=Primary, 2=Secondary, 3=College/University,
+- **Education**: 1=Primary, 2=Secondary, 3=College / University,
   4=Masters, 5=Doctorate
 
 - **Only child**: 1=Yes, 2=No

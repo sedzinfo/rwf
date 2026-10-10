@@ -14,7 +14,7 @@ detach_package(package)
 
 - package:
 
-  Character string giving the name of the package to detach (without the
+  Character string, the name of the package to detach (without the
   `"package:"` prefix), e.g. `"ggplot2"`.
 
 ## Value

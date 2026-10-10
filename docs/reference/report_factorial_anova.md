@@ -149,10 +149,10 @@ A list with:
   the suffix `[L]`, Mauchly's test with `[M]`, and the sphericity
   corrections as `GGe`, `p[GG]`, `HFe` and `p[HF]`.
 
-- `omnibus_effect_size`: eta-squared, partial eta-squared,
-  omega-squared, partial omega-squared, epsilon-squared, Cohen's f and
-  power for every term, from
-  [`sjstats::anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)
+- `omnibus_effect_size`: for every term, from
+  [`sjstats::anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html),
+  the eta-squared, partial eta-squared, omega-squared, partial
+  omega-squared, epsilon-squared, Cohen's f and power
 
 - `post_hoc`: pairwise comparisons for every main effect and
   interaction, with the estimate, standard error, degrees of freedom, t
@@ -241,7 +241,8 @@ n-variate distribution. The Annals of Mathematical Statistics, 11(2),
 # 36 participants: B1 and B2 vary between participants (4 per cell),
 # W1 and W2 vary within participants (every participant has all 9 conditions)
 set.seed(12345)
-df <- expand.grid(W1 = c("A", "B", "C"), W2 = c("D", "E", "F"), id = 1:36, stringsAsFactors = FALSE)
+df <- expand.grid(W1 = c("A", "B", "C"), W2 = c("D", "E", "F"), id = 1:36,
+                  stringsAsFactors = FALSE)
 df$B1 <- c("G", "H", "I")[(df$id - 1) %% 3 + 1]
 df$B2 <- c("J", "K", "L")[(df$id - 1) %/% 3 %% 3 + 1]
 df <- df[, c("id", "B1", "B2", "W1", "W2")]

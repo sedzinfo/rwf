@@ -39,7 +39,7 @@ plot_interaction(
 - iv:
 
   Integer vector of column indices for the categorical independent
-  variables. Columns are coerced to factors automatically.
+  variables. The columns are coerced to factors automatically.
 
 - base_size:
 
@@ -105,6 +105,7 @@ plot_interaction(df = mtcars, dv = 2:3, iv = 9:10, base_size = 20, type = "sd")
 
 
 # No error bars, unordered factor axis
-plot_interaction(df = mtcars, dv = 2, iv = 9:10, base_size = 20, type = "", order_factor = FALSE)
+plot_interaction(df = mtcars, dv = 2, iv = 9:10, base_size = 20, type = "",
+                 order_factor = FALSE)
 
 ```

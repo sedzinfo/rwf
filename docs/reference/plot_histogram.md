@@ -30,7 +30,7 @@ plot_histogram(
 - bins:
 
   Number of histogram bins passed to
-  [`geom_histogram`](https://ggplot2.tidyverse.org/reference/geom_histogram.html).
+  [`ggplot2::geom_histogram()`](https://ggplot2.tidyverse.org/reference/geom_histogram.html).
   Default is `30`.
 
 - title:

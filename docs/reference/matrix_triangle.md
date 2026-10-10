@@ -1,8 +1,9 @@
-# Extract the upper or lower triangle of a matrix
+# Keep the lower or upper triangle of a matrix
 
-Returns a matrix with the off-triangle values replaced by a fill value,
-optionally overriding the diagonal. Useful for displaying correlation or
-covariance matrices without redundant values.
+Keeps one triangle of a matrix, including the diagonal, and fills the
+other triangle with the value of `off_diagonal`; optionally replaces the
+diagonal. Useful for displaying correlation or covariance matrices
+without repeated values.
 
 ## Usage
 
@@ -14,26 +15,31 @@ matrix_triangle(m, off_diagonal = NA, diagonal = NULL, type = "lower")
 
 - m:
 
-  A numeric matrix or object coercible to one.
+  A numeric matrix, or an object that
+  [`as.matrix()`](https://rdrr.io/r/base/matrix.html) turns into a
+  numeric matrix (e.g. a data frame of numbers).
 
 - off_diagonal:
 
-  Value to fill the suppressed triangle with. Default is `NA`.
+  Value used to fill the dropped triangle. Default `NA`.
 
 - diagonal:
 
-  Value to place on the diagonal. If `NULL`, the original diagonal of
-  `m` is preserved. Default is `NULL`.
+  Value(s) to place on the diagonal: a single value or one value per
+  diagonal element. If `NULL` (default), the original diagonal is kept.
 
 - type:
 
-  Character. Which triangle to retain. One of `"lower"` or `"upper"`.
-  Default is `"lower"`.
+  Character, `"lower"` (default) or `"upper"`: the triangle to keep.
 
 ## Value
 
-A matrix of the same dimensions as `m`, with the off-triangle filled by
-`off_diagonal` and the diagonal set by `diagonal`.
+A numeric matrix with the same dimensions and row / column names as `m`.
+
+## See also
+
+[`display_upper_lower_triangle`](https://sedzinfo.github.io/rwf/reference/display_upper_lower_triangle.md),
+[`symmetric_matrix`](https://sedzinfo.github.io/rwf/reference/symmetric_matrix.md)
 
 ## Examples
 

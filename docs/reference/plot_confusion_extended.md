@@ -1,7 +1,7 @@
 # Plot a confusion matrix with the full set of derived measures
 
-Draws a 2x2 confusion matrix (raw counts, sequential-blue by magnitude)
-alongside the row/column/overall measures:
+Draws a 2x2 confusion matrix (raw counts, shaded blue by magnitude)
+alongside the row, column and overall measures:
 
 - Total measures:
 
@@ -9,13 +9,13 @@ alongside the row/column/overall measures:
 
 - Horizontal measures:
 
-  Sensitivity/Miss Rate (observed positive column), Specificity/Fall-out
-  (observed negative column)
+  Sensitivity / Miss Rate (observed positive column), Specificity /
+  Fall-out (observed negative column)
 
 - Vertical measures:
 
-  Precision/False Discovery Rate (predicted positive row), Negative
-  Predictive Value/False Omission Rate (predicted negative row)
+  Precision / False Discovery Rate (predicted positive row), Negative
+  Predictive Value / False Omission Rate (predicted negative row)
 
 ## Usage
 

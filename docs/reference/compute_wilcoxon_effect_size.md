@@ -1,10 +1,10 @@
 # Compute Wilcoxon Effect Size
 
-Computes the Wilcoxon rank-sum/signed-rank effect size r = abs(Z) /
+Computes the Wilcoxon rank-sum / signed-rank effect size r = abs(Z) /
 sqrt(N), with Z derived from the p-value of stats::wilcox.test (Z =
-qnorm(p / 2, lower.tail = FALSE)). This avoids a dependency on
-rstatix/coin, using only stats::wilcox.test under the hood. The effect
-size magnitude is computed from the two-sided p-value regardless of the
+qnorm(p / 2, lower.tail = FALSE)). This avoids a dependency on rstatix /
+coin, using only stats::wilcox.test under the hood. The effect size
+magnitude is computed from the two-sided p-value regardless of the
 alternative used for the underlying hypothesis test.
 
 ## Usage
@@ -40,13 +40,13 @@ compute_wilcoxon_effect_size(
 
 - exact:
 
-  logical indicating whether an exact p-value should be computed, same
-  as stats::wilcox.test.
+  logical, as in stats::wilcox.test, indicating whether an exact p-value
+  should be computed.
 
 - correct:
 
-  logical indicating whether to apply the continuity correction, same as
-  stats::wilcox.test.
+  logical, as in stats::wilcox.test, indicating whether to apply the
+  continuity correction.
 
 - ...:
 

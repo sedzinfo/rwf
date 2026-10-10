@@ -12,8 +12,8 @@ Specifically, this function returns:
 - `theta_diag`: residual variances (diagonal of `theta`), reordered to
   `rownames(Lambda)` when names are available.
 
-- `tau`: thresholds from `tau`, with row suffixes like `"|t1"` removed
-  and reordered to `rownames(Lambda)`.
+- `tau`: thresholds from `tau`, reordered to `rownames(Lambda)` and with
+  row suffixes like `"|t1"` removed.
 
 - `nu`: indicator intercepts; defaults to zero when unavailable.
 

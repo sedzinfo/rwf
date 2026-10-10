@@ -83,7 +83,7 @@ variables.</p></dd>
 
 <dt id="arg-iv">iv<a class="anchor" aria-label="anchor" href="#arg-iv"></a></dt>
 <dd><p>Integer vector of column indices for the categorical independent
-variables. Columns are coerced to factors automatically.</p></dd>
+variables. The columns are coerced to factors automatically.</p></dd>
 
 
 <dt id="arg-base-size">base_size<a class="anchor" aria-label="anchor" href="#arg-base-size"></a></dt>
@@ -118,8 +118,8 @@ Default <code>60</code>.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A named list with three elements:</p><ul><li><p><code>plot_data</code> — named list of summary data frames (one per
-      IV-DV pair) as returned by <code><a href="https://rdrr.io/pkg/Rmisc/man/summarySE.html" class="external-link">Rmisc::summarySE</a></code>.</p></li>
+    <p>A named list with three elements:</p><ul><li><p><code>plot_data</code> — named list of summary data frames as returned
+      by <code><a href="https://rdrr.io/pkg/Rmisc/man/summarySE.html" class="external-link">Rmisc::summarySE</a></code> (one per IV-DV pair).</p></li>
 <li><p><code>plot_data_df</code> — single data frame combining all summary
       data frames row-wise.</p></li>
 <li><p><code>plots</code> — named list of ggplot objects (one per IV-DV pair).</p></li>

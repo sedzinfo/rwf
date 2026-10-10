@@ -133,11 +133,12 @@ with \\\eta^2=d^2/(d^2+4)\\ and \\f=d/2\\:
 These are rough guides; what counts as a meaningful effect depends on
 the field.
 
-The effect sizes match
+The effect sizes match the results of
 [`effectsize::eta_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html),
-[`effectsize::omega_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html),
-[`effectsize::epsilon_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)
+[`effectsize::omega_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)
 and
+[`effectsize::epsilon_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html).
+They also match
 [`effectsize::cohens_f`](https://easystats.github.io/effectsize/reference/eta_squared.html)
 (apart from the truncation of negative values) and
 [`sjstats::anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html).

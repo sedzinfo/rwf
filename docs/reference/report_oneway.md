@@ -109,8 +109,8 @@ A list with:
   `compute_one_way_test` (sums of squares, F, degrees of freedom,
   p-value, effect sizes and power)
 
-- `kruskal_wallis`: one row per combination, with the output of
-  `compute_kruskal_wallis_test`
+- `kruskal_wallis`: the output of `compute_kruskal_wallis_test`, with
+  one row per combination
 
 - `tukey`, `games_howell`: one row per pair of groups in each
   combination, with the output of `compute_posthoc` (`LEVEL` names the
@@ -157,7 +157,7 @@ Which test to read:
 - The Games-Howell test handles unequal group sizes and unequal
   variances.
 
-The Excel workbook has the sheets "Fisher", "Welch", "Kruskal",
+The Excel workbook contains the sheets "Fisher", "Welch", "Kruskal",
 "Homogeneity", "Tukey", "Games-Howell" and "Descriptives". The plots are
 written to PDF files named after `file`. With `pb = TRUE`, a progress
 bar is printed to the console while the tests run.

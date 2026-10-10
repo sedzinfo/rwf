@@ -17,7 +17,7 @@ compute_frequencies(df, file = NULL)
 
 - df:
 
-  A data frame whose columns are the categorical variables to tabulate.
+  A data frame with the categorical variables to tabulate as columns.
   All columns are processed regardless of class.
 
 - file:

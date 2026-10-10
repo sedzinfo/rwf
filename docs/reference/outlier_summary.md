@@ -15,8 +15,8 @@ outlier_summary(vector)
 
 - vector:
 
-  Numeric vector. Missing values are removed before z-standardisation
-  and counts.
+  Numeric vector. Missing values are removed before the
+  z-standardisation and the counts.
 
 ## Value
 

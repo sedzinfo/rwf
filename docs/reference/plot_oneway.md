@@ -39,7 +39,7 @@ plot_oneway(
 - iv:
 
   Integer vector of column indices for the categorical independent
-  variables. Columns are coerced to factors automatically.
+  variables. The columns are coerced to factors automatically.
 
 - base_size:
 
@@ -73,9 +73,9 @@ plot_oneway(
 
 A named list with three elements:
 
-- `plot_data` — named list of summary data frames (one per IV-DV pair)
-  as returned by
-  [`Rmisc::summarySE`](https://rdrr.io/pkg/Rmisc/man/summarySE.html).
+- `plot_data` — named list of summary data frames as returned by
+  [`Rmisc::summarySE`](https://rdrr.io/pkg/Rmisc/man/summarySE.html)
+  (one per IV-DV pair).
 
 - `plot_data_df` — single data frame combining all summary data frames
   row-wise.

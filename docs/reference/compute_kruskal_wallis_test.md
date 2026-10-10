@@ -44,8 +44,8 @@ and
 
 - ci:
 
-  If TRUE, adds percentile bootstrap confidence intervals for `etasq`
-  and `epsilonsq`.
+  If TRUE, adds percentile bootstrap confidence intervals for both
+  `etasq` and `epsilonsq`.
 
 - conf.level:
 
@@ -165,7 +165,8 @@ rcompanion::epsilonSquared(
 )
 #>   epsilon.squared lower.ci upper.ci
 #> 1           0.164   0.0668    0.304
-rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
+rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95,
+                         ci.type = "perc", nboot = 100)
 #> # A tibble: 1 × 7
 #>   .y.           n effsize conf.low conf.high method  magnitude
 #> * <chr>     <int>   <dbl>    <dbl>     <dbl> <chr>   <ord>    

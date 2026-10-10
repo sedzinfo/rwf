@@ -1,13 +1,13 @@
 # Battery of normality tests
 
-Runs eight normality tests on each numeric column of `df`: Shapiro-Wilk,
-Anderson-Darling, Cramér-von Mises, Shapiro-Francia, Jarque-Bera,
-Kolmogorov-Smirnov, Lilliefors, and Pearson chi-squared. Each column is
-z-standardised before testing. Columns with fewer than 8 or more than
-4999 non-missing observations are skipped with a console message.
-Results are printed to the console; when `file` is supplied they are
-also written to a `.log` file and a colour-coded `.xlsx` file with
-significant p-values (\\p \le 0.05\\) highlighted.
+Runs eight normality tests on each numeric column of `df`. The tests are
+Shapiro-Wilk, Anderson-Darling, Cramér-von Mises, Shapiro-Francia,
+Jarque-Bera, Kolmogorov-Smirnov, Lilliefors, and Pearson chi-squared.
+Each column is z-standardised before testing. Columns with fewer than 8
+or more than 4999 non-missing observations are skipped with a console
+message. Results are printed to the console; when `file` is supplied
+they are also written to a `.log` file and a colour-coded `.xlsx` file
+with significant p-values (\\p \le 0.05\\) highlighted.
 
 ## Usage
 

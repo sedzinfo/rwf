@@ -18,7 +18,7 @@ A data frame with 19719 rows and 57 variables:
 
 - race:
 
-  Race/ethnic background (1–13, 0=missing)
+  Race / ethnic background (1–13, 0=missing)
 
 - age:
 
@@ -39,7 +39,7 @@ A data frame with 19719 rows and 57 variables:
 - source:
 
   How participant came to the test site: 1=Internal link, 2=Google,
-  3=Facebook, 4=.edu site, 6=Other/unknown
+  3=Facebook, 4=.edu site, 6=Other / unknown
 
 - country:
 
@@ -294,17 +294,18 @@ personality and psyche.
 
 The theory identifies five factors:
 
-- **Openness to experience (O)** (inventive/curious vs.
-  consistent/cautious)
+- **Openness to experience (O)** (inventive / curious vs. consistent /
+  cautious)
 
-- **Conscientiousness (C)** (efficient/organized vs.
-  extravagant/careless)
+- **Conscientiousness (C)** (efficient / organized vs. extravagant /
+  careless)
 
-- **Extraversion (E)** (outgoing/energetic vs. solitary/reserved)
+- **Extraversion (E)** (outgoing / energetic vs. solitary / reserved)
 
-- **Agreeableness (A)** (friendly/compassionate vs. challenging/callous)
+- **Agreeableness (A)** (friendly / compassionate vs. challenging /
+  callous)
 
-- **Neuroticism (N)** (sensitive/nervous vs. resilient/confident)
+- **Neuroticism (N)** (sensitive / nervous vs. resilient / confident)
 
 The five factors are represented using the acronyms OCEAN or CANOE.
 Beneath each proposed global factor, there are a number of correlated

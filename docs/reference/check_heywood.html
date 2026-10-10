@@ -62,8 +62,8 @@ In simple terms:
 
 
 <dl><dt id="arg-fit-model">fit_model<a class="anchor" aria-label="anchor" href="#arg-fit-model"></a></dt>
-<dd><p>A fitted lavaan model object (for example, from
-<code><a href="https://rdrr.io/pkg/lavaan/man/cfa.html" class="external-link">lavaan::cfa()</a></code>, <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code>, or related wrappers).</p></dd>
+<dd><p>A fitted lavaan model object, for example the result of a call to
+<code><a href="https://rdrr.io/pkg/lavaan/man/cfa.html" class="external-link">lavaan::cfa()</a></code>, <code><a href="https://rdrr.io/pkg/lavaan/man/sem.html" class="external-link">lavaan::sem()</a></code> or related wrappers.</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
@@ -74,9 +74,9 @@ and a summary to the console. If <code>FALSE</code>, only returns results.</p></
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>An invisible list with:</p><ul><li><p><code>has_issues</code>: Logical, <code>TRUE</code> if any issue was detected.</p></li>
-<li><p><code>issues</code>: Named list of detected issue tables/messages.</p></li>
-<li><p><code>converged</code>: Logical convergence flag from
-    <code>lavaan::lavInspect(fit_model, "converged")</code>.</p></li>
+<li><p><code>issues</code>: Named list of detected issue tables / messages.</p></li>
+<li><p><code>converged</code>: <code>lavaan::lavInspect(fit_model, "converged")</code>,
+    the logical convergence flag of the fit.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>

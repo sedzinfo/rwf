@@ -19,11 +19,11 @@ score_tirt(patterns, lambda, theta_diag, tau, Psi, nu = NULL)
 - patterns:
 
   A matrix or data.frame of response patterns (rows = respondents,
-  columns = pair/items).
+  columns = pair / items).
 
 - lambda:
 
-  Loading matrix (rows = pair/items, columns = latent traits).
+  Loading matrix (rows = pair / items, columns = latent traits).
 
 - theta_diag:
 
@@ -49,7 +49,7 @@ patterns, columns correspond to traits in colnames(lambda).
 
 ## Details
 
-Name alignment is the key safeguard: if both rownames(lambda) and
+Name alignment is the key safeguard: when both rownames(lambda) and
 colnames(patterns) are present, patterns is reordered to match lambda
 row order before scoring.
 

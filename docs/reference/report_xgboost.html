@@ -89,11 +89,48 @@
 <dd><p>if TRUE error values are not saved in output</p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>Invisibly, a list with</p><dl><dt>plots</dt>
+<dd><p>ggplot objects: <code>regression</code> (observed vs predicted on
+      the validation data), <code>performance</code> (cut-point diagnostics, not for
+      regression objectives), <code>depth</code>, <code>cover</code>, <code>weight</code>
+      (tree structure), <code>error</code> (training log) and <code>importance</code>.</p></dd>
+
+    <dt>result</dt>
+<dd><p>tables: <code>importance</code> (from
+      <code><a href="https://rdrr.io/pkg/xgboost/man/xgb.importance.html" class="external-link">xgboost::xgb.importance</a></code>), <code>parameters</code> (hyperparameters),
+      <code>model_call</code>, <code>evaluation_log</code>, <code>model_summary</code> (objective,
+      boosting rounds, number of features, and with early stopping the best
+      iteration and score). With validation data, there is also
+      <code>validation_metrics</code> (regression: N, RMSE, MAE, mean error, R squared; binary
+      classification: N, AUC, log loss and accuracy at a 0.5 cut-off).</p></dd>
+
+    <dt>observed, predicted</dt>
+<dd><p>validation outcome and predictions
+      (<code>NULL</code> without <code>validation_data</code>).</p></dd>
+
+    <dt>feature_names</dt>
+<dd><p>the model's features, in the model's order.</p></dd>
+
+
+</dl></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>Works with xgboost 3, which stores the call, parameters and
+  evaluation log as attributes of the model, and with older versions that
+  store them as list elements. Validation predictions use the model's own
+  feature order. When <code>file</code> is given, the plots are written to
+  <code>&lt;file&gt;.pdf</code> and the tables to <code>&lt;file&gt;.xlsx</code> (sheets: confusion
+  matrix for classification, Model Summary, Validation Metrics, Feature
+  Importance, Hyperparameters and, unless <code>fast = TRUE</code>, Evaluation Log).</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">infert_formula</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span><span class="op">+</span><span class="va">spontaneous</span><span class="op">+</span><span class="va">induced</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">boston_formula</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">medv</span><span class="op">~</span><span class="va">crim</span><span class="op">+</span><span class="va">zn</span><span class="op">+</span><span class="va">indus</span><span class="op">+</span><span class="va">chas</span><span class="op">+</span><span class="va">nox</span><span class="op">+</span><span class="va">rm</span><span class="op">+</span><span class="va">age</span><span class="op">+</span><span class="va">dis</span><span class="op">+</span><span class="va">rad</span><span class="op">+</span><span class="va">tax</span><span class="op">+</span><span class="va">ptratio</span><span class="op">+</span><span class="va">black</span><span class="op">+</span><span class="va">lstat</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">boston_formula</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">formula</a></span><span class="op">(</span><span class="va">medv</span><span class="op">~</span><span class="va">crim</span><span class="op">+</span><span class="va">zn</span><span class="op">+</span><span class="va">indus</span><span class="op">+</span><span class="va">chas</span><span class="op">+</span><span class="va">nox</span><span class="op">+</span><span class="va">rm</span><span class="op">+</span><span class="va">age</span><span class="op">+</span></span></span>
+<span class="r-in"><span>                         <span class="va">dis</span><span class="op">+</span><span class="va">rad</span><span class="op">+</span><span class="va">tax</span><span class="op">+</span><span class="va">ptratio</span><span class="op">+</span><span class="va">black</span><span class="op">+</span><span class="va">lstat</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">train_test_classification</span><span class="op">&lt;-</span><span class="fu"><a href="k_fold.html">k_fold</a></span><span class="op">(</span>df<span class="op">=</span><span class="va">infert</span>,model_formula<span class="op">=</span><span class="va">infert_formula</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Fold Cases: 1 Train: 223 Test: 25 Total: 248 Unique Train: 223 Unique Test: 25 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Fold Cases: 2 Train: 223 Test: 25 Total: 248 Unique Train: 223 Unique Test: 25 </span>
@@ -165,16 +202,75 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [18]	train-rmse:0.731270	test-rmse:3.686072 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [19]	train-rmse:0.691505	test-rmse:3.695998 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [20]	train-rmse:0.676991	test-rmse:3.684742 </span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="fu">report_xgboost</span><span class="op">(</span>model<span class="op">=</span><span class="va">xgb_classification</span>,</span></span>
 <span class="r-in"><span>               validation_data<span class="op">=</span><span class="va">train_test_classification</span><span class="op">$</span><span class="va">f</span><span class="op">$</span><span class="va">test</span><span class="op">$</span><span class="va">f1</span>,</span></span>
 <span class="r-in"><span>               label<span class="op">=</span><span class="va">train_test_classification</span><span class="op">$</span><span class="va">outcome</span>,</span></span>
 <span class="r-in"><span>               file<span class="op">=</span><span class="st">"Classification"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $observed_predicted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_performance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cut_performance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.07838    0.40               1.00               0.25            0.25             1.0          0.6250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.17838    0.68               0.88               0.33            0.70             0.6          0.6275</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0.27838    0.68               0.83               0.29            0.75             0.4          0.5675</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0.37838    0.60               0.75               0.00            0.75             0.0          0.3750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0.47838    0.60               0.75               0.00            0.75             0.0          0.3750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cut</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1784</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $confusion_matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         0    1   sum    p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0   14.00 2.00 16.00 0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    6.00 3.00  9.00 0.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sum 20.00 5.00 25.00 1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p    0.70 0.60  1.00 0.68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $observed_predicted</span>
+<span class="r-plt img"><img src="report_xgboost-1.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_performance</span>
+<span class="r-plt img"><img src="report_xgboost-2.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cut_performance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.07838    0.40               1.00               0.25            0.25             1.0          0.6250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.17838    0.68               0.88               0.33            0.70             0.6          0.6275</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0.27838    0.68               0.83               0.29            0.75             0.4          0.5675</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0.37838    0.60               0.75               0.00            0.75             0.0          0.3750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0.47838    0.60               0.75               0.00            0.75             0.0          0.3750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cut</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1784</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $confusion_matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         0    1   sum    p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0   14.00 2.00 16.00 0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    6.00 3.00  9.00 0.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sum 20.00 5.00 25.00 1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p    0.70 0.60  1.00 0.68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-plt img"><img src="report_xgboost-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-6.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">report_xgboost</span><span class="op">(</span>model<span class="op">=</span><span class="va">xgb_regression</span>,</span></span>
 <span class="r-in"><span>               validation_data<span class="op">=</span><span class="va">train_test_regression</span><span class="op">$</span><span class="va">f</span><span class="op">$</span><span class="va">test</span><span class="op">$</span><span class="va">f1</span>,</span></span>
 <span class="r-in"><span>               label<span class="op">=</span><span class="va">train_test_regression</span><span class="op">$</span><span class="va">outcome</span>,</span></span>
 <span class="r-in"><span>               file<span class="op">=</span><span class="st">"Regression"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $observed_predicted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $observed_predicted</span>
+<span class="r-plt img"><img src="report_xgboost-8.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-plt img"><img src="report_xgboost-9.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-10.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-11.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-12.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-13.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -18,7 +18,7 @@ drop_levels(df, factor_index = NULL, minimum_frequency = 5)
 
 - factor_index:
 
-  Integer vector or `NULL`. Column indices of factors to process. If
+  Integer vector or `NULL`. Column indices of the factors to process. If
   `NULL`, all columns identified by
   [`is.factor()`](https://rdrr.io/r/base/factor.html) are processed.
   Default is `NULL`.

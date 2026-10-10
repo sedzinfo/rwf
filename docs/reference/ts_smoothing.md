@@ -72,8 +72,8 @@ ts_smoothing(
   `"splines"`
 
   : Smoothing splines via
-    [`smooth.spline()`](https://rdrr.io/r/stats/smooth.spline.html) —
-    `spar` controls the penalty.
+    [`smooth.spline()`](https://rdrr.io/r/stats/smooth.spline.html),
+    where `spar` controls the penalty.
 
   `"default"`
 
@@ -83,8 +83,8 @@ ts_smoothing(
 
   `"polynomial"`
 
-  : Fits a centred cubic polynomial trend with and without seasonal
-    (cos/sin) terms via [`lm()`](https://rdrr.io/r/stats/lm.html).
+  : Fits a centred cubic polynomial trend with and without seasonal (cos
+    / sin) terms via [`lm()`](https://rdrr.io/r/stats/lm.html).
 
   `"linear"`
 

@@ -31,9 +31,9 @@ plot_normality_diagnostics(
 - breaks:
 
   Histogram breaks passed to
-  [`hist`](https://rdrr.io/r/graphics/hist.html). May be a method name
-  (`"Sturges"`, `"Scott"`, `"FD"`) or a positive integer specifying the
-  number of bins. Default is `"Sturges"`.
+  [`graphics::hist()`](https://rdrr.io/r/graphics/hist.html). This may
+  be a method name (`"Sturges"`, `"Scott"`, `"FD"`) or a positive
+  integer specifying the number of bins. Default is `"Sturges"`.
 
 - title:
 
@@ -61,8 +61,8 @@ plot_normality_diagnostics(
 ## Value
 
 A named list of recorded plots (one element per numeric column),
-returned invisibly. Each element is a
-[`recordPlot`](https://rdrr.io/r/grDevices/recordplot.html) object.
+returned invisibly. Each element is a plot recorded with
+[`grDevices::recordPlot()`](https://rdrr.io/r/grDevices/recordplot.html).
 
 ## Examples
 

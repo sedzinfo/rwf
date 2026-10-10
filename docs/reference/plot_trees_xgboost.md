@@ -1,6 +1,11 @@
 # Plot trees for xgboost::xgb.train
 
-Plot trees for xgboost::xgb.train
+Uses
+[`xgboost::xgb.plot.multi.trees`](https://rdrr.io/pkg/xgboost/man/xgb.plot.multi.trees.html)
+to draw the trees of an xgboost model combined into one diagram (keeping
+the 10 most important features) and saves it as a self-contained
+`<file>.html` in the working directory. Works with xgboost 3 and with
+older versions.
 
 ## Usage
 
@@ -16,17 +21,27 @@ plot_trees_xgboost(model, train, file = "xgboost")
 
 - train:
 
-  Train dataset
+  Train dataset; its column names label the features. With xgboost 3
+  they are used only when the model itself has no feature names and the
+  number of columns matches the number of model features.
 
 - file:
 
   output filename
 
+## Value
+
+Called for its side effect of writing `<file>.html`; returns the value
+of
+[`htmlwidgets::saveWidget`](https://rdrr.io/pkg/htmlwidgets/man/saveWidget.html)
+invisibly.
+
 ## Examples
 
 ``` r
 infert_formula<-formula(case~education+spontaneous+induced)
-boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+dis+rad+tax+ptratio+black+lstat)
+boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+
+                         dis+rad+tax+ptratio+black+lstat)
 train_test_classification<-k_fold(df=infert,model_formula=infert_formula)
 #> Fold Cases: 1 Train: 223 Test: 25 Total: 248 Unique Train: 223 Unique Test: 25 
 #> Fold Cases: 2 Train: 223 Test: 25 Total: 248 Unique Train: 223 Unique Test: 25 

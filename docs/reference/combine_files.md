@@ -4,7 +4,8 @@ Lists the files in `input_dir` that match `pattern`, reads each one and
 writes their contents, in alphabetical order, to `output_file`. Each
 file's contents are preceded by a `# FILE: <path>` header block so the
 origin of every section is visible. If `output_file` lies inside
-`input_dir`, it is excluded so the file does not include itself.
+`input_dir`, it is excluded so the file does not include itself. If no
+file matches, an empty `output_file` is written.
 
 ## Usage
 
@@ -31,10 +32,10 @@ combine_files(
 
 - pattern:
 
-  Regular expression passed to
-  [`list.files`](https://rdrr.io/r/base/list.files.html) to select
-  files. Default `"\\.[Rr]$"` selects R scripts. Use `NULL` to include
-  every file.
+  Regular expression that selects the files, passed to
+  [`base::list.files()`](https://rdrr.io/r/base/list.files.html).
+  Default `"\\.[Rr]$"` selects R scripts. Use `NULL` to include every
+  file.
 
 - recursive:
 

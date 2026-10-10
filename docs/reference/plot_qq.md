@@ -3,9 +3,9 @@
 Produces one quantile-quantile plot per numeric column of `df`,
 comparing the empirical distribution to the theoretical normal. A
 reference line is fitted through the 25th and 75th percentiles (the same
-convention used by [`qqline`](https://rdrr.io/r/stats/qqnorm.html)).
-Non-numeric columns are skipped silently. A progress bar is printed to
-the console.
+convention used by
+[`stats::qqline()`](https://rdrr.io/r/stats/qqnorm.html)). Non-numeric
+columns are skipped silently. A progress bar is printed to the console.
 
 ## Usage
 

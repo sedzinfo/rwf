@@ -34,9 +34,9 @@ plot_multiplot(..., plotlist = NULL, cols = 2, layout = NULL)
 ## Value
 
 If a single plot is provided, returns it directly. Otherwise returns a
-list of recorded plots
-([`recordPlot`](https://rdrr.io/r/grDevices/recordplot.html)), one per
-page.
+list of plots recorded with
+[`grDevices::recordPlot()`](https://rdrr.io/r/grDevices/recordplot.html),
+one per page.
 
 ## Examples
 
@@ -72,7 +72,8 @@ plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
 
 
 
-plot_multiplot(plotlist = plot_histogram(mtcars), layout = matrix(1:4, ncol = 2, byrow = TRUE))
+plot_multiplot(plotlist = plot_histogram(mtcars),
+               layout = matrix(1:4, ncol = 2, byrow = TRUE))
 
 
 

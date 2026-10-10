@@ -49,7 +49,8 @@ A named list with two elements:
 ``` r
 design <- expand.grid(time = 1:3, item = 1:3, person = 1:10)
 design <- change_data_type(design, type = "factor")
-design$response <- rowSums(change_data_type(design[, 1:2], type = "numeric")) + rnorm(90, 0, 0.1)
+design$response <- rowSums(change_data_type(design[, 1:2], type = "numeric")) +
+  rnorm(90, 0, 0.1)
 model <- mixlm::lm(response ~ r(time) * r(person) + r(item) * r(person), data = design)
 extract_components(model)
 #> $components

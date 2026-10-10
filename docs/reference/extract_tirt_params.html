@@ -7,8 +7,8 @@ Specifically, this function returns:
 Lambda: factor loading matrix.
 theta_diag: residual variances (diagonal of theta),
 reordered to rownames(Lambda) when names are available.
-tau: thresholds from tau, with row suffixes like
-"|t1" removed and reordered to rownames(Lambda).
+tau: thresholds from tau, reordered to
+rownames(Lambda) and with row suffixes like "|t1" removed.
 nu: indicator intercepts; defaults to zero when unavailable.
 Psi: latent covariance matrix (psi).
 
@@ -20,8 +20,8 @@ Specifically, this function returns:
 Lambda: factor loading matrix.
 theta_diag: residual variances (diagonal of theta),
 reordered to rownames(Lambda) when names are available.
-tau: thresholds from tau, with row suffixes like
-"|t1" removed and reordered to rownames(Lambda).
+tau: thresholds from tau, reordered to
+rownames(Lambda) and with row suffixes like "|t1" removed.
 nu: indicator intercepts; defaults to zero when unavailable.
 Psi: latent covariance matrix (psi).
 
@@ -64,8 +64,8 @@ order of <code>Lambda</code>, which is critical for correct downstream scoring.<
 <p>Specifically, this function returns:</p><ul><li><p><code>Lambda</code>: factor loading matrix.</p></li>
 <li><p><code>theta_diag</code>: residual variances (diagonal of <code>theta</code>),
 reordered to <code>rownames(Lambda)</code> when names are available.</p></li>
-<li><p><code>tau</code>: thresholds from <code>tau</code>, with row suffixes like
-<code>"|t1"</code> removed and reordered to <code>rownames(Lambda)</code>.</p></li>
+<li><p><code>tau</code>: thresholds from <code>tau</code>, reordered to
+<code>rownames(Lambda)</code> and with row suffixes like <code>"|t1"</code> removed.</p></li>
 <li><p><code>nu</code>: indicator intercepts; defaults to zero when unavailable.</p></li>
 <li><p><code>Psi</code>: latent covariance matrix (<code>psi</code>).</p></li>
 </ul></div>

@@ -26,13 +26,13 @@ compute_crosstable(df, factor_index = NULL, combinations = NULL)
 - combinations:
 
   A data frame with two character columns named `index1` and `index2`,
-  each row specifying one variable pair to cross-tabulate. Takes
-  precedence over `factor_index`.
+  each row specifying one variable pair to cross-tabulate. This argument
+  takes precedence over `factor_index`.
 
 ## Value
 
-A data frame with one row per combination of variable-pair levels,
-containing the following columns:
+A data frame with one row for each combination of levels of each pair of
+variables, with the following columns:
 
 - f1:
 

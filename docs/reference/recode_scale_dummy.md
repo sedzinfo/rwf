@@ -35,7 +35,7 @@ factor variables and creates dummy variables if they meet the criteria.
 single dataframe.
 
 The output is a dataframe with scaled numeric variables and dummy-coded
-character/factor variables.
+character / factor variables.
 
 ## Examples
 

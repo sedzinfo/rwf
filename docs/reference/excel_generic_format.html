@@ -94,8 +94,8 @@ columns. Default is <code>"#0.00"</code>.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The function assumes that data has already been written to the worksheet via
-<code><a href="https://rdrr.io/pkg/openxlsx/man/writeData.html" class="external-link">openxlsx::writeData()</a></code> with both <code>colNames = TRUE</code> and
+    <p>The function assumes that <code><a href="https://rdrr.io/pkg/openxlsx/man/writeData.html" class="external-link">openxlsx::writeData()</a></code> has already been used
+to write the data to the worksheet, with both <code>colNames = TRUE</code> and
 <code>rowNames = TRUE</code>, as it offsets column indices by 1 to account for the
 row name column.</p>
 <p>Formatting applied:</p><ul><li><p>Thin gray borders on all data cells</p></li>

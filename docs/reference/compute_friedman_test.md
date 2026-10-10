@@ -79,10 +79,10 @@ distribution with \\k-1\\ degrees of freedom.
 consistent order; 1 means every block ranks the groups in the same
 order.
 
-Rules of thumb for `kendall_w`, the Cohen (1988) benchmarks for
-correlations that
-[`rstatix::friedman_effsize`](https://rpkgs.datanovia.com/rstatix/reference/friedman_effsize.html)
-also uses:
+As in
+[`rstatix::friedman_effsize`](https://rpkgs.datanovia.com/rstatix/reference/friedman_effsize.html),
+the rules of thumb for `kendall_w` are the Cohen (1988) benchmarks for
+correlations:
 
 - tiny: \< 0.1
 
@@ -135,7 +135,8 @@ friedman.test(formula = form, data = df_co2)
 #> data:  uptake and conc and Plant
 #> Friedman chi-squared = 59.677, df = 6, p-value = 5.236e-11
 #> 
-rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
+rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95,
+                          ci.type = "perc", nboot = 100)
 #> # A tibble: 1 × 7
 #>   .y.        n effsize conf.low conf.high method    magnitude
 #> * <chr>  <int>   <dbl>    <dbl>     <dbl> <chr>     <ord>    

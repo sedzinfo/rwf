@@ -64,7 +64,7 @@ represent missing or other responses.
 
 - gender:
 
-  Gender (1=Male, 2=Female; 0 and 3 = missing/other)
+  Gender (1=Male, 2=Female; 0 and 3 = missing / other)
 
 - age:
 

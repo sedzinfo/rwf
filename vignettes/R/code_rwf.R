@@ -1,5 +1,5 @@
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//DATA.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/DATA.R
 ##########################################################################################
 #' Admission Data
 #'
@@ -21,7 +21,7 @@
 
 #' Automotive Data
 #'
-#' This data set contains various automotive information including 
+#' This data set contains a range of automotive information including 
 #' engine location, dimensions, weight, engine type, number of cylinders, 
 #' and other specifications.
 #'
@@ -170,7 +170,7 @@
 #'   \item{Q9}{Sexual compatibility item 9 (0-4)}
 #'   \item{Q10}{Sexual compatibility item 10 (0-4)}
 #'   \item{score}{Total scale score (sum of Q1-Q10, range 0-40)}
-#'   \item{gender}{Gender (1=Male, 2=Female; 0 and 3 = missing/other)}
+#'   \item{gender}{Gender (1=Male, 2=Female; 0 and 3 = missing / other)}
 #'   \item{age}{Age in years (999 = missing)}
 #' }
 #' @source researchpy Data-sets repository (\url{https://github.com/researchpy/Data-sets})
@@ -255,8 +255,8 @@
 #'   \item{name}{Name of the passenger}
 #'   \item{sex}{Gender of the passenger}
 #'   \item{age}{Age of the passenger}
-#'   \item{sibsp}{Number of siblings/spouses aboard the Titanic}
-#'   \item{parch}{Number of parents/children aboard the Titanic}
+#'   \item{sibsp}{Number of siblings / spouses aboard the Titanic}
+#'   \item{parch}{Number of parents / children aboard the Titanic}
 #'   \item{ticket}{Ticket number}
 #'   \item{fare}{Passenger fare}
 #'   \item{cabin}{Cabin number}
@@ -307,7 +307,7 @@
 #'
 #' @format A data frame with 19719 rows and 57 variables:
 #' \describe{
-#'   \item{race}{Race/ethnic background (1–13, 0=missing)}
+#'   \item{race}{Race / ethnic background (1–13, 0=missing)}
 #'   \item{age}{Age (integer; only responses from participants 13 and older included)}
 #'   \item{engnat}{Is English your native language? (1=Yes, 2=No, 0=missing)}
 #'   \item{gender}{1=Male, 2=Female, 3=Other, 0=missing}
@@ -317,7 +317,7 @@
 #'     2=Google,
 #'     3=Facebook,
 #'     4=.edu site,
-#'     6=Other/unknown}
+#'     6=Other / unknown}
 #'   \item{country}{Two-letter ISO country code (e.g., "US", "GB")}
 #'   \item{E1}{I am the life of the party.}
 #'   \item{E2}{I don't talk a lot.}
@@ -389,11 +389,11 @@
 #' 
 #' The theory identifies five factors:
 #' \itemize{
-#'   \item \strong{Openness to experience (O)} (inventive/curious vs. consistent/cautious)
-#'   \item \strong{Conscientiousness (C)} (efficient/organized vs. extravagant/careless)
-#'   \item \strong{Extraversion (E)} (outgoing/energetic vs. solitary/reserved)
-#'   \item \strong{Agreeableness (A)} (friendly/compassionate vs. challenging/callous)
-#'   \item \strong{Neuroticism (N)} (sensitive/nervous vs. resilient/confident)
+#'   \item \strong{Openness to experience (O)} (inventive / curious vs. consistent / cautious)
+#'   \item \strong{Conscientiousness (C)} (efficient / organized vs. extravagant / careless)
+#'   \item \strong{Extraversion (E)} (outgoing / energetic vs. solitary / reserved)
+#'   \item \strong{Agreeableness (A)} (friendly / compassionate vs. challenging / callous)
+#'   \item \strong{Neuroticism (N)} (sensitive / nervous vs. resilient / confident)
 #' }
 #' The five factors are represented using the acronyms OCEAN or CANOE. Beneath each proposed global factor, there are a number of correlated and more specific primary factors. For example, extroversion is typically associated with qualities such as gregariousness, assertiveness, excitement-seeking, warmth, activity, and positive emotions.  
 #' Family life and the way someone was raised will affect these traits. Twin studies and other research have shown that about half of the variation between individuals results from their genetics and half from their environments. Researchers have found conscientiousness, extroversion, openness to experience, and neuroticism to be relatively stable from childhood through adulthood.
@@ -446,15 +446,15 @@
 #'   \item \strong{Musical}: Interest in musicals
 #'   \item \strong{Pop}: Interest in pop music
 #'   \item \strong{Rock}: Interest in rock music
-#'   \item \strong{Metal or Hardrock}: Interest in metal/hardrock
+#'   \item \strong{Metal or Hardrock}: Interest in metal / hardrock
 #'   \item \strong{Punk}: Interest in punk music
-#'   \item \strong{Hiphop, Rap}: Interest in hiphop/rap
-#'   \item \strong{Reggae, Ska}: Interest in reggae/ska
-#'   \item \strong{Swing, Jazz}: Interest in swing/jazz
+#'   \item \strong{Hiphop, Rap}: Interest in hiphop / rap
+#'   \item \strong{Reggae, Ska}: Interest in reggae / ska
+#'   \item \strong{Swing, Jazz}: Interest in swing / jazz
 #'   \item \strong{Rock n roll}: Interest in rock n roll
 #'   \item \strong{Alternative}: Interest in alternative music
 #'   \item \strong{Latino}: Interest in Latino music
-#'   \item \strong{Techno, Trance}: Interest in techno/trance
+#'   \item \strong{Techno, Trance}: Interest in techno / trance
 #'   \item \strong{Opera}: Interest in opera
 #'   \item \strong{Movies}: Interest in movies generally
 #'   \item \strong{Horror}: Interest in horror films
@@ -463,7 +463,7 @@
 #'   \item \strong{Romantic}: Interest in romantic films
 #'   \item \strong{Sci-fi}: Interest in sci-fi films
 #'   \item \strong{War}: Interest in war films
-#'   \item \strong{Fantasy/Fairy tales}: Interest in fantasy films
+#'   \item \strong{Fantasy / Fairy tales}: Interest in fantasy films
 #'   \item \strong{Animated}: Interest in animated films
 #'   \item \strong{Documentary}: Interest in documentaries
 #'   \item \strong{Western}: Interest in westerns
@@ -475,7 +475,7 @@
 #'   \item \strong{Physics}: Interest in physics
 #'   \item \strong{Internet}: Interest in internet
 #'   \item \strong{PC}: Interest in computers
-#'   \item \strong{Economy Management}: Interest in economy/management
+#'   \item \strong{Economy Management}: Interest in economy / management
 #'   \item \strong{Biology}: Interest in biology
 #'   \item \strong{Chemistry}: Interest in chemistry
 #'   \item \strong{Reading}: Interest in reading
@@ -486,7 +486,7 @@
 #'   \item \strong{Cars}: Interest in cars
 #'   \item \strong{Art exhibitions}: Interest in art exhibitions
 #'   \item \strong{Religion}: Interest in religion
-#'   \item \strong{Countryside, outdoors}: Interest in countryside/outdoors
+#'   \item \strong{Countryside, outdoors}: Interest in countryside / outdoors
 #'   \item \strong{Dancing}: Interest in dancing
 #'   \item \strong{Musical instruments}: Interest in playing musical instruments
 #'   \item \strong{Writing}: Interest in writing
@@ -510,8 +510,8 @@
 #'   \item \strong{Ageing}: Fear of ageing
 #'   \item \strong{Dangerous dogs}: Fear of dangerous dogs
 #'   \item \strong{Fear of public speaking}: Fear of public speaking
-#'   \item \strong{Smoking}: Smoking behaviour/attitude
-#'   \item \strong{Alcohol}: Alcohol consumption/attitude
+#'   \item \strong{Smoking}: Smoking behaviour / attitude
+#'   \item \strong{Alcohol}: Alcohol consumption / attitude
 #'   \item \strong{Healthy eating}: Attitude toward healthy eating
 #'   \item \strong{Daily events}: Attitude toward planning daily events
 #'   \item \strong{Prioritising workload}: Ability to prioritise workload
@@ -583,7 +583,7 @@
 #'   \item \strong{Number of siblings}: Number of siblings
 #'   \item \strong{Gender}: 1=Female, 2=Male
 #'   \item \strong{Left - right handed}: 1=Right, 2=Left
-#'   \item \strong{Education}: 1=Primary, 2=Secondary, 3=College/University, 4=Masters, 5=Doctorate
+#'   \item \strong{Education}: 1=Primary, 2=Secondary, 3=College / University, 4=Masters, 5=Doctorate
 #'   \item \strong{Only child}: 1=Yes, 2=No
 #'   \item \strong{Village - town}: 1=Village, 2=City
 #'   \item \strong{House - block of flats}: 1=House, 2=Block of flats
@@ -595,7 +595,7 @@
 "df_responses"
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//EXPLORE_ASSUMPTIONS.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/EXPLORE_ASSUMPTIONS.R
 ##########################################################################################
 ##########################################################################################
 # PLOT NORMALITY ASSUMPTIONS BASE PLOT
@@ -609,8 +609,8 @@
 #' @param df Data frame or numeric vector. Non-numeric columns are silently
 #'   dropped. Columns with fewer than three non-missing values or zero variance
 #'   are skipped.
-#' @param breaks Histogram breaks passed to \code{\link[graphics]{hist}}. May
-#'   be a method name (\code{"Sturges"}, \code{"Scott"}, \code{"FD"}) or a
+#' @param breaks Histogram breaks passed to \code{graphics::hist()}. This
+#'   may be a method name (\code{"Sturges"}, \code{"Scott"}, \code{"FD"}) or a
 #'   positive integer specifying the number of bins. Default is
 #'   \code{"Sturges"}.
 #' @param title Character string used as the outer plot title and as the PDF
@@ -622,8 +622,8 @@
 #' @param pb Logical; whether to display a progress bar in the console.
 #'   Default is \code{FALSE}.
 #' @return A named list of recorded plots (one element per numeric column),
-#'   returned invisibly. Each element is a \code{\link[grDevices]{recordPlot}}
-#'   object.
+#'   returned invisibly. Each element is a plot recorded with
+#'   \code{grDevices::recordPlot()}.
 #' @importFrom graphics plot par hist boxplot title
 #' @importFrom stats qqnorm qqline na.omit density
 #' @importFrom utils txtProgressBar setTxtProgressBar
@@ -646,9 +646,11 @@ plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NUL
   }
   plot <- list()
   data_name <- deparse(substitute(df))
+  # name the column after the argument only for vector input, a data frame keeps its column names
+  is_vector <- is.null(dim(df))
   df <- data.frame(df)
-  df <- data.frame(df[, sapply(df, is.numeric)])
-  if (length(df) == 1) {
+  df <- df[, sapply(df, is.numeric), drop = FALSE]
+  if (is_vector && length(df) == 1) {
     names(df) <- data_name
   }
   if (pb)
@@ -695,7 +697,7 @@ plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NUL
 #'   observations coloured by outlier status and row-name labels repelled away
 #'   from flagged points. Three outlier-detection rules are available via
 #'   \code{method}: mean ± 2 SD, median ± 2 MAD (rescaled), or boxplot IQR
-#'   fences. Reference lines for the centre and the upper/lower bounds are
+#'   fences. Reference lines for the centre and the upper / lower bounds are
 #'   overlaid on each plot.
 #' @param df Data frame or numeric vector. Non-numeric columns are silently
 #'   dropped.
@@ -735,10 +737,12 @@ plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = F
   obs <- Outlier <- NULL
   plot <- list()
   data_name <- deparse(substitute(df))
+  # name the column after the argument only for vector input, a data frame keeps its column names
+  is_vector <- is.null(dim(df))
   df <- data.frame(df)
-  df <- data.frame(df[, sapply(df, is.numeric)])
+  df <- df[, sapply(df, is.numeric), drop = FALSE]
   id <- row.names(df)
-  if (length(names(df)) == 1) {
+  if (is_vector && length(df) == 1) {
     names(df) <- data_name
   }
   if(pb)
@@ -811,7 +815,7 @@ plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = F
 #' @param df Data frame or numeric vector. Non-numeric columns are silently
 #'   dropped.
 #' @param bins Number of histogram bins passed to
-#'   \code{\link[ggplot2]{geom_histogram}}. Default is \code{30}.
+#'   \code{ggplot2::geom_histogram()}. Default is \code{30}.
 #' @param xlims Length-2 numeric vector setting the x-axis limits, e.g.
 #'   \code{c(0, 50)}. When \code{NULL} (default) limits are determined
 #'   automatically.
@@ -879,7 +883,7 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
 #' @description Produces one quantile-quantile plot per numeric column of
 #'   \code{df}, comparing the empirical distribution to the theoretical normal.
 #'   A reference line is fitted through the 25th and 75th percentiles (the same
-#'   convention used by \code{\link[stats]{qqline}}). Non-numeric columns are
+#'   convention used by \code{stats::qqline()}). Non-numeric columns are
 #'   skipped silently. A progress bar is printed to the console.
 #' @param df Data frame or vector. Non-numeric columns are skipped.
 #' @param title Character string used as the plot title. Default is \code{""}.
@@ -901,8 +905,10 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
 plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
   resids <- NULL
   data_name <- deparse(substitute(df))
+  # name the column after the argument only for vector input, a data frame keeps its column names
+  is_vector <- is.null(dim(df))
   df <- data.frame(df)
-  if (length(names(df)) == 1) {
+  if (is_vector && length(df) == 1) {
     names(df) <- data_name
   }
   names_df <- names(df)
@@ -963,9 +969,11 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
 plot_boxplot <- function(df, title = "", base_size = 10) {
   variable <- value <- NULL
   data_name <- deparse(substitute(df))
+  # name the column after the argument only for vector input, a data frame keeps its column names
+  is_vector <- is.null(dim(df))
   df <- data.frame(df)
-  df <- data.frame(df[, sapply(df, is.numeric)])
-  if (length(df) == 1) {
+  df <- df[, sapply(df, is.numeric), drop = FALSE]
+  if (is_vector && length(df) == 1) {
     names(df) <- data_name
   }
   vector <- reshape2::melt(df, measure.vars = names(df), value.name = "value", variable.name = "variable")
@@ -981,8 +989,8 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
 # NORMALITY TESTS
 ##########################################################################################
 #' @title Battery of normality tests
-#' @description Runs eight normality tests on each numeric column of \code{df}:
-#'   Shapiro-Wilk, Anderson-Darling, Cramér-von Mises, Shapiro-Francia,
+#' @description Runs eight normality tests on each numeric column of \code{df}.
+#'   The tests are Shapiro-Wilk, Anderson-Darling, \enc{Cramér}{Cramer}-von Mises, Shapiro-Francia,
 #'   Jarque-Bera, Kolmogorov-Smirnov, Lilliefors, and Pearson chi-squared.
 #'   Each column is z-standardised before testing. Columns with fewer than 8 or
 #'   more than 4999 non-missing observations are skipped with a console message.
@@ -1032,9 +1040,11 @@ report_normality_tests <- function(df, file = NULL) {
     )
   }
   for (i in names(df)) {
-    vector <- compute_standard(stats::na.omit(df[, i]), type = "z")
+    # check the variance on the raw values: a constant column z-standardises to NaN
+    vector <- stats::na.omit(df[, i])
     N <- length(vector)
-    if (length(vector) < 5000 & length(vector) > 7 & var(vector) != 0) {
+    if (N < 5000 & N > 7 && isTRUE(stats::var(vector) != 0)) {
+      vector <- compute_standard(vector, type = "z")
       # ties make the Kolmogorov-Smirnov p value approximate, so say so in the output instead of warning
       if (anyDuplicated(vector)) {
         instruction_kolmogorov_i <- paste(instruction_kolmogorov, "(ties present, p value is approximate)")
@@ -1084,8 +1094,8 @@ report_normality_tests <- function(df, file = NULL) {
 #'   corresponding approximately to the 95 \%, 99 \%, and 99.9 \% tails of the
 #'   normal distribution. Designed to be applied across columns with
 #'   \code{sapply}.
-#' @param vector Numeric vector. Missing values are removed before
-#'   z-standardisation and counts.
+#' @param vector Numeric vector. Missing values are removed before the
+#'   z-standardisation and the counts.
 #' @return A one-row data frame with three character columns:
 #'   \describe{
 #'     \item{abs_z_1.96}{Percentage of observations with \eqn{|z| \ge 1.96}.}
@@ -1136,7 +1146,7 @@ outlier_summary <- function(vector) {
 #'   \code{c(0.25, 0.75)} (standard quartiles).
 #' @param na.rm Logical; whether to remove \code{NA} values when computing
 #'   quantiles and IQR. Default is \code{TRUE}.
-#' @param ... Additional arguments passed to \code{\link[stats]{quantile}}.
+#' @param ... Additional arguments passed to \code{stats::quantile()}.
 #' @return A numeric vector the same length as \code{vector} with outlying
 #'   values replaced by \code{NA}.
 #' @importFrom stats quantile IQR
@@ -1149,7 +1159,8 @@ outlier_summary <- function(vector) {
 #' data.frame(sapply(df, remove_outliers))
 remove_outliers <- function(vector, probs = c(.25, .75), na.rm = TRUE, ...) {
   qnt <- stats::quantile(vector, probs = probs, na.rm = na.rm, ...)
-  H <- 1.5 * stats::IQR(vector, na.rm = na.rm)
+  # fence width from the same quantiles as the fences, so probs is respected
+  H <- 1.5 * unname(qnt[2] - qnt[1])
   y <- vector
   y[vector < (qnt[1] - H)] <- NA
   y[vector > (qnt[2] + H)] <- NA
@@ -1157,7 +1168,7 @@ remove_outliers <- function(vector, probs = c(.25, .75), na.rm = TRUE, ...) {
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//EXPLORE_DESCRIPTIVES.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/EXPLORE_DESCRIPTIVES.R
 ##########################################################################################
 ##########################################################################################
 # DESCRIPTIVES
@@ -1216,7 +1227,7 @@ compute_descriptives <- function(df, dv, iv = NULL, file = NULL) {
     mean = "measure of central tendency\n\nmean",
     sd = "measure of dispersion\nstandard deviation\n\nlow values indicate low dispersion of observations from the mean",
     median = "measure of central tendency\n\nmedian\n\nvalue separating lower half from higher half of ordered observations",
-    trimmed = "measure of central tendency\n\ntrimmed mean\n\nmean after droping .1 of minimum and maximum values in data",
+    trimmed = "measure of central tendency\n\ntrimmed mean\n\nmean after dropping .1 of minimum and maximum values in data",
     mad = "measure of dispersion\n\nmedian absolute deviation\n\nlow values indicate low dispersion of observations from the median",
     min = "minimum value observed",
     max = "maximum value observed",
@@ -1233,7 +1244,7 @@ compute_descriptives <- function(df, dv, iv = NULL, file = NULL) {
   )
   result_df <- data.frame()
   describe <- function(x) psych::describe(x, skew = TRUE, ranges = TRUE, check = TRUE, fast = FALSE, IQR = TRUE, quant = c(.1, .25, .5, .75, .90), na.rm = TRUE)
-  if (missing(iv)) {
+  if (is.null(iv)) {
     for (i in names(df)[dv]) {
       result_df <- plyr::rbind.fill(result_df, data.frame(variable = i, describe(df[, i])))
     }
@@ -1301,8 +1312,8 @@ compute_descriptives <- function(df, dv, iv = NULL, file = NULL) {
 #' @examples
 #' compute_aggregate(df = mtcars, iv = 9)
 #' compute_aggregate(df = mtcars, iv = 9:10)
-#' compute_aggregate(df = mtcars, iv = 9:11)
-#' compute_aggregate(df = mtcars, iv = 9:11, file = "descriptives")
+#' compute_aggregate(df = mtcars, iv = 11)
+#' compute_aggregate(df = mtcars, iv = 11, file = "descriptives")
 compute_aggregate <- function(df, iv, file = NULL) {
   result_df_mean <- result_df_sd <- result_df_obs <- list()
   factornames <- names(df)[iv]
@@ -1310,8 +1321,8 @@ compute_aggregate <- function(df, iv, file = NULL) {
   result_sd <- data.frame(statistic = "SD", plyr::ddply(df, factornames, plyr::numcolwise(sd, na.rm = TRUE)))
   result_median <- data.frame(statistic = "median", plyr::ddply(df, factornames, plyr::numcolwise(median, na.rm = TRUE)))
   result_mad <- data.frame(statistic = "mad", plyr::ddply(df, factornames, plyr::numcolwise(stats::mad, na.rm = TRUE)))
-  result_trimmed_mean <- data.frame(statistic = "trmmed mean", plyr::ddply(df, factornames, plyr::numcolwise(mean, trim = .5, na.rm = TRUE)))
-  result_obs <- data.frame(statistic = "N", plyr::ddply(df, factornames, plyr::numcolwise(length)))
+  result_trimmed_mean <- data.frame(statistic = "trimmed mean", plyr::ddply(df, factornames, plyr::numcolwise(mean, trim = .5, na.rm = TRUE)))
+  result_obs <- data.frame(statistic = "N", plyr::ddply(df, factornames, plyr::numcolwise(function(x) sum(!is.na(x)))))
   result_min <- data.frame(statistic = "min", plyr::ddply(df, factornames, plyr::numcolwise(min, na.rm = TRUE)))
   result_max <- data.frame(statistic = "max", plyr::ddply(df, factornames, plyr::numcolwise(max, na.rm = TRUE)))
   result_range <- data.frame(statistic = "range", plyr::ddply(df, factornames, plyr::numcolwise(function(x) max(x, na.rm = TRUE) - min(x, na.rm = TRUE))))
@@ -1336,10 +1347,8 @@ compute_aggregate <- function(df, iv, file = NULL) {
 #'   results are stacked into a single long-format table. Missing values are
 #'   excluded from the frequency counts via \code{table()}. Results can be
 #'   exported to an Excel file.
-#' @param df A data frame whose columns are the categorical variables to
-#'   tabulate. All columns are processed regardless of class.
-#' @param ordered Logical. When \code{TRUE} (default) the rows within each
-#'   variable are sorted by frequency in descending order.
+#' @param df A data frame with the categorical variables to tabulate as
+#'   columns. All columns are processed regardless of class.
 #' @param file Character string naming the output Excel file (without
 #'   extension). When \code{NULL} (default) no file is written.
 #' @return A data frame in long format with one row per observed level per
@@ -1359,7 +1368,7 @@ compute_aggregate <- function(df, iv, file = NULL) {
 #' compute_frequencies(df = df)
 #' compute_frequencies(df = generate_factor())
 #' compute_frequencies(df = generate_factor(), file = "descriptives")
-compute_frequencies <- function(df, ordered = TRUE, file = NULL) {
+compute_frequencies <- function(df, file = NULL) {
   frequency <- data.frame()
   for (i in names(df)) {
     mytable <- table(df[i])
@@ -1444,15 +1453,11 @@ response_frequency <- function(df, max = 10, uniqueitems = NULL, type = "percent
     uniqueitems <- unique(as.vector(unlist(df)))
   }
   if ((max.item - min.item > max) || (nlevels(factor(df[, 1])) > max) || length(uniqueitems) > max) {
-    frequency <- NULL
+    result <- NULL
   } else {
-    n_var <- dim(df)[2]
     n_cases <- dim(df)[1]
-    dummy <- matrix(rep(uniqueitems, n_var), ncol = n_var)
-    colnames(dummy) <- names(df)
-    xdum <- rbind(df, dummy)
-    frequency <- apply(xdum, 2, table)
-    frequency <- t(frequency - 1)
+    # count each column against uniqueitems only, values outside it end up in miss
+    frequency <- do.call(rbind, lapply(df, function(x) table(factor(x, levels = sort(uniqueitems)))))
     responses <- rowSums(frequency)
     if (type == "frequency") {
       result <- data.frame(type = "Frequency", variable = row.names(frequency), frequency, miss = n_cases - responses, responses, check.names = FALSE)
@@ -1471,8 +1476,8 @@ response_frequency <- function(df, max = 10, uniqueitems = NULL, type = "percent
       )
     }
   }
-  row.names(result) <- NULL
-  if (!is.null(file)) {
+  if (!is.null(result)) row.names(result) <- NULL
+  if (!is.null(file) && !is.null(result)) {
     report_dataframe(result, file = file, sheet = "Frequency")
   }
   return(result)
@@ -1492,9 +1497,9 @@ response_frequency <- function(df, max = 10, uniqueitems = NULL, type = "percent
 #'   excluded).
 #' @param combinations A data frame with two character columns named
 #'   \code{index1} and \code{index2}, each row specifying one variable pair to
-#'   cross-tabulate. Takes precedence over \code{factor_index}.
-#' @return A data frame with one row per combination of variable-pair levels,
-#'   containing the following columns:
+#'   cross-tabulate. This argument takes precedence over \code{factor_index}.
+#' @return A data frame with one row for each combination of levels of each
+#'   pair of variables, with the following columns:
 #'   \describe{
 #'     \item{f1}{Name of the first variable.}
 #'     \item{f2}{Name of the second variable.}
@@ -1618,7 +1623,8 @@ plot_crosstable <- function(df, factor_index, combinations = NULL, shape = 16, a
     }
   }
   if(pb) close(progress)
-  return(plot)
+  invisible(lapply(plot,print))
+  return(invisible(plot))
 }
 ##########################################################################################
 # PLOT MOSAIC
@@ -1703,7 +1709,8 @@ plot_mosaic <- function(df, factor_index, base_size = 10, title = "", pb = FALSE
     }
   }
   if (pb) close(progress)
-  return(plot)
+  invisible(lapply(plot,print))
+  return(invisible(plot))
 }
 ##########################################################################################
 # PLOT RESPONSE FREQUENCY
@@ -1758,11 +1765,12 @@ plot_response_frequencies <- function(df, factor_index, base_size = 10, title = 
       }
     }
   }
-  return(plots)
+  invisible(lapply(plots,print))
+  return(invisible(plots))
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//EXPLORE_TIME_SERIES.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/EXPLORE_TIME_SERIES.R
 ##########################################################################################
 ##########################################################################################
 # PLOTS
@@ -1818,8 +1826,8 @@ plot_ts <- function(df, base_size = 10, ylab = "Count", title = "") {
 #'   values, making it easy to identify significant lags and seasonal patterns.
 #'   Missing values are excluded via \code{na.action = stats::na.exclude}.
 #' @param df A \code{ts} object containing the time series to analyse.
-#' @param lag.max Integer specifying the maximum number of lags to compute.
-#'   Default is \code{length(df)} (all possible lags).
+#' @param lag.max Integer. Maximum number of lags to compute. Default is
+#'   \code{length(df)}, which gives all possible lags.
 #' @param base_size Base font size passed to \code{theme_bw()}. Default is
 #'   \code{10}.
 #' @param title Character string used as the plot title. Default is \code{""}.
@@ -2011,9 +2019,9 @@ plot_acf <- function(df, lag.max = length(df), base_size = 10, title = "") {
 #'     \item{\code{"kernel"}}{Gaussian kernel smoother via \code{ksmooth()} — bandwidth controls the smoothing window (default).}
 #'     \item{\code{"lowess"}}{Locally weighted regression via \code{lowess()} — \code{f} controls the span proportion.}
 #'     \item{\code{"friedman"}}{Friedman's super-smoother via \code{supsmu()} — span must be in (0, 1).}
-#'     \item{\code{"splines"}}{Smoothing splines via \code{smooth.spline()} — \code{spar} controls the penalty.}
+#'     \item{\code{"splines"}}{Smoothing splines via \code{smooth.spline()}, where \code{spar} controls the penalty.}
 #'     \item{\code{"default"}}{Running mean filter via \code{filter()} — bandwidth rounded to an integer window width.}
-#'     \item{\code{"polynomial"}}{Fits a centred cubic polynomial trend with and without seasonal (cos/sin) terms via \code{lm()}.}
+#'     \item{\code{"polynomial"}}{Fits a centred cubic polynomial trend with and without seasonal (cos / sin) terms via \code{lm()}.}
 #'     \item{\code{"linear"}}{Fits a simple linear trend via \code{lm()} and draws the regression line.}
 #'   }
 #' @return Invisibly returns \code{NULL}. The function is called for its side
@@ -2123,7 +2131,7 @@ compute_moving_average <- function(df, w) {
     for (row_index in 1:max_row) {
       index_ma <- seq(from = (row_index - w), to = (row_index + w), by = 1)
       index_ma <- index_ma[index_ma > 0]
-      index_ma <- index_ma[index_ma < max_row]
+      index_ma <- index_ma[index_ma <= max_row]
       df_ma[row_index, collumn_index] <- mean(df[index_ma, collumn_index])
     }
   }
@@ -2143,8 +2151,8 @@ compute_moving_average <- function(df, w) {
 # One autoregressive (p) and one moving average (q) parameter: ACF - exponential decay starting at lag 1; PACF - exponential decay starting at lag 1.
 # ARIMA (p,d,q) p=Autoregressive Parameters,d=Differencing Passes,q=Moving Average Parameters.
 # CHECK FOR MODEL
-# Look at the significance of the coefficients. In R, p-values arent given. For each coefficient,calculate z=estimated coeff. / std. error of coeff. If |z| > 1.96,the estimated coefficient is significantly different from 0.
-# Look at the ACF of the residuals. For a good model,all autocorrelations for the residual series should be non-significant. If this isnt the case,you need to try a different model.
+# Look at the significance of the coefficients. In R, p-values aren't given. For each coefficient,calculate z=estimated coeff. / std. error of coeff. If |z| > 1.96,the estimated coefficient is significantly different from 0.
+# Look at the ACF of the residuals. For a good model,all autocorrelations for the residual series should be non-significant. If this isn't the case,you need to try a different model.
 # Look at Box-Pierce (Ljung) tests for possible residual autocorrelation at various lags (see Lesson 3.2 for a description of this test).
 # If non-constant variance is a concern,look at a plot of residuals versus fits and/or a time series plot of the residuals.
 ##########################################################################################
@@ -2159,7 +2167,441 @@ compute_moving_average <- function(df, w) {
 # Mean absolute percentage error (MAPE)
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_CHECK_DATAFRAME.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS.R
+##########################################################################################
+##########################################################################################
+# ROUND DATAFRAME
+##########################################################################################
+#' @title Round numeric columns in a data frame
+#' @description Applies a rounding or transformation function to every numeric
+#'   column in a data frame, leaving non-numeric columns (factor, character,
+#'   etc.) unchanged.
+#' @param df A data frame containing a mix of numeric and non-numeric columns.
+#' @param digits Integer number of decimal places. Only used with
+#'   \code{type = "round"} and \code{type = "tenth"}. Default is \code{0}.
+#' @param type Character string specifying the transformation to apply to
+#'   numeric columns:
+#'   \describe{
+#'     \item{\code{"round"}}{Round to \code{digits} decimal places using
+#'       \code{round()} (default).}
+#'     \item{\code{"ceiling"}}{Round up to the nearest integer using
+#'       \code{ceiling()}.}
+#'     \item{\code{"floor"}}{Round down to the nearest integer using
+#'       \code{floor()}.}
+#'     \item{\code{"tenth"}}{Divide each value by 10 then round to
+#'       \code{digits} decimal places — useful for rescaling values that were
+#'       multiplied by 10 (e.g. converting tenths back to units).}
+#'   }
+#' @return A data frame with the same structure as \code{df} where all numeric
+#'   columns have been rounded or transformed according to \code{type}.
+#' @keywords functions
+#' @export
+#' @examples
+#' round_dataframe(df = change_data_type(df = mtcars, type = "factor"), digits = 0)
+#' round_dataframe(df = change_data_type(df = mtcars, type = "character"), digits = 0)
+#' round_dataframe(df = mtcars, digits = 0)
+#' round_dataframe(df = mtcars, digits = 0, type = "ceiling")
+#' round_dataframe(df = mtcars, digits = 0, type = "floor")
+#' round_dataframe(df = mtcars * 100, digits = 2, type = "tenth")
+round_dataframe <- function(df, digits = 0, type = "round") {
+  if (type == "round") {
+    df[, sapply(df, is.numeric)] <- round(df[, sapply(df, is.numeric)], digits = digits)
+  }
+  if (type == "ceiling") {
+    df[, sapply(df, is.numeric)] <- ceiling(df[, sapply(df, is.numeric)])
+  }
+  if (type == "floor") {
+    df[, sapply(df, is.numeric)] <- floor(df[, sapply(df, is.numeric)])
+  }
+  if (type == "tenth") {
+    df[, sapply(df, is.numeric)] <- round(df[, sapply(df, is.numeric)] / 10, digits = digits)
+  }
+  return(df)
+}
+##########################################################################################
+# CHANGE DATA TYPE OF COLLUMNS IN DATA FRAME
+##########################################################################################
+#' @title Convert column data types in a data frame
+#' @description Converts all or selected columns in a data frame to a
+#'   specified data type. Whitespace (tabs, carriage returns, newlines) is
+#'   trimmed automatically when converting to \code{"character"} or
+#'   \code{"numeric"}.
+#' @param df A data frame whose columns will be converted.
+#' @param type Character string specifying the conversion to apply:
+#'   \describe{
+#'     \item{\code{"character"}}{Converts all columns to character, trimming
+#'       leading and trailing whitespace.}
+#'     \item{\code{"numeric"}}{Converts all columns to numeric (via character
+#'       with whitespace trimming). Non-numeric strings become \code{NA}.}
+#'     \item{\code{"factor"}}{Converts all columns to factor.}
+#'     \item{\code{"factor_character"}}{Converts only factor columns to
+#'       character. All other columns are left unchanged.}
+#'     \item{\code{"character_factor"}}{Converts only character columns to
+#'       factor. All other columns are left unchanged.}
+#'   }
+#' @return A data frame with the same dimensions as \code{df} with column
+#'   types converted as specified.
+#' @keywords functions
+#' @export
+#' @examples
+#' cdf(df = change_data_type(df = mtcars, "character"))
+#' cdf(df = change_data_type(df = mtcars, "numeric"))
+#' cdf(df = change_data_type(df = mtcars, "factor"))
+#' df <- change_data_type(df = mtcars, "factor")
+#' cdf(df = change_data_type(df = df, "factor_character"))
+#' cdf(df = change_data_type(df = df, "character_factor"))
+change_data_type <- function(df, type) {
+  if (type == "character") {
+    df[] <- lapply(df, function(x) as.character(trimws(x, which = "both", whitespace = "[\t\r\n]")))
+  }
+  if (type == "numeric") {
+    df[] <- lapply(df, function(x) as.numeric(trimws(as.character(x), which = "both", whitespace = "[\t\r\n]")))
+  }
+  if (type == "factor") {
+    df[] <- lapply(df, as.factor)
+  }
+  if (type == "factor_character") {
+    df[] <- lapply(df, function(x) if (is.factor(x)) as.character(x) else x)
+  }
+  if (type == "character_factor") {
+    df[] <- lapply(df, function(x) if (is.character(x)) factor(x) else x)
+  }
+  return(df)
+}
+##########################################################################################
+# RBIND ALL
+##########################################################################################
+#' @title Row-bind two data frames with different column sets
+#' @description Combines two data frames or matrices by rows even when they do
+#'   not share the same columns. Columns present in one input but absent in the
+#'   other are added and filled with \code{NA} before binding. Row names from
+#'   both inputs are preserved unless they would produce duplicates, in which
+#'   case default integer row names are used.
+#' @param df1 A data frame or matrix.
+#' @param df2 A data frame or matrix.
+#' @return A data frame containing all rows from \code{df1} followed by all
+#'   rows from \code{df2}, with the union of both column sets. Cells where a
+#'   column did not exist in the original input are \code{NA}.
+#' @keywords functions
+#' @export
+#' @examples
+#' df1 <- generate_correlation_matrix(n = 10)
+#' df2 <- generate_correlation_matrix(n = 10)
+#' names(df2)[4] <- "X11"
+#' rbind_all(df1 = df1, df2 = df2)
+#' row.names(df1) <- 21:30
+#' rbind_all(df1 = df1, df2 = df2)
+rbind_all <- function(df1, df2) {
+  # matrices are accepted, so work on data frames (a matrix cannot gain a new column by name)
+  df1 <- as.data.frame(df1)
+  df2 <- as.data.frame(df2)
+  df1_diff <- setdiff(colnames(df1), colnames(df2))
+  df2_diff <- setdiff(colnames(df2), colnames(df1))
+  df1[, c(as.character(df2_diff))] <- NA
+  df2[, c(as.character(df1_diff))] <- NA
+  row_names <- c(row.names(df1), row.names(df2))
+  result <- rbind(df1, df2)
+  # keep the original row names unless they clash, then fall back to 1, 2, 3, ...
+  if (anyDuplicated(row_names)) {
+    row.names(result) <- NULL
+  } else {
+    row.names(result) <- row_names
+  }
+  return(result)
+}
+##########################################################################################
+# REMOVE VALUES THAT CANNOT BE CALCULATED
+##########################################################################################
+#' @title Replace and remove non-computable values
+#' @description Cleans a data frame by replacing non-computable values
+#'   (\code{NA}, \code{NaN}, \code{Inf}, \code{-Inf}, and empty strings) with
+#'   a chosen replacement, then optionally drops rows or columns that still
+#'   contain missing values or have zero variance.
+#' @param df A data frame to clean.
+#' @param value The replacement value for all non-computable entries. Default
+#'   is \code{NA}.
+#' @param remove_rows Logical. When \code{TRUE}, rows containing \code{NA}
+#'   after replacement are removed according to the \code{aggressive} setting.
+#'   Default is \code{FALSE}.
+#' @param aggressive Logical. Only used when \code{remove_rows = TRUE}.
+#'   \itemize{
+#'     \item \code{TRUE} — remove a row if \emph{any} value is \code{NA}.
+#'     \item \code{FALSE} — remove a row only if \emph{all} values are
+#'       \code{NA}.
+#'   }
+#'   Default is \code{FALSE}.
+#' @param remove_cols Logical. When \code{TRUE}, columns where \emph{all}
+#'   values are \code{NA} are dropped. Default is \code{FALSE}.
+#' @param remove_zero_variance Logical. Only used when \code{remove_cols =
+#'   TRUE}. When \code{TRUE}, columns with only one unique non-missing value
+#'   (zero variance) are also dropped. Default is \code{FALSE}.
+#' @return A data frame with non-computable values replaced and, depending on
+#'   the flags, rows and / or columns removed.
+#' @keywords functions
+#' @export
+#' @examples
+#' df <- mtcars
+#' df[1, ] <- as.numeric(NaN)
+#' df[2, ] <- as.numeric(Inf)
+#' df[3, ] <- as.numeric(-Inf)
+#' df[4, ] <- as.numeric(NA)
+#' df[5, ] <- ""
+#' remove_nc(df = df, value = NA)
+#' cdf(remove_nc(df = df, value = NA))
+#' df <- generate_missing(mtcars, missing = 5)
+#' remove_nc(df, remove_rows = TRUE, aggressive = FALSE)
+#' remove_nc(df, remove_rows = TRUE, aggressive = TRUE)
+#' df <- generate_missing(generate_correlation_matrix(nrows = 5), missing = 2)
+#' df$X2 <- NA
+#' df$X3 <- 1
+#' remove_nc(df, remove_cols = TRUE, remove_zero_variance = FALSE)
+#' remove_nc(df, remove_cols = TRUE, remove_zero_variance = TRUE)
+remove_nc <- function(df, value = NA, remove_rows = FALSE, aggressive = FALSE, remove_cols = FALSE, remove_zero_variance = FALSE) {
+  df[is.na(df)] <- value
+  # df[sapply(df,is.nan)]<-value
+  # df[sapply(df,is.infinite)]<-value
+  df[df == Inf] <- value
+  df[df == -Inf] <- value
+  df[df == NaN] <- value
+  df[df == ""] <- value
+  if (remove_rows) {
+    if (aggressive) {
+      df <- df[rowSums(is.na(df)) == 0, , drop = FALSE]
+    } else {
+      df <- df[apply(df, 1, function(x) any(!is.na(x))), , drop = FALSE]
+    }
+  }
+  if (remove_cols) {
+    df <- df[, colSums(!is.na(df)) > 0, drop = FALSE]
+    if (remove_zero_variance) {
+      # df<-df[,!0==apply(df,2,function(x) stats::sd(x,na.rm=TRUE))]
+      df <- df[, apply(df, 2, function(x) length(table(x))) > 1, drop = FALSE]
+    }
+  }
+  return(df)
+}
+##########################################################################################
+# REPLACE NA WITH PREVIOUS CELLS
+##########################################################################################
+#' @title Last observation carried forward (LOCF) imputation
+#' @description Replaces each \code{NA} in a vector with the most recent
+#'   preceding non-\code{NA} value (last observation carried forward, LOCF).
+#'   If the first element is \code{NA}, it is replaced with the first
+#'   non-\code{NA} value found anywhere in the vector. To apply LOCF to every
+#'   column of a data frame use \code{df[] <- lapply(df, replace_na_with_previous)}.
+#' @param vector A vector of any type that may contain \code{NA} values.
+#' @return A vector of the same length and type as \code{vector} with
+#'   \code{NA} values replaced by the preceding non-\code{NA} element.
+#'   Returns the original vector unchanged if it contains no \code{NA} values.
+#' @keywords functions
+#' @export
+#' @examples
+#' set.seed(12345)
+#' df1 <- generate_missing(rnorm(10), missing = 5)
+#' df2 <- generate_missing(rnorm(10), missing = 5)
+#' df3 <- generate_missing(rnorm(10), missing = 5)
+#' df4 <- generate_missing(rnorm(10), missing = 5)
+#' df5 <- generate_missing(rnorm(10), missing = 5)
+#' df <- data.frame(df1, df2, df3, df4, df5)
+#' row.names(df) <- paste0("A", row.names(df))
+#' replace_na_with_previous(df1)
+#' df[] <- lapply(df, replace_na_with_previous)
+replace_na_with_previous <- function(vector) {
+  if (length(vector) == 0) {
+    return(vector)
+  }
+  if (is.na(vector[1])) {
+    vector[1] <- na.omit(vector)[1]
+  }
+  for (i in seq_along(vector)[-1]) {
+    if (is.na(vector[i])) {
+      vector[i] <- vector[i - 1]
+    }
+  }
+  return(vector)
+}
+##########################################################################################
+# BIND DATAFRAMES OR VECTORS OF UNEQUAL ROW LENGTHS
+##########################################################################################
+#' @title Pad a data frame to a target number of rows with NAs
+#' @description Extends a data frame to \code{rowsneeded} rows by appending
+#'   (or prepending) \code{NA}-filled rows. Internal helper used by
+#'   \code{\link{c_bind}}.
+#' @param df A data frame to pad.
+#' @param rowsneeded Integer target row count. Must be greater than or equal
+#'   to \code{nrow(df)}.
+#' @param first Logical. When \code{TRUE} (default) \code{NA} rows are
+#'   appended at the bottom; when \code{FALSE} they are prepended at the top.
+#' @return A data frame with \code{rowsneeded} rows and the same columns as
+#'   \code{df}.
+#' @author Ananda Mahto
+#' @keywords functions
+padNA <- function(df, rowsneeded, first = TRUE) {
+  column_names <- colnames(df)
+  rowsneeded <- rowsneeded - nrow(df)
+  temp2 <- setNames(data.frame(matrix(rep(NA, length(column_names) * rowsneeded), ncol = length(column_names))), column_names)
+  if (isTRUE(first)) {
+    rbind(df, temp2)
+  } else {
+    rbind(temp2, df)
+  }
+}
+#' @title Get the names of objects passed through dots
+#' @description Returns the unevaluated expressions passed in \code{...} as
+#'   character strings. Internal helper used by \code{\link{c_bind}} to name
+#'   the columns of its output.
+#' @param ... Objects whose expressions should be returned as names.
+#' @return A character vector with one element per argument in \code{...}.
+#' @author Ananda Mahto
+#' @keywords functions
+dotnames <- function(...) {
+  vnames <- as.list(substitute(list(...)))[-1L]
+  result <- unlist(lapply(vnames, deparse), FALSE, FALSE)
+  return(result)
+}
+#' @title Column-bind data frames or vectors of unequal lengths
+#' @description Combines any number of data frames or vectors side by side,
+#'   padding shorter inputs with \code{NA} rows so all columns reach the same
+#'   length. Each input's columns are prefixed with the object's name to avoid
+#'   duplicate column names. Vectors are coerced to single-column data frames
+#'   before binding.
+#' @param ... Data frames or vectors to column-bind. Names are taken from the
+#'   unevaluated expressions passed (e.g. variable names).
+#' @param first Logical. When \code{TRUE} (default) \code{NA} padding rows are
+#'   appended at the bottom of shorter inputs; when \code{FALSE} they are
+#'   prepended at the top.
+#' @return A data frame with one column per column across all inputs, padded
+#'   with \code{NA} rows to the length of the longest input. Column names
+#'   follow the pattern \code{<object_name>} for single-column inputs and
+#'   \code{<object_name>_<original_colname>} for multi-column inputs.
+#' @importFrom stats setNames
+#' @author Ananda Mahto
+#' @keywords functions
+#' @export
+#' @examples
+#' c_bind(rnorm(10), rnorm(11), rnorm(12), rnorm(13))
+c_bind <- function(..., first = TRUE) {
+  Names <- dotnames(...)
+  datalist <- stats::setNames(list(...), Names)
+  nrows <- max(sapply(datalist, function(x) {
+    ifelse(is.null(dim(x)), length(x), nrow(x))
+  }))
+  datalist <- lapply(seq_along(datalist), function(x) {
+    z <- datalist[[x]]
+    if (is.null(dim(z))) {
+      z <- setNames(data.frame(z), Names[x])
+    } else {
+      if (is.null(colnames(z))) {
+        colnames(z) <- paste(Names[x], sequence(ncol(z)), sep = "_")
+      } else {
+        colnames(z) <- paste(Names[x], colnames(z), sep = "_")
+      }
+    }
+    padNA(z, rowsneeded = nrows, first = first)
+  })
+  do.call(cbind, datalist)
+}
+##########################################################################################
+# COMBINATIONS
+##########################################################################################
+#' @title All pairwise column name combinations
+#' @description Generates a data frame of all pairwise combinations of column
+#'   names from a data frame. Useful for programmatically specifying variable
+#'   pairs to pass to functions like \code{\link{compute_crosstable}} or
+#'   \code{\link{plot_crosstable}}.
+#' @param df A data frame whose column names will be combined.
+#' @param all_orders Logical. When \code{TRUE} (default) both orderings of
+#'   each pair are included (e.g. \code{(X1, X2)} and \code{(X2, X1)}),
+#'   producing \eqn{n(n-1)} rows for \eqn{n} columns. When \code{FALSE} only
+#'   unique unordered pairs are returned, producing \eqn{n(n-1)/2} rows.
+#' @return A data frame with two character columns \code{X1} and \code{X2},
+#'   each row representing one variable pair.
+#' @importFrom utils combn
+#' @keywords functions
+#' @export
+#' @examples
+#' comparison_combinations(generate_correlation_matrix(n = 10)[, 1:4])
+comparison_combinations <- function(df, all_orders = TRUE) {
+  combinations <- data.frame(t(utils::combn(names(df), 2)), stringsAsFactors = FALSE)
+  names(combinations) <- c("X1", "X2")
+  if (all_orders) {
+    combinations <- rbind(combinations, data.frame(X1 = combinations$X2, X2 = combinations$X1))
+    combinations <- combinations[order(combinations$X1, combinations$X2), ]
+  }
+  return(combinations)
+}
+##########################################################################################
+# MINIMUM MAXIMUM INDEX OF A VECTOR
+##########################################################################################
+#' @title Indices of the minimum and maximum values in a vector
+#' @description Returns the positions of the minimum and maximum values in a
+#'   vector. When there are ties all tied positions are returned.
+#' @param vector A numeric vector.
+#' @return A named list with two elements:
+#'   \describe{
+#'     \item{max_index}{Integer vector of positions where the maximum value
+#'       occurs.}
+#'     \item{min_index}{Integer vector of positions where the minimum value
+#'       occurs.}
+#'   }
+#' @keywords functions
+#' @export
+#' @examples
+#' vector1 <- c(1, 2, 3, 4, 5, 4, 3, 2, 1)
+#' vector2 <- c(1, 2, 3, 4, 5, 5, 3, 2, 1)
+#' vector3 <- c(1, 2, 3, 5, 5, 4, 3, 2, 1)
+#' vector4 <- c(1, 2, 3, 4, 6, 4, 3, 2, 1)
+#' vector5 <- c(1, 6, 3, 4, 6, 4, 3, 2, 1)
+#' vector <- vector1
+#' which(vector == max(vector), arr.ind = TRUE)
+#' which(vector == min(vector), arr.ind = TRUE)
+#' min_max_index(vector1)
+#' min_max_index(vector2)
+#' min_max_index(vector3)
+#' min_max_index(vector4)
+#' min_max_index(vector5)
+min_max_index <- function(vector) {
+  max_index <- which(vector == max(vector), arr.ind = TRUE)
+  min_index <- which(vector == min(vector), arr.ind = TRUE)
+  result <- list(max_index = max_index, min_index = min_index)
+  return(result)
+}
+##########################################################################################
+# GET SCRIPT DIRECTORY
+##########################################################################################
+#' @title Get script directory
+#' @description Returns the directory of the currently active script as a string
+#'              with a trailing slash. Works across multiple environments: RStudio,
+#'              command line execution, and generic R sessions.
+#' @details The function tries three approaches in order: \cr
+#'          1. If RStudio is available, uses \code{rstudioapi} to get the active document path \cr
+#'          2. If running from the command line via \code{Rscript --file=}, parses the file argument \cr
+#'          3. Falls back to \code{getwd()} as a last resort
+#' @return A character string with the directory path, always ending with "/"
+#' @note The fallback to \code{getwd()} may not reflect the script's actual location
+#'       if the working directory has been changed during the session.
+#' @keywords functions
+#' @export
+#' @examples
+#' # Returns the directory of the active script in RStudio
+#' directory <- get_script_directory()
+#' directory
+get_script_directory <- function() {
+  if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
+    return(paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/"))
+  }
+  # fallback for command line
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    return(paste0(dirname(normalizePath(sub("--file=", "", file_arg))), "/"))
+  }
+  # last resort
+  return(paste0(getwd(), "/"))
+}
+
+##########################################################################################
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_CHECK_DATAFRAME.R
 ##########################################################################################
 ##########################################################################################
 # CHECK DATAFRAME
@@ -2172,13 +2614,15 @@ compute_moving_average <- function(df, w) {
 #'
 #' @param df A \code{data.frame} to inspect. Accepts any column types: numeric,
 #'   integer, character, factor, logical, \code{Date}, \code{POSIXct}.
-#' @param name_length Integer. Maximum number of characters displayed for column
-#'   names and MIN/MAX values in the printed output. Longer strings are
-#'   truncated. Defaults to \code{getOption("width") / 3}.
+#' @param name_length Integer. Maximum number of characters shown for column
+#'   names and for the MIN and MAX values in the printed output; longer strings
+#'   are truncated. The default is one third of the console width,
+#'   \code{getOption("width") / 3}.
 #' @param digits Integer. Number of decimal places used when rounding MEAN,
 #'   MEDIAN, and SD for numeric columns. Defaults to \code{2}.
-#' @param nuniques Integer. If \code{> 0}, appends UNIQUES and LEVELS columns
-#'   to the output. Columns with more distinct entries than \code{nuniques} are
+#' @param nuniques Integer. If \code{> 0}, appends a UNIQUES column to the
+#'   output, plus a LEVELS column when at least one column is a factor. Columns
+#'   with more distinct entries than \code{nuniques} are
 #'   summarised as \code{"N Uniques"} / \code{"N Levels"}. Set to \code{0} to
 #'   skip (faster). Defaults to \code{0}.
 #' @param parralel Logical. If \code{TRUE}, uses \code{future.apply} with a
@@ -2213,7 +2657,8 @@ compute_moving_average <- function(df, w) {
 #'       \item{MAX}{Maximum value or last label in sorted order.}
 #'       \item{MODE}{Storage mode as returned by \code{mode()}.}
 #'       \item{TYPE}{Type as returned by \code{typeof()}.}
-#'       \item{CLASS}{Class as returned by \code{class()}.}
+#'       \item{CLASS}{Class as returned by \code{class()}; several classes are
+#'         joined with \code{", "} (e.g. \code{"ordered, factor"}).}
 #'       \item{FACTOR}{Logical; \code{TRUE} if the column is a factor.}
 #'     }
 #'   }
@@ -2253,7 +2698,7 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
   } else {
     future::plan(future::sequential)
   }
-  check_df <- future.apply::future_sapply(df, function(y) {
+  check_df <- future.apply::future_lapply(df, function(y) {
     return(list(
       EMPTY = length(which(as.character(y) == "")),
       null = length(which(is.null(y))),
@@ -2263,18 +2708,19 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
       INF = length(which(is.infinite(unlist(y)))),
       FIN = length(which(is.finite(unlist(y)))),
       RANGE = length(unique(y)),
-      MEAN = if (is.numeric(y)) round(mean(y, na.rm = TRUE), 2) else NA,
-      MEDIAN = if (is.numeric(y)) round(stats::median(y, na.rm = TRUE), 2) else NA,
-      SD = if (is.numeric(y)) round(stats::sd(y, na.rm = TRUE), 2) else NA,
+      MEAN = if (is.numeric(y)) round(mean(y, na.rm = TRUE), digits) else NA,
+      MEDIAN = if (is.numeric(y)) round(stats::median(y, na.rm = TRUE), digits) else NA,
+      SD = if (is.numeric(y)) round(stats::sd(y, na.rm = TRUE), digits) else NA,
       MIN = if (is.double(y)) min(y, na.rm = TRUE) else gtools::mixedsort(as.character(na.omit(unique(y))))[1],
       MAX = if (is.double(y)) max(y, na.rm = TRUE) else gtools::mixedsort(as.character(na.omit(unique(y))))[length(na.omit(unique(y)))],
       MODE = mode(y),
       TYPE = typeof(y),
-      CLASS = class(y),
+      CLASS = toString(class(y)),
       FACTOR = is.factor(y)
     ))
   })
-  check_df <- data.frame(NAMES = names(df), t(check_df), stringsAsFactors = FALSE, check.names = FALSE)
+  check_df <- data.frame(NAMES = names(df), do.call(rbind, lapply(check_df, function(x) 
+    as.data.frame(x, stringsAsFactors = FALSE))), stringsAsFactors = FALSE, check.names = FALSE)
   summary_dataframe <- data.frame(
     COLLUMNS = length(df),
     ROWS = nrow(df),
@@ -2291,8 +2737,8 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
     stringsAsFactors = FALSE
   )
   if (nuniques > 0) {
-    uniques <- future.apply::future_apply(df, 2, unique)
-    level <- future.apply::future_sapply(df, function(y) levels(y))
+    uniques <- future.apply::future_lapply(df, unique)
+    level <- future.apply::future_lapply(df, levels)
     uniques_df <- levels_df <- data.frame()
     for (i in 1:length(uniques)) {
       if (length(uniques[[i]]) > nuniques) {
@@ -2319,8 +2765,8 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
     openxlsx::saveWorkbook(wb = wb, file = filename, overwrite = TRUE)
   }
   check_df$NAMES <- substr(check_df$NAMES, 1, name_length)
-  check_df$MIN <- substr(check_df$MIN, 1, floor(name_length / 6))
-  check_df$MAX <- substr(check_df$MAX, 1, floor(name_length / 6))
+  check_df$MIN <- substr(check_df$MIN, 1, name_length)
+  check_df$MAX <- substr(check_df$MAX, 1, name_length)
 
   row.names(check_df) <- NULL
   result <- list(summary = summary_dataframe, check = check_df)
@@ -2331,10 +2777,12 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 ##########################################################################################
 #' Check dataframe (optimised)
 #'
-#' A faster equivalent of \code{\link{cdf}}. Produces an identical column-level
-#' diagnostic summary but avoids repeated passes over each column, eliminates
-#' row-by-row \code{rbind} calls, and removes the \code{gtools} and \code{plyr}
-#' dependencies. Recommended for large dataframes (> 100k rows or > 50 columns).
+#' A faster equivalent of \code{\link{cdf}}. Produces the same column-level
+#' diagnostic summary (except for the cases listed in Note) but computes every
+#' statistic, including UNIQUES and LEVELS, in a single pass over each column,
+#' builds the result without \code{rbind} calls, and removes the \code{gtools}
+#' and \code{plyr} dependencies. Recommended for large dataframes (> 100k rows
+#' or > 50 columns).
 #'
 #' @inheritParams cdf
 #'
@@ -2342,10 +2790,19 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 #'   elements \code{$summary} and \code{$check}. See \code{\link{cdf}} for full
 #'   field descriptions.
 #'
-#' @note MIN and MAX for non-double columns use base \code{min()} / \code{max()}
-#'   on character representations. Unlike \code{\link{cdf}}, mixed alphanumeric
-#'   ordering (e.g. \code{"V1"} < \code{"V10"} < \code{"V2"}) is \emph{not}
-#'   guaranteed — lexicographic order is used instead.
+#' @note MIN and MAX are only reported where the values have a natural order:
+#'   numeric columns (double or integer) give the smallest and largest value,
+#'   ordered factors the lowest and highest level that occurs, and dates or
+#'   date-times the earliest and latest value. Unordered factors, character and
+#'   logical columns have no natural order, so their MIN and MAX are \code{NA}
+#'   (use \code{nuniques} to list their values instead), as are columns with
+#'   only missing values. This differs from \code{\link{cdf}}, which reports
+#'   the first and last label in sorted order for non-double columns.
+#'
+#'   MEAN, MEDIAN and SD are \code{NA} (rather than \code{NaN}) for numeric
+#'   columns without any observed value. UNIQUES lists the values in their
+#'   natural order (numbers by value, factor levels in level order, dates by
+#'   time), leaving out \code{NA} and \code{NaN}; RANGE still counts them.
 #'
 #' @import future.apply
 #' @importFrom future availableCores plan multisession sequential
@@ -2371,67 +2828,89 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 #' )
 #' cdff(df = df)
 cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques = 0, parralel = FALSE, file = NULL) {
+  # plain lapply unless parallel is requested; restore the caller's future plan afterwards
   if (parralel) {
-    future::plan(future::multisession,
-      gc = TRUE, .cleanup = TRUE,
-      workers = future::availableCores("mc.cores")
-    )
+    old_plan <- future::plan(future::multisession, gc = TRUE, .cleanup = TRUE, workers = future::availableCores("mc.cores"))
+    on.exit(future::plan(old_plan), add = TRUE)
+    apply_fun <- future.apply::future_lapply
   } else {
-    future::plan(future::sequential)
+    apply_fun <- lapply
   }
 
-  check_df <- future.apply::future_lapply(df, function(y) {
+  # one pass per column: every statistic (and UNIQUES / LEVELS when requested) comes from
+  # the same cached vectors, so no column is scanned twice
+  check_list <- apply_fun(df, function(y) {
     # --- cache expensive operations ---
     y_na <- is.na(y)
     y_notna <- !y_na
-    y_clean <- y[y_notna] # non-NA values only
-    y_char <- as.character(y) # once only
+    has_data <- any(y_notna)
     y_unlisted <- unlist(y) # once only
-    u <- unique(y) # once only
+    u <- unique(y) # once only, reused for RANGE and UNIQUES
 
     is_num <- is.numeric(y)
-    is_dbl <- is.double(y)
     is_fin <- is.finite(y_unlisted)
 
-    # MIN / MAX: avoid mixedsort — just use base sort or min/max
-    u_clean <- na.omit(u)
-    if (is_dbl) {
-      col_min <- min(y, na.rm = TRUE)
-      col_max <- max(y, na.rm = TRUE)
-    } else {
-      u_char <- as.character(u_clean)
-      col_min <- if (length(u_char)) min(u_char) else NA
-      col_max <- if (length(u_char)) max(u_char) else NA
+    # MIN / MAX only where values have a natural order: numbers (double or integer)
+    # by value, ordered factors by level order, dates by time; unordered factors,
+    # text and logicals have no order, so MIN / MAX stay NA
+    col_min <- col_max <- NA
+    if (has_data) {
+      if (is_num) {
+        col_min <- min(y, na.rm = TRUE)
+        col_max <- max(y, na.rm = TRUE)
+      } else if (is.ordered(y) || inherits(y, "Date")) {
+        col_min <- as.character(min(y, na.rm = TRUE))
+        col_max <- as.character(max(y, na.rm = TRUE))
+      } else if (inherits(y, "POSIXt")) {
+        # fixed format, otherwise a time at midnight prints as a bare date
+        col_min <- format(min(y, na.rm = TRUE), "%Y-%m-%d %H:%M:%S")
+        col_max <- format(max(y, na.rm = TRUE), "%Y-%m-%d %H:%M:%S")
+      }
     }
 
-    list(
-      EMPTY   = sum(y_char == "", na.rm = TRUE),
+    result <- list(
+      # only text can be empty; converting numbers to text just to count "" was the slow part
+      EMPTY   = if (is.character(y) || is.factor(y)) sum(y == "", na.rm = TRUE) else 0L,
       null    = sum(is.null(y)), # always 0 for df columns; kept for parity
       na      = sum(y_na),
       NOT_NA  = sum(y_notna),
-      NAN     = sum(is.nan(y_unlisted)),
-      INF     = sum(is_fin == FALSE & !y_na),
+      # only doubles (and complex numbers) can hold NaN
+      NAN     = if (is.double(y_unlisted) || is.complex(y_unlisted)) sum(is.nan(y_unlisted)) else 0L,
+      # only numbers and dates can be Inf; for them "not finite and not NA" is exactly +-Inf
+      # (NaN counts as NA), and reusing is_fin / y_notna avoids another pass over the column
+      INF     = if (is_num || inherits(y, c("Date", "POSIXt"))) sum(!is_fin & y_notna) else 0L,
       FIN     = sum(is_fin),
       RANGE   = length(u),
-      MEAN    = if (is_num) round(mean(y, na.rm = TRUE), digits) else NA,
-      MEDIAN  = if (is_num) round(stats::median(y, na.rm = TRUE), digits) else NA,
-      SD      = if (is_num) round(stats::sd(y, na.rm = TRUE), digits) else NA,
+      # NA (not NaN) when a numeric column has no observed values
+      MEAN    = if (is_num && has_data) round(mean(y, na.rm = TRUE), digits) else NA,
+      MEDIAN  = if (is_num && has_data) round(stats::median(y, na.rm = TRUE), digits) else NA,
+      SD      = if (is_num && has_data) round(stats::sd(y, na.rm = TRUE), digits) else NA,
       MIN     = col_min,
       MAX     = col_max,
       MODE    = mode(y),
       TYPE    = typeof(y),
-      CLASS   = class(y)[1],
+      CLASS   = toString(class(y)),
       FACTOR  = is.factor(y)
     )
+    if (nuniques > 0) {
+      lv <- levels(y)
+      # sort the values themselves, so numbers list as 1, 2, 10 and not as text 1, 10, 2
+      result$UNIQUES <- if (length(u) > nuniques) paste(length(u), "Uniques") else toString(if (is.list(u)) sort(as.character(u)) else sort(u))
+      result$LEVELS <- if (length(lv) > nuniques) paste(length(lv), "Levels") else toString(lv)
+    }
+    result
   })
 
-  # Build check_df in one shot — NO loop, NO rbind.fill
-  check_df <- data.frame(
-    NAMES = names(df),
-    do.call(rbind, lapply(check_df, function(x) as.data.frame(x, stringsAsFactors = FALSE))),
-    stringsAsFactors = FALSE,
-    check.names = FALSE
-  )
+  # build check_df column by column (much faster than rbind of one-row data frames on wide data)
+  fields <- if (length(check_list)) names(check_list[[1]]) else character(0)
+  check_df <- data.frame(NAMES = names(df), stringsAsFactors = FALSE, check.names = FALSE)
+  for (field in fields) {
+    check_df[[field]] <- unlist(lapply(check_list, `[[`, field), use.names = FALSE)
+  }
+  # the LEVELS column is only kept when at least one column is a factor
+  if (nuniques > 0 && all(check_df$LEVELS == "")) {
+    check_df$LEVELS <- NULL
+  }
 
   # Summary — reuse check_df instead of re-scanning df
   summary_dataframe <- data.frame(
@@ -2450,34 +2929,6 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
     stringsAsFactors = FALSE
   )
 
-  # Uniques / Levels — single pass, pre-allocated with lapply
-  if (nuniques > 0) {
-    uniques_list <- future.apply::future_lapply(df, function(y) {
-      u <- unique(y)
-      lv <- levels(y)
-
-      u_str <- if (length(u) > nuniques) paste(length(u), "Uniques") else toString(sort(as.character(u)))
-      lv_str <- if (length(lv) > nuniques) paste(length(lv), "Levels") else toString(lv)
-
-      list(UNIQUES = u_str, LEVELS = lv_str)
-    })
-
-    uniques_df <- data.frame(
-      UNIQUES = vapply(uniques_list, `[[`, character(1), "UNIQUES"),
-      stringsAsFactors = FALSE
-    )
-    levels_df <- data.frame(
-      LEVELS = vapply(uniques_list, `[[`, character(1), "LEVELS"),
-      stringsAsFactors = FALSE
-    )
-
-    if (all(levels_df$LEVELS == "")) {
-      check_df <- cbind(check_df, uniques_df)
-    } else {
-      check_df <- cbind(check_df, uniques_df, levels_df)
-    }
-  }
-
   if (!is.null(file)) {
     filename <- paste0(file, ".xlsx")
     if (file.exists(filename)) file.remove(filename)
@@ -2488,15 +2939,15 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
   }
 
   check_df$NAMES <- substr(check_df$NAMES, 1, name_length)
-  check_df$MIN <- substr(check_df$MIN, 1, floor(name_length / 6))
-  check_df$MAX <- substr(check_df$MAX, 1, floor(name_length / 6))
+  check_df$MIN <- substr(check_df$MIN, 1, name_length)
+  check_df$MAX <- substr(check_df$MAX, 1, name_length)
 
   row.names(check_df) <- NULL
   list(summary = summary_dataframe, check = check_df)
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_ENVIRONMENT.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_ENVIRONMENT.R
 ##########################################################################################
 ##########################################################################################
 # LOAD ENVIRONMENT
@@ -2575,8 +3026,9 @@ install_all_packages <- function() {
 #'   field (i.e. neither \code{"base"} nor \code{"recommended"}) are removed.
 #'   \strong{Warning:} this operation is irreversible. All third-party packages
 #'   will need to be reinstalled afterwards.
-#' @return Invisibly returns a named list with one element per removed package
-#'   (the result of \code{remove.packages()}). Called primarily for its side
+#' @return Invisibly returns a named list holding the result of
+#'   \code{remove.packages()} for each removed package (one element per
+#'   package). Called primarily for its side
 #'   effect of uninstalling packages.
 #' @importFrom utils remove.packages
 #' @keywords functions
@@ -2596,7 +3048,7 @@ remove_user_packages <- function() {
 #' @description Removes a package from the R search path and unloads its
 #'   namespace. If the package was attached more than once, all instances are
 #'   removed. Does nothing if the package is not currently attached.
-#' @param package Character string giving the name of the package to detach
+#' @param package Character string, the name of the package to detach
 #'   (without the \code{"package:"} prefix), e.g. \code{"ggplot2"}.
 #' @return Invisibly returns \code{NULL}. Called for its side effect of
 #'   detaching the package.
@@ -2648,21 +3100,20 @@ getfwp <- function() {
       if (!is.null(sys.frames()[[1]]$ofile)) {
         return(normalizePath(sys.frames()[[1]]$ofile))
       } else {
-        path <- rstudioapi::getActiveDocumentContext()$path
-        if (path != "") {
-          return(normalizePath(path))
-        } else {
-          tryCatch(
-            {
-              path <- rstudioapi::getSourceEditorContext()$path
-              path <- normalizePath(path)
-            },
-            error = function(e) {
-              path <- ""
-            }
-          )
-          return(path)
+        # rstudioapi errors outside RStudio and may return NULL when no editor is open,
+        # so every failure becomes "" instead of an error
+        rstudio_path <- function(context) {
+          path <- tryCatch(context()$path, error = function(e) "")
+          if (length(path) == 1 && !is.na(path)) path else ""
         }
+        path <- rstudio_path(rstudioapi::getActiveDocumentContext)
+        if (path == "") {
+          path <- rstudio_path(rstudioapi::getSourceEditorContext)
+        }
+        if (path == "") {
+          return("")
+        }
+        return(normalizePath(path))
       }
     }
   }
@@ -2708,13 +3159,14 @@ write_txt <- function(input, file = NULL) {
 #'   \code{output_file}. Each file's contents are preceded by a
 #'   \code{# FILE: <path>} header block so the origin of every section is
 #'   visible. If \code{output_file} lies inside \code{input_dir}, it is
-#'   excluded so the file does not include itself.
+#'   excluded so the file does not include itself. If no file matches,
+#'   an empty \code{output_file} is written.
 #' @param input_dir Character string. Directory to read files from. Default
 #'   \code{"working_functions"}.
 #' @param output_file Character string. Path of the combined file to write.
 #'   An existing file is overwritten. Default \code{"all_functions.R"}.
-#' @param pattern Regular expression passed to \code{\link[base]{list.files}}
-#'   to select files. Default \code{"\\\\.[Rr]$"} selects R scripts. Use
+#' @param pattern Regular expression that selects the files, passed to
+#'   \code{base::list.files()}. Default \code{"\\\\.[Rr]$"} selects R scripts. Use
 #'   \code{NULL} to include every file.
 #' @param recursive Logical. If \code{TRUE} (default), files in
 #'   subdirectories of \code{input_dir} are included; if \code{FALSE}, only
@@ -2747,13 +3199,14 @@ combine_files<-function(input_dir="working_functions",
       readLines(f,warn=FALSE,encoding="UTF-8"),
       "")
   })
-  writeLines(unlist(contents),output_file,useBytes=TRUE)
+  # as.character() turns NULL (no matching files) into character(0), so an empty file is written
+  writeLines(as.character(unlist(contents)),output_file,useBytes=TRUE)
   cat("Combined",length(files),"files into",output_file,"\n")
   invisible(files)
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_EXCEL.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_EXCEL.R
 ##########################################################################################
 ##########################################################################################
 # DATAFRAME TO EXCEL GENERIC
@@ -2782,8 +3235,8 @@ combine_files<-function(input_dir="working_functions",
 #'   \code{NULL} invisibly.
 #'
 #' @details
-#' The function assumes that data has already been written to the worksheet via
-#' \code{openxlsx::writeData()} with both \code{colNames = TRUE} and
+#' The function assumes that \code{openxlsx::writeData()} has already been used
+#' to write the data to the worksheet, with both \code{colNames = TRUE} and
 #' \code{rowNames = TRUE}, as it offsets column indices by 1 to account for the
 #' row name column.
 #'
@@ -2978,8 +3431,8 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 #'   \itemize{
 #'     \item A single character string with an Excel expression (e.g. \code{"<0.05"},
 #'       \code{">20"}, \code{"=0"}). Matching cells are highlighted in red.
-#'     \item A character vector of length 2 with two expressions
-#'       (e.g. \code{c(">20", "<11")}). The first condition highlights in red,
+#'     \item A character vector of length 2 with two expressions, for example
+#'       \code{c(">20", "<11")}. The first condition highlights in red,
 #'       the second in purple.
 #'   }
 #'   \code{NA} cells in the target column are skipped. Default is \code{NULL}.
@@ -3168,7 +3621,7 @@ excel_critical_value <- function(df, workbook, sheet = "output", title = NULL, c
 # DATAFRAME TO EXCEL CONFUSION MATRIX
 ##########################################################################################
 #' @title Write matrix or dataframe to excel sheet
-#' @description Usefull for correlation matrices since it uses conditional formatting for matrices
+#' @description Useful for correlation matrices since it uses conditional formatting for matrices
 #' @param df dataframe or matrix
 #' @param workbook workbook
 #' @param title comment
@@ -3207,7 +3660,7 @@ excel_confusion_matrix <- function(df, workbook, title = "Rows: Expected Collumn
 # DATAFRAME TO EXCEL
 ##########################################################################################
 #' @title Write matrix or dataframe to excel sheet
-#' @description Usefull for generic data where conditional formating of a spesific collumn is required
+#' @description Useful for generic data where conditional formatting of a specific column is required
 #' @param df dataframe or matrix
 #' @param file output filename of excel file
 #' @param type "critical_value" "matrix"
@@ -3277,7 +3730,7 @@ data_frame_index <- function(nrow, ncol) {
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_GENERATE_DATA.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_GENERATE_DATA.R
 ##########################################################################################
 ##########################################################################################
 # GENERATE RANDOM NUMBERS
@@ -3330,7 +3783,7 @@ generate_data <- function(nrows = 10, ncols = 5, mean = 0, sd = 1, min = 1, max 
 #' values sampled from a supplied pool, either randomly or in a balanced
 #' distribution across levels.
 #'
-#' @param vector Character vector. The pool of factor levels to sample from.
+#' @param vector Character vector of factor levels to sample from.
 #'   Default is \code{LETTERS[1:5]}.
 #' @param nrows Integer. Number of rows to generate. For \code{type = "balanced"},
 #'   \code{nrows} should be divisible by \code{length(vector)}. Default is \code{2}.
@@ -3404,18 +3857,23 @@ generate_string <- function(vector = c(LETTERS, letters, 0:9), vector_length = 1
   return(result)
 }
 ##########################################################################################
-# GENERATE MULTIPLE RESPONCE VECTOR
+# GENERATE MULTIPLE RESPONSE VECTOR
 ##########################################################################################
 #' @title Generate a multiple response vector
 #'
 #' @description Creates a character vector where each element contains a comma-separated
 #' string of randomly sampled categories, simulating multiple response survey data.
 #'
-#' @param responces Integer or character vector. The pool of unique response
-#'   categories to sample from. Default is \code{1:4}.
+#' @param responses Integer or character vector. The pool of unique response
+#'   categories to sample from. A single number \code{n} means the categories
+#'   \code{1:n} (e.g. \code{responses = 4} is the same as \code{1:4}).
+#'   Default is \code{1:4}.
 #' @param responded Integer vector. Controls how many categories are selected
 #'   per observation — one value is sampled from this vector at each iteration.
-#'   Default is \code{1:4}.
+#'   A single number \code{k} means "up to \code{k}": each observation gets a
+#'   random number of categories between 1 and \code{k} (e.g.
+#'   \code{responded = 3} gives 1, 2 or 3 categories). The values should not
+#'   exceed the number of categories in \code{responses}. Default is \code{1:4}.
 #' @param length Integer. Number of observations to generate. Default is \code{10}.
 #'
 #' @return A character vector of length \code{length}, where each element is a
@@ -3423,11 +3881,11 @@ generate_string <- function(vector = c(LETTERS, letters, 0:9), vector_length = 1
 #'
 #' @export
 #' @examples
-#' generate_multiple_responce_vector(responces = 1:4, responded = 1:4, length = 10)
-generate_multiple_responce_vector <- function(responces = 1:4, responded = 1:4, length = 10) {
+#' generate_multiple_response_vector(responses = 1:4, responded = 1:4, length = 10)
+generate_multiple_response_vector <- function(responses = 1:4, responded = 1:4, length = 10) {
   result <- c()
   for (i in 1:length) {
-    result <- c(result, toString(paste0(sample(responces, sample(responded, 1)))))
+    result <- c(result, toString(paste0(sample(responses, sample(responded, 1)))))
   }
   return(result)
 }
@@ -3511,7 +3969,6 @@ generate_correlation_matrix <- function(correlation_martix, nrows = 10) {
 #' @examples
 #' correlation_matrix <- generate_correlation_matrix()
 #' stats::cor(correlation_matrix)
-#' simulate_correlation_from_sample(correlation_matrix, nrows = 1000)
 #' stats::cor(simulate_correlation_from_sample(correlation_matrix, nrows = 1000))
 simulate_correlation_from_sample <- function(cordata, nrows = 10) {
   cordata_cov <- cov(cordata, use = "pairwise.complete.obs")
@@ -3554,7 +4011,7 @@ generate_missing <- function(df, missing = 5) {
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_KEYS.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_KEYS.R
 ##########################################################################################
 ##########################################################################################
 # KEYS
@@ -3634,7 +4091,7 @@ questions_dimensions_dataframe<-function(key,dimensions,elaborate_dimensions,que
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_MATHEMATICAL.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_MATHEMATICAL.R
 ##########################################################################################
 ##########################################################################################
 # ANGLE RADIANS TO DEGREES
@@ -3658,27 +4115,33 @@ rad2deg<-function(radians){(radians*180)/(pi)}
 deg2rad<-function(degrees){(degrees*pi)/(180)}
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_MATRIX.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_MATRIX.R
 ##########################################################################################
 ##########################################################################################
 # MATRIX DISPLAY DIAGONAL
 ##########################################################################################
-#' Extract the upper or lower triangle of a matrix
+#' Keep the lower or upper triangle of a matrix
 #'
-#' Returns a matrix with the off-triangle values replaced by a fill value,
-#' optionally overriding the diagonal. Useful for displaying correlation or
-#' covariance matrices without redundant values.
+#' Keeps one triangle of a matrix, including the diagonal, and fills the other
+#' triangle with the value of \code{off_diagonal}; optionally replaces the diagonal. Useful
+#' for displaying correlation or covariance matrices without repeated values.
 #'
-#' @param m A numeric matrix or object coercible to one.
-#' @param off_diagonal Value to fill the suppressed triangle with. Default is \code{NA}.
-#' @param diagonal Value to place on the diagonal. If \code{NULL}, the original
-#'   diagonal of \code{m} is preserved. Default is \code{NULL}.
-#' @param type Character. Which triangle to retain. One of \code{"lower"} or
-#'   \code{"upper"}. Default is \code{"lower"}.
+#' @param m A numeric matrix, or an object that \code{as.matrix()} turns into
+#'   a numeric matrix (e.g. a data frame of numbers).
+#' @param off_diagonal Value used to fill the dropped triangle. Default
+#'   \code{NA}.
+#' @param diagonal Value(s) to place on the diagonal: a single value or one
+#'   value per diagonal element. If \code{NULL} (default), the original
+#'   diagonal is kept.
+#' @param type Character, \code{"lower"} (default) or \code{"upper"}: the
+#'   triangle to keep.
 #'
-#' @return A matrix of the same dimensions as \code{m}, with the off-triangle
-#'   filled by \code{off_diagonal} and the diagonal set by \code{diagonal}.
+#' @return A numeric matrix with the same dimensions and row / column names as
+#'   \code{m}.
 #'
+#' @seealso \code{\link{display_upper_lower_triangle}},
+#'   \code{\link{symmetric_matrix}}
+#' @keywords functions matrix
 #' @export
 #' @examples
 #' m<-matrix(1:9,nrow=3,ncol=3)
@@ -3708,10 +4171,26 @@ matrix_triangle<-function(m,off_diagonal=NA,diagonal=NULL,type="lower") {
 ##########################################################################################
 # MATRIX DISPLAY UPPER LOWER TRIANGLE
 ##########################################################################################
-#' @title Return upper diagonal from one matrix and lower diagonal from another matrix
-#' @param m_upper matrix
-#' @param m_lower matrix
-#' @param diagonal if "upper" it returns upper diagonal if "lower" it returns lower diagonal if NA returns NA in diagonal otherwise it returns any value spesified
+#' Combine the upper triangle of one matrix with the lower triangle of another
+#'
+#' Builds a matrix whose upper triangle comes from \code{m_upper} and whose
+#' lower triangle comes from \code{m_lower}, e.g. to show two correlation
+#' matrices, or correlations and p values, in a single table.
+#'
+#' @param m_upper A square numeric matrix (or an object that \code{as.matrix()}
+#'   turns into one) supplying the upper triangle.
+#' @param m_lower A square numeric matrix of the same size supplying the lower
+#'   triangle.
+#' @param diagonal What to place on the diagonal: \code{NA} (default) for
+#'   \code{NA}, \code{"upper"} for the diagonal of \code{m_upper},
+#'   \code{"lower"} for the diagonal of \code{m_lower}, or any other value(s),
+#'   either a single value or one value per diagonal element.
+#'
+#' @return A matrix with the dimensions and row / column names of
+#'   \code{m_lower}. It is numeric, unless \code{diagonal} contains text, in
+#'   which case the whole matrix becomes character.
+#'
+#' @seealso \code{\link{matrix_triangle}}, \code{\link{symmetric_matrix}}
 #' @keywords functions matrix
 #' @export
 #' @examples
@@ -3728,7 +4207,7 @@ display_upper_lower_triangle<-function(m_upper,m_lower,diagonal=NA) {
   upper<-matrix_triangle(m_upper,diagonal=NULL,type="upper")
   lower<-matrix_triangle(m_lower,diagonal=NULL,type="lower")
   lower[upper.tri(lower)]<-upper[upper.tri(upper)]
-  m<-as.matrix(data.frame(lower))
+  m<-as.matrix(lower)
   if(unique(is.na(diagonal)))
     diag(m)<-NA
   else if(unique(diagonal=="upper"))
@@ -3742,23 +4221,28 @@ display_upper_lower_triangle<-function(m_upper,m_lower,diagonal=NA) {
 ##########################################################################################
 # MAKE SYMMETRIC MATRIX
 ##########################################################################################
-#' Make a symmetric matrix by duplicating one triangle
+#' Make a matrix symmetric by mirroring one triangle
 #'
-#' Mirrors either the lower or upper triangle of a matrix to the opposite side,
-#' producing a symmetric matrix. Optionally sets the diagonal.
+#' Copies the lower or upper triangle of a square matrix onto the opposite
+#' triangle, producing a symmetric matrix; optionally replaces the diagonal.
+#' The row names are set to the column names, so both sides carry the same
+#' labels.
 #'
-#' @param matrix A square numeric matrix.
-#' @param duplicate Character. Which triangle to use as the source. One of:
-#'   \code{"lower"} mirrors the lower triangle to the upper, or \code{"upper"}
-#'   mirrors the upper triangle to the lower. Default is \code{"lower"}.
-#' @param diagonal Value to place on the diagonal. If omitted, the original
-#'   diagonal of \code{matrix} is preserved. Pass \code{NA} to fill with
-#'   \code{NA}.
+#' @param matrix A square matrix. Unlike \code{\link{matrix_triangle}}, a data
+#'   frame is not accepted; convert it with \code{as.matrix()} first.
+#' @param duplicate Character. Use \code{"lower"} (default) to copy the lower
+#'   triangle into the upper, or \code{"upper"} to copy the upper triangle
+#'   into the lower.
+#' @param diagonal Value(s) to place on the diagonal: a single value (e.g.
+#'   \code{NA}) or one value per diagonal element. Leave it out to keep the
+#'   original diagonal; passing \code{NULL} explicitly is an error.
 #'
-#' @return A symmetric matrix of the same dimensions as the input.
+#' @return A symmetric matrix with the same dimensions as \code{matrix}, whose
+#'   row names are the column names of \code{matrix}.
 #'
-#' @seealso \code{\link{matrix_triangle}}
-#'
+#' @seealso \code{\link{matrix_triangle}},
+#'   \code{\link{display_upper_lower_triangle}}
+#' @keywords functions matrix
 #' @export
 #' @examples
 #' m_lower<-matrix_triangle(matrix(1:9,nrow=3,ncol=3),type="lower",diagonal=NA)
@@ -3779,22 +4263,30 @@ symmetric_matrix<-function(matrix,duplicate="lower",diagonal=NULL) {
 ##########################################################################################
 # INDEX OFF DIAGONAL
 ##########################################################################################
-#' Get off-diagonal indices for a square matrix
+#' Row and column indices around the diagonal of a square matrix
 #'
-#' Returns a data frame of row/column index pairs for navigating just above and
-#' below the diagonal, useful for accessing or modifying off-diagonal neighbours.
+#' For each diagonal position \code{i} of a \code{length} x \code{length}
+#' matrix, returns the indices of the diagonal cell and of its two neighbours
+#' in the same row: the cell to the right (just above the diagonal, column
+#' \code{i + 1}) and the cell to the left (just below the diagonal, column
+#' \code{i - 1}).
 #'
-#' @param length Integer. The size of the diagonal (i.e. number of rows/columns
-#'   in the square matrix).
+#' @param length Integer (at least 1). Number of rows and columns of the
+#'   square matrix.
 #'
-#' @return A data frame with \code{length} rows and four columns:
+#' @return A data frame (not a matrix) with \code{length} rows and four numeric
+#'   columns:
 #'   \describe{
-#'     \item{x1}{Row index.}
-#'     \item{x2}{Column index (same as \code{x1}, i.e. the diagonal position).}
-#'     \item{x3}{Index of the element just above (\code{i + 1}).}
-#'     \item{x4}{Index of the element just below (\code{i - 1}).}
+#'     \item{x1}{Row index \code{i}.}
+#'     \item{x2}{Column index of the diagonal cell (same as \code{x1}).}
+#'     \item{x3}{Column index of the cell to the right, \code{i + 1}; in the
+#'       last row this is \code{length + 1}, outside the matrix.}
+#'     \item{x4}{Column index of the cell to the left, \code{i - 1}; in the
+#'       first row this is \code{0}, outside the matrix.}
 #'   }
 #'
+#' @seealso \code{\link{matrix_triangle}}
+#' @keywords functions matrix
 #' @export
 #' @examples
 #' off_diagonal_index(length=6)
@@ -3810,7 +4302,7 @@ off_diagonal_index<-function(length){
 
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_PLOT.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_PLOT.R
 ##########################################################################################
 ##########################################################################################
 # MULTIPLOT
@@ -3831,7 +4323,7 @@ off_diagonal_index<-function(length){
 #'   generated automatically from \code{cols}. Default is \code{NULL}.
 #'
 #' @return If a single plot is provided, returns it directly. Otherwise returns
-#'   a list of recorded plots (\code{\link[grDevices]{recordPlot}}), one per page.
+#'   a list of plots recorded with \code{grDevices::recordPlot()}, one per page.
 #'
 #' @importFrom grid grid.newpage pushViewport viewport grid.layout
 #' @importFrom grDevices recordPlot
@@ -3856,11 +4348,11 @@ off_diagonal_index<-function(length){
 #'   facet_grid(Diet ~ .) +
 #'   ggtitle("Final weight, by diet") +
 #'   theme_bw()
-#' cars_plot <- plot_histogram(mtcars)
+#' cars_plot <- plot_histogram(mtcars[1:4])
 #' plot_multiplot(p1, p2, p3, p4, cols = 2)
 #' plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
-#' plot_multiplot(plotlist = plot_histogram(mtcars), layout = matrix(1:4, ncol = 2, byrow = TRUE))
-#' plot_multiplot(plotlist = plot_scatterplot(mtcars[, 1:4]), cols = 2)
+#' plot_multiplot(plotlist = plot_histogram(mtcars),
+#'                layout = matrix(1:4, ncol = 2, byrow = TRUE))
 #' plot_multiplot(plotlist = cars_plot, layout = matrix(1:4, ncol = 2, byrow = TRUE))
 #' plot_multiplot(plotlist = cars_plot, cols = 3)
 plot_multiplot <- function(..., plotlist = NULL, cols = 2, layout = NULL) {
@@ -4036,7 +4528,7 @@ report_pdf <- function(..., plotlist = NULL, file = NULL, title = NULL, w = 10, 
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_RECODE.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_RECODE.R
 ##########################################################################################
 ##########################################################################################
 # FLATTEN LIST
@@ -4109,19 +4601,19 @@ swap <- function(vector) {
 #' 
 #' @keywords recode
 #'
-#' @seealso \code{\link{generate_multiple_responce_vector}}
+#' @seealso \code{\link{generate_multiple_response_vector}}
 #'
 #' @export
 #' @examples
 #' vector1 <- gsub(" ", "",
-#'   generate_multiple_responce_vector(
-#'     responces = c("Agree", "Hi", "All"),
+#'   generate_multiple_response_vector(
+#'     responses = c("Agree", "Hi", "All"),
 #'     responded = 1:3, length = 10
 #'   ),
 #'   fixed = TRUE
 #' )
 #' vector2 <- gsub(" ", "",
-#'   generate_multiple_responce_vector(responces = 1:4, responded = 1:4, length = 10),
+#'   generate_multiple_response_vector(responses = 1:4, responded = 1:4, length = 10),
 #'   fixed = TRUE
 #' )
 #' vector3 <- sample(1:4, 10, replace = TRUE)
@@ -4158,8 +4650,8 @@ dummy_arrange <- function(vector) {
 #' drops all unused levels.
 #'
 #' @param df A data frame containing one or more factor columns.
-#' @param factor_index Integer vector or \code{NULL}. Column indices of factors
-#'   to process. If \code{NULL}, all columns identified by \code{is.factor()}
+#' @param factor_index Integer vector or \code{NULL}. Column indices of the
+#'   factors to process. If \code{NULL}, all columns identified by \code{is.factor()}
 #'   are processed. Default is \code{NULL}.
 #' @param minimum_frequency Integer. Levels with a frequency less than or equal
 #'   to this value are collapsed into \code{"Other"}. Default is \code{5}.
@@ -4194,7 +4686,7 @@ drop_levels <- function(df, factor_index = NULL, minimum_frequency = 5) {
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_STATISTICAL.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_STATISTICAL.R
 ##########################################################################################
 ##########################################################################################
 # ADJUST
@@ -4324,7 +4816,8 @@ compute_standard <- function(vector, mean = 0, sd = 1, type = "z", input = "non_
     result <- (vector - min(vector, na.rm = TRUE)) / (max(vector, na.rm = TRUE) - min(vector, na.rm = TRUE))
   }
   if (type == "normal_density") {
-    result <- (1 / (sqrt(sd * pi))) * exp(-0.5 * ((vector - mean) / sd)^2)
+    # result <- (1 / (sqrt(sd * pi))) * exp(-0.5 * ((vector - mean) / sd)^2)
+    result <- (1 / (sd * sqrt(2 * pi))) * exp(-0.5 * ((vector - mean) / sd)^2)
   }
   if (type == "cumulative_density") {
     result <- cumsum(vector)
@@ -4490,7 +4983,7 @@ compute_confidence_inteval <- function(vector) {
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_STRINGS.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_STRINGS.R
 ##########################################################################################
 ##########################################################################################
 # MULTIPLE GSUB
@@ -4498,13 +4991,13 @@ compute_confidence_inteval <- function(vector) {
 #' @title Apply gsub for multiple patterns with a single replacement
 #'
 #' @description Iterates over a vector of patterns, applying
-#' \code{\link[base]{gsub}} sequentially with the same replacement string for
+#' \code{base::gsub()} sequentially with the same replacement string for
 #' each.
 #'
 #' @param mydata Character vector to search within.
 #' @param pattern Character vector of patterns to search for.
 #' @param replacement Character. The replacement string applied for all patterns.
-#' @param ... Additional arguments passed to \code{\link[base]{gsub}},
+#' @param ... Additional arguments passed to \code{base::gsub()},
 #'
 #' @return A character vector with all pattern matches replaced.
 #' @keywords strings
@@ -4644,7 +5137,7 @@ str_proper <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 
 ##########################################################################################
 #' @title Trim whitespace from all character cells in a data frame
 #'
-#' @description Applies \code{\link[base]{strwrap}} to every character cell in
+#' @description Applies \code{base::strwrap()} to every character cell in
 #' a data frame, removing leading and trailing whitespace.
 #'
 #' @param df A data frame containing one or more character columns.
@@ -4892,8 +5385,8 @@ str_replace <- function(string, pattern, replacement) {
 #' str_wrap(labels, width = 20)
 str_wrap <- function(string, width = 80) {
   vapply(string, function(x) paste(strwrap(x, width = width), collapse = "\n"),
-    character(1),
-    USE.NAMES = FALSE
+         character(1),
+         USE.NAMES = FALSE
   )
 }
 ##########################################################################################
@@ -5030,7 +5523,7 @@ str_squish <- function(string) {
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_TRAIN_TEST.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_TRAIN_TEST.R
 ##########################################################################################
 ##########################################################################################
 # PLOT ROC
@@ -5167,7 +5660,7 @@ plot_confusion<-function(observed,predicted,base_size=10,title="") {
 #' The plot helps to visualize how well the predicted probabilities separate the different observed categories.
 #'
 #' The plot includes the following components:
-#'-Density curves for each observed category,representing the distribution of predicted probabilities.
+#'-Density curves for each observed category, representing the distribution of predicted probabilities.
 #'-A legend indicating the observed categories.
 #'-The total number of observations is included in the plot caption.
 #' @examples
@@ -5278,7 +5771,7 @@ result_confusion_performance<-function(observed,predicted,step=.1,base_size=10,t
 #' This function performs k-fold cross-validation by splitting the input dataframe into k folds. 
 #' Each fold serves as a test set once,while the remaining k-1 folds form the training set.
 #'
-#' The function prepares data objects for xgboost model training and evaluation,including train/test datasets and xgboost DMatrix objects.
+#' The function prepares data objects for xgboost model training and evaluation, including train / test datasets and xgboost DMatrix objects.
 #'
 #' The output is a list containing the following elements:
 #'-`f`: List of train and test datasets for each fold.
@@ -5351,7 +5844,7 @@ k_fold<-function(df,model_formula,k=10) {
 #' This function performs k-fold cross-validation or a simple train-test split (if k=1) by splitting the input dataframe into k folds. 
 #' Each fold serves as a test set once,while the remaining k-1 folds form the training set.
 #'
-#' The function prepares data objects for xgboost model training and evaluation,including train,test,and validation datasets and xgboost DMatrix objects.
+#' The function prepares data objects for xgboost model training and evaluation, including train, test, and validation datasets and xgboost DMatrix objects.
 #'
 #' The output is a list containing the following elements:
 #'-`f`: List of train,test,and validation datasets for each fold.
@@ -5452,7 +5945,7 @@ k_sample<-function(df,model_formula,k=1) {
 #' 2. Identifies character and factor variables and creates dummy variables if they meet the criteria.
 #' 3. Combines the scaled numeric variables and dummy variables into a single dataframe.
 #'
-#' The output is a dataframe with scaled numeric variables and dummy-coded character/factor variables.
+#' The output is a dataframe with scaled numeric variables and dummy-coded character / factor variables.
 #' @examples
 #' # Example with the 'infert' dataset
 #' recode_scale_dummy(infert)
@@ -5629,14 +6122,14 @@ confusion_matrix_percent<-function(observed,predicted) {
 ##########################################################################################
 #' Plot a confusion matrix with the full set of derived measures
 #'
-#' Draws a 2x2 confusion matrix (raw counts, sequential-blue by magnitude)
-#' alongside the row/column/overall measures:
+#' Draws a 2x2 confusion matrix (raw counts, shaded blue by magnitude)
+#' alongside the row, column and overall measures:
 #' \describe{
 #'   \item{Total measures}{Accuracy, Prevalence, Proportion Incorrectly Classified}
-#'   \item{Horizontal measures}{Sensitivity/Miss Rate (observed positive column),
-#'     Specificity/Fall-out (observed negative column)}
-#'   \item{Vertical measures}{Precision/False Discovery Rate (predicted positive row),
-#'     Negative Predictive Value/False Omission Rate (predicted negative row)}
+#'   \item{Horizontal measures}{Sensitivity / Miss Rate (observed positive column),
+#'     Specificity / Fall-out (observed negative column)}
+#'   \item{Vertical measures}{Precision / False Discovery Rate (predicted positive row),
+#'     Negative Predictive Value / False Omission Rate (predicted negative row)}
 #' }
 #'
 #' @details
@@ -5754,7 +6247,7 @@ plot_confusion_extended <- function(observed, predicted, positive = NULL, base_s
 
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS_UNIX_TIME.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/FUNCTIONS_UNIX_TIME.R
 ##########################################################################################
 ##########################################################################################
 # CONVERT EXCEL TIMESTAMP TO UNIX TIMESTAMP
@@ -5781,7 +6274,7 @@ convert_excel_unix_timestamp <- function(timestamp) {
 #' @param tz Timezone
 #' @param extended if TRUE it will display additional day time categories \cr
 #' WEEKDAY MONTH JULIAN QUARTER DAY_PERIOD
-#' @param breaks Numeric vector Breaks define hour of day for classifiying into  \cr
+#' @param breaks Numeric vector Breaks define hour of day for classifying into  \cr
 #' "Night", "Morning", "Noon", "Afternoon", "Evening". \cr
 #' @param ... arguments passed to as.POSIXct
 #' This argument is used if extended=TRUE
@@ -5839,856 +6332,10 @@ decompose_datetime <- function(x, format = "", origin = "1970-01-01", tz = "GMT"
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//FUNCTIONS.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_ANOVA.R
 ##########################################################################################
 ##########################################################################################
-# ROUND DATAFRAME
-##########################################################################################
-#' @title Round numeric columns in a data frame
-#' @description Applies a rounding or transformation function to every numeric
-#'   column in a data frame, leaving non-numeric columns (factor, character,
-#'   etc.) unchanged.
-#' @param df A data frame containing a mix of numeric and non-numeric columns.
-#' @param digits Integer number of decimal places. Only used with
-#'   \code{type = "round"} and \code{type = "tenth"}. Default is \code{0}.
-#' @param type Character string specifying the transformation to apply to
-#'   numeric columns:
-#'   \describe{
-#'     \item{\code{"round"}}{Round to \code{digits} decimal places using
-#'       \code{round()} (default).}
-#'     \item{\code{"ceiling"}}{Round up to the nearest integer using
-#'       \code{ceiling()}.}
-#'     \item{\code{"floor"}}{Round down to the nearest integer using
-#'       \code{floor()}.}
-#'     \item{\code{"tenth"}}{Divide each value by 10 then round to
-#'       \code{digits} decimal places — useful for rescaling values that were
-#'       multiplied by 10 (e.g. converting tenths back to units).}
-#'   }
-#' @return A data frame with the same structure as \code{df} where all numeric
-#'   columns have been rounded or transformed according to \code{type}.
-#' @keywords functions
-#' @export
-#' @examples
-#' round_dataframe(df = change_data_type(df = mtcars, type = "factor"), digits = 0)
-#' round_dataframe(df = change_data_type(df = mtcars, type = "character"), digits = 0)
-#' round_dataframe(df = mtcars, digits = 0)
-#' round_dataframe(df = mtcars, digits = 0, type = "ceiling")
-#' round_dataframe(df = mtcars, digits = 0, type = "floor")
-#' round_dataframe(df = mtcars * 100, digits = 2, type = "tenth")
-round_dataframe <- function(df, digits = 0, type = "round") {
-  if (type == "round") {
-    df[, sapply(df, is.numeric)] <- round(df[, sapply(df, is.numeric)], digits = digits)
-  }
-  if (type == "ceiling") {
-    df[, sapply(df, is.numeric)] <- ceiling(df[, sapply(df, is.numeric)])
-  }
-  if (type == "floor") {
-    df[, sapply(df, is.numeric)] <- floor(df[, sapply(df, is.numeric)])
-  }
-  if (type == "tenth") {
-    df[, sapply(df, is.numeric)] <- round(df[, sapply(df, is.numeric)] / 10, digits = digits)
-  }
-  return(df)
-}
-##########################################################################################
-# CHANGE DATA TYPE OF COLLUMNS IN DATA FRAME
-##########################################################################################
-#' @title Convert column data types in a data frame
-#' @description Converts all or selected columns in a data frame to a
-#'   specified data type. Whitespace (tabs, carriage returns, newlines) is
-#'   trimmed automatically when converting to \code{"character"} or
-#'   \code{"numeric"}.
-#' @param df A data frame whose columns will be converted.
-#' @param type Character string specifying the conversion to apply:
-#'   \describe{
-#'     \item{\code{"character"}}{Converts all columns to character, trimming
-#'       leading and trailing whitespace.}
-#'     \item{\code{"numeric"}}{Converts all columns to numeric (via character
-#'       with whitespace trimming). Non-numeric strings become \code{NA}.}
-#'     \item{\code{"factor"}}{Converts all columns to factor.}
-#'     \item{\code{"factor_character"}}{Converts only factor columns to
-#'       character; all other columns are left unchanged.}
-#'     \item{\code{"character_factor"}}{Converts only character columns to
-#'       factor; all other columns are left unchanged.}
-#'   }
-#' @return A data frame with the same dimensions as \code{df} with column
-#'   types converted as specified.
-#' @keywords functions
-#' @export
-#' @examples
-#' cdf(df = change_data_type(df = mtcars, "character"))
-#' cdf(df = change_data_type(df = mtcars, "numeric"))
-#' cdf(df = change_data_type(df = mtcars, "factor"))
-#' df <- change_data_type(df = mtcars, "factor")
-#' cdf(df = change_data_type(df = df, "factor_character"))
-change_data_type <- function(df, type) {
-  if (type == "character") {
-    df[] <- lapply(df, function(x) as.character(trimws(x, which = "both", whitespace = "[\t\r\n]")))
-  }
-  if (type == "numeric") {
-    df[] <- lapply(df, function(x) as.numeric(trimws(as.character(x), which = "both", whitespace = "[\t\r\n]")))
-  }
-  if (type == "factor") {
-    df[] <- lapply(df, as.factor)
-  }
-  if (type == "factor_character") {
-    df[] <- apply(df, 1:2, function(x) {
-      if (is.factor(x)) as.character(x) else x
-    })
-  }
-  if (type == "character_factor") {
-    df[] <- apply(df, 1:2, function(x) {
-      if (is.character(x)) factor(x) else x
-    })
-  }
-  return(df)
-}
-##########################################################################################
-# RBIND ALL
-##########################################################################################
-#' @title Row-bind two data frames with different column sets
-#' @description Combines two data frames or matrices by rows even when they do
-#'   not share the same columns. Columns present in one input but absent in the
-#'   other are added and filled with \code{NA} before binding. Row names from
-#'   both inputs are preserved unless they would produce duplicates, in which
-#'   case default integer row names are used.
-#' @param df1 A data frame or matrix.
-#' @param df2 A data frame or matrix.
-#' @return A data frame containing all rows from \code{df1} followed by all
-#'   rows from \code{df2}, with the union of both column sets. Cells where a
-#'   column did not exist in the original input are \code{NA}.
-#' @keywords functions
-#' @export
-#' @examples
-#' df1 <- generate_correlation_matrix(n = 10)
-#' df2 <- generate_correlation_matrix(n = 10)
-#' names(df2)[4] <- "X11"
-#' rbind_all(df1 = df1, df2 = df2)
-#' row.names(df1) <- 21:30
-#' rbind_all(df1 = df1, df2 = df2)
-rbind_all <- function(df1, df2) {
-  df1_diff <- setdiff(colnames(df1), colnames(df2))
-  df2_diff <- setdiff(colnames(df2), colnames(df1))
-  df1[, c(as.character(df2_diff))] <- NA
-  df2[, c(as.character(df1_diff))] <- NA
-  row_names <- c(row.names(df1), row.names(df2))
-  result <- rbind(df1, df2)
-  ndf1 <- deparse(substitute(df1))
-  ndf2 <- deparse(substitute(df2))
-  row_names_df1 <- row.names(df1)
-  row_names_df2 <- row.names(df2)
-  if (!TRUE %in% duplicated(row_names)) {
-    row.names(result) <- c(row_names_df1, row_names_df2)
-  }
-  return(result)
-}
-##########################################################################################
-# REMOVE VALUES THAT CANNOT BE CALCULATED
-##########################################################################################
-#' @title Replace and remove non-computable values
-#' @description Cleans a data frame by replacing non-computable values
-#'   (\code{NA}, \code{NaN}, \code{Inf}, \code{-Inf}, and empty strings) with
-#'   a chosen replacement, then optionally drops rows or columns that still
-#'   contain missing values or have zero variance.
-#' @param df A data frame to clean.
-#' @param value The replacement value for all non-computable entries. Default
-#'   is \code{NA}.
-#' @param remove_rows Logical. When \code{TRUE}, rows containing \code{NA}
-#'   after replacement are removed according to the \code{aggressive} setting.
-#'   Default is \code{FALSE}.
-#' @param aggressive Logical. Only used when \code{remove_rows = TRUE}.
-#'   \itemize{
-#'     \item \code{TRUE} — remove a row if \emph{any} value is \code{NA}.
-#'     \item \code{FALSE} — remove a row only if \emph{all} values are
-#'       \code{NA}.
-#'   }
-#'   Default is \code{FALSE}.
-#' @param remove_cols Logical. When \code{TRUE}, columns where \emph{all}
-#'   values are \code{NA} are dropped. Default is \code{FALSE}.
-#' @param remove_zero_variance Logical. Only used when \code{remove_cols =
-#'   TRUE}. When \code{TRUE}, columns with only one unique non-missing value
-#'   (zero variance) are also dropped. Default is \code{FALSE}.
-#' @return A data frame with non-computable values replaced and, depending on
-#'   the flags, rows and/or columns removed.
-#' @keywords functions
-#' @export
-#' @examples
-#' df <- mtcars
-#' df[1, ] <- as.numeric(NaN)
-#' df[2, ] <- as.numeric(Inf)
-#' df[3, ] <- as.numeric(-Inf)
-#' df[4, ] <- as.numeric(NA)
-#' df[5, ] <- ""
-#' remove_nc(df = df, value = NA)
-#' cdf(remove_nc(df = df, value = NA))
-#' df <- generate_missing(mtcars, missing = 5)
-#' remove_nc(df, remove_rows = TRUE, aggressive = FALSE)
-#' remove_nc(df, remove_rows = TRUE, aggressive = TRUE)
-#' df <- generate_missing(generate_correlation_matrix(nrows = 5), missing = 2)
-#' df$X2 <- NA
-#' df$X3 <- 1
-#' remove_nc(df, remove_cols = TRUE, remove_zero_variance = FALSE)
-#' remove_nc(df, remove_cols = TRUE, remove_zero_variance = TRUE)
-remove_nc <- function(df, value = NA, remove_rows = FALSE, aggressive = FALSE, remove_cols = FALSE, remove_zero_variance = FALSE) {
-  df[is.na(df)] <- value
-  # df[sapply(df,is.nan)]<-value
-  # df[sapply(df,is.infinite)]<-value
-  df[df == Inf] <- value
-  df[df == -Inf] <- value
-  df[df == NaN] <- value
-  df[df == ""] <- value
-  if (remove_rows) {
-    if (aggressive) {
-      df <- df[rowSums(is.na(df)) == 0, ]
-    } else {
-      df <- df[apply(df, 1, function(x) any(!is.na(x))), ]
-    }
-  }
-  if (remove_cols) {
-    df <- df[, colSums(!is.na(df)) > 0]
-    if (remove_zero_variance) {
-      # df<-df[,!0==apply(df,2,function(x) stats::sd(x,na.rm=TRUE))]
-      df <- df[, apply(df, 2, function(x) length(table(x))) > 1]
-    }
-  }
-  return(df)
-}
-##########################################################################################
-# REPLACE NA WITH PREVIOUS CELLS
-##########################################################################################
-#' @title Last observation carried forward (LOCF) imputation
-#' @description Replaces each \code{NA} in a vector with the most recent
-#'   preceding non-\code{NA} value (last observation carried forward, LOCF).
-#'   If the first element is \code{NA}, it is replaced with the first
-#'   non-\code{NA} value found anywhere in the vector. To apply LOCF to every
-#'   column of a data frame use \code{df[] <- lapply(df, replace_na_with_previous)}.
-#' @param vector A vector of any type that may contain \code{NA} values.
-#' @return A vector of the same length and type as \code{vector} with
-#'   \code{NA} values replaced by the preceding non-\code{NA} element.
-#'   Returns the original vector unchanged if it contains no \code{NA} values.
-#' @keywords functions
-#' @export
-#' @examples
-#' df1 <- generate_missing(rnorm(10), missing = 5)
-#' df2 <- generate_missing(rnorm(10), missing = 5)
-#' df3 <- generate_missing(rnorm(10), missing = 5)
-#' df4 <- generate_missing(rnorm(10), missing = 5)
-#' df5 <- generate_missing(rnorm(10), missing = 5)
-#' df <- data.frame(df1, df2, df3, df4, df5)
-#' row.names(df) <- paste0("A", row.names(df))
-#' replace_na_with_previous(df1)
-#' df[] <- lapply(df, replace_na_with_previous)
-replace_na_with_previous <- function(vector) {
-  if (is.na(vector[1])) {
-    vector[1] <- na.omit(vector)[1]
-  }
-  for (i in 1:length(vector)) {
-    if ((i - 1) > 0) {
-      if (is.na(vector[i])) {
-        vector[i] <- vector[i - 1]
-      }
-    }
-  }
-  return(vector)
-}
-##########################################################################################
-# BIND DATAFRAMES OR VECTORS OF UNEQUAL ROW LENGTHS
-##########################################################################################
-#' @title Pad a data frame to a target number of rows with NAs
-#' @description Extends a data frame to \code{rowsneeded} rows by appending
-#'   (or prepending) \code{NA}-filled rows. Internal helper used by
-#'   \code{\link{c_bind}}.
-#' @param df A data frame to pad.
-#' @param rowsneeded Integer target row count. Must be greater than or equal
-#'   to \code{nrow(df)}.
-#' @param first Logical. When \code{TRUE} (default) \code{NA} rows are
-#'   appended at the bottom; when \code{FALSE} they are prepended at the top.
-#' @return A data frame with \code{rowsneeded} rows and the same columns as
-#'   \code{df}.
-#' @author Ananda Mahto
-#' @keywords functions
-padNA <- function(df, rowsneeded, first = TRUE) {
-  column_names <- colnames(df)
-  rowsneeded <- rowsneeded - nrow(df)
-  temp2 <- setNames(data.frame(matrix(rep(NA, length(column_names) * rowsneeded), ncol = length(column_names))), column_names)
-  if (isTRUE(first)) {
-    rbind(df, temp2)
-  } else {
-    rbind(temp2, df)
-  }
-}
-#' @title Get the names of objects passed through dots
-#' @description Returns the unevaluated expressions passed in \code{...} as
-#'   character strings. Internal helper used by \code{\link{c_bind}} to name
-#'   the columns of its output.
-#' @param ... Objects whose expressions should be returned as names.
-#' @return A character vector with one element per argument in \code{...}.
-#' @author Ananda Mahto
-#' @keywords functions
-dotnames <- function(...) {
-  vnames <- as.list(substitute(list(...)))[-1L]
-  result <- unlist(lapply(vnames, deparse), FALSE, FALSE)
-  return(result)
-}
-#' @title Column-bind data frames or vectors of unequal lengths
-#' @description Combines any number of data frames or vectors side by side,
-#'   padding shorter inputs with \code{NA} rows so all columns reach the same
-#'   length. Each input's columns are prefixed with the object's name to avoid
-#'   duplicate column names. Vectors are coerced to single-column data frames
-#'   before binding.
-#' @param ... Data frames or vectors to column-bind. Names are taken from the
-#'   unevaluated expressions passed (e.g. variable names).
-#' @param first Logical. When \code{TRUE} (default) \code{NA} padding rows are
-#'   appended at the bottom of shorter inputs; when \code{FALSE} they are
-#'   prepended at the top.
-#' @return A data frame with one column per column across all inputs, padded
-#'   with \code{NA} rows to the length of the longest input. Column names
-#'   follow the pattern \code{<object_name>} for single-column inputs and
-#'   \code{<object_name>_<original_colname>} for multi-column inputs.
-#' @importFrom stats setNames
-#' @author Ananda Mahto
-#' @keywords functions
-#' @export
-#' @examples
-#' c_bind(rnorm(10), rnorm(11), rnorm(12), rnorm(13))
-c_bind <- function(..., first = TRUE) {
-  Names <- dotnames(...)
-  datalist <- stats::setNames(list(...), Names)
-  nrows <- max(sapply(datalist, function(x) {
-    ifelse(is.null(dim(x)), length(x), nrow(x))
-  }))
-  datalist <- lapply(seq_along(datalist), function(x) {
-    z <- datalist[[x]]
-    if (is.null(dim(z))) {
-      z <- setNames(data.frame(z), Names[x])
-    } else {
-      if (is.null(colnames(z))) {
-        colnames(z) <- paste(Names[x], sequence(ncol(z)), sep = "_")
-      } else {
-        colnames(z) <- paste(Names[x], colnames(z), sep = "_")
-      }
-    }
-    padNA(z, rowsneeded = nrows, first = first)
-  })
-  do.call(cbind, datalist)
-}
-##########################################################################################
-# COMBINATIONS
-##########################################################################################
-#' @title All pairwise column name combinations
-#' @description Generates a data frame of all pairwise combinations of column
-#'   names from a data frame. Useful for programmatically specifying variable
-#'   pairs to pass to functions like \code{\link{compute_crosstable}} or
-#'   \code{\link{plot_crosstable}}.
-#' @param df A data frame whose column names will be combined.
-#' @param all_orders Logical. When \code{TRUE} (default) both orderings of
-#'   each pair are included (e.g. \code{(X1, X2)} and \code{(X2, X1)}),
-#'   producing \eqn{n(n-1)} rows for \eqn{n} columns. When \code{FALSE} only
-#'   unique unordered pairs are returned, producing \eqn{n(n-1)/2} rows.
-#' @return A data frame with two character columns \code{X1} and \code{X2},
-#'   each row representing one variable pair.
-#' @importFrom utils combn
-#' @keywords functions
-#' @export
-#' @examples
-#' comparison_combinations(generate_correlation_matrix(n = 10)[, 1:4])
-comparison_combinations <- function(df, all_orders = TRUE) {
-  combinations <- data.frame(t(utils::combn(names(df), 2)), stringsAsFactors = FALSE)
-  names(combinations) <- c("X1", "X2")
-  if (all_orders) {
-    combinations <- rbind(combinations, data.frame(X1 = combinations$X2, X2 = combinations$X1))
-    combinations <- combinations[order(combinations$X1, combinations$X2), ]
-  }
-  return(combinations)
-}
-##########################################################################################
-# MINIMUM MAXIMUM INDEX OF A VECTOR
-##########################################################################################
-#' @title Indices of the minimum and maximum values in a vector
-#' @description Returns the positions of the minimum and maximum values in a
-#'   vector. When there are ties all tied positions are returned.
-#' @param vector A numeric vector.
-#' @return A named list with two elements:
-#'   \describe{
-#'     \item{max_index}{Integer vector of positions where the maximum value
-#'       occurs.}
-#'     \item{min_index}{Integer vector of positions where the minimum value
-#'       occurs.}
-#'   }
-#' @keywords functions
-#' @export
-#' @examples
-#' vector1 <- c(1, 2, 3, 4, 5, 4, 3, 2, 1)
-#' vector2 <- c(1, 2, 3, 4, 5, 5, 3, 2, 1)
-#' vector3 <- c(1, 2, 3, 5, 5, 4, 3, 2, 1)
-#' vector4 <- c(1, 2, 3, 4, 6, 4, 3, 2, 1)
-#' vector5 <- c(1, 6, 3, 4, 6, 4, 3, 2, 1)
-#' vector <- vector1
-#' which(vector == max(vector), arr.ind = TRUE)
-#' which(vector == min(vector), arr.ind = TRUE)
-#' min_max_index(vector1)
-#' min_max_index(vector2)
-#' min_max_index(vector3)
-#' min_max_index(vector4)
-#' min_max_index(vector5)
-min_max_index <- function(vector) {
-  max_index <- which(vector == max(vector), arr.ind = TRUE)
-  min_index <- which(vector == min(vector), arr.ind = TRUE)
-  result <- list(max_index = max_index, min_index = min_index)
-  return(result)
-}
-##########################################################################################
-# GET SCRIPT DIRECTORY
-##########################################################################################
-#' @title Get script directory
-#' @description Returns the directory of the currently active script as a string
-#'              with a trailing slash. Works across multiple environments: RStudio,
-#'              command line execution, and generic R sessions.
-#' @details The function tries three approaches in order: \cr
-#'          1. If RStudio is available, uses \code{rstudioapi} to get the active document path \cr
-#'          2. If running from the command line via \code{Rscript --file=}, parses the file argument \cr
-#'          3. Falls back to \code{getwd()} as a last resort
-#' @return A character string with the directory path, always ending with "/"
-#' @note The fallback to \code{getwd()} may not reflect the script's actual location
-#'       if the working directory has been changed during the session.
-#' @keywords functions
-#' @export
-#' @examples
-#' # Returns the directory of the active script in RStudio
-#' directory <- get_script_directory()
-#' directory
-get_script_directory <- function() {
-  if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
-    return(paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/"))
-  }
-  # fallback for command line
-  args <- commandArgs(trailingOnly = FALSE)
-  file_arg <- grep("--file=", args, value = TRUE)
-  if (length(file_arg) > 0) {
-    return(paste0(dirname(normalizePath(sub("--file=", "", file_arg))), "/"))
-  }
-  # last resort
-  return(paste0(getwd(), "/"))
-}
-
-##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_ANOVA_PLOT.R
-##########################################################################################
-##########################################################################################
-# PLOT ONE WAY ANOVA
-##########################################################################################
-#' @title Plot group means with error bars for all IV-DV combinations
-#' @description For every combination of independent variable (IV) and dependent
-#'   variable (DV) supplied, produces a horizontal dot plot of group means with
-#'   optional error bars (standard error, confidence interval, or standard
-#'   deviation). Sample size per group is annotated on each panel.
-#'
-#'   When the number of IV-DV combinations exceeds four times the available CPU
-#'   cores the plots are produced in parallel via \code{future.apply}, otherwise
-#'   sequentially.
-#'
-#' @param df A data frame containing both the independent and dependent
-#'   variables.
-#' @param dv Integer vector of column indices for the continuous dependent
-#'   variables.
-#' @param iv Integer vector of column indices for the categorical independent
-#'   variables. Columns are coerced to factors automatically.
-#' @param base_size Base font size in pt passed to \code{theme_bw}. Default
-#'   \code{20}.
-#' @param type Type of error bar to display. One of \code{"se"} (standard
-#'   error), \code{"ci"} (95\% confidence interval), \code{"sd"} (standard
-#'   deviation), or \code{""} (no error bars). Default \code{"se"}.
-#' @param order_factor Logical. If \code{TRUE} factor levels on the x-axis are
-#'   sorted by the group mean of the DV (descending). Default \code{TRUE}.
-#' @param title Character. Plot title applied to every panel. Default \code{""}.
-#' @param note Character. Caption / footnote appended to every panel. Default
-#'   \code{""}.
-#' @param width Integer. Character width at which long axis labels are wrapped.
-#'   Default \code{60}.
-#'
-#' @return A named list with three elements:
-#'   \itemize{
-#'     \item \code{plot_data} — named list of summary data frames (one per
-#'       IV-DV pair) as returned by \code{Rmisc::summarySE}.
-#'     \item \code{plot_data_df} — single data frame combining all summary
-#'       data frames row-wise.
-#'     \item \code{plots} — named list of ggplot objects (one per IV-DV pair).
-#'   }
-#'   All list elements are named \code{"iv_dv"}.
-#'
-#' @import ggplot2
-#' @importFrom future plan multisession sequential
-#' @importFrom future.apply future_lapply
-#' @importFrom Rmisc summarySE
-#' @importFrom scales wrap_format
-#' @importFrom ggpubr as_ggplot
-#' @importFrom gridExtra arrangeGrob
-#' @importFrom plyr rbind.fill
-#' @importFrom parallel detectCores
-#' @keywords ANOVA
-#' @export
-#' @examples
-#' nrows <- 1000
-#' df <- data.frame(
-#'   generate_factor(vector = LETTERS[1:5], nrows = nrows, ncols = 10, type = "random"),
-#'   generate_data(nrows = nrows, ncols = 5, type = "normal")
-#' )
-#' result <- plot_oneway(df = df, dv = 11:15, iv = 1:10)
-#'
-#' # Single IV, single DV
-#' plot_oneway(df = mtcars, dv = 2, iv = 9)
-#'
-#' # Multiple IVs and DVs
-#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10)
-#'
-#' # Error bar types
-#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "se")
-#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "ci")
-#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "sd")
-#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "")
-#'
-#' # Factor ordering
-#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "", order_factor = FALSE)
-#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "", order_factor = TRUE)
-plot_oneway <- function(df, dv, iv, base_size = 20, type = "se", order_factor = TRUE, title = "", note = "", width = 60) {
-  se <- ci <- NULL
-  output_data <- function(i) {
-    index <- as.character(combinations[i, ])
-    tempdata <- df[complete.cases(df[, index]), index]
-    if (length(unique(tempdata[, combinations$iv[i]])) > 1) {
-      Rmisc::summarySE(tempdata, measurevar = combinations$dv[i], groupvars = combinations$iv[i], na.rm = TRUE)
-    }
-  }
-  output_plot <- function(i) {
-    tempdata <- plot_data[[i]]
-    if (!is.null(tempdata)) {
-      if (order_factor) {
-        means_plot <- ggplot(tempdata, aes(x = reorder(tempdata[, 1], -tempdata[, 3]), y = tempdata[, 3]))
-      } else {
-        means_plot <- ggplot(tempdata, aes(x = tempdata[, 1], y = tempdata[, 3]))
-      }
-      means_plot <- means_plot +
-        geom_point() +
-        labs(
-          y = str_aes(names(tempdata)[3]),
-          x = str_wrap(str_aes(names(tempdata)[1]), width = width),
-          title = title,
-          caption = note
-        ) +
-        theme_bw(base_size = base_size) +
-        scale_x_discrete(labels = scales::wrap_format(width)) +
-        coord_flip()
-      if (type == "se") {
-        means_plot <- means_plot + geom_errorbar(aes(ymin = tempdata[, 3] - se, ymax = tempdata[, 3] + se), width = .1) +
-          labs(caption = paste("Bars are standard errors", note))
-      }
-      if (type == "ci") {
-        means_plot <- means_plot + geom_errorbar(aes(ymin = tempdata[, 3] - ci, ymax = tempdata[, 3] + ci), width = .1) +
-          labs(caption = paste("Bars are confidence intervals", note))
-      }
-      if (type == "sd") {
-        means_plot <- means_plot + geom_errorbar(aes(ymin = tempdata[, 3] - sd, ymax = tempdata[, 3] + sd), width = .1) +
-          labs(caption = paste("Bars are standard deviations", note))
-      }
-      minaxis <- ggplot_build(means_plot)$layout$panel_scales_y[[1]]$range$range[[1]]
-      if (!is.null(minaxis)) {
-        means_plot <- means_plot + annotate("text", x = tempdata[, 1], y = minaxis, label = paste0("N:", tempdata$N), alpha = .5, size = base_size / 10 * 2, hjust = 0, vjust = 2)
-      }
-      ggpubr::as_ggplot(gridExtra::arrangeGrob(means_plot))
-    }
-  }
-  
-  df[, iv] <- change_data_type(data.frame(df[, iv]), "factor")
-  combinations <- expand.grid(names(df)[iv], names(df)[dv])
-  names(combinations) <- c("iv", "dv")
-  row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
-  combinations <- change_data_type(combinations, type = "character")
-  
-  n_rows <- nrow(combinations)
-  n_cores <- parallel::detectCores()
-  use_parallel <- n_cores * 4 < n_rows
-  
-  if (use_parallel) {
-    message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
-    future::plan(future::multisession, workers = n_cores)
-    plot_data <- setNames(
-      future.apply::future_lapply(seq_len(n_rows), output_data, future.seed = TRUE),
-      row.names(combinations)
-    )
-    plots <- setNames(
-      future.apply::future_lapply(seq_len(n_rows), output_plot, future.seed = TRUE),
-      row.names(combinations)
-    )
-    future::plan(future::sequential)
-  } else {
-    plot_data <- setNames(lapply(seq_len(n_rows), output_data), row.names(combinations))
-    plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
-  }
-  
-  plot_data_df <- Reduce(plyr::rbind.fill, plot_data)
-  names_input_missing <- setdiff(names(df)[c(iv, dv)], names(plot_data_df))
-  names_input <- names(df)[c(iv, dv)]
-  names_input <- names_input[!names_input %in% names_input_missing]
-  plot_data_df <- plot_data_df[, c(names_input, "N", "sd", "se", "ci")]
-  
-  result<-list(plot_data = plot_data, plot_data_df = plot_data_df, plots = invisible(plots))
-  invisible(lapply(result$plots,print))
-  return(invisible(result))
-}
-##########################################################################################
-# PLOT TWO WAY INTERACTION
-##########################################################################################
-#' @title Plot two-way interaction graphs for all IV pair and DV combinations
-#' @description For every unique pair of independent variables (IV1 x IV2) and
-#'   every dependent variable (DV), produces a line-and-point interaction plot
-#'   with group means on the y-axis. IV1 levels appear on the x-axis (flipped)
-#'   and IV2 levels are represented by colour and line group. Optional error
-#'   bars and per-group sample size annotations are included.
-#'
-#'   When the number of combinations exceeds four times the available CPU cores
-#'   the plots are produced in parallel via \code{future.apply}, otherwise
-#'   sequentially.
-#'
-#' @inheritParams plot_oneway
-#'
-#' @return A named list with three elements:
-#'   \itemize{
-#'     \item \code{plot_data} — named list of summary data frames (one per
-#'       IV1-IV2-DV combination) as returned by \code{Rmisc::summarySE}.
-#'     \item \code{plot_data_df} — single data frame combining all summary
-#'       data frames row-wise.
-#'     \item \code{plots} — named list of ggplot objects (one per combination).
-#'   }
-#'   All list elements are named \code{"iv1_iv2_dv"}.
-#'
-#' @import ggplot2
-#' @importFrom future plan multisession sequential
-#' @importFrom future.apply future_lapply
-#' @importFrom parallel detectCores
-#' @importFrom plyr ddply numcolwise rbind.fill
-#' @importFrom Rmisc summarySE
-#' @importFrom scales wrap_format
-#' @importFrom ggpubr as_ggplot
-#' @importFrom gridExtra arrangeGrob
-#' @keywords ANOVA
-#' @export
-#' @examples
-#' # Single DV, two IVs
-#' plot_interaction(df = mtcars, dv = 2, iv = 8:9, base_size = 20, type = "se")
-#'
-#' # Multiple DVs, two IVs
-#' plot_interaction(df = mtcars, dv = 2:3, iv = 8:9, base_size = 20, type = "se")
-#' plot_interaction(df = mtcars, dv = 2:3, iv = 8:9, base_size = 20, type = "ci")
-#' plot_interaction(df = mtcars, dv = 2:3, iv = 9:10, base_size = 20, type = "sd")
-#'
-#' # No error bars, unordered factor axis
-#' plot_interaction(df = mtcars, dv = 2, iv = 9:10, base_size = 20, type = "", order_factor = FALSE)
-plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_factor = TRUE, title = "", note = "") {
-  se <- ci <- NULL
-  output_data <- function(i) {
-    factors <- c(combinations$iv1[i], combinations$iv2[i])
-    cors <- combinations$dv[i]
-    tempdata_complete_cases <- df[complete.cases(df[, c(factors, cors)]), c(factors, cors)]
-    if (nrow(tempdata_complete_cases) > 1) {
-      Rmisc::summarySE(tempdata_complete_cases, measurevar = cors, groupvars = factors, na.rm = TRUE, .drop = TRUE)
-    }
-  }
-  output_plot <- function(i) {
-    tempdata <- plot_data[[i]]
-    if (!is.null(tempdata)) {
-      factors <- c(combinations$iv1[i], combinations$iv2[i])
-      cors <- combinations$dv[i]
-      tempdata_cases <- plyr::ddply(tempdata, factors[1], plyr::numcolwise(sum, na.rm = TRUE))
-      if (order_factor) {
-        interactions_plot <- ggplot(tempdata, aes(
-          x = reorder(tempdata[, factors[1]], -tempdata[, cors]),
-          y = tempdata[, cors],
-          color = str_wrap(tempdata[, factors[2]], width = 25),
-          group = str_wrap(tempdata[, factors[2]], width = 25)
-        ))
-      } else {
-        interactions_plot <- ggplot(tempdata, aes(
-          x = tempdata[, factors[1]],
-          y = tempdata[, cors],
-          color = str_wrap(tempdata[, factors[2]], width = 25),
-          group = str_wrap(tempdata[, factors[2]], width = 25)
-        ))
-      }
-      interactions_plot <- interactions_plot +
-        scale_color_discrete(breaks = c(levels(tempdata[, factors[2]])), name = factors[2]) +
-        geom_line() +
-        geom_point(size = 5) +
-        theme_bw(base_size = base_size) +
-        guides(color = guide_legend(ncol = 1)) +
-        labs(
-          y = str_wrap(str_aes(cors), width = 25),
-          x = str_wrap(str_aes(factors[1]), width = 25),
-          title = title,
-          caption = note,
-          color = str_wrap(str_aes(tempdata[, factors[2]]), width = 25)
-        ) +
-        scale_x_discrete(labels = scales::wrap_format(100)) +
-        coord_flip()
-      if (type == "se") {
-        interactions_plot <- interactions_plot +
-          geom_errorbar(aes(ymin = tempdata[, cors] - se, ymax = tempdata[, cors] + se), width = .1, position = position_dodge(0.1)) +
-          labs(caption = paste("Bars are standard errors", note))
-      }
-      if (type == "ci") {
-        interactions_plot <- interactions_plot +
-          geom_errorbar(aes(ymin = tempdata[, cors] - ci, ymax = tempdata[, cors] + ci), width = .1, position = position_dodge(0.1)) +
-          labs(caption = paste("Bars are confidence intervals", note))
-      }
-      if (type == "sd") {
-        interactions_plot <- interactions_plot +
-          geom_errorbar(aes(ymin = tempdata[, cors] - sd, ymax = tempdata[, cors] + sd), width = .1, position = position_dodge(0.1)) +
-          labs(caption = paste("Bars are standard deviations", note))
-      }
-      minaxis <- ggplot_build(interactions_plot)$layout$panel_scales_y[[1]]$range$range[[1]]
-      if (!is.null(minaxis)) {
-        interactions_plot <- interactions_plot +
-          annotate("text", x = tempdata_cases[, factors[1]], y = minaxis, label = paste("N:", tempdata_cases$N), alpha = .5, size = base_size / 10 * 2, hjust = 0, vjust = 2)
-      }
-      ggpubr::as_ggplot(gridExtra::arrangeGrob(interactions_plot))
-    }
-  }
-  
-  df[, iv] <- change_data_type(df[, iv], type = "factor")
-  combinations <- expand.grid(names(df)[iv], names(df)[iv], names(df)[dv])
-  names(combinations) <- c("iv1", "iv2", "dv")
-  row.names(combinations) <- paste0(combinations$iv1, "_", combinations$iv2, "_", combinations$dv)
-  combinations <- change_data_type(combinations, type = "character")
-  combinations <- combinations[-which(combinations$iv1 == combinations$iv2), ]
-  combinations <- combinations[!duplicated(combinations), ]
-  
-  n_rows <- nrow(combinations)
-  n_cores <- parallel::detectCores()
-  use_parallel <- n_cores * 4 < n_rows
-  
-  if (use_parallel) {
-    message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
-    future::plan(future::multisession, workers = n_cores)
-    plot_data <- setNames(
-      future.apply::future_lapply(seq_len(n_rows), output_data, future.seed = TRUE),
-      row.names(combinations)
-    )
-    plots <- setNames(
-      future.apply::future_lapply(seq_len(n_rows), output_plot, future.seed = TRUE),
-      row.names(combinations)
-    )
-    future::plan(future::sequential)
-    gc(full = TRUE)
-  } else {
-    plot_data <- setNames(lapply(seq_len(n_rows), output_data), row.names(combinations))
-    plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
-  }
-  
-  plot_data_df <- Reduce(plyr::rbind.fill, plot_data)
-  plot_data_df <- plot_data_df[, c(names(df)[c(iv, dv)], setdiff(c("N", "sd", "se", "ci"), names(df)[c(iv, dv)]))]
-  result<-list(plot_data = plot_data, plot_data_df = plot_data_df, plots = plots)
-  invisible(lapply(result$plots,print))
-  return(invisible(result))
-}
-##########################################################################################
-# PLOT ANOVA DIAGNOSTICS
-##########################################################################################
-#' @title Diagnostic plots for one-way ANOVA models
-#' @description For every combination of independent variable (IV) and dependent
-#'   variable (DV), fits a linear model and produces a 6-panel diagnostic plot
-#'   via \code{ggfortify::autoplot}: Residuals vs Fitted, Normal Q-Q, Scale-Location,
-#'   Cook's Distance, Residuals vs Leverage, and Cook's Distance vs Leverage.
-#'
-#'   \strong{Interpretation:}
-#'   \itemize{
-#'     \item \emph{Residuals vs Fitted} — points should be randomly scattered
-#'       with no pattern; a funnel shape indicates heteroscedasticity.
-#'     \item \emph{Normal Q-Q} — points should follow the diagonal; large
-#'       deviations indicate non-normality.
-#'   }
-#'
-#'   When the number of IV-DV combinations exceeds four times the available CPU
-#'   cores the plots are produced in parallel via \code{future.apply}, otherwise
-#'   sequentially.
-#'
-#' @param df A data frame containing both the independent and dependent
-#'   variables.
-#' @param dv Integer vector of column indices for the continuous dependent
-#'   variables.
-#' @param iv Integer vector of column indices for the categorical independent
-#'   variables.
-#' @param base_size Base font size in pt passed to \code{theme_bw}. Default
-#'   \code{10}.
-#'
-#' @return A named list of ggplot objects (one 6-panel plot per IV-DV pair),
-#'   named \code{"iv_dv"}.
-#'
-#' @import ggplot2 ggfortify
-#' @importFrom future plan multisession sequential
-#' @importFrom future.apply future_lapply
-#' @importFrom stats formula lm
-#' @importFrom parallel detectCores
-#' @keywords ANOVA
-#' @export
-#' @examples
-#' nrows <- 1000
-#' df <- data.frame(
-#'   generate_factor(vector = LETTERS[1:5], nrows = nrows, ncols = 10, type = "random"),
-#'   generate_data(nrows = nrows, ncols = 5, type = "normal")
-#' )
-#' result <- plot_oneway_diagnostics(df = df, dv = 11:15, iv = 1:10)
-#'
-#' # Single DV, multiple IVs
-#' plot_oneway_diagnostics(df = mtcars, dv = 1, iv = 9:10)
-#'
-#' # Multiple DVs and IVs
-#' plot_oneway_diagnostics(df = mtcars, dv = 1:2, iv = 9:10)
-plot_oneway_diagnostics <- function(df, dv, iv, base_size = 10) {
-  output_plot <- function(i) {
-    factors <- combinations$iv[i]
-    cors <- combinations$dv[i]
-    tempdata <- df[complete.cases(df[, c(cors, factors)]), ]
-    tempdata <- tempdata[tempdata[, factors] %in% names(table(tempdata[, factors]))[table(tempdata[, factors]) > 1], ]
-    tempdata[, factors] <- factor(tempdata[, factors])
-    if (length(unique(tempdata[, factors])) > 1) {
-      form <- stats::formula(paste0(cors, "~", factors))
-      model <- stats::lm(form, data = tempdata)
-      autoplot(model, which = 1:6, ncol = 2, label.size = 3) +
-        labs(caption = paste0(deparse(model$terms), "\nobservations=", nrow(model$model))) +
-        theme_bw(base_size = base_size) +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1))
-    }
-  }
-  
-  combinations <- expand.grid(names(df)[iv], names(df)[dv])
-  names(combinations) <- c("iv", "dv")
-  row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
-  combinations <- change_data_type(combinations, type = "character")
-  
-  n_rows <- nrow(combinations)
-  n_cores <- parallel::detectCores()
-  use_parallel <- n_cores * 4 < n_rows
-  
-  if (use_parallel) {
-    message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
-    future::plan(future::multisession, workers = n_cores)
-    plots <- setNames(
-      future.apply::future_lapply(seq_len(n_rows), output_plot, future.seed = TRUE),
-      row.names(combinations)
-    )
-    future::plan(future::sequential)
-    gc(full = TRUE)
-  } else {
-    plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
-  }
-  invisible(lapply(plots,print))
-  return(invisible(plots))
-}
-
-##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_ANOVA.R
-##########################################################################################
-##########################################################################################
-# KRUSKALL WALLIS TEST WITH EFFECT SIZE
+# KRUSKAL WALLIS TEST WITH EFFECT SIZE
 ##########################################################################################
 #' @title Kruskal-Wallis Test with Effect Sizes
 #' @description Runs a one-way Kruskal-Wallis rank-sum test and returns the test
@@ -6703,7 +6350,7 @@ plot_oneway_diagnostics <- function(df, dv, iv, base_size = 10) {
 #'
 #' @param formula A one-way formula in the form \code{y ~ group}.
 #' @param df A data frame containing the variables in \code{formula}.
-#' @param ci If TRUE, adds percentile bootstrap confidence intervals for
+#' @param ci If TRUE, adds percentile bootstrap confidence intervals for both
 #' \code{etasq} and \code{epsilonsq}.
 #' @param conf.level Confidence level of the intervals.
 #' @param nboot Number of bootstrap resamples.
@@ -6784,7 +6431,8 @@ plot_oneway_diagnostics <- function(df, dv, iv, base_size = 10) {
 #'   R = 1000,
 #'   digits = 3
 #' )
-#' rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
+#' rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95,
+#'                          ci.type = "perc", nboot = 100)
 #' compute_kruskal_wallis_test(formula = form, df = df_blood_pressure)
 #' set.seed(1)
 #' compute_kruskal_wallis_test(formula = form, df = df_blood_pressure, ci = TRUE)
@@ -6870,8 +6518,8 @@ compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.
 #' \code{kendall_w} is in [0, 1]. 0 means the blocks rank the groups in no consistent
 #' order; 1 means every block ranks the groups in the same order.
 #'
-#' Rules of thumb for \code{kendall_w}, the Cohen (1988) benchmarks for correlations
-#' that \code{rstatix::friedman_effsize} also uses:
+#' As in \code{rstatix::friedman_effsize}, the rules of thumb for \code{kendall_w}
+#' are the Cohen (1988) benchmarks for correlations:
 #' \itemize{
 #'   \item tiny: < 0.1
 #'   \item small: 0.1 to < 0.3
@@ -6909,7 +6557,8 @@ compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.
 #' @examples
 #' form <- formula(uptake ~ conc | Plant)
 #' friedman.test(formula = form, data = df_co2)
-#' rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
+#' rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95,
+#'                           ci.type = "perc", nboot = 100)
 #' effectsize::kendalls_w(form, data = df_co2)
 #' compute_friedman_test(formula = form, df = df_co2)
 #' set.seed(1)
@@ -6985,7 +6634,7 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 #'   \item \code{etasq}: eta-squared, \eqn{SS_{effect}/SS_{total}}
 #'   \item \code{partial.etasq}: partial eta-squared, \eqn{SS_{effect}/(SS_{effect}+SS_{error})}
 #'   \item \code{omegasq}: omega-squared, \eqn{(SS_{effect}-df_{effect} MS_{error})/(SS_{total}+MS_{error})}
-#'   \item \code{partial.omegasq}: partial omega-squared, \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(df_{error}+1) MS_{error})}
+#'   \item \code{partial.omegasq}: partial omega-squared,\cr \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(df_{error}+1) MS_{error})}
 #'   \item \code{cohens.f}: Cohen's f, \eqn{\sqrt{\eta^2/(1-\eta^2)}}
 #'   \item \code{power}: observed power of the F test at \eqn{\alpha = 0.05}
 #'   \item \code{statistic}: F statistic, \eqn{MS_{effect}/MS_{error}}
@@ -7094,11 +6743,11 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
     ss_error <- ms_error * df_error
     method <- "Assuming heteroscedasticity"
   }
-
+  
   ss_total <- sum(ss_effect + ss_error)
   statistic <- ms_effect / ms_error
   p <- stats::pf(q = statistic, df1 = df_effect, df2 = df_error, lower.tail = FALSE)
-
+  
   etasq <- ss_effect / ss_total
   partial.etasq <- ss_effect / (ss_effect + ss_error)
   omegasq <- (ss_effect - df_effect * ms_error) / (ss_total + ms_error)
@@ -7149,6 +6798,7 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #' deviation) or \code{""} (none).
 #' @param plot_means If TRUE, writes plots of the group means to a PDF file.
 #' @param plot_diagnostics If TRUE, writes ANOVA diagnostic plots to a PDF file.
+#' @param pb Logical; whether to display a progress bar in the console.
 #'
 #' @return A list with:
 #' \itemize{
@@ -7156,8 +6806,8 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #'   \item \code{fisher}, \code{welch}: one row per combination, with the output of
 #'   \code{compute_one_way_test} (sums of squares, F, degrees of freedom, p-value,
 #'   effect sizes and power)
-#'   \item \code{kruskal_wallis}: one row per combination, with the output of
-#'   \code{compute_kruskal_wallis_test}
+#'   \item \code{kruskal_wallis}: the output of \code{compute_kruskal_wallis_test},
+#'   with one row per combination
 #'   \item \code{tukey}, \code{games_howell}: one row per pair of groups in each
 #'   combination, with the output of \code{compute_posthoc} (\code{LEVEL} names the
 #'   pair)
@@ -7196,9 +6846,10 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #'   \item The Games-Howell test handles unequal group sizes and unequal variances.
 #' }
 #'
-#' The Excel workbook has the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
+#' The Excel workbook contains the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
 #' "Tukey", "Games-Howell" and "Descriptives". The plots are written to PDF files
-#' named after \code{file}. A progress bar is printed while the tests run.
+#' named after \code{file}. With \code{pb = TRUE}, a progress bar is printed
+#' to the console while the tests run.
 #'
 #' @seealso \code{\link{compute_one_way_test}}, \code{\link{compute_kruskal_wallis_test}},
 #' \code{\link{compute_posthoc}}
@@ -7218,6 +6869,7 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #' Welch, B. L. (1951). On the comparison of several mean values: An alternative approach. Biometrika, 38(3/4), 330-336. \doi{10.2307/2332579}
 #' @importFrom car leveneTest
 #' @importFrom stats bartlett.test
+#' @importFrom utils txtProgressBar setTxtProgressBar
 #' @importFrom plyr rbind.fill
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @keywords ANOVA
@@ -7243,7 +6895,7 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #'   df = mtcars, dv = 2:4, iv = 9, file = "anova_oneway_one_factor",
 #'   plot_means = TRUE, plot_diagnostics = TRUE
 #' )
-report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 10, note = "", title = "", type = "ci", plot_means = FALSE, plot_diagnostics = FALSE) {
+report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 10, note = "", title = "", type = "ci", plot_means = FALSE, plot_diagnostics = FALSE, pb = FALSE) {
   instruction <- list(
     fisher = "Fisher assumes homoscedasticity (equal variances)",
     welch = "Welch does not assume homoscedasticity (it allows unequal variances)",
@@ -7252,17 +6904,17 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
     games_howell = "Posthoc Games Howell: good for unequal sample sizes and heteroscedasticity",
     homogeneity_instruction = "significant tests show heteroscedasticity and suggest the use of Welch or alternative procedures. Levene test depends on normality: Non normal distributions may result in false significant results. Sample size may affect test results"
   )
-
+  
   df_fisher <- df_welch <- df_kruskal <- df_tukey <- df_games_howell <- df_levene <- df_bartlett <- data.frame()
-
+  
   combinations <- expand.grid(names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv", "dv")
   row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
   combinations <- change_data_type(combinations, type = "character")
-  pb <- txtProgressBar(min = 0, max = length(iv) * length(dv), style = 3)
+  if (pb) progress <- txtProgressBar(min = 0, max = length(iv) * length(dv), style = 3)
 
   for (i in 1:nrow(combinations)) {
-    setTxtProgressBar(pb, i)
+    if (pb) setTxtProgressBar(progress, i)
     factors <- combinations$iv[i]
     cors <- combinations$dv[i]
 
@@ -7303,7 +6955,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
       df_games_howell <- rbind(df_games_howell, games.howell)
     }
   }
-  close(pb)
+  if (pb) close(progress)
 
   adjustment <- compute_adjustment(0.05, i)$bonferroni
   df_fisher$bonferroni_p <- df_welch$bonferroni_p <- df_kruskal$bonferroni_p <- df_levene$bonferroni_p <- df_bartlett$bonferroni_p <- adjustment
@@ -7337,12 +6989,12 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
   comment_text <- list(
     DV = "Dependent Variable",
     IV = "Independent Variable",
-    bonferroni_p = "Bonferonni adjustment\nadjusted critical value of p for familiwise error",
-    significant = "Significant test after familiwise error (Bonferonni) adjustment"
+    bonferroni_p = "Bonferroni adjustment\nadjusted critical value of p for familywise error",
+    significant = "Significant test after familywise error (Bonferroni) adjustment"
   )
 
   comment_fisher_welch <- c(comment_text, list(
-    formula = "Model spesification",
+    formula = "Model specification",
     ss_effect = "Sum of Squares\nfor Effect",
     ss_error = "Sum of Squares\nfor Error",
     ms_effect = "Mean Sum of Squares\nfor Effect",
@@ -7373,7 +7025,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
       critical = list(p = "<0.05"),
       title = instruction$kruskal,
       comment = c(comment_text, list(
-        formula = "Model spesification",
+        formula = "Model specification",
         etasq = "Effect size\neta squared\n0.01 ~ small\n0.06 ~ medium\n0.14 ~ large",
         df = "Degrees of Freedom"
       ))
@@ -7450,7 +7102,6 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #' \code{NULL} (default), nothing is written.
 #' @param post_hoc_test If TRUE (default), writes the post hoc comparisons to the
 #' Excel file.
-#' @param base_size Base font size for plots. Not used at present.
 #'
 #' @return A list with:
 #' \itemize{
@@ -7461,9 +7112,9 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #'   test is added with the suffix \code{[L]}, Mauchly's test with \code{[M]}, and
 #'   the sphericity corrections as \code{GGe}, \code{p[GG]}, \code{HFe} and
 #'   \code{p[HF]}.
-#'   \item \code{omnibus_effect_size}: eta-squared, partial eta-squared,
+#'   \item \code{omnibus_effect_size}: for every term, from
+#'   \code{sjstats::anova_stats}, the eta-squared, partial eta-squared,
 #'   omega-squared, partial omega-squared, epsilon-squared, Cohen's f and power
-#'   for every term, from \code{sjstats::anova_stats}
 #'   \item \code{post_hoc}: pairwise comparisons for every main effect and
 #'   interaction, with the estimate, standard error, degrees of freedom,
 #'   t ratio and p-value
@@ -7533,7 +7184,8 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #' # 36 participants: B1 and B2 vary between participants (4 per cell),
 #' # W1 and W2 vary within participants (every participant has all 9 conditions)
 #' set.seed(12345)
-#' df <- expand.grid(W1 = c("A", "B", "C"), W2 = c("D", "E", "F"), id = 1:36, stringsAsFactors = FALSE)
+#' df <- expand.grid(W1 = c("A", "B", "C"), W2 = c("D", "E", "F"), id = 1:36,
+#'                   stringsAsFactors = FALSE)
 #' df$B1 <- c("G", "H", "I")[(df$id - 1) %% 3 + 1]
 #' df$B2 <- c("J", "K", "L")[(df$id - 1) %/% 3 %% 3 + 1]
 #' df <- df[, c("id", "B1", "B2", "W1", "W2")]
@@ -7573,7 +7225,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #' )
 report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NULL, between = NULL, within_covariates = NULL, between_covariates = NULL,
                                    observed = NULL, diff = NULL, reverse_diff = FALSE, type = 3, white.adjust = TRUE, detailed = TRUE, return_aov = TRUE,
-                                   file = NULL, post_hoc_test = TRUE, base_size = 15) {
+                                   file = NULL, post_hoc_test = TRUE) {
   comment <- list(
     DFn = "Degrees of Freedom\nfor numerator",
     DFd = "Degrees of Freedom\nfor denominator",
@@ -7602,15 +7254,14 @@ report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NUL
     "p[M]" = "Mauchly's Test\np\nIf significant, the assumption of sphericity is violated",
     "GGe" = "Greenhouse-Geisser\nepsilon",
     "p[GG]" = "Greenhouse-Geisser\np adjusted for violated sphericity",
-    "HFe" = "Huynd-Feldt\n epsilon",
-    "p[HF]" = "Huynd-Feldt\np adjusted for violated sphericity"
+    "HFe" = "Huynh-Feldt\n epsilon",
+    "p[HF]" = "Huynh-Feldt\np adjusted for violated sphericity"
   )
   testdata <- df
   call_arguments <- match.call()
   call_string <- gsub(" ", "", gsub("\"", " ", gsub(", ,", ",", toString(unlist(deparse(call_arguments))))))
   old_options <- options(contrasts = c("contr.sum", "contr.poly"))
   on.exit(options(old_options), add = TRUE)
-  bonferroni <- compute_adjustment(0.05, length(dv))$bonferroni
   result <- emf <- list()
   post_hoc <- omnibus <- omnibus_effect_size <- data.frame()
   collumn_design <- unique(c(wid, within, within_full, between, within_covariates, between_covariates))
@@ -7804,7 +7455,8 @@ report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NUL
 #' ## Set orthogonal contrasts.
 #' op <- options(contrasts = c("contr.helmert", "contr.poly"))
 #' model_mixed <- manova(cbind(yield, foo) ~ N * P * K, within(npk, foo <- rnorm(24)))
-#' model_between <- manova(cbind(rnorm(24), rnorm(24)) ~ round(rnorm(24), 0) * round(rnorm(24), 0))
+#' model_between <- manova(cbind(rnorm(24), rnorm(24)) ~
+#'                           round(rnorm(24), 0) * round(rnorm(24), 0))
 #' report_manova(model = model_mixed)
 #' result <- report_manova(model = model_between)
 #' result$multivariate
@@ -7922,10 +7574,10 @@ report_manova <- function(model, file = NULL) {
 #' }
 #' These are rough guides; what counts as a meaningful effect depends on the field.
 #'
-#' The effect sizes match \code{effectsize::eta_squared},
-#' \code{effectsize::omega_squared}, \code{effectsize::epsilon_squared} and
-#' \code{effectsize::cohens_f} (apart from the truncation of negative values) and
-#' \code{sjstats::anova_stats}.
+#' The effect sizes match the results of \code{effectsize::eta_squared},
+#' \code{effectsize::omega_squared} and \code{effectsize::epsilon_squared}. They
+#' also match \code{effectsize::cohens_f} (apart from the truncation of negative
+#' values) and \code{sjstats::anova_stats}.
 #'
 #' @source The computation of \code{partial_omegasq} is adapted from the answer
 #' of Stephen Martin (2014) to the question "Omega squared for measure of effect
@@ -8164,7 +7816,421 @@ compute_posthoc <- function(y, x) {
 # Assumptions: 1 Sphericity
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_CORRELATION.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_ANOVA_PLOT.R
+##########################################################################################
+##########################################################################################
+# PLOT ONE WAY ANOVA
+##########################################################################################
+#' @title Plot group means with error bars for all IV-DV combinations
+#' @description For every combination of independent variable (IV) and dependent
+#'   variable (DV) supplied, produces a horizontal dot plot of group means with
+#'   optional error bars (standard error, confidence interval, or standard
+#'   deviation). Sample size per group is annotated on each panel.
+#'
+#'   When the number of IV-DV combinations exceeds four times the available CPU
+#'   cores the plots are produced in parallel via \code{future.apply}, otherwise
+#'   sequentially.
+#'
+#' @param df A data frame containing both the independent and dependent
+#'   variables.
+#' @param dv Integer vector of column indices for the continuous dependent
+#'   variables.
+#' @param iv Integer vector of column indices for the categorical independent
+#'   variables. The columns are coerced to factors automatically.
+#' @param base_size Base font size in pt passed to \code{theme_bw}. Default
+#'   \code{20}.
+#' @param type Type of error bar to display. One of \code{"se"} (standard
+#'   error), \code{"ci"} (95\% confidence interval), \code{"sd"} (standard
+#'   deviation), or \code{""} (no error bars). Default \code{"se"}.
+#' @param order_factor Logical. If \code{TRUE} factor levels on the x-axis are
+#'   sorted by the group mean of the DV (descending). Default \code{TRUE}.
+#' @param title Character. Plot title applied to every panel. Default \code{""}.
+#' @param note Character. Caption / footnote appended to every panel. Default
+#'   \code{""}.
+#' @param width Integer. Character width at which long axis labels are wrapped.
+#'   Default \code{60}.
+#'
+#' @return A named list with three elements:
+#'   \itemize{
+#'     \item \code{plot_data} — named list of summary data frames as returned
+#'       by \code{Rmisc::summarySE} (one per IV-DV pair).
+#'     \item \code{plot_data_df} — single data frame combining all summary
+#'       data frames row-wise.
+#'     \item \code{plots} — named list of ggplot objects (one per IV-DV pair).
+#'   }
+#'   All list elements are named \code{"iv_dv"}.
+#'
+#' @import ggplot2
+#' @importFrom future plan multisession sequential
+#' @importFrom future.apply future_lapply
+#' @importFrom Rmisc summarySE
+#' @importFrom scales wrap_format
+#' @importFrom ggpubr as_ggplot
+#' @importFrom gridExtra arrangeGrob
+#' @importFrom plyr rbind.fill
+#' @importFrom parallel detectCores
+#' @keywords ANOVA
+#' @export
+#' @examples
+#' nrows <- 1000
+#' df <- data.frame(
+#'   generate_factor(vector = LETTERS[1:5], nrows = nrows, ncols = 10, type = "random"),
+#'   generate_data(nrows = nrows, ncols = 5, type = "normal")
+#' )
+#' result <- plot_oneway(df = df, dv = 11:15, iv = 1:10)
+#'
+#' # Single IV, single DV
+#' plot_oneway(df = mtcars, dv = 2, iv = 9)
+#'
+#' # Multiple IVs and DVs
+#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10)
+#'
+#' # Error bar types
+#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "se")
+#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "ci")
+#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "sd")
+#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "")
+#'
+#' # Factor ordering
+#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "", order_factor = FALSE)
+#' plot_oneway(df = mtcars, dv = 2:3, iv = 9:10, type = "", order_factor = TRUE)
+plot_oneway <- function(df, dv, iv, base_size = 20, type = "se", order_factor = TRUE, title = "", note = "", width = 60) {
+  se <- ci <- NULL
+  output_data <- function(i) {
+    index <- as.character(combinations[i, ])
+    tempdata <- df[complete.cases(df[, index]), index]
+    if (length(unique(tempdata[, combinations$iv[i]])) > 1) {
+      Rmisc::summarySE(tempdata, measurevar = combinations$dv[i], groupvars = combinations$iv[i], na.rm = TRUE)
+    }
+  }
+  output_plot <- function(i) {
+    tempdata <- plot_data[[i]]
+    if (!is.null(tempdata)) {
+      if (order_factor) {
+        means_plot <- ggplot(tempdata, aes(x = reorder(tempdata[, 1], -tempdata[, 3]), y = tempdata[, 3]))
+      } else {
+        means_plot <- ggplot(tempdata, aes(x = tempdata[, 1], y = tempdata[, 3]))
+      }
+      means_plot <- means_plot +
+        geom_point() +
+        labs(
+          y = str_aes(names(tempdata)[3]),
+          x = str_wrap(str_aes(names(tempdata)[1]), width = width),
+          title = title,
+          caption = note
+        ) +
+        theme_bw(base_size = base_size) +
+        scale_x_discrete(labels = scales::wrap_format(width)) +
+        coord_flip()
+      if (type == "se") {
+        means_plot <- means_plot + geom_errorbar(aes(ymin = tempdata[, 3] - se, ymax = tempdata[, 3] + se), width = .1) +
+          labs(caption = paste("Bars are standard errors", note))
+      }
+      if (type == "ci") {
+        means_plot <- means_plot + geom_errorbar(aes(ymin = tempdata[, 3] - ci, ymax = tempdata[, 3] + ci), width = .1) +
+          labs(caption = paste("Bars are confidence intervals", note))
+      }
+      if (type == "sd") {
+        means_plot <- means_plot + geom_errorbar(aes(ymin = tempdata[, 3] - sd, ymax = tempdata[, 3] + sd), width = .1) +
+          labs(caption = paste("Bars are standard deviations", note))
+      }
+      minaxis <- ggplot_build(means_plot)$layout$panel_scales_y[[1]]$range$range[[1]]
+      if (!is.null(minaxis)) {
+        means_plot <- means_plot + annotate("text", x = tempdata[, 1], y = minaxis, label = paste0("N:", tempdata$N), alpha = .5, size = base_size / 10 * 2, hjust = 0, vjust = 2)
+      }
+      ggpubr::as_ggplot(gridExtra::arrangeGrob(means_plot))
+    }
+  }
+  
+  df[, iv] <- change_data_type(data.frame(df[, iv]), "factor")
+  combinations <- expand.grid(names(df)[iv], names(df)[dv])
+  names(combinations) <- c("iv", "dv")
+  row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
+  combinations <- change_data_type(combinations, type = "character")
+  
+  n_rows <- nrow(combinations)
+  n_cores <- parallel::detectCores()
+  use_parallel <- n_cores * 4 < n_rows
+  
+  if (use_parallel) {
+    message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
+    future::plan(future::multisession, workers = n_cores)
+    plot_data <- setNames(
+      future.apply::future_lapply(seq_len(n_rows), output_data, future.seed = TRUE),
+      row.names(combinations)
+    )
+    plots <- setNames(
+      future.apply::future_lapply(seq_len(n_rows), output_plot, future.seed = TRUE),
+      row.names(combinations)
+    )
+    future::plan(future::sequential)
+  } else {
+    plot_data <- setNames(lapply(seq_len(n_rows), output_data), row.names(combinations))
+    plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
+  }
+  
+  plot_data_df <- Reduce(plyr::rbind.fill, plot_data)
+  names_input_missing <- setdiff(names(df)[c(iv, dv)], names(plot_data_df))
+  names_input <- names(df)[c(iv, dv)]
+  names_input <- names_input[!names_input %in% names_input_missing]
+  plot_data_df <- plot_data_df[, c(names_input, "N", "sd", "se", "ci")]
+  
+  result<-list(plot_data = plot_data, plot_data_df = plot_data_df, plots = invisible(plots))
+  invisible(lapply(result$plots,print))
+  return(invisible(result))
+}
+##########################################################################################
+# PLOT TWO WAY INTERACTION
+##########################################################################################
+#' @title Plot two-way interaction graphs for all IV pair and DV combinations
+#' @description For every unique pair of independent variables (IV1 x IV2) and
+#'   every dependent variable (DV), produces a line-and-point interaction plot
+#'   with group means on the y-axis. IV1 levels appear on the x-axis (flipped)
+#'   and IV2 levels are represented by colour and line group. Optional error
+#'   bars and per-group sample size annotations are included.
+#'
+#'   When the number of combinations exceeds four times the available CPU cores
+#'   the plots are produced in parallel via \code{future.apply}, otherwise
+#'   sequentially.
+#'
+#' @inheritParams plot_oneway
+#'
+#' @return A named list with three elements:
+#'   \itemize{
+#'     \item \code{plot_data} — named list of summary data frames (one per
+#'       IV1-IV2-DV combination) as returned by \code{Rmisc::summarySE}.
+#'     \item \code{plot_data_df} — single data frame combining all summary
+#'       data frames row-wise.
+#'     \item \code{plots} — named list of ggplot objects (one per combination).
+#'   }
+#'   All list elements are named \code{"iv1_iv2_dv"}.
+#'
+#' @import ggplot2
+#' @importFrom future plan multisession sequential
+#' @importFrom future.apply future_lapply
+#' @importFrom parallel detectCores
+#' @importFrom plyr ddply numcolwise rbind.fill
+#' @importFrom Rmisc summarySE
+#' @importFrom scales wrap_format
+#' @importFrom ggpubr as_ggplot
+#' @importFrom gridExtra arrangeGrob
+#' @keywords ANOVA
+#' @export
+#' @examples
+#' # Single DV, two IVs
+#' plot_interaction(df = mtcars, dv = 2, iv = 8:9, base_size = 20, type = "se")
+#'
+#' # Multiple DVs, two IVs
+#' plot_interaction(df = mtcars, dv = 2:3, iv = 8:9, base_size = 20, type = "se")
+#' plot_interaction(df = mtcars, dv = 2:3, iv = 8:9, base_size = 20, type = "ci")
+#' plot_interaction(df = mtcars, dv = 2:3, iv = 9:10, base_size = 20, type = "sd")
+#'
+#' # No error bars, unordered factor axis
+#' plot_interaction(df = mtcars, dv = 2, iv = 9:10, base_size = 20, type = "",
+#'                  order_factor = FALSE)
+plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_factor = TRUE, title = "", note = "") {
+  se <- ci <- NULL
+  output_data <- function(i) {
+    factors <- c(combinations$iv1[i], combinations$iv2[i])
+    cors <- combinations$dv[i]
+    tempdata_complete_cases <- df[complete.cases(df[, c(factors, cors)]), c(factors, cors)]
+    if (nrow(tempdata_complete_cases) > 1) {
+      Rmisc::summarySE(tempdata_complete_cases, measurevar = cors, groupvars = factors, na.rm = TRUE, .drop = TRUE)
+    }
+  }
+  output_plot <- function(i) {
+    tempdata <- plot_data[[i]]
+    if (!is.null(tempdata)) {
+      factors <- c(combinations$iv1[i], combinations$iv2[i])
+      cors <- combinations$dv[i]
+      tempdata_cases <- plyr::ddply(tempdata, factors[1], plyr::numcolwise(sum, na.rm = TRUE))
+      if (order_factor) {
+        interactions_plot <- ggplot(tempdata, aes(
+          x = reorder(tempdata[, factors[1]], -tempdata[, cors]),
+          y = tempdata[, cors],
+          color = str_wrap(tempdata[, factors[2]], width = 25),
+          group = str_wrap(tempdata[, factors[2]], width = 25)
+        ))
+      } else {
+        interactions_plot <- ggplot(tempdata, aes(
+          x = tempdata[, factors[1]],
+          y = tempdata[, cors],
+          color = str_wrap(tempdata[, factors[2]], width = 25),
+          group = str_wrap(tempdata[, factors[2]], width = 25)
+        ))
+      }
+      interactions_plot <- interactions_plot +
+        scale_color_discrete(breaks = c(levels(tempdata[, factors[2]])), name = factors[2]) +
+        geom_line() +
+        geom_point(size = 5) +
+        theme_bw(base_size = base_size) +
+        guides(color = guide_legend(ncol = 1)) +
+        labs(
+          y = str_wrap(str_aes(cors), width = 25),
+          x = str_wrap(str_aes(factors[1]), width = 25),
+          title = title,
+          caption = note,
+          color = str_wrap(str_aes(tempdata[, factors[2]]), width = 25)
+        ) +
+        scale_x_discrete(labels = scales::wrap_format(100)) +
+        coord_flip()
+      if (type == "se") {
+        interactions_plot <- interactions_plot +
+          geom_errorbar(aes(ymin = tempdata[, cors] - se, ymax = tempdata[, cors] + se), width = .1, position = position_dodge(0.1)) +
+          labs(caption = paste("Bars are standard errors", note))
+      }
+      if (type == "ci") {
+        interactions_plot <- interactions_plot +
+          geom_errorbar(aes(ymin = tempdata[, cors] - ci, ymax = tempdata[, cors] + ci), width = .1, position = position_dodge(0.1)) +
+          labs(caption = paste("Bars are confidence intervals", note))
+      }
+      if (type == "sd") {
+        interactions_plot <- interactions_plot +
+          geom_errorbar(aes(ymin = tempdata[, cors] - sd, ymax = tempdata[, cors] + sd), width = .1, position = position_dodge(0.1)) +
+          labs(caption = paste("Bars are standard deviations", note))
+      }
+      minaxis <- ggplot_build(interactions_plot)$layout$panel_scales_y[[1]]$range$range[[1]]
+      if (!is.null(minaxis)) {
+        interactions_plot <- interactions_plot +
+          annotate("text", x = tempdata_cases[, factors[1]], y = minaxis, label = paste("N:", tempdata_cases$N), alpha = .5, size = base_size / 10 * 2, hjust = 0, vjust = 2)
+      }
+      ggpubr::as_ggplot(gridExtra::arrangeGrob(interactions_plot))
+    }
+  }
+  
+  df[, iv] <- change_data_type(df[, iv], type = "factor")
+  combinations <- expand.grid(names(df)[iv], names(df)[iv], names(df)[dv])
+  names(combinations) <- c("iv1", "iv2", "dv")
+  row.names(combinations) <- paste0(combinations$iv1, "_", combinations$iv2, "_", combinations$dv)
+  combinations <- change_data_type(combinations, type = "character")
+  combinations <- combinations[-which(combinations$iv1 == combinations$iv2), ]
+  combinations <- combinations[!duplicated(combinations), ]
+  
+  n_rows <- nrow(combinations)
+  n_cores <- parallel::detectCores()
+  use_parallel <- n_cores * 4 < n_rows
+  
+  if (use_parallel) {
+    message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
+    future::plan(future::multisession, workers = n_cores)
+    plot_data <- setNames(
+      future.apply::future_lapply(seq_len(n_rows), output_data, future.seed = TRUE),
+      row.names(combinations)
+    )
+    plots <- setNames(
+      future.apply::future_lapply(seq_len(n_rows), output_plot, future.seed = TRUE),
+      row.names(combinations)
+    )
+    future::plan(future::sequential)
+    gc(full = TRUE)
+  } else {
+    plot_data <- setNames(lapply(seq_len(n_rows), output_data), row.names(combinations))
+    plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
+  }
+  
+  plot_data_df <- Reduce(plyr::rbind.fill, plot_data)
+  plot_data_df <- plot_data_df[, c(names(df)[c(iv, dv)], setdiff(c("N", "sd", "se", "ci"), names(df)[c(iv, dv)]))]
+  result<-list(plot_data = plot_data, plot_data_df = plot_data_df, plots = plots)
+  invisible(lapply(result$plots,print))
+  return(invisible(result))
+}
+##########################################################################################
+# PLOT ANOVA DIAGNOSTICS
+##########################################################################################
+#' @title Diagnostic plots for one-way ANOVA models
+#' @description For every combination of independent variable (IV) and dependent
+#'   variable (DV), fits a linear model and produces a 6-panel diagnostic plot
+#'   via \code{ggfortify::autoplot}: Residuals vs Fitted, Normal Q-Q, Scale-Location,
+#'   Cook's Distance, Residuals vs Leverage, and Cook's Distance vs Leverage.
+#'
+#'   \strong{Interpretation:}
+#'   \itemize{
+#'     \item \emph{Residuals vs Fitted} — points should be randomly scattered
+#'       with no pattern; a funnel shape indicates heteroscedasticity.
+#'     \item \emph{Normal Q-Q} — points should follow the diagonal; large
+#'       deviations indicate non-normality.
+#'   }
+#'
+#'   When the number of IV-DV combinations exceeds four times the available CPU
+#'   cores the plots are produced in parallel via \code{future.apply}, otherwise
+#'   sequentially.
+#'
+#' @param df A data frame containing both the independent and dependent
+#'   variables.
+#' @param dv Integer vector of column indices for the continuous dependent
+#'   variables.
+#' @param iv Integer vector of column indices for the categorical independent
+#'   variables.
+#' @param base_size Base font size in pt passed to \code{theme_bw}. Default
+#'   \code{10}.
+#'
+#' @return A named list of ggplot objects (one 6-panel plot per IV-DV pair),
+#'   named \code{"iv_dv"}.
+#'
+#' @import ggplot2 ggfortify
+#' @importFrom future plan multisession sequential
+#' @importFrom future.apply future_lapply
+#' @importFrom stats formula lm
+#' @importFrom parallel detectCores
+#' @keywords ANOVA
+#' @export
+#' @examples
+#' nrows <- 1000
+#' df <- data.frame(
+#'   generate_factor(vector = LETTERS[1:5], nrows = nrows, ncols = 10, type = "random"),
+#'   generate_data(nrows = nrows, ncols = 5, type = "normal")
+#' )
+#' result <- plot_oneway_diagnostics(df = df, dv = 11:15, iv = 1:10)
+#'
+#' # Single DV, multiple IVs
+#' plot_oneway_diagnostics(df = mtcars, dv = 1, iv = 9:10)
+#'
+#' # Multiple DVs and IVs
+#' plot_oneway_diagnostics(df = mtcars, dv = 1:2, iv = 9:10)
+plot_oneway_diagnostics <- function(df, dv, iv, base_size = 10) {
+  output_plot <- function(i) {
+    factors <- combinations$iv[i]
+    cors <- combinations$dv[i]
+    tempdata <- df[complete.cases(df[, c(cors, factors)]), ]
+    tempdata <- tempdata[tempdata[, factors] %in% names(table(tempdata[, factors]))[table(tempdata[, factors]) > 1], ]
+    tempdata[, factors] <- factor(tempdata[, factors])
+    if (length(unique(tempdata[, factors])) > 1) {
+      form <- stats::formula(paste0(cors, "~", factors))
+      model <- stats::lm(form, data = tempdata)
+      autoplot(model, which = 1:6, ncol = 2, label.size = 3) +
+        labs(caption = paste0(deparse(model$terms), "\nobservations=", nrow(model$model))) +
+        theme_bw(base_size = base_size) +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    }
+  }
+  
+  combinations <- expand.grid(names(df)[iv], names(df)[dv])
+  names(combinations) <- c("iv", "dv")
+  row.names(combinations) <- paste0(combinations$iv, "_", combinations$dv)
+  combinations <- change_data_type(combinations, type = "character")
+  
+  n_rows <- nrow(combinations)
+  n_cores <- parallel::detectCores()
+  use_parallel <- n_cores * 4 < n_rows
+  
+  if (use_parallel) {
+    message("Parallel processing with ", n_cores, " workers for ", n_rows, " plots")
+    future::plan(future::multisession, workers = n_cores)
+    plots <- setNames(
+      future.apply::future_lapply(seq_len(n_rows), output_plot, future.seed = TRUE),
+      row.names(combinations)
+    )
+    future::plan(future::sequential)
+    gc(full = TRUE)
+  } else {
+    plots <- setNames(lapply(seq_len(n_rows), output_plot), row.names(combinations))
+  }
+  invisible(lapply(plots,print))
+  return(invisible(plots))
+}
+
+##########################################################################################
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_CORRELATION.R
 ##########################################################################################
 ##########################################################################################
 # CORRELATION MATRIX PLOT
@@ -8211,7 +8277,7 @@ plot_corrplot<-function(mydata,title="",base_size=10,fill_limits=c(-1,0,1)) {
 #' @param n number of observations
 #' @param r correlation coefficient
 #' @param sig.level alpha (type I error probability)
-#' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less"
+#' @param alternative a character string specifying the alternative hypothesis, which must be one of "two.sided" (default), "greater" or "less"
 #' @param title plot title
 #' @param base_size base font size
 #' @import ggplot2
@@ -8284,7 +8350,7 @@ compute_power_r_matrix<-function(m,...) {
 #' @param adjust "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
 #' @param alpha	alpha level of confidence intervals
 #' @param ci By default, confidence intervals are found. However, this leads to a great slowdown of speed. So, for just the rs, ts and ps, set ci=FALSE
-#' @param scatterplot if TRUE it will outpu scatterplots
+#' @param scatterplot if TRUE it will output scatterplots
 #' @importFrom psych corr.test
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @keywords correlation
@@ -8350,7 +8416,7 @@ report_correlation<-function(x,y=NULL,use="pairwise",method="pearson",adjust="ho
 ##########################################################################################
 #' @title Report polychoric tetrachoric polyserial biserial correlation
 #' @param x The input may be in one of four forms:\cr
-#' a) a data frame or matrix of dichotmous data (e.g., the lsat6 from the bock data set) or discrete numerical (i.e., not too many levels, e.g., the big 5 data set, bfi) for polychoric, or continuous for the case of biserial and polyserial\cr
+#' a) a data frame or matrix of dichotomous data (e.g., the lsat6 from the bock data set) or discrete numerical (i.e., not too many levels, e.g., the big 5 data set, bfi) for polychoric, or continuous for the case of biserial and polyserial\cr
 #' b) a 2 x 2 table of cell counts or cell frequencies (for tetrachoric) or an n x m table of cell counts (for both tetrachoric and polychoric)\cr
 #' c) a vector with elements corresponding to the four cell frequencies (for tetrachoric)\cr
 #' d) a vector with elements of the two marginal frequencies (row and column) and the comorbidity (for tetrachoric)\cr
@@ -8416,7 +8482,7 @@ report_choric_serial<-function(x,y=NULL,file=NULL,w=10,h=10,type="tetrachoric",.
 ##########################################################################################
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_EFA.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_EFA.R
 ##########################################################################################
 ##########################################################################################
 # LOADINGS PLOT STACKED WITH CORRELATION
@@ -8884,7 +8950,7 @@ report_efa<-function(model,df,file=NULL,w=10,h=5,cut=0,base_size=10,scores=FALSE
 # reproducedcorrelations<-factor.model(model$loadings)
 # residuals<-factor.residuals(correlationmatrix,model$loadings)
 # Factor loading = The pearson correlation between a factor and a variable
-# If we square a factor loading we obtain a measure of substansive importance of a particular variable to a factor
+# If we square a factor loading we obtain a measure of substantive importance of a particular variable to a factor
 # Communality = The proportion of common variance of a variable
 # A communality of 1 has 0 random variance and 0 unique variance
 ##########################################################################################
@@ -8894,7 +8960,7 @@ report_efa<-function(model,df,file=NULL,w=10,h=5,cut=0,base_size=10,scores=FALSE
 # psych::vss(personality,n=20,rotate="varimax",diagonal=FALSE,fm="minres",n.obs=NULL,plot=TRUE,title="Very Simple Structure",use="pairwise",cor="cor")
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_HLR.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_HLR.R
 ##########################################################################################
 ##########################################################################################
 # REPORT HLR
@@ -8953,7 +9019,208 @@ report_hlr<-function(df,corlist,factorlist,predictor,random_effect,file=NULL,she
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_IRT_T.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_IRT.R
+##########################################################################################
+##########################################################################################
+# PLOT MODEL
+##########################################################################################
+#' @title Return data for irt plots
+#' @param model object mirt
+#' @param theta theta
+#' @param title plot title 
+#' @param base_size base size
+#' @import ggplot2 
+#' @importFrom mirt testinfo extract.mirt expected.test
+#' @importFrom plyr rbind.fill
+#' @importFrom reshape2 melt
+#' @keywords IRT
+#' @export
+#' @examples
+#' cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=-4,high=4,d=NULL,a=1,mu=0,sd=1)$items
+#' model<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
+#' plot_irt_onefactor(model=model,base_size=10,title="Normal Test")
+#' cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=-6,high=-4,d=NULL,a=1,mu=0,sd=1)$items
+#' model<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
+#' plot_irt_onefactor(model=model,base_size=10,title="Easy Items")
+#' cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=4,high=6,d=NULL,a=1,mu=0,sd=1)$items
+#' model<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
+#' plot_irt_onefactor(model=model,base_size=10,title="Difficult Items")
+#' cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=-4,high=-4,d=NULL,a=0.01,
+#'                             mu=0,sd=1)$items
+#' model<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
+#' plot_irt_onefactor(model=model,base_size=10,title="Low Discrimination")
+#' cormatrix<-psych::sim.poly(nvar=5,n=50000,low=-4,high=4,a=1,c=0,z=1,d=NULL, 
+#'                            mu=0,sd=1,cat=5,mod="logistic",theta=NULL)$items
+#' model<-mirt::mirt(cormatrix,1,itemtype="graded")
+#' plot_irt_onefactor(model=model,base_size=10,title="graded response")
+plot_irt_onefactor<-function(model,theta=seq(-6,6,.1),title="",base_size=10) {
+  value<-variable<-NULL
+  model_names<-names(data.frame(model@Data$data))
+  info_item<-data.frame(theta=theta,type="Item Information")
+  for(i in model_names)
+    info_item[,i]<-testinfo(x=model,Theta=theta,degrees= NULL,group=NULL,individual=FALSE,which.items=grep(i,model_names))
+  expected_item<-data.frame(theta=theta,
+                            type="Expected Score",
+                            expected.test(x=model,Theta=matrix(theta),group=NULL,mins=TRUE,individual=TRUE,which.items=1:extract.mirt(model,"nitems")))
+  names(info_item)<-names(expected_item)<-c("theta","type",model_names)
+  
+  df_total<-data.frame(theta=theta,
+                       information=testinfo(x=model,Theta=theta,degrees= NULL,group=NULL,individual=FALSE,which.items=1:extract.mirt(model,"nitems")),
+                       expected_score=expected.test(x=model,Theta=matrix(theta),group=NULL,mins=TRUE,individual=FALSE,which.items=NULL))
+  
+  df_total_melt<-data.frame(type="total",reshape2::melt(df_total,id.vars=c("theta")))
+  info_item_melt<-reshape2::melt(info_item,id.vars=c("theta","type"))
+  expected_item_melt<-reshape2::melt(expected_item,id.vars=c("theta","type"))
+  
+  df_result<-plyr::rbind.fill(df_total_melt,info_item_melt,expected_item_melt)
+
+  total<-ggplot(df_result,aes(x=theta,y=value,group=variable,color=variable))+
+    geom_line()+
+    geom_point()+
+    theme_bw(base_size=base_size)+
+    theme(legend.position="bottom")+
+    labs(title=paste("Total Score / Information",title),y="",x=expression(theta))+
+    facet_wrap(type~.,scales="free")
+  return(total)
+}
+##########################################################################################
+# REPORT
+##########################################################################################
+#' @title Output for irt model
+#' @param model object mirt
+#' @param file output filename
+#' @importFrom mirt coef residuals itemfit M2
+#' @importFrom openxlsx createWorkbook saveWorkbook
+#' @keywords IRT
+#' @export
+#' @examples
+#' set.seed(12345)
+#' cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=-4,high=4,d=NULL,a=1,mu=0,sd=1)$items
+#' irt_onefactor<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
+#' irt_twofactor<-mirt::mirt(cormatrix,2,empiricalhist=TRUE,calcNull=TRUE)
+#' irt_threefactor<-mirt::mirt(cormatrix,3,empiricalhist=TRUE,calcNull=TRUE)
+#' report_irt(model=irt_onefactor,file="one_factor")
+#' report_irt(model=irt_twofactor,file="two_factors")
+#' report_irt(model=irt_threefactor,file="three_factors")
+report_irt<-function(model,file=NULL) {
+  comment<-list(a1="discrimination",
+                d="difficulty",
+                g="guessing",
+                u="inattentiveness",
+                G2="PARSCALE's G^2",
+                # p="",
+                TLI="Tucker Lewis Index TLI>0.95",
+                CFI="Comparative Fit Index CFI>0.95",
+                RMSEA="Root Mean Square Error of Approximation RMSEA<0.07",
+                df="degrees of freedom",
+                AIC="Akaike Information Criterion",
+                AICc="small-sample-size adjusted Akaike Information Criterion",
+                BIC="Bayesian Information Criterion",
+                SABIC="sample-size adjusted Bayesian Information Criterion",
+                DIC="Deviance Information Criterion",
+                # HQ="",
+                # logLik="",
+                # logPrior="",
+                # SElogLik="",
+                # F1="",
+                # h2="",
+                "SRMR(SRMSR)"="Standardized Root Mean Square Residual SRMR(SRMSR)<0.08")
+  pt<-options(fit.indices=c("GFI","AGFI","RMSEA","NFI","NNFI","CFI","RNI","IFI","SRMR","AIC","AICc","BIC","CAIC"))
+  model_coefficients<-data.frame(coef(model,CI=0.95,printSE=FALSE,verbose=FALSE,rotate="none",as.data.frame=FALSE,simplify=TRUE,unique=FALSE)$items)
+  model_coefficients_oblimin<-data.frame(flatten_list(coef(model,CI=0.95,printSE=FALSE,verbose=FALSE,rotate="oblimin",as.data.frame=FALSE,simplify=TRUE,unique=FALSE)))
+  row.names(model_coefficients_oblimin)[1:length(row.names(model_coefficients))]<-row.names(model_coefficients)
+  q3_matrix<-residuals(model,digits=3,type="Q3",QMC=TRUE)
+  q3_matrix<-data.frame(matrix_triangle(q3_matrix,off_diagonal=NA,diagonal=NA,type="lower"),check.names=FALSE)
+  q3_matrix$min<-remove_nc(apply(q3_matrix,1,min,na.rm=TRUE),value=NA)
+  q3_matrix$max<-remove_nc(apply(q3_matrix,1,max,na.rm=TRUE),value=NA)
+  q3_matrix<-rbind(q3_matrix,
+                   min=apply(q3_matrix,2,min,na.rm=TRUE),
+                   max=apply(q3_matrix,2,max,na.rm=TRUE))
+  m2_fit<-try(M2(model,type="M2*",calcNull=TRUE,na.rm=TRUE,quadpts=NULL,theta_lim=c(-6,6),CI=0.9,residmat=FALSE,QMC=TRUE),silent=TRUE)
+  exp_residuals<-data.frame(residuals(model,digits=3,type="exp",QMC=TRUE),check.names=FALSE)
+  item_fit=itemfit(model,na.rm=TRUE)
+  g2_fit<-remove_nc(data.frame(model@Fit,check.names=FALSE))
+  result<-list(model_coefficients=model_coefficients,
+               model_coefficients_oblimin=model_coefficients_oblimin,
+               model_options=data.frame(Options=unlist(model@Options),check.names=FALSE),
+               model_call=call_to_string(model@Call),
+               q3_matrix=q3_matrix,
+               exp_residuals=exp_residuals,
+               item_fit=item_fit,
+               g2_fit=g2_fit,
+               m2_fit=m2_fit)
+  if(!is.null(file)) {
+    filename<-paste0(file,".xlsx")
+    if (file.exists(filename)) file.remove(filename)
+    wb<-openxlsx::createWorkbook()
+    excel_critical_value(result$model_coefficients,wb,"Coefficients",numFmt="#0.00",comment=comment)
+    excel_critical_value(result$model_coefficients_oblimin,wb,"Coefficients Oblimin",numFmt="#0.00",comment=comment)
+    excel_critical_value(result$item_fit,wb,"item fit",numFmt="#0.00",comment=comment)
+    excel_critical_value(result$g2_fit,wb,"G2",numFmt="#0.00",comment=comment)
+    if(is.data.frame(result$m2_fit))
+      excel_critical_value(result$m2_fit,wb,"M2",numFmt="#0.00",title="M2 (Maydeu-Olivares & Joe, 2006) statistic\n when all data are dichotomous",comment=comment)
+    excel_matrix(result$q3_matrix,wb,"Q3",title="Test for local independence:\nThere is no consensus about the critical values.\nCritical values may range from absolute of .7 to .1",numFmt="#0.00",conditional_formatting=TRUE)
+    excel_critical_value(result$exp_residuals,wb,"Residuals",numFmt="#0.00")
+    excel_critical_value(result$model_options,wb,"Model Options",numFmt="#0.00")
+    openxlsx::saveWorkbook(wb,filename,overwrite=TRUE)
+  }
+  return(result)
+}
+##########################################################################################
+# NOTES
+##########################################################################################
+# Coefficients for item characteristic curves: Item difficulty=b -Item discrimination=a -Guessing=c
+# ax=item slopes for factor x, d=item intercept, g=guessing parameter in slope -intercept form, use b=-d/a to obtain traditional metric
+# original IRT metric for all items can be obtained using guessing parameter for item 1 hits the lower bound of 0, use a logit prior for g parameters instead
+##########################################################################################
+# 
+##########################################################################################
+# irt_onefactor@Call
+# irt_onefactor@Data$data
+# irt_onefactor@Data$grsm.block
+# irt_onefactor@Data$rsm.block
+# irt_onefactor@Data$group
+# irt_onefactor@Data$groupNames
+# irt_onefactor@Data$ngroups
+# irt_onefactor@Data$nitems
+# irt_onefactor@Data$N
+# irt_onefactor@Data$mins
+# irt_onefactor@Data$model
+# irt_onefactor@Data$tabdatalong
+# irt_onefactor@Data$tabdata
+# irt_onefactor@Data$fulldata
+# irt_onefactor@Data$Freq
+# irt_onefactor@Data$K
+# irt_onefactor@Options
+# irt_onefactor@Fit
+# irt_onefactor@Model$model
+# irt_onefactor@Model$factorNames
+# irt_onefactor@Model$itemtype
+# irt_onefactor@Model$itemloc
+# irt_onefactor@Model$nfact
+# irt_onefactor@Model$Theta
+# irt_onefactor@Model$constrain
+# irt_onefactor@Model$parprior
+# irt_onefactor@Model$nest
+# irt_onefactor@Model$invariance
+# irt_onefactor@Model$lrPars
+# irt_onefactor@Model$formulas
+# irt_onefactor@Model$prodlist
+# irt_onefactor@Parobjects
+# irt_onefactor@OptimInfo
+# irt_onefactor@Internals$collectLL
+# irt_onefactor@Internals$Prior
+# irt_onefactor@Internals$shortpars
+# irt_onefactor@Internals$key
+# irt_onefactor@Internals$bfactor
+# irt_onefactor@Internals$CUSTOM.IND
+# irt_onefactor@Internals$SLOW.IND
+# irt_onefactor@Internals$survey.weights
+# irt_onefactor@vcov
+# irt_onefactor@time
+
+##########################################################################################
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_IRT_T.R
 ##########################################################################################
 ##########################################################################################
 # GENERATE MATRIX A
@@ -9065,7 +9332,7 @@ generate_comparisons_matrix<-function(items) {
 ##########################################################################################
 # GENERATE MATRIX lambda HAT
 ##########################################################################################
-#' @title Generate matrix lambda for spesified number of comparisons
+#' @title Generate matrix lambda for specified number of comparisons
 #' @inheritParams generate_matrix_A
 #' @keywords tirt irt
 #' @export
@@ -9150,7 +9417,7 @@ rank_df_to_binary<-function(mydata,items,reverse=TRUE) {
 #' (1,2), (1,3), and (2,3).
 #'
 #' Labels are returned as strings such as \code{"i1i2"}, \code{"i1i3"},
-#' \code{"i2i3"} (or with your chosen separator/prefix).
+#' \code{"i2i3"} (or with your chosen separator / prefix).
 #'
 #' @param n Either:
 #' \itemize{
@@ -9316,7 +9583,7 @@ icc_cfa<-function(eta,gamma,lambda,psi) {
 # PLOT ICC THURSTONIAN
 ##########################################################################################
 #' @title Plot thurstonian icc
-#' @description Plot icc curves for binary thurstonian coded items for a single dimension using the compute_icc_thurstonian function
+#' @description Plot icc curves, computed with the compute_icc_thurstonian function, for binary thurstonian coded items for a single dimension
 #' @param mydata dataframe from compute_icc_thurstonian function
 #' @param title plot title
 #' @import ggplot2
@@ -9534,8 +9801,8 @@ compute_map<-function(eta,mean=0,sd=1) {
 #' \item \code{Lambda}: factor loading matrix.
 #' \item \code{theta_diag}: residual variances (diagonal of \code{theta}),
 #' reordered to \code{rownames(Lambda)} when names are available.
-#' \item \code{tau}: thresholds from \code{tau}, with row suffixes like
-#' \code{"|t1"} removed and reordered to \code{rownames(Lambda)}.
+#' \item \code{tau}: thresholds from \code{tau}, reordered to
+#' \code{rownames(Lambda)} and with row suffixes like \code{"|t1"} removed.
 #' \item \code{nu}: indicator intercepts; defaults to zero when unavailable.
 #' \item \code{Psi}: latent covariance matrix (\code{psi}).
 #' }
@@ -9610,7 +9877,7 @@ extract_tirt_params<-function(fit_lavaan_obj) {
 ##########################################################################################
 #' @title Score a Single Thurstonian IRT Response Pattern (MAP / EBM)
 #' @description Computes the maximum a posteriori (MAP), also called empirical
-#' Bayes modal (EBM), estimate of latent traits for one binary/ordinal
+#' Bayes modal (EBM), estimate of latent traits for one binary / ordinal
 #' response pattern under a Thurstonian IRT parameterization.
 #'
 #' Missing responses are allowed and are ignored in the likelihood.
@@ -9818,8 +10085,8 @@ compute_solve <- function(a, b) {
 #'   checking and aligning item columns so they match lambda row order.
 #'
 #' @param patterns A matrix or data.frame of response patterns
-#'   (rows = respondents, columns = pair/items).
-#' @param lambda Loading matrix (rows = pair/items, columns = latent traits).
+#'   (rows = respondents, columns = pair / items).
+#' @param lambda Loading matrix (rows = pair / items, columns = latent traits).
 #' @param theta_diag Numeric vector of residual variances aligned to
 #'   rows of lambda.
 #' @param tau Numeric vector of thresholds aligned to rows of lambda.
@@ -9833,7 +10100,7 @@ compute_solve <- function(a, b) {
 #'
 #' @details
 #' Name alignment is the key safeguard:
-#' if both rownames(lambda) and colnames(patterns) are present,
+#' when both rownames(lambda) and colnames(patterns) are present,
 #' patterns is reordered to match lambda row order before scoring.
 #'
 #' If required lambda names are missing from patterns, the function stops
@@ -9937,17 +10204,17 @@ score_tirt<-function(patterns, lambda, theta_diag, tau, Psi, nu=NULL) {
 #'   contains suspicious estimates that often indicate misspecification,
 #'   weak identification, or numerical instability.
 #'
-#' @param fit_model A fitted lavaan model object (for example, from
-#'   \code{lavaan::cfa()}, \code{lavaan::sem()}, or related wrappers).
+#' @param fit_model A fitted lavaan model object, for example the result of a call to
+#'   \code{lavaan::cfa()}, \code{lavaan::sem()} or related wrappers.
 #' @param verbose Logical. If \code{TRUE} (default), prints diagnostic sections
 #'   and a summary to the console. If \code{FALSE}, only returns results.
 #'
 #' @return An invisible list with:
 #' \itemize{
 #'   \item \code{has_issues}: Logical, \code{TRUE} if any issue was detected.
-#'   \item \code{issues}: Named list of detected issue tables/messages.
-#'   \item \code{converged}: Logical convergence flag from
-#'     \code{lavaan::lavInspect(fit_model, "converged")}.
+#'   \item \code{issues}: Named list of detected issue tables / messages.
+#'   \item \code{converged}: \code{lavaan::lavInspect(fit_model, "converged")},
+#'     the logical convergence flag of the fit.
 #' }
 #'
 #' @details
@@ -10095,7 +10362,7 @@ check_heywood<-function(fit_model,verbose=TRUE) {
 
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_IRT_U.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_IRT_U.R
 ##########################################################################################
 ##########################################################################################
 # COMPUTE THETA
@@ -10104,36 +10371,36 @@ check_heywood<-function(fit_model,verbose=TRUE) {
 #' @param a numeric discrimination parameter
 #' @param b numeric difficulty parameter
 #' @param g numeric guessing parameter
-#' @param i numeric innatentiveness parameter
+#' @param i numeric inattentiveness parameter
 #' @param d numeric scaling constant usually a value 1.749 or 1.702
 #' @param theta numeric or vector theta
 #' @note when scaling constant=1 it has no effect in equation\cr
-#'       when innatentiveness=1 and guessing=0 function computes a 2PL score\cr
-#'       when innatentiveness=1 and guessing!=0 function computes a 3PL score\cr
-#'       when innatentiveness!=1 and guessing!=0 function computes a 4PL score\cr
+#'       when inattentiveness=1 and guessing=0 function computes a 2PL score\cr
+#'       when inattentiveness=1 and guessing!=0 function computes a 3PL score\cr
+#'       when inattentiveness!=1 and guessing!=0 function computes a 4PL score\cr
 #' @keywords IRT unidimensional
 #' @export
 #' @examples
 #' compute_unidimensional_theta(a=10,b=0)
 #' x<-seq(-3,3,by=.01)
-#' plot(compute_unidimensional_theta(a=5,b=0,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=5,b=-1,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=5,b=1,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=.1,b=0,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=1,b=0,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=0,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=.1,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=.5,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=1,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=.9,theta=x),x=x)
-#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=.6,theta=x),x=x)
-compute_unidimensional_theta<-function(a,b=0,g=0,i=1,d=1.702,theta=0) {
-  e<-exp(-a*d*(theta-b))
-  denom<-1+e
-  renum<-1-g
-  denom[denom==0]<-1e-22
-  result<-g+renum/denom
+#' plot(compute_unidimensional_theta(a=5,b=0,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=5,b=-1,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=5,b=1,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=0,b=0,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=1,b=0,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=0,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=.1,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=.5,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=1,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=.9,theta=x),x=x, ylim = c(0, 1))
+#' plot(compute_unidimensional_theta(a=10,b=0,g=0,i=.5,theta=x),x=x, ylim = c(0, 1))
+compute_unidimensional_theta <- function(a, b = 0, g = 0, i = 1, d = 1.702, theta = 0) {
+  e <- exp(-a * d * (theta - b))
+  denom <- 1 + e
+  renum <- i - g
+  denom[denom == 0] <- 1e-22
+  result <- g + renum / denom
   return(result)
 }
 ##########################################################################################
@@ -10307,208 +10574,7 @@ compute_se_theta<-function(info){
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_IRT.R
-##########################################################################################
-##########################################################################################
-# PLOT MODEL
-##########################################################################################
-#' @title Return data for irt plots
-#' @param model object mirt
-#' @param theta theta
-#' @param title plot title 
-#' @param base_size base size
-#' @import ggplot2 
-#' @importFrom mirt testinfo extract.mirt expected.test
-#' @importFrom plyr rbind.fill
-#' @importFrom reshape2 melt
-#' @keywords IRT
-#' @export
-#' @examples
-#' cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=-4,high=4,d=NULL,a=1,mu=0,sd=1)$items
-#' model<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
-#' plot_irt_onefactor(model=model,base_size=10,title="Normal Test")
-#' cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=-6,high=-4,d=NULL,a=1,mu=0,sd=1)$items
-#' model<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
-#' plot_irt_onefactor(model=model,base_size=10,title="Easy Items")
-#' cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=4,high=6,d=NULL,a=1,mu=0,sd=1)$items
-#' model<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
-#' plot_irt_onefactor(model=model,base_size=10,title="Difficult Items")
-#' cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=-4,high=-4,d=NULL,a=0.01,mu=0,sd=1)$items
-#' model<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
-#' plot_irt_onefactor(model=model,base_size=10,title="Low Discrimination")
-#' cormatrix<-psych::sim.poly(nvar=5,n=50000,low=-4,high=4,a=1,c=0,z=1,d=NULL, 
-#'                            mu=0,sd=1,cat=5,mod="logistic",theta=NULL)$items
-#' model<-mirt::mirt(cormatrix,1,itemtype="graded")
-#' plot_irt_onefactor(model=model,base_size=10,title="graded response")
-plot_irt_onefactor<-function(model,theta=seq(-6,6,.1),title="",base_size=10) {
-  value<-variable<-NULL
-  model_names<-names(data.frame(model@Data$data))
-  info_item<-data.frame(theta=theta,type="Item Information")
-  for(i in model_names)
-    info_item[,i]<-testinfo(x=model,Theta=theta,degrees= NULL,group=NULL,individual=FALSE,which.items=grep(i,model_names))
-  expected_item<-data.frame(theta=theta,
-                            type="Expected Score",
-                            expected.test(x=model,Theta=matrix(theta),group=NULL,mins=TRUE,individual=TRUE,which.items=1:extract.mirt(model,"nitems")))
-  names(info_item)<-names(expected_item)<-c("theta","type",model_names)
-  
-  df_total<-data.frame(theta=theta,
-                       information=testinfo(x=model,Theta=theta,degrees= NULL,group=NULL,individual=FALSE,which.items=1:extract.mirt(model,"nitems")),
-                       expected_score=expected.test(x=model,Theta=matrix(theta),group=NULL,mins=TRUE,individual=FALSE,which.items=NULL))
-  
-  df_total_melt<-data.frame(type="total",reshape2::melt(df_total,id.vars=c("theta")))
-  info_item_melt<-reshape2::melt(info_item,id.vars=c("theta","type"))
-  expected_item_melt<-reshape2::melt(expected_item,id.vars=c("theta","type"))
-  
-  df_result<-plyr::rbind.fill(df_total_melt,info_item_melt,expected_item_melt)
-
-  total<-ggplot(df_result,aes(x=theta,y=value,group=variable,color=variable))+
-    geom_line()+
-    geom_point()+
-    theme_bw(base_size=base_size)+
-    theme(legend.position="bottom")+
-    labs(title=paste("Total Score / Information",title),y="",x=expression(theta))+
-    facet_wrap(type~.,scales="free")
-  return(total)
-}
-##########################################################################################
-# REPORT
-##########################################################################################
-#' @title Output for irt model
-#' @param model object mirt
-#' @param m2 if TRUE report m2 statistics
-#' @param file output filename
-#' @importFrom mirt coef residuals itemfit M2
-#' @importFrom openxlsx createWorkbook saveWorkbook
-#' @keywords IRT
-#' @export
-#' @examples
-#' set.seed(12345)
-#' cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=-4,high=4,d=NULL,a=1,mu=0,sd=1)$items
-#' irt_onefactor<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
-#' irt_twofactor<-mirt::mirt(cormatrix,2,empiricalhist=TRUE,calcNull=TRUE)
-#' irt_threefactor<-mirt::mirt(cormatrix,3,empiricalhist=TRUE,calcNull=TRUE)
-#' report_irt(model=irt_onefactor,file="one_factor")
-#' report_irt(model=irt_twofactor,file="two_factors")
-#' report_irt(model=irt_threefactor,file="three_factors")
-report_irt<-function(model,m2=TRUE,file=NULL) {
-  comment<-list(a1="discrimination",
-                d="difficulty",
-                g="guessing",
-                u="inattentiveness",
-                G2="PARSCALE's G^2",
-                # p="",
-                TLI="Tucker Lewis Index TLI>0.95",
-                CFI="Comparative Fit Index CFI>0.95",
-                RMSEA="Root Mean Square Error of Approximation RMSEA<0.07",
-                df="degrees of freedom",
-                AIC="Akaike Information Criterion",
-                AICc="small-sample-size adjusted Akaike Information Criterion",
-                BIC="Bayesian Information Criterion",
-                SABIC="sample-size adjusted Bayesian Information Criterion",
-                DIC="Deviance Information Criterion",
-                # HQ="",
-                # logLik="",
-                # logPrior="",
-                # SElogLik="",
-                # F1="",
-                # h2="",
-                "SRMR(SRMSR)"="Standardized Root Mean Square Residual SRMR(SRMSR)<0.08")
-  pt<-options(fit.indices=c("GFI","AGFI","RMSEA","NFI","NNFI","CFI","RNI","IFI","SRMR","AIC","AICc","BIC","CAIC"))
-  model_coefficients<-data.frame(coef(model,CI=0.95,printSE=FALSE,verbose=FALSE,rotate="none",as.data.frame=FALSE,simplify=TRUE,unique=FALSE)$items)
-  model_coefficients_oblimin<-data.frame(flatten_list(coef(model,CI=0.95,printSE=FALSE,verbose=FALSE,rotate="oblimin",as.data.frame=FALSE,simplify=TRUE,unique=FALSE)))
-  row.names(model_coefficients_oblimin)[1:length(row.names(model_coefficients))]<-row.names(model_coefficients)
-  q3_matrix<-residuals(model,digits=3,type="Q3",QMC=TRUE)
-  q3_matrix<-data.frame(matrix_triangle(q3_matrix,off_diagonal=NA,diagonal=NA,type="lower"),check.names=FALSE)
-  q3_matrix$min<-remove_nc(apply(q3_matrix,1,min,na.rm=TRUE),value=NA)
-  q3_matrix$max<-remove_nc(apply(q3_matrix,1,max,na.rm=TRUE),value=NA)
-  q3_matrix<-rbind(q3_matrix,
-                   min=apply(q3_matrix,2,min,na.rm=TRUE),
-                   max=apply(q3_matrix,2,max,na.rm=TRUE))
-  m2_fit<-try(M2(model,type="M2*",calcNull=TRUE,na.rm=TRUE,quadpts=NULL,theta_lim=c(-6,6),CI=0.9,residmat=FALSE,QMC=TRUE),silent=TRUE)
-  exp_residuals<-data.frame(residuals(model,digits=3,type="exp",QMC=TRUE),check.names=FALSE)
-  item_fit=itemfit(model,na.rm=TRUE)
-  g2_fit<-remove_nc(data.frame(model@Fit,check.names=FALSE))
-  result<-list(model_coefficients=model_coefficients,
-               model_coefficients_oblimin=model_coefficients_oblimin,
-               model_options=data.frame(Options=unlist(model@Options),check.names=FALSE),
-               model_call=call_to_string(model@Call),
-               q3_matrix=q3_matrix,
-               exp_residuals=exp_residuals,
-               item_fit=item_fit,
-               g2_fit=g2_fit,
-               m2_fit=m2_fit)
-  if(!is.null(file)) {
-    filename<-paste0(file,".xlsx")
-    if (file.exists(filename)) file.remove(filename)
-    wb<-openxlsx::createWorkbook()
-    excel_critical_value(result$model_coefficients,wb,"Coefficients",numFmt="#0.00",comment=comment)
-    excel_critical_value(result$model_coefficients_oblimin,wb,"Coefficients Oblimin",numFmt="#0.00",comment=comment)
-    excel_critical_value(result$item_fit,wb,"item fit",numFmt="#0.00",comment=comment)
-    excel_critical_value(result$g2_fit,wb,"G2",numFmt="#0.00",comment=comment)
-    if(is.data.frame(result$m2_fit))
-      excel_critical_value(result$m2_fit,wb,"M2",numFmt="#0.00",title="M2 (Maydeu-Olivares & Joe, 2006) statistic\n when all data are dichotomous",comment=comment)
-    excel_matrix(result$q3_matrix,wb,"Q3",title="Test for local independence:\nThere is no concensus about the critical values.\nCritical values may range from absolute of .7 to .1",numFmt="#0.00",conditional_formatting=TRUE)
-    excel_critical_value(result$exp_residuals,wb,"Residuals",numFmt="#0.00")
-    excel_critical_value(result$model_options,wb,"Model Options",numFmt="#0.00")
-    openxlsx::saveWorkbook(wb,filename,overwrite=TRUE)
-  }
-  return(result)
-}
-##########################################################################################
-# NOTES
-##########################################################################################
-# Coefficients for item characteristic curves: Item difficulty=b -Item discrimination=a -Guessing=c
-# ax=item slopes for factor x, d=item intercept, g=guessing parameter in slope -intercept form, use b=-d/a to obtain traditional metric
-# original IRT metric for all items can be obtained using gessing parameter for item 1 hits the lower bound of 0, use a logit prior for g parameters instead
-##########################################################################################
-# 
-##########################################################################################
-# irt_onefactor@Call
-# irt_onefactor@Data$data
-# irt_onefactor@Data$grsm.block
-# irt_onefactor@Data$rsm.block
-# irt_onefactor@Data$group
-# irt_onefactor@Data$groupNames
-# irt_onefactor@Data$ngroups
-# irt_onefactor@Data$nitems
-# irt_onefactor@Data$N
-# irt_onefactor@Data$mins
-# irt_onefactor@Data$model
-# irt_onefactor@Data$tabdatalong
-# irt_onefactor@Data$tabdata
-# irt_onefactor@Data$fulldata
-# irt_onefactor@Data$Freq
-# irt_onefactor@Data$K
-# irt_onefactor@Options
-# irt_onefactor@Fit
-# irt_onefactor@Model$model
-# irt_onefactor@Model$factorNames
-# irt_onefactor@Model$itemtype
-# irt_onefactor@Model$itemloc
-# irt_onefactor@Model$nfact
-# irt_onefactor@Model$Theta
-# irt_onefactor@Model$constrain
-# irt_onefactor@Model$parprior
-# irt_onefactor@Model$nest
-# irt_onefactor@Model$invariance
-# irt_onefactor@Model$lrPars
-# irt_onefactor@Model$formulas
-# irt_onefactor@Model$prodlist
-# irt_onefactor@Parobjects
-# irt_onefactor@OptimInfo
-# irt_onefactor@Internals$collectLL
-# irt_onefactor@Internals$Prior
-# irt_onefactor@Internals$shortpars
-# irt_onefactor@Internals$key
-# irt_onefactor@Internals$bfactor
-# irt_onefactor@Internals$CUSTOM.IND
-# irt_onefactor@Internals$SLOW.IND
-# irt_onefactor@Internals$survey.weights
-# irt_onefactor@vcov
-# irt_onefactor@time
-
-##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_LDA.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_LDA.R
 ##########################################################################################
 ##########################################################################################
 # LDA
@@ -10516,10 +10582,6 @@ report_irt<-function(model,m2=TRUE,file=NULL) {
 #' @title Report for MASS::lda
 #' @param model object from MASS::lda
 #' @param file output filename
-#' @param w width of pdf file
-#' @param h height of pdf file
-#' @param base_size base font size
-#' @param title plot title
 #' @importFrom stats get_all_vars
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @keywords ML
@@ -10530,7 +10592,7 @@ report_irt<-function(model,m2=TRUE,file=NULL) {
 #' result<-report_lda(model=model,file="lda")
 #' model<-MASS::lda(Species~.,data=iris)
 #' result<-report_lda(model=model,file="lda")
-report_lda<-function(model,file=NULL,w=10,h=10,base_size=10,title="") {
+report_lda<-function(model,file=NULL) {
   prior_counts<-data.frame(prior=model$prior,counts=model$counts,mean=model$means)
   terms<-model$terms
   scaling<-model$scaling
@@ -10573,7 +10635,7 @@ report_lda<-function(model,file=NULL,w=10,h=10,base_size=10,title="") {
 # model$xlevels
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_LINEAR_REGRESSION.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_LINEAR_REGRESSION.R
 ##########################################################################################
 ##########################################################################################
 # SCATTERPLOT
@@ -10592,7 +10654,7 @@ report_lda<-function(model,file=NULL,w=10,h=10,base_size=10,title="") {
 #' @param df A data frame of numeric variables. When \code{df} has exactly two
 #'   columns the first is treated as the predictor and the second as the
 #'   outcome.
-#' @param method Smoothing method passed to \code{geom_smooth}. Accepts
+#' @param method Smoothing method passed to \code{geom_smooth}. It accepts
 #'   \code{"lm"}, \code{"glm"}, \code{"gam"}, \code{"loess"}, or a function
 #'   such as \code{MASS::rlm}. Default \code{lm}.
 #' @param formula Formula passed to \code{geom_smooth}. Default \code{y ~ x}.
@@ -10627,7 +10689,8 @@ report_lda<-function(model,file=NULL,w=10,h=10,base_size=10,title="") {
 #' plot_multiplot(plotlist = result[1:12], cols = 4)
 #'
 #' # Two-column data frame: first column = predictor, second = outcome
-#' plot_scatterplot(df = mtcars[, 1:2], base_size = 10, coord_equal = TRUE, all_orders = FALSE)
+#' plot_scatterplot(df = mtcars[, 1:2], base_size = 10, coord_equal = TRUE,
+#'                  all_orders = FALSE)
 #'
 #' # Custom variable pairs
 #' plot_scatterplot(
@@ -10766,7 +10829,7 @@ plot_scatterplot <- function(df, method = lm, formula = y ~ x, base_size = 10, c
 #' \strong{T-tests}: test the hypothesis that b's are different from 0 \cr
 #' \strong{Multiple R^2}: Variance Explained \cr
 #' \strong{Adjusted R^2}: Indicates how much variance in Y would be accounted for if the model is derived from the population from which the sample was taken.
-#' Idealy, R^2 = Adjusted R^2 \cr
+#' Ideally, R^2 = Adjusted R^2 \cr
 #' \strong{F-Statistic}: tests the null hypothesis is that the overall model has no effect \cr
 #' \strong{Covariance ratios}: critical values CVR>1+[3(k+1)/n] CRV<1-[3(k+1)/n]. In general we should obtain small values or we may have to remove cases \cr\cr\cr
 #' \strong{ASSUMPTIONS}
@@ -11004,18 +11067,18 @@ report_regression <- function(model, base_size = 10, title = "", file = NULL, w 
 # curvilinear1=lm(outcomelog~predictorlog)
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_LOGISTIC_REGRESSION.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_LOGISTIC_REGRESSION.R
 ##########################################################################################
 ##########################################################################################
 # LOGISTIC REGRESSION
 ##########################################################################################
-# Maximum likelihood estimation selects coefficients that make observed variables most likely to have occured
+# Maximum likelihood estimation selects coefficients that make observed variables most likely to have occurred
 # Deviance=-2LL=-2xloglikelihood has a chi square distribution and thus can be tested for significance
 # Likelihood ratio=(model deviance) - (deviance for the baseline model where the constant is removed)
 # R statistic=partial correlation between the outcome variable and each of the predictor variables range=-1,1 R=sqrt((z^2-2df)/-2LL(baseline))
 # R^2L is the proportional reduction in the absolute value of the log likelihood measure R^2L=-2LL(model)/-2LL(baseline)
 # Akaike Information Criterion: AIC=-2LL+2k k=number of predictors
-# Baesian Information Criterion: BIC=-2LL+2k log(n) k=number of predictors
+# Bayesian Information Criterion: BIC=-2LL+2k log(n) k=number of predictors
 # z=b/SEb tells is whether the b coefficient differs significantly from zero also called wald statistic
 # The Z statistic should be interpreted cautiously when b is large the standard error inflates resulting in underestimated z statistic
 # The Null deviance describes the model with no predictors=-2LL(baseline)
@@ -11063,7 +11126,7 @@ plot_logistic_model<-function(df,outcome="outcome",title="",base_size=10) {
   temp<-melt(df,id.vars=outcome)
   names(temp)<-c(outcome,"Predictor","Value")
   plot<-ggplot(temp,aes(x=Value,y=outcome,color=Predictor))+
-    labs(x="Observed value",y=paste("Outcome"),title=paste("Logistic function"),caption=paste0("Observations:",nrow(df)))+
+    labs(x="Observed value",y=paste("Outcome"),title=paste("Logistic function", title),caption=paste0("Observations:",nrow(df)))+
     stat_smooth(method="glm",method.args=list(family="binomial"),se=FALSE,alpha=0.1)+
     geom_count(alpha=.5)+
     theme_bw(base_size=base_size)
@@ -11125,7 +11188,7 @@ output_compare_model_logistic<-function(model1,model2) {
 #' Stevens (2002) recommends investigating cases with values greater than three times the average (3(k+1)/n) \cr
 #' (4) Problematic values for VIFs > 10 \cr
 #' ASSUMPTIONS  \cr
-#' (1) Linearity between continous predictors and the logit (test wether the interaction term between the predictor and its log transformation is significant) \cr
+#' (1) Linearity between continuous predictors and the logit (test whether the interaction term between the predictor and its log transformation is significant) \cr
 #' (2) Independence of errors \cr
 #' (3) No multicolinearity \cr
 #' @import ggfortify
@@ -11364,7 +11427,7 @@ report_logistic<-function(model,validation_data=NULL,file=NULL,title="",w=10,h=1
 # model$xlevels
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_MEANS.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_MEANS.R
 ##########################################################################################
 ##########################################################################################
 # COHEN'S D EFFECT SIZE
@@ -11438,7 +11501,10 @@ compute_cohens_d <- function(formula, data) {
 #' downstream summaries.
 #' @param file output filename
 #' @inheritParams plot_oneway_diagnostics
-#' @inheritDotParams stats::t.test
+#' @param ... Further arguments passed to \code{stats::t.test()} for every
+#'   comparison, for example \code{alternative}, \code{mu}, \code{var.equal} or
+#'   \code{conf.level}. The formula and data are built by the function, so do
+#'   not pass \code{x}, \code{y}, \code{formula}, \code{data} or \code{paired}.
 #' @importFrom stats t.test formula bartlett.test
 #'
 #' @return A data frame where each row is one pairwise group comparison for one
@@ -11474,7 +11540,7 @@ compute_cohens_d <- function(formula, data) {
 #'   Small values suggest heteroscedasticity.
 #'   \item bonferroni_p: Bonferroni-adjusted alpha threshold computed for the
 #'   number of tests in the output table.
-#'   \item significant: Logical-like character flag (TRUE/FALSE) indicating
+#'   \item significant: Logical-like character flag (TRUE / FALSE) indicating
 #'   whether p is below bonferroni_p.
 #' }
 #'
@@ -11572,9 +11638,9 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
     bonferroni_p = "bonferroni adjusted critical value for a=0.05",
     significant = "if TRUE result is significant after bonferroni adjustment"
   )
-
+  
   critical <- list(p = "<0.05", "p[bartlett]" = "<0.05")
-
+  
   df_ttest <- data.frame()
   combinations <- expand.grid(names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv", "dv")
@@ -11587,7 +11653,8 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
     # setTxtProgressBar(pb,i)
     tempdata <- df[complete.cases(df[, c(dependent, independent)]), ]
     tempdata[, independent] <- factor(tempdata[, independent])
-    combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsindependent = FALSE)
+    # combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsFactors = FALSE)
+    combinations_levels <- data.frame(t(utils::combn(levels(tempdata[, independent]), 2)), stringsAsFactors = FALSE)
     tempdata_all_levels <- df[complete.cases(df[, c(dependent, independent)]), ]
     for (l in 1:nrow(combinations_levels)) {
       f1 <- as.character(combinations_levels$X1[l])
@@ -11609,8 +11676,8 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
       # hedges_g<-J*cohen_d
       # r_from_d<-cohen_d/sqrt(cohen_d^2+((n1+n2)^2/(n1*n2)))
       ttest_r <- data.frame(
-        DV = independent,
-        IV = dependent,
+        DV = dependent,
+        IV = independent,
         level1 = f1,
         level2 = f2,
         n1 = n1,
@@ -11628,7 +11695,7 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
         sd2 = sd2,
         sd_pooled = sd_pooled,
         d = cohen_d,
-        r = cohen_d / (sqrt(cohen_d^2) + (((n1 + n2)^2) / (n1 * n2))),
+        r = cohen_d / sqrt(cohen_d^2 + (n1 + n2 - 2) * (1 / n1 + 1 / n2)),
         "k_squared[bartlett]" = bartlett.test$statistic,
         "df[bartlett]" = as.numeric(bartlett.test$parameter),
         "p[bartlett]" = bartlett.test$p.value,
@@ -11649,10 +11716,10 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
 # WILCOXON EFFECT SIZE
 ##########################################################################################
 #' @title Compute Wilcoxon Effect Size
-#' @description Computes the Wilcoxon rank-sum/signed-rank effect size
+#' @description Computes the Wilcoxon rank-sum / signed-rank effect size
 #' r = abs(Z) / sqrt(N), with Z derived from the p-value of
 #' stats::wilcox.test (Z = qnorm(p / 2, lower.tail = FALSE)). This avoids a
-#' dependency on rstatix/coin, using only stats::wilcox.test under the hood.
+#' dependency on rstatix / coin, using only stats::wilcox.test under the hood.
 #' The effect size magnitude is computed from the two-sided p-value
 #' regardless of the alternative used for the underlying hypothesis test.
 #'
@@ -11663,10 +11730,10 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
 #' @param data data frame containing the variables in formula, same as
 #' stats::wilcox.test's data argument.
 #' @param mu a number specifying an optional shift, same as stats::wilcox.test.
-#' @param exact logical indicating whether an exact p-value should be
-#' computed, same as stats::wilcox.test.
-#' @param correct logical indicating whether to apply the continuity
-#' correction, same as stats::wilcox.test.
+#' @param exact logical, as in stats::wilcox.test, indicating whether an exact
+#' p-value should be computed.
+#' @param correct logical, as in stats::wilcox.test, indicating whether to apply
+#' the continuity correction.
 #' @param ... additional arguments passed to stats::wilcox.test.
 #'
 #' @importFrom stats wilcox.test model.frame qnorm
@@ -11683,10 +11750,10 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
 #'   data = df_blood_pressure[df_blood_pressure$agegrp %in% c("30-45", "46-59"), ]
 #' )
 compute_wilcoxon_effect_size <- function(formula, data,
-                                          mu = 0,
-                                          exact = NULL,
-                                          correct = TRUE,
-                                          ...) {
+                                         mu = 0,
+                                         exact = NULL,
+                                         correct = TRUE,
+                                         ...) {
   wtest <- stats::wilcox.test(
     formula,
     data = data,
@@ -11715,7 +11782,11 @@ compute_wilcoxon_effect_size <- function(formula, data,
 #'
 #' @param file output filename
 #' @inheritParams plot_oneway_diagnostics
-#' @inheritDotParams stats::wilcox.test
+#' @param ... Further arguments passed to \code{stats::wilcox.test()} for every
+#'   comparison, e.g. \code{alternative}, \code{mu}, \code{exact} or
+#'   \code{correct}. The formula and data are built by the function and
+#'   \code{conf.int = TRUE} is always used, so do not pass \code{x}, \code{y},
+#'   \code{formula}, \code{data}, \code{paired} or \code{conf.int}.
 #'
 #' @importFrom stats wilcox.test formula sd
 #'
@@ -11751,7 +11822,7 @@ compute_wilcoxon_effect_size <- function(formula, data,
 #'   Small values suggest heteroscedasticity.
 #'   \item bonferroni_p: Bonferroni-adjusted alpha threshold computed for the
 #'   number of tests in the output table.
-#'   \item significant: Logical-like character flag (TRUE/FALSE) indicating
+#'   \item significant: Logical-like character flag (TRUE / FALSE) indicating
 #'   whether p is below bonferroni_p.
 #' }
 #'
@@ -11762,8 +11833,8 @@ compute_wilcoxon_effect_size <- function(formula, data,
 #' For each independent variable, all pairwise level combinations are tested
 #' using utils::combn.
 #'
-#' The function calls stats::wilcox.test with conf.int = TRUE and forwards
-#' additional arguments through ....
+#' The function calls stats::wilcox.test with conf.int = TRUE and passes any
+#' additional arguments on through ....
 #'
 #' The function also calls report_dataframe to generate a formatted report.
 #' @keywords wilcoxon nonparametric pairwise inference effect-size reporting
@@ -11832,9 +11903,9 @@ report_wtests <- function(df, dv, iv, file = NULL, ...) {
     bonferroni_p = "bonferroni adjusted critical value for a=0.05",
     significant = "if TRUE result is significant after bonferroni adjustment"
   )
-
+  
   critical <- list(p = "<0.05", "p[bartlett]" = "<0.05")
-
+  
   df_wtest <- data.frame()
   combinations <- expand.grid(names(df)[iv], names(df)[dv])
   names(combinations) <- c("iv", "dv")
@@ -11847,7 +11918,8 @@ report_wtests <- function(df, dv, iv, file = NULL, ...) {
     # setTxtProgressBar(pb,i)
     tempdata <- df[complete.cases(df[, c(dependent, independent)]), ]
     tempdata[, independent] <- factor(tempdata[, independent])
-    combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsindependent = FALSE)
+    # combinations_levels <- data.frame(t(utils::combn(unique(as.character(tempdata[, independent])), 2)), stringsAsFactors = FALSE)
+    combinations_levels <- data.frame(t(utils::combn(levels(tempdata[, independent]), 2)), stringsAsFactors = FALSE)
     tempdata_all_levels <- df[complete.cases(df[, c(dependent, independent)]), ]
     for (l in 1:nrow(combinations_levels)) {
       f1 <- as.character(combinations_levels$X1[l])
@@ -11866,11 +11938,15 @@ report_wtests <- function(df, dv, iv, file = NULL, ...) {
       sd_pooled <- sqrt((sd1^2 + sd2^2) / 2)
       cohen_d <- abs(mean2 - mean1) / sd_pooled
       n <- nrow(stats::model.frame(form, data = tempdata))
-      z <- stats::qnorm(wtest$p.value / 2, lower.tail = FALSE)
+      # z <- stats::qnorm(wtest$p.value / 2, lower.tail = FALSE)
+      args_two_sided <- list(...)
+      args_two_sided$alternative <- "two.sided"
+      wtest_two_sided <- do.call(stats::wilcox.test, c(list(formula = form, data = tempdata), args_two_sided))
+      z <- stats::qnorm(wtest_two_sided$p.value / 2, lower.tail = FALSE)
       r <- as.numeric(abs(z) / sqrt(n))
       wtest_r <- data.frame(
-        DV = independent,
-        IV = dependent,
+        DV = dependent,
+        IV = independent,
         level1 = f1,
         level2 = f2,
         n1 = n1,
@@ -11906,7 +11982,7 @@ report_wtests <- function(df, dv, iv, file = NULL, ...) {
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_RELIABILITY.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_RELIABILITY.R
 ##########################################################################################
 ##########################################################################################
 # PLOT MTMM
@@ -12035,7 +12111,7 @@ key_to_cfa_model <- function(key) {
     model <- c(model, c(i, "=~", paste0(key[[i]], collapse = "+"), "\n"))
   }
   model <- (gsub(",", "", toString(model)))
-  # model<-nake.names(stringi::stri_trans_general(model,"latin"))
+  # model<-make.names(stringi::stri_trans_general(model,"latin"))
   return(model)
 }
 ##########################################################################################
@@ -12247,7 +12323,7 @@ report_alpha <- function(df, key = NULL, questions = NULL, reverse = NULL, mini 
       "\n\n0.56-0.60 Marginally Acceptable",
       "\n\n0.01-0.55 Unacceptable"
     )),
-    std_alpha = "standarized alpha based on correlations",
+    std_alpha = "standardized alpha based on correlations",
     "g6(smc)" = toString(c(
       "Guttman's Lambda 6 reliability",
       "\nsquared multiple correlation",
@@ -12442,7 +12518,8 @@ report_alpha <- function(df, key = NULL, questions = NULL, reverse = NULL, mini 
 #' @examples
 #' design <- expand.grid(time = 1:3, item = 1:3, person = 1:10)
 #' design <- change_data_type(design, type = "factor")
-#' design$response <- rowSums(change_data_type(design[, 1:2], type = "numeric")) + rnorm(90, 0, 0.1)
+#' design$response <- rowSums(change_data_type(design[, 1:2], type = "numeric")) +
+#'   rnorm(90, 0, 0.1)
 #' model <- mixlm::lm(response ~ r(time) * r(person) + r(item) * r(person), data = design)
 #' extract_components(model)
 extract_components <- function(model, title = "") {
@@ -12548,7 +12625,7 @@ compute_shrout <- function(sperson, spersonitem, stime, spersontime, serror, m, 
 # in a reliable scale items should correlate with the total so we are looking items that do not correlate with the overall score r.drop should not be bellow .3
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//GLM_SEM.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/GLM_SEM.R
 ##########################################################################################
 ##########################################################################################
 # MODEL PLOT
@@ -12996,12 +13073,12 @@ simulate_cfa_fit<-function(model_sim=NULL,model=NULL,df=NULL,minnobs=50,maxnobs=
   combinations<-data.frame(X1=rep("observations",length(names(plot_data))),X2=names(plot_data),stringsAsFactors=FALSE)
   plots<-plot_scatterplot(df=plot_data,combinations=combinations)
   report_dataframe(sim_results,sheet="simulation",file=file)
-  report_pdf(plotlist=plots,w=w,h=w,file=file)
+  report_pdf(plotlist=plots,w=w,h=h,file=file)
   return(list(sim_results,plots))
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//ML_NLP.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/ML_NLP.R
 ##########################################################################################
 ##########################################################################################
 # CLEAR TEXT
@@ -13227,21 +13304,30 @@ compute_tversky_index <- function(x, y, alpha = 0.5, beta = 0.5) {
 }
 
 ##########################################################################################
-# FILE: /home/dimitrios/GitHub/rwf/working_functions//ML_XGBOOST.R
+# FILE: C:/Users/dzach/Documents/GitHub/rwf/working_functions/ML_XGBOOST.R
 ##########################################################################################
 #########################################################################################
 # TREE PLOT
 #########################################################################################
 #' @title Plot trees for xgboost::xgb.train
+#' @description Uses \code{xgboost::xgb.plot.multi.trees} to draw the trees of an
+#'   xgboost model combined into one diagram (keeping the 10 most important
+#'   features) and saves it as a self-contained \code{<file>.html} in the
+#'   working directory. Works with xgboost 3 and with older versions.
 #' @param model object from xgboost::xgb.train
-#' @param train Train dataset
+#' @param train Train dataset; its column names label the features. With
+#'   xgboost 3 they are used only when the model itself has no feature names
+#'   and the number of columns matches the number of model features.
 #' @param file output filename
+#' @return Called for its side effect of writing \code{<file>.html}; returns
+#'   the value of \code{htmlwidgets::saveWidget} invisibly.
 #' @importFrom xgboost xgb.plot.multi.trees
 #' @keywords ML
 #' @export
 #' @examples
 #' infert_formula<-formula(case~education+spontaneous+induced)
-#' boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+dis+rad+tax+ptratio+black+lstat)
+#' boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+
+#'                          dis+rad+tax+ptratio+black+lstat)
 #' train_test_classification<-k_fold(df=infert,model_formula=infert_formula)
 #' train_test_regression<-k_fold(df=MASS::Boston,model_formula=boston_formula)
 #' xgb_classification<-xgboost::xgb.train(
@@ -13265,7 +13351,21 @@ compute_tversky_index <- function(x, y, alpha = 0.5, beta = 0.5) {
 #' #                    train=train_test_regression$xbg$f1,
 #' #                    file="Regression")
 plot_trees_xgboost<-function(model,train,file="xgboost") {
-  xgboost_trees<-xgboost::xgb.plot.multi.trees(model=model,feature_names=colnames(train),features_keep=10,fill=TRUE,use.names=FALSE)
+  if ("feature_names" %in% names(formals(xgboost::xgb.plot.multi.trees))) {
+    # xgboost < 3: labels, fill and names are arguments of xgb.plot.multi.trees
+    xgboost_trees<-xgboost::xgb.plot.multi.trees(model=model,feature_names=colnames(train),features_keep=10,fill=TRUE,use.names=FALSE)
+  } else {
+    # xgboost >= 3 takes the feature names from the model and no longer accepts feature_names,
+    # fill or use.names; a model without names is labelled with the columns of train on a copy
+    if (length(xgboost::getinfo(model,"feature_name"))==0 && !is.null(colnames(train))) {
+      n_features<-tryCatch(as.integer(xgboost::xgb.config(model)$learner$learner_model_param$num_feature),error=function(e) NA_integer_)
+      if (isTRUE(n_features==ncol(train))) {
+        model<-xgboost::xgb.copy.Booster(model)
+        xgboost::setinfo(model,"feature_name",colnames(train))
+      }
+    }
+    xgboost_trees<-xgboost::xgb.plot.multi.trees(model=model,features_keep=10)
+  }
   htmlwidgets::saveWidget(xgboost_trees,invisible(paste0(toString(getwd()),"/",file,".html")),selfcontained=TRUE)
 }
 ##########################################################################################
@@ -13281,6 +13381,30 @@ plot_trees_xgboost<-function(model,train,file="xgboost") {
 #' @param base_size base font size
 #' @param title plot title
 #' @param fast if TRUE error values are not saved in output
+#' @details Works with xgboost 3, which stores the call, parameters and
+#'   evaluation log as attributes of the model, and with older versions that
+#'   store them as list elements. Validation predictions use the model's own
+#'   feature order. When \code{file} is given, the plots are written to
+#'   \code{<file>.pdf} and the tables to \code{<file>.xlsx} (sheets: confusion
+#'   matrix for classification, Model Summary, Validation Metrics, Feature
+#'   Importance, Hyperparameters and, unless \code{fast = TRUE}, Evaluation Log).
+#' @return Invisibly, a list with
+#'   \describe{
+#'     \item{plots}{ggplot objects: \code{regression} (observed vs predicted on
+#'       the validation data), \code{performance} (cut-point diagnostics, not for
+#'       regression objectives), \code{depth}, \code{cover}, \code{weight}
+#'       (tree structure), \code{error} (training log) and \code{importance}.}
+#'     \item{result}{tables: \code{importance} (from
+#'       \code{xgboost::xgb.importance}), \code{parameters} (hyperparameters),
+#'       \code{model_call}, \code{evaluation_log}, \code{model_summary} (objective,
+#'       boosting rounds, number of features, and with early stopping the best
+#'       iteration and score). With validation data, there is also
+#'       \code{validation_metrics} (regression: N, RMSE, MAE, mean error, R squared; binary
+#'       classification: N, AUC, log loss and accuracy at a 0.5 cut-off).}
+#'     \item{observed, predicted}{validation outcome and predictions
+#'       (\code{NULL} without \code{validation_data}).}
+#'     \item{feature_names}{the model's features, in the model's order.}
+#'   }
 #' @import ggplot2
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @importFrom stringr str_replace_all fixed
@@ -13290,7 +13414,8 @@ plot_trees_xgboost<-function(model,train,file="xgboost") {
 #' @export
 #' @examples
 #' infert_formula<-formula(case~education+spontaneous+induced)
-#' boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+dis+rad+tax+ptratio+black+lstat)
+#' boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+
+#'                          dis+rad+tax+ptratio+black+lstat)
 #' train_test_classification<-k_fold(df=infert,model_formula=infert_formula)
 #' train_test_regression<-k_fold(df=MASS::Boston,model_formula=boston_formula)
 #' xgb_classification<-xgboost::xgb.train(
@@ -13302,7 +13427,6 @@ plot_trees_xgboost<-function(model,train,file="xgboost") {
 #'                 data=train_test_regression$xgb$f1$train,
 #'                 evals=train_test_regression$xgb$f1$watchlist,
 #'                 nround=20)
-#' \dontrun{
 #' report_xgboost(model=xgb_classification,
 #'                validation_data=train_test_classification$f$test$f1,
 #'                label=train_test_classification$outcome,
@@ -13311,7 +13435,6 @@ plot_trees_xgboost<-function(model,train,file="xgboost") {
 #'                validation_data=train_test_regression$f$test$f1,
 #'                label=train_test_regression$outcome,
 #'                file="Regression")
-#' }
 report_xgboost <- function(model,
                            validation_data = NULL,
                            label = NULL,
@@ -13330,13 +13453,24 @@ report_xgboost <- function(model,
   plots <- list()
   result <- list()
   observed <- predicted <- NULL
+
+  # xgboost >= 3 keeps call, params, evaluation_log and early_stop as attributes of the model;
+  # older versions keep them as list elements
+  model_info <- function(name) {
+    value <- attr(model, name, exact = TRUE)
+    if (is.null(value)) value <- tryCatch(model[[name]], error = function(e) NULL)
+    value
+  }
   
-  objective <- tryCatch(model$params$objective, error = function(e) NULL)
+  objective <- tryCatch(xgboost::xgb.config(model)$learner$objective$name, error = function(e) NULL)
+  if (is.null(objective)) objective <- model_info("params")$objective
   is_regression <- !is.null(objective) && grepl("^reg:|^count:|^survival:", objective)
   
   # helper: robust feature-name resolution
   resolve_feature_names <- function(model, validation_data = NULL, label = NULL) {
-    fn <- tryCatch(model$feature_names, error = function(e) NULL)
+    # the model's own feature order (xgboost >= 3), then the older list element
+    fn <- tryCatch(xgboost::getinfo(model, "feature_name"), error = function(e) NULL)
+    if (is.null(fn) || length(fn) == 0) fn <- tryCatch(model$feature_names, error = function(e) NULL)
     if (!is.null(fn) && length(fn) > 0) return(fn)
     
     # fallback from tree dump
@@ -13378,6 +13512,29 @@ report_xgboost <- function(model,
     predicted <- predict(model, newdata = xgboost::xgb.DMatrix(data = vx))
     
     plots$regression <- plot_scatterplot(data.frame(observed = observed, predicted = predicted))
+
+    # validation metrics: error measures for regression; AUC, log loss and accuracy for a
+    # binary outcome predicted as probabilities
+    comparable <- is.numeric(observed) && length(predicted) == length(observed)
+    if (comparable && is_regression) {
+      error <- predicted - observed
+      result$validation_metrics <- data.frame(
+        Metric = c("N", "RMSE", "MAE", "Mean error", "R squared"),
+        value = c(sum(!is.na(error)), sqrt(mean(error^2, na.rm = TRUE)), mean(abs(error), na.rm = TRUE),
+                  mean(error, na.rm = TRUE), stats::cor(observed, predicted, use = "complete.obs")^2),
+        stringsAsFactors = FALSE
+      )
+    } else if (comparable && all(observed %in% c(0, 1, NA)) && all(predicted >= 0 & predicted <= 1, na.rm = TRUE)) {
+      keep <- !is.na(observed) & !is.na(predicted)
+      y <- observed[keep]
+      p <- pmin(pmax(predicted[keep], 1e-15), 1 - 1e-15)
+      auc <- tryCatch(as.numeric(pROC::auc(y, p, levels = c(0, 1), direction = "<", quiet = TRUE)), error = function(e) NA_real_)
+      result$validation_metrics <- data.frame(
+        Metric = c("N", "AUC", "Log loss", "Accuracy (cut-off 0.5)"),
+        value = c(length(y), auc, -mean(y * log(p) + (1 - y) * log(1 - p)), mean((p >= 0.5) == y)),
+        stringsAsFactors = FALSE
+      )
+    }
     
     if (!is_regression) {
       perf_obj <- tryCatch(
@@ -13388,7 +13545,7 @@ report_xgboost <- function(model,
     }
   }
   
-  params_vec <- tryCatch(unlist(model$params), error = function(e) NULL)
+  params_vec <- tryCatch(unlist(model_info("params")), error = function(e) NULL)
   if (!is.null(params_vec) && length(params_vec) > 0) {
     result$parameters <- data.frame(
       Hyperparameter = names(params_vec),
@@ -13402,14 +13559,32 @@ report_xgboost <- function(model,
   result$model_call <- tryCatch(
     data.frame(
       Parameters = "Call",
-      value = gsub(" ", "", toString(deparse(model$call))),
+      value = gsub(" ", "", paste(deparse(model_info("call")), collapse = "")),
       stringsAsFactors = FALSE
     ),
     error = function(e) data.frame(Parameters = "Call", value = NA_character_)
   )
   
-  evaluation_log <- tryCatch(data.frame(model$evaluation_log), error = function(e) data.frame())
+  evaluation_log <- tryCatch(data.frame(model_info("evaluation_log")), error = function(e) data.frame())
   result$evaluation_log <- evaluation_log
+
+  # model summary: objective, size of the model and, with early stopping, the best iteration
+  # (the early_stop attribute counts iterations from 1, like the evaluation log)
+  early_stop <- model_info("early_stop")
+  best_iteration <- if (!is.null(early_stop$best_iteration)) early_stop$best_iteration else model_info("best_iteration")
+  best_score <- if (!is.null(early_stop$best_score)) early_stop$best_score else model_info("best_score")
+  n_rounds <- tryCatch(xgboost::xgb.get.num.boosted.rounds(model), error = function(e) nrow(evaluation_log))
+  result$model_summary <- data.frame(
+    Statistic = c("Objective", "Boosting rounds", "Features", "Best iteration", "Best score"),
+    value = c(
+      if (is.null(objective)) NA_character_ else objective,
+      n_rounds,
+      length(feature_names),
+      if (is.null(best_iteration)) NA_character_ else best_iteration,
+      if (is.null(best_score)) NA_character_ else paste0(if (!is.null(names(best_score))) paste0(names(best_score), ": "), signif(best_score, 4))
+    ),
+    stringsAsFactors = FALSE
+  )
   
   xgboost_model_depth <- tryCatch(
     data.frame(xgboost::xgb.plot.deepness(model, which = "max.depth", plot = FALSE)),
@@ -13448,6 +13623,7 @@ report_xgboost <- function(model,
     as.data.frame(xgboost::xgb.importance(model = model, feature_names = feature_names)),
     error = function(e) data.frame()
   )
+  result$importance <- importance_data
   
   if (nrow(importance_data) > 0) {
     if (!("Feature" %in% names(importance_data))) {
@@ -13493,6 +13669,12 @@ report_xgboost <- function(model,
       excel_confusion_matrix(plots$performance$confusion_matrix, wb)
     }
     
+    excel_critical_value(result$model_summary, wb, "Model Summary", numFmt = "#0.00")
+
+    if (!is.null(result$validation_metrics)) {
+      excel_critical_value(result$validation_metrics, wb, "Validation Metrics", numFmt = "#0.000")
+    }
+
     if (nrow(importance_data) > 0) {
       excel_critical_value(importance_data, wb, "Feature Importance", numFmt = "#0.00")
     }

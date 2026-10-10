@@ -84,77 +84,11 @@ variables.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Arguments passed on to <code><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">stats::wilcox.test</a></code></p><dl><dt><code>x</code></dt>
-<dd><p>numeric vector of data values.  Non-finite (e.g., infinite or
-    missing) values will be omitted.</p></dd>
-
-    <dt><code>y</code></dt>
-<dd><p>an optional numeric vector of data values: as with <code>x</code>
-    non-finite values will be omitted.</p></dd>
-
-    <dt><code>alternative</code></dt>
-<dd><p>a character string specifying the alternative
-    hypothesis, must be one of <code>"two.sided"</code> (default),
-    <code>"greater"</code> or <code>"less"</code>.  You can specify just the initial
-    letter.</p></dd>
-
-    <dt><code>mu</code></dt>
-<dd><p>a number specifying an optional parameter used to form the
-    null hypothesis.  See ‘Details’.</p></dd>
-
-    <dt><code>paired</code></dt>
-<dd><p>a logical indicating whether you want a paired test.</p></dd>
-
-    <dt><code>exact</code></dt>
-<dd><p>a logical indicating whether an exact p-value
-    should be computed.</p></dd>
-
-    <dt><code>correct</code></dt>
-<dd><p>a logical indicating whether to apply continuity
-    correction in the normal approximation for the p-value, or an
-    integer \(k\) between 0 and 3 giving the number of correction
-    terms to use from the Edgeworth series for the normal approximation.</p></dd>
-
-    <dt><code>conf.int</code></dt>
-<dd><p>a logical indicating whether a confidence interval
-    should be computed.</p></dd>
-
-    <dt><code>conf.level</code></dt>
-<dd><p>confidence level of the interval.</p></dd>
-
-    <dt><code>tol.root</code></dt>
-<dd><p>(when <code>conf.int</code> is true:) a positive numeric
-    tolerance, used in <code><a href="https://rdrr.io/r/stats/uniroot.html" class="external-link">uniroot</a>(*, tol=tol.root)</code> calls.</p></dd>
-
-    <dt><code>digits.rank</code></dt>
-<dd><p>a number; if finite, <code><a href="https://rdrr.io/r/base/rank.html" class="external-link">rank</a>(<a href="https://rdrr.io/r/base/Round.html" class="external-link">signif</a>(r, digits.rank))</code>
-    will be used to compute ranks for the test statistic instead of (the
-    default) <code>rank(r)</code>.</p></dd>
-
-    <dt><code>formula</code></dt>
-<dd><p>a formula of the form <code>lhs ~ rhs</code> where <code>lhs</code>
-    is a numeric variable giving the data values and <code>rhs</code> either
-    <code>1</code> for a one-sample or paired test or a factor
-    with two levels giving the corresponding groups. If <code>lhs</code> is of
-    class <code>"<a href="https://rdrr.io/r/stats/Pair.html" class="external-link">Pair</a>"</code> and <code>rhs</code> is <code>1</code>, a paired test
-    is done, see Examples.</p></dd>
-
-    <dt><code>data</code></dt>
-<dd><p>an optional matrix or data frame (or similar: see
-    <code><a href="https://rdrr.io/r/stats/model.frame.html" class="external-link">model.frame</a></code>) containing the variables in the
-    formula <code>formula</code>.  By default the variables are taken from
-    <code>environment(formula)</code>.</p></dd>
-
-    <dt><code>subset</code></dt>
-<dd><p>an optional vector specifying a subset of observations
-    to be used.</p></dd>
-
-    <dt><code>na.action</code></dt>
-<dd><p>a function which indicates what should happen when
-    the data contain <code><a href="https://rdrr.io/r/base/NA.html" class="external-link">NA</a></code>s.</p></dd>
-
-
-</dl></dd>
+<dd><p>Further arguments passed to <code><a href="https://rdrr.io/r/stats/wilcox.test.html" class="external-link">stats::wilcox.test()</a></code> for every
+comparison, e.g. <code>alternative</code>, <code>mu</code>, <code>exact</code> or
+<code>correct</code>. The formula and data are built by the function and
+<code>conf.int = TRUE</code> is always used, so do not pass <code>x</code>, <code>y</code>,
+<code>formula</code>, <code>data</code>, <code>paired</code> or <code>conf.int</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -189,7 +123,7 @@ dependent-independent variable combination. Returned columns mean:</p>
   Small values suggest heteroscedasticity.</p></li>
 <li><p>bonferroni_p: Bonferroni-adjusted alpha threshold computed for the
   number of tests in the output table.</p></li>
-<li><p>significant: Logical-like character flag (TRUE/FALSE) indicating
+<li><p>significant: Logical-like character flag (TRUE / FALSE) indicating
   whether p is below bonferroni_p.</p></li>
 </ul></div>
     <div class="section level2">
@@ -198,8 +132,8 @@ dependent-independent variable combination. Returned columns mean:</p>
 current dependent and independent variables.</p>
 <p>For each independent variable, all pairwise level combinations are tested
 using utils::combn.</p>
-<p>The function calls stats::wilcox.test with conf.int = TRUE and forwards
-additional arguments through ....</p>
+<p>The function calls stats::wilcox.test with conf.int = TRUE and passes any
+additional arguments on through ....</p>
 <p>The function also calls report_dataframe to generate a formatted report.</p>
     </div>
 

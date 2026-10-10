@@ -15,7 +15,7 @@ remove_user_packages()
 
 ## Value
 
-Invisibly returns a named list with one element per removed package (the
-result of
-[`remove.packages()`](https://rdrr.io/r/utils/remove.packages.html)).
-Called primarily for its side effect of uninstalling packages.
+Invisibly returns a named list holding the result of
+[`remove.packages()`](https://rdrr.io/r/utils/remove.packages.html) for
+each removed package (one element per package). Called primarily for its
+side effect of uninstalling packages.

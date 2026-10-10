@@ -1,8 +1,8 @@
 # Automotive Data
 
-This data set contains various automotive information including engine
-location, dimensions, weight, engine type, number of cylinders, and
-other specifications.
+This data set contains a range of automotive information including
+engine location, dimensions, weight, engine type, number of cylinders,
+and other specifications.
 
 ## Usage
 

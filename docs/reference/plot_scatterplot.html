@@ -81,7 +81,7 @@ outcome.</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>Smoothing method passed to <code>geom_smooth</code>. Accepts
+<dd><p>Smoothing method passed to <code>geom_smooth</code>. It accepts
 <code>"lm"</code>, <code>"glm"</code>, <code>"gam"</code>, <code>"loess"</code>, or a function
 such as <code><a href="https://rdrr.io/pkg/MASS/man/rlm.html" class="external-link">MASS::rlm</a></code>. Default <code>lm</code>.</p></dd>
 
@@ -134,7 +134,8 @@ Column 1 is the x-variable name, column 2 is the y-variable name. When
 <span class="r-plt img"><img src="plot_scatterplot-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Two-column data frame: first column = predictor, second = outcome</span></span></span>
-<span class="r-in"><span><span class="fu">plot_scatterplot</span><span class="op">(</span>df <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, base_size <span class="op">=</span> <span class="fl">10</span>, coord_equal <span class="op">=</span> <span class="cn">TRUE</span>, all_orders <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_scatterplot</span><span class="op">(</span>df <span class="op">=</span> <span class="va">mtcars</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, base_size <span class="op">=</span> <span class="fl">10</span>, coord_equal <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>                 all_orders <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mpg_cyl</span>
 <span class="r-plt img"><img src="plot_scatterplot-2.png" alt="" width="700" height="433"></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

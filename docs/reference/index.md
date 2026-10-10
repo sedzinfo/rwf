@@ -300,8 +300,8 @@
 - [`detach_package()`](https://sedzinfo.github.io/rwf/reference/detach_package.md)
   : Detach and unload a package
 - [`display_upper_lower_triangle()`](https://sedzinfo.github.io/rwf/reference/display_upper_lower_triangle.md)
-  : Return upper diagonal from one matrix and lower diagonal from
-  another matrix
+  : Combine the upper triangle of one matrix with the lower triangle of
+  another
 - [`drop_levels()`](https://sedzinfo.github.io/rwf/reference/drop_levels.md)
   : Drop unused factor levels and collapse rare levels into "Other"
 - [`dummy_arrange()`](https://sedzinfo.github.io/rwf/reference/dummy_arrange.md)
@@ -339,7 +339,7 @@
 - [`key_to_cfa_model()`](https://sedzinfo.github.io/rwf/reference/key_to_cfa_model.md)
   : Convert a key list to a lavaan CFA model string
 - [`matrix_triangle()`](https://sedzinfo.github.io/rwf/reference/matrix_triangle.md)
-  : Extract the upper or lower triangle of a matrix
+  : Keep the lower or upper triangle of a matrix
 - [`min_max_index()`](https://sedzinfo.github.io/rwf/reference/min_max_index.md)
   : Indices of the minimum and maximum values in a vector
 - [`model_loadings()`](https://sedzinfo.github.io/rwf/reference/model_loadings.md)
@@ -347,7 +347,7 @@
 - [`name_triplet_pairs()`](https://sedzinfo.github.io/rwf/reference/name_triplet_pairs.md)
   : Create Pair Labels from Consecutive Triplets of Items
 - [`off_diagonal_index()`](https://sedzinfo.github.io/rwf/reference/off_diagonal_index.md)
-  : Get off-diagonal indices for a square matrix
+  : Row and column indices around the diagonal of a square matrix
 - [`outlier_summary()`](https://sedzinfo.github.io/rwf/reference/outlier_summary.md)
   : Percentage of outliers at three z-score thresholds
 - [`output_compare_model_logistic()`](https://sedzinfo.github.io/rwf/reference/output_compare_model_logistic.md)
@@ -403,7 +403,7 @@
 - [`swap()`](https://sedzinfo.github.io/rwf/reference/swap.md) :
   Reverse-score a numeric vector
 - [`symmetric_matrix()`](https://sedzinfo.github.io/rwf/reference/symmetric_matrix.md)
-  : Make a symmetric matrix by duplicating one triangle
+  : Make a matrix symmetric by mirroring one triangle
 - [`tag_pos()`](https://sedzinfo.github.io/rwf/reference/tag_pos.md) :
   Part of speech tagging
 - [`ts_smoothing()`](https://sedzinfo.github.io/rwf/reference/ts_smoothing.md)

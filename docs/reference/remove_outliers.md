@@ -31,7 +31,7 @@ remove_outliers(vector, probs = c(0.25, 0.75), na.rm = TRUE, ...)
 - ...:
 
   Additional arguments passed to
-  [`quantile`](https://rdrr.io/r/stats/quantile.html).
+  [`stats::quantile()`](https://rdrr.io/r/stats/quantile.html).
 
 ## Value
 

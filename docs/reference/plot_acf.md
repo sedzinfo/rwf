@@ -22,8 +22,8 @@ plot_acf(df, lag.max = length(df), base_size = 10, title = "")
 
 - lag.max:
 
-  Integer specifying the maximum number of lags to compute. Default is
-  `length(df)` (all possible lags).
+  Integer. Maximum number of lags to compute. Default is `length(df)`,
+  which gives all possible lags.
 
 - base_size:
 

@@ -62,9 +62,9 @@ excel_critical_value(
   - A single character string with an Excel expression (e.g. `"<0.05"`,
     `">20"`, `"=0"`). Matching cells are highlighted in red.
 
-  - A character vector of length 2 with two expressions (e.g.
-    `c(">20", "<11")`). The first condition highlights in red, the
-    second in purple.
+  - A character vector of length 2 with two expressions, for example
+    `c(">20", "<11")`. The first condition highlights in red, the second
+    in purple.
 
   `NA` cells in the target column are skipped. Default is `NULL`.
 

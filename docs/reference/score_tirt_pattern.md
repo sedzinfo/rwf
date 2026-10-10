@@ -1,7 +1,7 @@
 # Score a Single Thurstonian IRT Response Pattern (MAP / EBM)
 
 Computes the maximum a posteriori (MAP), also called empirical Bayes
-modal (EBM), estimate of latent traits for one binary/ordinal response
+modal (EBM), estimate of latent traits for one binary / ordinal response
 pattern under a Thurstonian IRT parameterization.
 
 Missing responses are allowed and are ignored in the likelihood.

@@ -34,7 +34,7 @@ plot_scatterplot(
 
 - method:
 
-  Smoothing method passed to `geom_smooth`. Accepts `"lm"`, `"glm"`,
+  Smoothing method passed to `geom_smooth`. It accepts `"lm"`, `"glm"`,
   `"gam"`, `"loess"`, or a function such as
   [`MASS::rlm`](https://rdrr.io/pkg/MASS/man/rlm.html). Default `lm`.
 
@@ -86,7 +86,8 @@ plot_multiplot(plotlist = result[1:12], cols = 4)
 
 
 # Two-column data frame: first column = predictor, second = outcome
-plot_scatterplot(df = mtcars[, 1:2], base_size = 10, coord_equal = TRUE, all_orders = FALSE)
+plot_scatterplot(df = mtcars[, 1:2], base_size = 10, coord_equal = TRUE,
+                 all_orders = FALSE)
 #> $mpg_cyl
 
 #> 

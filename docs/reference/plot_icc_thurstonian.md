@@ -1,7 +1,7 @@
 # Plot thurstonian icc
 
-Plot icc curves for binary thurstonian coded items for a single
-dimension using the compute_icc_thurstonian function
+Plot icc curves, computed with the compute_icc_thurstonian function, for
+binary thurstonian coded items for a single dimension
 
 ## Usage
 

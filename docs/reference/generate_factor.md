@@ -14,7 +14,7 @@ generate_factor(vector = LETTERS[1:5], nrows = 2, ncols = 10, type = "random")
 
 - vector:
 
-  Character vector. The pool of factor levels to sample from. Default is
+  Character vector of factor levels to sample from. Default is
   `LETTERS[1:5]`.
 
 - nrows:

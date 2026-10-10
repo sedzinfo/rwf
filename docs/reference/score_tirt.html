@@ -60,11 +60,11 @@ In simple terms:
 
 <dl><dt id="arg-patterns">patterns<a class="anchor" aria-label="anchor" href="#arg-patterns"></a></dt>
 <dd><p>A matrix or data.frame of response patterns
-(rows = respondents, columns = pair/items).</p></dd>
+(rows = respondents, columns = pair / items).</p></dd>
 
 
 <dt id="arg-lambda">lambda<a class="anchor" aria-label="anchor" href="#arg-lambda"></a></dt>
-<dd><p>Loading matrix (rows = pair/items, columns = latent traits).</p></dd>
+<dd><p>Loading matrix (rows = pair / items, columns = latent traits).</p></dd>
 
 
 <dt id="arg-theta-diag">theta_diag<a class="anchor" aria-label="anchor" href="#arg-theta-diag"></a></dt>
@@ -94,7 +94,7 @@ of lambda. If NULL, zeros are used in score_tirt_pattern.</p></dd>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Name alignment is the key safeguard:
-if both rownames(lambda) and colnames(patterns) are present,
+when both rownames(lambda) and colnames(patterns) are present,
 patterns is reordered to match lambda row order before scoring.</p>
 <p>If required lambda names are missing from patterns, the function stops
 with an informative error. If names are unavailable, positional alignment

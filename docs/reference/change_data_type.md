@@ -36,12 +36,12 @@ change_data_type(df, type)
 
   `"factor_character"`
 
-  : Converts only factor columns to character; all other columns are
+  : Converts only factor columns to character. All other columns are
     left unchanged.
 
   `"character_factor"`
 
-  : Converts only character columns to factor; all other columns are
+  : Converts only character columns to factor. All other columns are
     left unchanged.
 
 ## Value
@@ -78,17 +78,17 @@ cdf(df = change_data_type(df = mtcars, "numeric"))
 #> 
 #> $check
 #>    NAMES EMPTY null na NOT_NA NAN INF FIN RANGE   MEAN MEDIAN     SD   MIN   MAX    MODE   TYPE   CLASS FACTOR
-#> 1    mpg     0    0  0     32   0   0  32    25  20.09   19.2   6.03  10.4  33.9 numeric double numeric  FALSE
-#> 2    cyl     0    0  0     32   0   0  32     3   6.19      6   1.79     4     8 numeric double numeric  FALSE
-#> 3   disp     0    0  0     32   0   0  32    27 230.72  196.3 123.94  71.1   472 numeric double numeric  FALSE
-#> 4     hp     0    0  0     32   0   0  32    22 146.69    123  68.56    52   335 numeric double numeric  FALSE
-#> 5   drat     0    0  0     32   0   0  32    22    3.6    3.7   0.53  2.76  4.93 numeric double numeric  FALSE
+#> 1    mpg     0    0  0     32   0   0  32    25  20.09  19.20   6.03  10.4  33.9 numeric double numeric  FALSE
+#> 2    cyl     0    0  0     32   0   0  32     3   6.19   6.00   1.79     4     8 numeric double numeric  FALSE
+#> 3   disp     0    0  0     32   0   0  32    27 230.72 196.30 123.94  71.1   472 numeric double numeric  FALSE
+#> 4     hp     0    0  0     32   0   0  32    22 146.69 123.00  68.56    52   335 numeric double numeric  FALSE
+#> 5   drat     0    0  0     32   0   0  32    22   3.60   3.70   0.53  2.76  4.93 numeric double numeric  FALSE
 #> 6     wt     0    0  0     32   0   0  32    29   3.22   3.33   0.98 1.513 5.424 numeric double numeric  FALSE
 #> 7   qsec     0    0  0     32   0   0  32    30  17.85  17.71   1.79  14.5  22.9 numeric double numeric  FALSE
-#> 8     vs     0    0  0     32   0   0  32     2   0.44      0    0.5     0     1 numeric double numeric  FALSE
-#> 9     am     0    0  0     32   0   0  32     2   0.41      0    0.5     0     1 numeric double numeric  FALSE
-#> 10  gear     0    0  0     32   0   0  32     3   3.69      4   0.74     3     5 numeric double numeric  FALSE
-#> 11  carb     0    0  0     32   0   0  32     6   2.81      2   1.62     1     8 numeric double numeric  FALSE
+#> 8     vs     0    0  0     32   0   0  32     2   0.44   0.00   0.50     0     1 numeric double numeric  FALSE
+#> 9     am     0    0  0     32   0   0  32     2   0.41   0.00   0.50     0     1 numeric double numeric  FALSE
+#> 10  gear     0    0  0     32   0   0  32     3   3.69   4.00   0.74     3     5 numeric double numeric  FALSE
+#> 11  carb     0    0  0     32   0   0  32     6   2.81   2.00   1.62     1     8 numeric double numeric  FALSE
 #> 
 cdf(df = change_data_type(df = mtcars, "factor"))
 #> $summary

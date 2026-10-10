@@ -57,7 +57,7 @@ remove_nc(
 ## Value
 
 A data frame with non-computable values replaced and, depending on the
-flags, rows and/or columns removed.
+flags, rows and / or columns removed.
 
 ## Examples
 

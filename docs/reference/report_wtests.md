@@ -38,91 +38,12 @@ report_wtests(df, dv, iv, file = NULL, ...)
 
 - ...:
 
-  Arguments passed on to
-  [`stats::wilcox.test`](https://rdrr.io/r/stats/wilcox.test.html)
-
-  `x`
-
-  : numeric vector of data values. Non-finite (e.g., infinite or
-    missing) values will be omitted.
-
-  `y`
-
-  : an optional numeric vector of data values: as with `x` non-finite
-    values will be omitted.
-
-  `alternative`
-
-  : a character string specifying the alternative hypothesis, must be
-    one of `"two.sided"` (default), `"greater"` or `"less"`. You can
-    specify just the initial letter.
-
-  `mu`
-
-  : a number specifying an optional parameter used to form the null
-    hypothesis. See ‘Details’.
-
-  `paired`
-
-  : a logical indicating whether you want a paired test.
-
-  `exact`
-
-  : a logical indicating whether an exact p-value should be computed.
-
-  `correct`
-
-  : a logical indicating whether to apply continuity correction in the
-    normal approximation for the p-value, or an integer \\k\\ between 0
-    and 3 giving the number of correction terms to use from the
-    Edgeworth series for the normal approximation.
-
-  `conf.int`
-
-  : a logical indicating whether a confidence interval should be
-    computed.
-
-  `conf.level`
-
-  : confidence level of the interval.
-
-  `tol.root`
-
-  : (when `conf.int` is true:) a positive numeric tolerance, used in
-    [`uniroot`](https://rdrr.io/r/stats/uniroot.html)`(*, tol=tol.root)`
-    calls.
-
-  `digits.rank`
-
-  : a number; if finite,
-    [`rank`](https://rdrr.io/r/base/rank.html)`(`[`signif`](https://rdrr.io/r/base/Round.html)`(r, digits.rank))`
-    will be used to compute ranks for the test statistic instead of (the
-    default) `rank(r)`.
-
-  `formula`
-
-  : a formula of the form `lhs ~ rhs` where `lhs` is a numeric variable
-    giving the data values and `rhs` either `1` for a one-sample or
-    paired test or a factor with two levels giving the corresponding
-    groups. If `lhs` is of class
-    `"`[`Pair`](https://rdrr.io/r/stats/Pair.html)`"` and `rhs` is `1`,
-    a paired test is done, see Examples.
-
-  `data`
-
-  : an optional matrix or data frame (or similar: see
-    [`model.frame`](https://rdrr.io/r/stats/model.frame.html))
-    containing the variables in the formula `formula`. By default the
-    variables are taken from `environment(formula)`.
-
-  `subset`
-
-  : an optional vector specifying a subset of observations to be used.
-
-  `na.action`
-
-  : a function which indicates what should happen when the data contain
-    [`NA`](https://rdrr.io/r/base/NA.html)s.
+  Further arguments passed to
+  [`stats::wilcox.test()`](https://rdrr.io/r/stats/wilcox.test.html) for
+  every comparison, e.g. `alternative`, `mu`, `exact` or `correct`. The
+  formula and data are built by the function and `conf.int = TRUE` is
+  always used, so do not pass `x`, `y`, `formula`, `data`, `paired` or
+  `conf.int`.
 
 ## Value
 
@@ -179,7 +100,7 @@ dependent-independent variable combination. Returned columns mean:
 - bonferroni_p: Bonferroni-adjusted alpha threshold computed for the
   number of tests in the output table.
 
-- significant: Logical-like character flag (TRUE/FALSE) indicating
+- significant: Logical-like character flag (TRUE / FALSE) indicating
   whether p is below bonferroni_p.
 
 ## Details
@@ -190,8 +111,8 @@ current dependent and independent variables.
 For each independent variable, all pairwise level combinations are
 tested using utils::combn.
 
-The function calls stats::wilcox.test with conf.int = TRUE and forwards
-additional arguments through ....
+The function calls stats::wilcox.test with conf.int = TRUE and passes
+any additional arguments on through ....
 
 The function also calls report_dataframe to generate a formatted report.
 

@@ -6,7 +6,7 @@ In simple terms: items are taken 3 at a time, and for each triplet the
 function creates the three pair combinations: (1,2), (1,3), and (2,3).
 
 Labels are returned as strings such as `"i1i2"`, `"i1i3"`, `"i2i3"` (or
-with your chosen separator/prefix).
+with your chosen separator / prefix).
 
 ## Usage
 

@@ -1,7 +1,9 @@
-# Make a symmetric matrix by duplicating one triangle
+# Make a matrix symmetric by mirroring one triangle
 
-Mirrors either the lower or upper triangle of a matrix to the opposite
-side, producing a symmetric matrix. Optionally sets the diagonal.
+Copies the lower or upper triangle of a square matrix onto the opposite
+triangle, producing a symmetric matrix; optionally replaces the
+diagonal. The row names are set to the column names, so both sides carry
+the same labels.
 
 ## Usage
 
@@ -13,26 +15,31 @@ symmetric_matrix(matrix, duplicate = "lower", diagonal = NULL)
 
 - matrix:
 
-  A square numeric matrix.
+  A square matrix. Unlike
+  [`matrix_triangle`](https://sedzinfo.github.io/rwf/reference/matrix_triangle.md),
+  a data frame is not accepted; convert it with
+  [`as.matrix()`](https://rdrr.io/r/base/matrix.html) first.
 
 - duplicate:
 
-  Character. Which triangle to use as the source. One of: `"lower"`
-  mirrors the lower triangle to the upper, or `"upper"` mirrors the
-  upper triangle to the lower. Default is `"lower"`.
+  Character. Use `"lower"` (default) to copy the lower triangle into the
+  upper, or `"upper"` to copy the upper triangle into the lower.
 
 - diagonal:
 
-  Value to place on the diagonal. If omitted, the original diagonal of
-  `matrix` is preserved. Pass `NA` to fill with `NA`.
+  Value(s) to place on the diagonal: a single value (e.g. `NA`) or one
+  value per diagonal element. Leave it out to keep the original
+  diagonal; passing `NULL` explicitly is an error.
 
 ## Value
 
-A symmetric matrix of the same dimensions as the input.
+A symmetric matrix with the same dimensions as `matrix`, whose row names
+are the column names of `matrix`.
 
 ## See also
 
-[`matrix_triangle`](https://sedzinfo.github.io/rwf/reference/matrix_triangle.md)
+[`matrix_triangle`](https://sedzinfo.github.io/rwf/reference/matrix_triangle.md),
+[`display_upper_lower_triangle`](https://sedzinfo.github.io/rwf/reference/display_upper_lower_triangle.md)
 
 ## Examples
 

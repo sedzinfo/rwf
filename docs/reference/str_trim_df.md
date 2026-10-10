@@ -1,7 +1,7 @@
 # Trim whitespace from all character cells in a data frame
 
-Applies [`strwrap`](https://rdrr.io/r/base/strwrap.html) to every
-character cell in a data frame, removing leading and trailing
+Applies [`base::strwrap()`](https://rdrr.io/r/base/strwrap.html) to
+every character cell in a data frame, removing leading and trailing
 whitespace.
 
 ## Usage
