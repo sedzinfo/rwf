@@ -240,9 +240,13 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
       if (is_num) {
         col_min <- min(y, na.rm = TRUE)
         col_max <- max(y, na.rm = TRUE)
-      } else if (is.ordered(y) || inherits(y, c("Date", "POSIXt"))) {
+      } else if (is.ordered(y) || inherits(y, "Date")) {
         col_min <- as.character(min(y, na.rm = TRUE))
         col_max <- as.character(max(y, na.rm = TRUE))
+      } else if (inherits(y, "POSIXt")) {
+        # fixed format, otherwise a time at midnight prints as a bare date
+        col_min <- format(min(y, na.rm = TRUE), "%Y-%m-%d %H:%M:%S")
+        col_max <- format(max(y, na.rm = TRUE), "%Y-%m-%d %H:%M:%S")
       }
     }
 
