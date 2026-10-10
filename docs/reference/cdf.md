@@ -39,10 +39,10 @@ cdf(
 
 - nuniques:
 
-  Integer. If `> 0`, appends UNIQUES and LEVELS columns to the output.
-  Columns with more distinct entries than `nuniques` are summarised as
-  `"N Uniques"` / `"N Levels"`. Set to `0` to skip (faster). Defaults to
-  `0`.
+  Integer. If `> 0`, appends a UNIQUES column to the output, plus a
+  LEVELS column when at least one column is a factor. Columns with more
+  distinct entries than `nuniques` are summarised as `"N Uniques"` /
+  `"N Levels"`. Set to `0` to skip (faster). Defaults to `0`.
 
 - parralel:
 
@@ -259,17 +259,17 @@ cdf(df = generate_missing(mtcars))
 #> 
 #> $check
 #>    NAMES EMPTY null na NOT_NA NAN INF FIN RANGE   MEAN MEDIAN     SD   MIN   MAX    MODE   TYPE   CLASS FACTOR
-#> 1    mpg     0    0  5     27   0   0  27    24  20.72   19.7   6.17  10.4  33.9 numeric double numeric  FALSE
+#> 1    mpg     0    0  5     27   0   0  27    22  20.07   19.2   5.96  10.4  33.9 numeric double numeric  FALSE
 #> 2    cyl     0    0  5     27   0   0  27     4   6.22      6   1.78     4     8 numeric double numeric  FALSE
-#> 3   disp     0    0  5     27   0   0  27    25 224.41  167.6 118.92  71.1   460 numeric double numeric  FALSE
-#> 4     hp     0    0  5     27   0   0  27    19 141.93    123  69.14    52   335 numeric double numeric  FALSE
-#> 5   drat     0    0  5     27   0   0  27    22   3.55   3.62   0.55  2.76  4.93 numeric double numeric  FALSE
-#> 6     wt     0    0  5     27   0   0  27    26   3.11   3.19   0.96 1.513 5.345 numeric double numeric  FALSE
-#> 7   qsec     0    0  5     27   0   0  27    27   17.7  17.42   1.78  14.5  22.9 numeric double numeric  FALSE
-#> 8     vs     0    0  5     27   0   0  27     3   0.48      0   0.51     0     1 numeric double numeric  FALSE
-#> 9     am     0    0  5     27   0   0  27     3   0.37      0   0.49     0     1 numeric double numeric  FALSE
-#> 10  gear     0    0  5     27   0   0  27     4   3.56      3    0.7     3     5 numeric double numeric  FALSE
-#> 11  carb     0    0  5     27   0   0  27     7   2.81      2   1.69     1     8 numeric double numeric  FALSE
+#> 3   disp     0    0  5     27   0   0  27    23 225.38  167.6 117.06  71.1   460 numeric double numeric  FALSE
+#> 4     hp     0    0  5     27   0   0  27    21 145.11    123  67.02    52   335 numeric double numeric  FALSE
+#> 5   drat     0    0  5     27   0   0  27    20   3.64   3.73   0.54  2.76  4.93 numeric double numeric  FALSE
+#> 6     wt     0    0  5     27   0   0  27    25   3.28   3.44   1.01 1.513 5.424 numeric double numeric  FALSE
+#> 7   qsec     0    0  5     27   0   0  27    27  17.86  17.82   1.93  14.5  22.9 numeric double numeric  FALSE
+#> 8     vs     0    0  5     27   0   0  27     3   0.44      0   0.51     0     1 numeric double numeric  FALSE
+#> 9     am     0    0  5     27   0   0  27     3   0.41      0    0.5     0     1 numeric double numeric  FALSE
+#> 10  gear     0    0  5     27   0   0  27     4   3.67      3   0.78     3     5 numeric double numeric  FALSE
+#> 11  carb     0    0  5     27   0   0  27     7   2.85      2   1.68     1     8 numeric double numeric  FALSE
 #> 
 cdf(df = infert, nuniques = 10)
 #> $summary
@@ -278,7 +278,7 @@ cdf(df = infert, nuniques = 10)
 #> 
 #> $check
 #>            NAMES EMPTY null na NOT_NA NAN INF FIN RANGE  MEAN MEDIAN    SD    MIN     MAX    MODE    TYPE   CLASS FACTOR                  UNIQUES                   LEVELS
-#> 1      education     0    0  0    248   0   0 248     3    NA     NA    NA 0-5yrs 12+ yrs numeric integer  factor   TRUE 0-5yrs, 12+ yrs, 6-11yrs 0-5yrs, 6-11yrs, 12+ yrs
+#> 1      education     0    0  0    248   0   0 248     3    NA     NA    NA 0-5yrs 12+ yrs numeric integer  factor   TRUE 0-5yrs, 6-11yrs, 12+ yrs 0-5yrs, 6-11yrs, 12+ yrs
 #> 2            age     0    0  0    248   0   0 248    21  31.5     31  5.25     21      44 numeric  double numeric  FALSE               21 Uniques                         
 #> 3         parity     0    0  0    248   0   0 248     6  2.09      2  1.25      1       6 numeric  double numeric  FALSE         1, 2, 3, 4, 5, 6                         
 #> 4        induced     0    0  0    248   0   0 248     3  0.57      0  0.74      0       2 numeric  double numeric  FALSE                  0, 1, 2                         

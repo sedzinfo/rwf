@@ -186,10 +186,10 @@ car::Anova(aov(form, data = df_blood_pressure), type = 2)
 #> 
 #> Response: bp_before
 #>            Sum Sq  Df F value    Pr(>F)    
-#> agegrp     2485.6   2  11.226 3.467e-05 ***
+#> agegrp     2485.5   2  11.226 3.467e-05 ***
 #> Residuals 12952.2 117                      
 #> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 lsr::etaSquared(aov(form, data = df_blood_pressure), type = 3, anova = TRUE)
 #>              eta.sq eta.sq.part       SS  df        MS       F            p
 #> agegrp    0.1610052   0.1610052  2485.55   2 1242.7750 11.2263 3.466707e-05

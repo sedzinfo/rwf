@@ -1,11 +1,11 @@
 # Check dataframe (optimised)
 
 A faster equivalent of
-[`cdf`](https://sedzinfo.github.io/rwf/reference/cdf.md). Produces an
-identical column-level diagnostic summary but avoids repeated passes
-over each column, eliminates row-by-row `rbind` calls, and removes the
-`gtools` and `plyr` dependencies. Recommended for large dataframes (\>
-100k rows or \> 50 columns).
+[`cdf`](https://sedzinfo.github.io/rwf/reference/cdf.md). Produces the
+same column-level diagnostic summary (except MIN and MAX, see Note) but
+avoids repeated passes over each column, eliminates row-by-row `rbind`
+calls, and removes the `gtools` and `plyr` dependencies. Recommended for
+large dataframes (\> 100k rows or \> 50 columns).
 
 ## Usage
 
@@ -40,10 +40,10 @@ cdff(
 
 - nuniques:
 
-  Integer. If `> 0`, appends UNIQUES and LEVELS columns to the output.
-  Columns with more distinct entries than `nuniques` are summarised as
-  `"N Uniques"` / `"N Levels"`. Set to `0` to skip (faster). Defaults to
-  `0`.
+  Integer. If `> 0`, appends a UNIQUES column to the output, plus a
+  LEVELS column when at least one column is a factor. Columns with more
+  distinct entries than `nuniques` are summarised as `"N Uniques"` /
+  `"N Levels"`. Set to `0` to skip (faster). Defaults to `0`.
 
 - parralel:
 
@@ -67,13 +67,15 @@ descriptions.
 
 ## Note
 
-MIN and MAX for non-double columns use base
-[`min()`](https://rdrr.io/r/base/Extremes.html) /
-[`max()`](https://rdrr.io/r/base/Extremes.html) on character
-representations. Unlike
-[`cdf`](https://sedzinfo.github.io/rwf/reference/cdf.md), mixed
-alphanumeric ordering (e.g. `"V1"` \< `"V10"` \< `"V2"`) is *not*
-guaranteed — lexicographic order is used instead.
+MIN and MAX are only reported where the values have a natural order:
+numeric columns (double or integer) give the smallest and largest value,
+ordered factors the lowest and highest level that occurs, and dates or
+date-times the earliest and latest value. Unordered factors, character
+and logical columns have no natural order, so their MIN and MAX are `NA`
+(use `nuniques` to list their values instead), as are columns with only
+missing values. This differs from
+[`cdf`](https://sedzinfo.github.io/rwf/reference/cdf.md), which reports
+the first and last label in sorted order for non-double columns.
 
 ## Examples
 
@@ -103,18 +105,18 @@ cdff(df = change_data_type(mtcars, "factor"), nuniques = 3)
 #> 1       11   32   352     0    0   0  0   0 352     11
 #> 
 #> $check
-#>    NAMES EMPTY null na NOT_NA NAN INF FIN RANGE MEAN MEDIAN SD   MIN   MAX    MODE    TYPE  CLASS FACTOR    UNIQUES    LEVELS
-#> 1    mpg     0    0  0     32   0   0  32    25   NA     NA NA  10.4  33.9 numeric integer factor   TRUE 25 Uniques 25 Levels
-#> 2    cyl     0    0  0     32   0   0  32     3   NA     NA NA     4     8 numeric integer factor   TRUE    4, 6, 8   4, 6, 8
-#> 3   disp     0    0  0     32   0   0  32    27   NA     NA NA   108  95.1 numeric integer factor   TRUE 27 Uniques 27 Levels
-#> 4     hp     0    0  0     32   0   0  32    22   NA     NA NA   105    97 numeric integer factor   TRUE 22 Uniques 22 Levels
-#> 5   drat     0    0  0     32   0   0  32    22   NA     NA NA  2.76  4.93 numeric integer factor   TRUE 22 Uniques 22 Levels
-#> 6     wt     0    0  0     32   0   0  32    29   NA     NA NA 1.513 5.424 numeric integer factor   TRUE 29 Uniques 29 Levels
-#> 7   qsec     0    0  0     32   0   0  32    30   NA     NA NA  14.5  22.9 numeric integer factor   TRUE 30 Uniques 30 Levels
-#> 8     vs     0    0  0     32   0   0  32     2   NA     NA NA     0     1 numeric integer factor   TRUE       0, 1      0, 1
-#> 9     am     0    0  0     32   0   0  32     2   NA     NA NA     0     1 numeric integer factor   TRUE       0, 1      0, 1
-#> 10  gear     0    0  0     32   0   0  32     3   NA     NA NA     3     5 numeric integer factor   TRUE    3, 4, 5   3, 4, 5
-#> 11  carb     0    0  0     32   0   0  32     6   NA     NA NA     1     8 numeric integer factor   TRUE  6 Uniques  6 Levels
+#>    NAMES EMPTY null na NOT_NA NAN INF FIN RANGE MEAN MEDIAN SD  MIN  MAX    MODE    TYPE  CLASS FACTOR    UNIQUES    LEVELS
+#> 1    mpg     0    0  0     32   0   0  32    25   NA     NA NA <NA> <NA> numeric integer factor   TRUE 25 Uniques 25 Levels
+#> 2    cyl     0    0  0     32   0   0  32     3   NA     NA NA <NA> <NA> numeric integer factor   TRUE    4, 6, 8   4, 6, 8
+#> 3   disp     0    0  0     32   0   0  32    27   NA     NA NA <NA> <NA> numeric integer factor   TRUE 27 Uniques 27 Levels
+#> 4     hp     0    0  0     32   0   0  32    22   NA     NA NA <NA> <NA> numeric integer factor   TRUE 22 Uniques 22 Levels
+#> 5   drat     0    0  0     32   0   0  32    22   NA     NA NA <NA> <NA> numeric integer factor   TRUE 22 Uniques 22 Levels
+#> 6     wt     0    0  0     32   0   0  32    29   NA     NA NA <NA> <NA> numeric integer factor   TRUE 29 Uniques 29 Levels
+#> 7   qsec     0    0  0     32   0   0  32    30   NA     NA NA <NA> <NA> numeric integer factor   TRUE 30 Uniques 30 Levels
+#> 8     vs     0    0  0     32   0   0  32     2   NA     NA NA <NA> <NA> numeric integer factor   TRUE       0, 1      0, 1
+#> 9     am     0    0  0     32   0   0  32     2   NA     NA NA <NA> <NA> numeric integer factor   TRUE       0, 1      0, 1
+#> 10  gear     0    0  0     32   0   0  32     3   NA     NA NA <NA> <NA> numeric integer factor   TRUE    3, 4, 5   3, 4, 5
+#> 11  carb     0    0  0     32   0   0  32     6   NA     NA NA <NA> <NA> numeric integer factor   TRUE  6 Uniques  6 Levels
 #> 
 cdff(df = data.frame(t(mtcars)), file = "mtcars", nuniques = 10)
 #> $summary
@@ -182,17 +184,17 @@ cdff(df = generate_missing(mtcars))
 #> 
 #> $check
 #>    NAMES EMPTY null na NOT_NA NAN INF FIN RANGE   MEAN MEDIAN     SD   MIN   MAX    MODE   TYPE   CLASS FACTOR
-#> 1    mpg     0    0  5     27   0   0  27    24  20.09  19.20   5.69  10.4  33.9 numeric double numeric  FALSE
-#> 2    cyl     0    0  5     27   0   0  27     4   6.22   6.00   1.87     4     8 numeric double numeric  FALSE
-#> 3   disp     0    0  5     27   0   0  27    25 243.80 258.00 128.01  71.1   472 numeric double numeric  FALSE
-#> 4     hp     0    0  5     27   0   0  27    20 146.56 123.00  71.81    52   335 numeric double numeric  FALSE
-#> 5   drat     0    0  5     27   0   0  27    21   3.60   3.69   0.55  2.76  4.93 numeric double numeric  FALSE
-#> 6     wt     0    0  5     27   0   0  27    25   3.21   3.21   0.99 1.615 5.424 numeric double numeric  FALSE
-#> 7   qsec     0    0  5     27   0   0  27    27  17.79  17.82   1.82  14.5  22.9 numeric double numeric  FALSE
+#> 1    mpg     0    0  5     27   0   0  27    22  20.71  21.00   6.34  10.4  33.9 numeric double numeric  FALSE
+#> 2    cyl     0    0  5     27   0   0  27     4   6.52   8.00   1.72     4     8 numeric double numeric  FALSE
+#> 3   disp     0    0  5     27   0   0  27    23 233.86 225.00 117.84  71.1   472 numeric double numeric  FALSE
+#> 4     hp     0    0  5     27   0   0  27    20 150.07 123.00  71.86    52   335 numeric double numeric  FALSE
+#> 5   drat     0    0  5     27   0   0  27    20   3.61   3.73   0.54  2.76  4.93 numeric double numeric  FALSE
+#> 6     wt     0    0  5     27   0   0  27    26   3.22   3.21   1.02 1.513 5.424 numeric double numeric  FALSE
+#> 7   qsec     0    0  5     27   0   0  27    28  17.80  17.42   1.93  14.5  22.9 numeric double numeric  FALSE
 #> 8     vs     0    0  5     27   0   0  27     3   0.41   0.00   0.50     0     1 numeric double numeric  FALSE
 #> 9     am     0    0  5     27   0   0  27     3   0.41   0.00   0.50     0     1 numeric double numeric  FALSE
-#> 10  gear     0    0  5     27   0   0  27     4   3.74   4.00   0.76     3     5 numeric double numeric  FALSE
-#> 11  carb     0    0  5     27   0   0  27     7   2.93   2.00   1.62     1     8 numeric double numeric  FALSE
+#> 10  gear     0    0  5     27   0   0  27     4   3.74   4.00   0.71     3     5 numeric double numeric  FALSE
+#> 11  carb     0    0  5     27   0   0  27     7   2.85   2.00   1.68     1     8 numeric double numeric  FALSE
 #> 
 cdff(df = infert, nuniques = 10)
 #> $summary
@@ -200,15 +202,15 @@ cdff(df = infert, nuniques = 10)
 #> 1        8  248  1984     0    0   0  0   0 1984      1
 #> 
 #> $check
-#>            NAMES EMPTY null na NOT_NA NAN INF FIN RANGE  MEAN MEDIAN    SD    MIN     MAX    MODE    TYPE   CLASS FACTOR                  UNIQUES                   LEVELS
-#> 1      education     0    0  0    248   0   0 248     3    NA     NA    NA 0-5yrs 6-11yrs numeric integer  factor   TRUE 0-5yrs, 12+ yrs, 6-11yrs 0-5yrs, 6-11yrs, 12+ yrs
-#> 2            age     0    0  0    248   0   0 248    21 31.50     31  5.25     21      44 numeric  double numeric  FALSE               21 Uniques                         
-#> 3         parity     0    0  0    248   0   0 248     6  2.09      2  1.25      1       6 numeric  double numeric  FALSE         1, 2, 3, 4, 5, 6                         
-#> 4        induced     0    0  0    248   0   0 248     3  0.57      0  0.74      0       2 numeric  double numeric  FALSE                  0, 1, 2                         
-#> 5           case     0    0  0    248   0   0 248     2  0.33      0  0.47      0       1 numeric  double numeric  FALSE                     0, 1                         
-#> 6    spontaneous     0    0  0    248   0   0 248     3  0.58      0  0.73      0       2 numeric  double numeric  FALSE                  0, 1, 2                         
-#> 7        stratum     0    0  0    248   0   0 248    83 41.87     42 23.97      1       9 numeric integer integer  FALSE               83 Uniques                         
-#> 8 pooled.stratum     0    0  0    248   0   0 248    63 33.58     36 17.27      1      63 numeric  double numeric  FALSE               63 Uniques                         
+#>            NAMES EMPTY null na NOT_NA NAN INF FIN RANGE  MEAN MEDIAN    SD  MIN  MAX    MODE    TYPE   CLASS FACTOR                  UNIQUES                   LEVELS
+#> 1      education     0    0  0    248   0   0 248     3    NA     NA    NA <NA> <NA> numeric integer  factor   TRUE 0-5yrs, 12+ yrs, 6-11yrs 0-5yrs, 6-11yrs, 12+ yrs
+#> 2            age     0    0  0    248   0   0 248    21 31.50     31  5.25   21   44 numeric  double numeric  FALSE               21 Uniques                         
+#> 3         parity     0    0  0    248   0   0 248     6  2.09      2  1.25    1    6 numeric  double numeric  FALSE         1, 2, 3, 4, 5, 6                         
+#> 4        induced     0    0  0    248   0   0 248     3  0.57      0  0.74    0    2 numeric  double numeric  FALSE                  0, 1, 2                         
+#> 5           case     0    0  0    248   0   0 248     2  0.33      0  0.47    0    1 numeric  double numeric  FALSE                     0, 1                         
+#> 6    spontaneous     0    0  0    248   0   0 248     3  0.58      0  0.73    0    2 numeric  double numeric  FALSE                  0, 1, 2                         
+#> 7        stratum     0    0  0    248   0   0 248    83 41.87     42 23.97    1   83 numeric integer integer  FALSE               83 Uniques                         
+#> 8 pooled.stratum     0    0  0    248   0   0 248    63 33.58     36 17.27    1   63 numeric  double numeric  FALSE               63 Uniques                         
 #> 
 cdff(df = infert)
 #> $summary
@@ -216,15 +218,15 @@ cdff(df = infert)
 #> 1        8  248  1984     0    0   0  0   0 1984      1
 #> 
 #> $check
-#>            NAMES EMPTY null na NOT_NA NAN INF FIN RANGE  MEAN MEDIAN    SD    MIN     MAX    MODE    TYPE   CLASS FACTOR
-#> 1      education     0    0  0    248   0   0 248     3    NA     NA    NA 0-5yrs 6-11yrs numeric integer  factor   TRUE
-#> 2            age     0    0  0    248   0   0 248    21 31.50     31  5.25     21      44 numeric  double numeric  FALSE
-#> 3         parity     0    0  0    248   0   0 248     6  2.09      2  1.25      1       6 numeric  double numeric  FALSE
-#> 4        induced     0    0  0    248   0   0 248     3  0.57      0  0.74      0       2 numeric  double numeric  FALSE
-#> 5           case     0    0  0    248   0   0 248     2  0.33      0  0.47      0       1 numeric  double numeric  FALSE
-#> 6    spontaneous     0    0  0    248   0   0 248     3  0.58      0  0.73      0       2 numeric  double numeric  FALSE
-#> 7        stratum     0    0  0    248   0   0 248    83 41.87     42 23.97      1       9 numeric integer integer  FALSE
-#> 8 pooled.stratum     0    0  0    248   0   0 248    63 33.58     36 17.27      1      63 numeric  double numeric  FALSE
+#>            NAMES EMPTY null na NOT_NA NAN INF FIN RANGE  MEAN MEDIAN    SD  MIN  MAX    MODE    TYPE   CLASS FACTOR
+#> 1      education     0    0  0    248   0   0 248     3    NA     NA    NA <NA> <NA> numeric integer  factor   TRUE
+#> 2            age     0    0  0    248   0   0 248    21 31.50     31  5.25   21   44 numeric  double numeric  FALSE
+#> 3         parity     0    0  0    248   0   0 248     6  2.09      2  1.25    1    6 numeric  double numeric  FALSE
+#> 4        induced     0    0  0    248   0   0 248     3  0.57      0  0.74    0    2 numeric  double numeric  FALSE
+#> 5           case     0    0  0    248   0   0 248     2  0.33      0  0.47    0    1 numeric  double numeric  FALSE
+#> 6    spontaneous     0    0  0    248   0   0 248     3  0.58      0  0.73    0    2 numeric  double numeric  FALSE
+#> 7        stratum     0    0  0    248   0   0 248    83 41.87     42 23.97    1   83 numeric integer integer  FALSE
+#> 8 pooled.stratum     0    0  0    248   0   0 248    63 33.58     36 17.27    1   63 numeric  double numeric  FALSE
 #> 
 df <- data.frame(infert,
   date = seq(as.Date("2010-1-1"),
@@ -238,15 +240,15 @@ cdff(df = df)
 #> 1        9  248  2232     0    0   0  0   0 2232      1
 #> 
 #> $check
-#>            NAMES EMPTY null na NOT_NA NAN INF FIN RANGE  MEAN MEDIAN    SD    MIN     MAX    MODE    TYPE   CLASS FACTOR
-#> 1      education     0    0  0    248   0   0 248     3    NA     NA    NA 0-5yrs 6-11yrs numeric integer  factor   TRUE
-#> 2            age     0    0  0    248   0   0 248    21 31.50     31  5.25     21      44 numeric  double numeric  FALSE
-#> 3         parity     0    0  0    248   0   0 248     6  2.09      2  1.25      1       6 numeric  double numeric  FALSE
-#> 4        induced     0    0  0    248   0   0 248     3  0.57      0  0.74      0       2 numeric  double numeric  FALSE
-#> 5           case     0    0  0    248   0   0 248     2  0.33      0  0.47      0       1 numeric  double numeric  FALSE
-#> 6    spontaneous     0    0  0    248   0   0 248     3  0.58      0  0.73      0       2 numeric  double numeric  FALSE
-#> 7        stratum     0    0  0    248   0   0 248    83 41.87     42 23.97      1       9 numeric integer integer  FALSE
-#> 8 pooled.stratum     0    0  0    248   0   0 248    63 33.58     36 17.27      1      63 numeric  double numeric  FALSE
-#> 9           date     0    0  0    248   0   0 248   248    NA     NA    NA  14610   18262 numeric  double    Date  FALSE
+#>            NAMES EMPTY null na NOT_NA NAN INF FIN RANGE  MEAN MEDIAN    SD        MIN        MAX    MODE    TYPE   CLASS FACTOR
+#> 1      education     0    0  0    248   0   0 248     3    NA     NA    NA       <NA>       <NA> numeric integer  factor   TRUE
+#> 2            age     0    0  0    248   0   0 248    21 31.50     31  5.25         21         44 numeric  double numeric  FALSE
+#> 3         parity     0    0  0    248   0   0 248     6  2.09      2  1.25          1          6 numeric  double numeric  FALSE
+#> 4        induced     0    0  0    248   0   0 248     3  0.57      0  0.74          0          2 numeric  double numeric  FALSE
+#> 5           case     0    0  0    248   0   0 248     2  0.33      0  0.47          0          1 numeric  double numeric  FALSE
+#> 6    spontaneous     0    0  0    248   0   0 248     3  0.58      0  0.73          0          2 numeric  double numeric  FALSE
+#> 7        stratum     0    0  0    248   0   0 248    83 41.87     42 23.97          1         83 numeric integer integer  FALSE
+#> 8 pooled.stratum     0    0  0    248   0   0 248    63 33.58     36 17.27          1         63 numeric  double numeric  FALSE
+#> 9           date     0    0  0    248   0   0 248   248    NA     NA    NA 2010-01-01 2020-01-01 numeric  double    Date  FALSE
 #> 
 ```

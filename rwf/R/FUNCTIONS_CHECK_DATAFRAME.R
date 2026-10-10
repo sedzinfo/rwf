@@ -91,7 +91,7 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
   } else {
     future::plan(future::sequential)
   }
-  check_df <- future.apply::future_sapply(df, function(y) {
+  check_df <- future.apply::future_lapply(df, function(y) {
     return(list(
       EMPTY = length(which(as.character(y) == "")),
       null = length(which(is.null(y))),
@@ -108,11 +108,12 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
       MAX = if (is.double(y)) max(y, na.rm = TRUE) else gtools::mixedsort(as.character(na.omit(unique(y))))[length(na.omit(unique(y)))],
       MODE = mode(y),
       TYPE = typeof(y),
-      CLASS = class(y),
+      CLASS = toString(class(y)),
       FACTOR = is.factor(y)
     ))
   })
-  check_df <- data.frame(NAMES = names(df), t(check_df), stringsAsFactors = FALSE, check.names = FALSE)
+  check_df <- data.frame(NAMES = names(df), do.call(rbind, lapply(check_df, function(x) 
+    as.data.frame(x, stringsAsFactors = FALSE))), stringsAsFactors = FALSE, check.names = FALSE)
   summary_dataframe <- data.frame(
     COLLUMNS = length(df),
     ROWS = nrow(df),

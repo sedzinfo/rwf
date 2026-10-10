@@ -31,17 +31,17 @@ same type as the input (vector or data frame).
 
 ``` r
 generate_missing(rnorm(10), missing = 5)
-#>  [1]       NA       NA  0.37348       NA -0.47331  0.08991       NA  0.55574 -1.16888       NA
+#>  [1] -0.5569      NA  1.0980      NA      NA      NA -0.2768  0.7523  1.0451      NA
 generate_missing(generate_data(nrow = 10, ncol = 2), missing = 5)
 #>         X1      X2
 #> 1       NA      NA
-#> 2  -1.6423      NA
-#> 3  -1.3938  0.3724
-#> 4       NA -0.4400
-#> 5   0.6286      NA
-#> 6  -0.3834 -0.3526
-#> 7       NA      NA
-#> 8  -0.7217  1.3487
-#> 9       NA      NA
-#> 10      NA -0.7335
+#> 2  -0.4388      NA
+#> 3       NA  0.9218
+#> 4       NA      NA
+#> 5       NA  0.3606
+#> 6  -1.5297 -1.3665
+#> 7  -0.2401      NA
+#> 8   1.1533 -0.6981
+#> 9       NA -0.8304
+#> 10 -1.3230      NA
 ```

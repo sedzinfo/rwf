@@ -129,4 +129,23 @@ cdf(df = change_data_type(df = df, "factor_character"))
 #> 10  gear     0    0  0     32   0   0   0     3   NA     NA NA     3     5 character character character  FALSE
 #> 11  carb     0    0  0     32   0   0   0     6   NA     NA NA     1     8 character character character  FALSE
 #> 
+cdf(df = change_data_type(df = df, "character_factor"))
+#> $summary
+#>   COLLUMNS ROWS TOTAL EMPTY null NAN na INF FIN FACTOR
+#> 1       11   32   352     0    0   0  0   0 352     11
+#> 
+#> $check
+#>    NAMES EMPTY null na NOT_NA NAN INF FIN RANGE MEAN MEDIAN SD   MIN   MAX    MODE    TYPE  CLASS FACTOR
+#> 1    mpg     0    0  0     32   0   0  32    25   NA     NA NA  10.4  33.9 numeric integer factor   TRUE
+#> 2    cyl     0    0  0     32   0   0  32     3   NA     NA NA     4     8 numeric integer factor   TRUE
+#> 3   disp     0    0  0     32   0   0  32    27   NA     NA NA  71.1   472 numeric integer factor   TRUE
+#> 4     hp     0    0  0     32   0   0  32    22   NA     NA NA    52   335 numeric integer factor   TRUE
+#> 5   drat     0    0  0     32   0   0  32    22   NA     NA NA  2.76  4.93 numeric integer factor   TRUE
+#> 6     wt     0    0  0     32   0   0  32    29   NA     NA NA 1.513 5.424 numeric integer factor   TRUE
+#> 7   qsec     0    0  0     32   0   0  32    30   NA     NA NA  14.5  22.9 numeric integer factor   TRUE
+#> 8     vs     0    0  0     32   0   0  32     2   NA     NA NA     0     1 numeric integer factor   TRUE
+#> 9     am     0    0  0     32   0   0  32     2   NA     NA NA     0     1 numeric integer factor   TRUE
+#> 10  gear     0    0  0     32   0   0  32     3   NA     NA NA     3     5 numeric integer factor   TRUE
+#> 11  carb     0    0  0     32   0   0  32     6   NA     NA NA     1     8 numeric integer factor   TRUE
+#> 
 ```

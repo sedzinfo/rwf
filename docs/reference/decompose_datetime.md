@@ -57,16 +57,16 @@ d1 <- Sys.Date()
 d2 <- Sys.time()
 decompose_datetime(x = d1)
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1 2026            10          08 2026-10-08
+#> 1 2026            10          10 2026-10-10
 decompose_datetime(x = d2)
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME
-#> 1 2026            10          08   14     38     26      099735 2026-10-08     14:38
+#> 1 2026            10          10   10     46     29      794617 2026-10-10     10:46
 decompose_datetime(x = d1, extended = TRUE)
 #>   QUARTER   MONTH     JULIAN  WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1      Q4 October 20734 days Thursday       <NA> 2026            10          08 2026-10-08
+#> 1      Q4 October 20736 days Saturday       <NA> 2026            10          10 2026-10-10
 decompose_datetime(x = d2, extended = TRUE)
 #>   QUARTER   MONTH        JULIAN  WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME
-#> 1      Q4 October 20734.61 days Thursday       Noon 2026            10          08   14     38     26      099735 2026-10-08     14:38
+#> 1      Q4 October 20736.45 days Saturday    Morning 2026            10          10   10     46     29      794617 2026-10-10     10:46
 decompose_datetime(x = "01/15/1900", format = "%m/%e/%Y")
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
 #> 1 1900            01          15 1900-01-15
@@ -81,11 +81,11 @@ decompose_datetime(
   format = "%m/%e/%Y"
 )
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1 2026            10          08 2026-10-08
+#> 1 2026            10          10 2026-10-10
 decompose_datetime(
   x = as.Date(as.POSIXct(timestamp2, origin = "1970-01-01")),
   format = "%m/%e/%Y"
 )
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1 2026            10          08 2026-10-08
+#> 1 2026            10          10 2026-10-10
 ```

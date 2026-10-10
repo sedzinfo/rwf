@@ -27,6 +27,7 @@ unchanged if it contains no `NA` values.
 ## Examples
 
 ``` r
+set.seed(12345)
 df1 <- generate_missing(rnorm(10), missing = 5)
 df2 <- generate_missing(rnorm(10), missing = 5)
 df3 <- generate_missing(rnorm(10), missing = 5)
@@ -35,6 +36,6 @@ df5 <- generate_missing(rnorm(10), missing = 5)
 df <- data.frame(df1, df2, df3, df4, df5)
 row.names(df) <- paste0("A", row.names(df))
 replace_na_with_previous(df1)
-#>  [1] -0.3821 -0.3821 -0.3821 -0.3821  1.6417  1.2351  1.2351  1.2351  0.6362  0.6985
+#>  [1]  0.7095  0.7095 -0.1093 -0.4535  0.6059  0.6059  0.6059  0.6059 -0.2842 -0.2842
 df[] <- lapply(df, replace_na_with_previous)
 ```

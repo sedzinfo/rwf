@@ -140,9 +140,9 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              Estimate           Std. Error z value Pr(&gt;|z|)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)      -0.69314718055974034  0.61237232325705038   -1.13     0.26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs -0.00000000000000298  0.64226151100650664    0.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.01290340483587012  0.64313908926616681    0.02     0.98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)      -0.69314718055974534  0.61237232325705460   -1.13     0.26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs  0.00000000000000142  0.64226151100651341    0.00     1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.01290340483587743  0.64313908926617003    0.02     0.98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for binomial family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -161,15 +161,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0    80.00 40.00 120.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    85.00 43.00 128.00 0.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0     8.00  4.00  12.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   157.00 79.00 236.00 0.33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.48  0.52   1.00 0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.05  0.95   1.00 0.35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333     0.5               0.67               0.34            0.48            0.52          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.35               0.67               0.33            0.05            0.95             0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -197,36 +197,36 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                    mean        sd                   median                    trimmed                    mad       min      max     range    skew kurtosis         se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.33467741935483868998 0.4728318  0.000000000000000000000  0.29499999999999998445688 0.00000000000000000000  0.000000  1.00000 1.0000000  0.6965  -1.5210 0.03002485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  0.22266646654342805989 0.0004748  0.222222303827444594981  0.22265911488468076440128 0.00000000000000024690  0.222222  0.22317 0.0009496  0.1285  -1.9915 0.00003015</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.00000000000000000000 0.0000000  1.000000000000000000000  1.00000000000000000000000 0.00000000000000000000  1.000000  1.00000 0.0000000     NaN      NaN 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248 -0.68711171700747997182 0.0064513 -0.693147180559740339056 -0.68721161433524147188479 0.00000000000000444424 -0.693147 -0.68024 0.0129034  0.1285  -1.9915 0.00040966</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.05585842072013468690 1.0518897 -0.704876436960470975635 -0.14850361166036746274344 0.15485525237014260980 -1.110883  5.10590 6.2167788  1.0429   0.5662 0.06679506</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.33467741935488010130 0.0014367  0.333333333333378833974  0.33465517241383452295977 0.00000000000000090531  0.333333  0.33621 0.0028736  0.1285  -1.9915 0.00009123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.00000000000018590232 2.1234939 -1.500000000000101030295 -0.17922077922095114299594 0.00962727272724845165 -1.506494  3.00000 4.5064935  0.6965  -1.5209 0.13484200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.00000000000008822538 1.0082815 -0.710071602496798015558 -0.08483262844447500561351 0.00696755014677985073 -0.738549  1.47710 2.2156468  0.6966  -1.5204 0.06402594</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248 -0.00000000000008822538 1.0082815 -0.710071602496798015558 -0.08483262844447500561351 0.00696755014677985073 -0.738549  1.47710 2.2156468  0.6966  -1.5204 0.06402594</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248 -0.00000000000000089436 0.0425065 -0.000000000000000001943 -0.00000000000000000007598 0.00000000000000000683 -0.136364  0.27273 0.4090909  3.1951  27.7505 0.00269917</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.00000000000000007323 0.0442853  0.000000000000000004024 -0.00075630252100906492172 0.01868823529411891074 -0.272727  0.13636 0.4090909 -2.8031  23.1188 0.00281212</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248  0.00000000000000021321 0.0443388 -0.000000000000000002821 -0.00075912493303851712612 0.01942197628458606010 -0.272727  0.13636 0.4090909 -2.7920  22.9947 0.00281551</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248 -0.00000000000000916281 0.1142557 -0.065092169030804419849 -0.00782742721614365297156 0.00231373884888215649 -0.222681  0.44536 0.6680428  1.0740   1.8074 0.00725524</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.01209677419354838676 0.0160965  0.008620689655172415408  0.00848275862068965588736 0.00042603448275862582  0.008333  0.08333 0.0750000  4.1833  15.5641 0.00102213</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        IQR                     Q0.1                    Q0.25                     Q0.5                    Q0.75                     Q0.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.000000000000000000000  0.000000000000000000000  0.000000000000000000000  0.000000000000000000000  1.000000000000000000000  1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.000949589254861243903  0.222222303827444594981  0.222222303827444594981  0.222222303827444594981  0.223171893082305838885  0.223171893082305838885</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.000000000000000000000  1.000000000000000000000  1.000000000000000000000  1.000000000000000000000  1.000000000000000000000  1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.012903404835873155676 -0.693147180559743336659 -0.693147180559743336659 -0.693147180559740339056 -0.680243775723870180983 -0.680243775723870180983</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2.116802068853321117103 -0.809324873740548289547 -0.809324873740548289547 -0.704876436960470975635  1.307477195112773049601  1.416443517099937876580</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.002873563218383223816  0.333333333333378223351  0.333333333333378223351  0.333333333333378833974  0.336206896551761447167  0.336206896551761447167</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  4.480852480852234975828 -1.506493506493591150175 -1.506493506493591150175 -1.500000000000101030295  2.974358974358643603608  2.999999999999596322908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.125985986658506021740 -0.714771150686990819345 -0.714771150686990819345 -0.710071602496798015558  1.411214835971515313418  1.420143204993309149486</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.125985986658506021740 -0.714771150686990819345 -0.714771150686990819345 -0.710071602496798015558  1.411214835971515313418  1.420143204993309149486</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.000000000000000004607 -0.000000000000000005327 -0.000000000000000001943 -0.000000000000000001943  0.000000000000000002663  0.000000000000000003837</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.012605042016807576494 -0.012605042016807573024 -0.012605042016807573024  0.000000000000000004024  0.000000000000000004024  0.025210084033610056370</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.013099943534726887079 -0.013099943534726881875 -0.013099943534726881875 -0.000000000000000002821  0.000000000000000005642  0.025863991081379513609</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.196837102565800003973 -0.066652764504217448804 -0.066652764504217448804 -0.065092169030804419849  0.130184338061582555168  0.131596483764714999865</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.000287356321839083925  0.008333333333333331483  0.008333333333333331483  0.008620689655172415408  0.008620689655172415408  0.008620689655172415408</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                   mean        sd                  median                  trimmed                    mad       min      max     range    skew kurtosis         se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.3346774193548386900 0.4728318  0.00000000000000000000  0.294999999999999984457 0.00000000000000000000  0.000000  1.00000 1.0000000  0.6965  -1.5210 0.03002485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  0.2226664665434283097 0.0004748  0.22222230382744470600  0.222659114884680986446 0.00000000000000008230  0.222222  0.22317 0.0009496  0.1285  -1.9915 0.00003015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.0000000000000000000 0.0000000  1.00000000000000000000  1.000000000000000000000 0.00000000000000000000  1.000000  1.00000 0.0000000     NaN      NaN 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248 -0.6871117170074794167 0.0064513 -0.69314718055974389177 -0.687211614335240916773 0.00000000000000213982 -0.693147 -0.68024 0.0129034  0.1285  -1.9915 0.00040966</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.0558584207201347979 1.0518897 -0.70487643696046942132 -0.148503611660367684788 0.15485525237014674538 -1.110883  5.10590 6.2167788  1.0429   0.5662 0.06679506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.3346774193548802123 0.0014367  0.33333333333337805682  0.334655172413834689493 0.00000000000000032920  0.333333  0.33621 0.0028736  0.1285  -1.9915 0.00009123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.0000000000001864443 2.1234939 -1.50000000000010080825 -0.179220779220951864641 0.00962727272725042577 -1.506494  3.00000 4.5064935  0.6965  -1.5209 0.13484200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.0000000000000884804 1.0082815 -0.71007160249679768249 -0.084832628444475408069 0.00696755014678166092 -0.738549  1.47710 2.2156468  0.6966  -1.5204 0.06402594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248 -0.0000000000000884804 1.0082815 -0.71007160249679768249 -0.084832628444475408069 0.00696755014678166092 -0.738549  1.47710 2.2156468  0.6966  -1.5204 0.06402594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248 -0.0000000000000009193 0.0425065  0.00000000000000007191  0.000000000000000005058 0.00000000000000002279 -0.136364  0.27273 0.4090909  3.1951  27.7505 0.00269917</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.0000000000000001021 0.0442853 -0.00000000000000011134 -0.000756302521009068825 0.01868823529411886217 -0.272727  0.13636 0.4090909 -2.8031  23.1188 0.00281212</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248  0.0000000000000002330 0.0443388 -0.00000000000000004296 -0.000759124933038530353 0.01942197628458616765 -0.272727  0.13636 0.4090909 -2.7920  22.9947 0.00281551</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248 -0.0000000000000092466 0.1142557 -0.06509216903080446148 -0.007827427216143694605 0.00231373884888236249 -0.222681  0.44536 0.6680428  1.0740   1.8074 0.00725524</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.0120967741935484197 0.0160965  0.00862068965517243276  0.008482758620689669765 0.00042603448275863607  0.008333  0.08333 0.0750000  4.1833  15.5641 0.00102213</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      IQR                   Q0.1                  Q0.25                    Q0.5                   Q0.75                    Q0.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.0000000000000000000  0.0000000000000000000  0.0000000000000000000  0.00000000000000000000  1.00000000000000000000  1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.0009495892548616047  0.2222223038274446505  0.2222223038274446505  0.22222230382744470600  0.22317189308230625522  0.22317189308230625522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.0000000000000000000  1.0000000000000000000  1.0000000000000000000  1.00000000000000000000  1.00000000000000000000  1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.0129034048358759312 -0.6931471805597438918 -0.6931471805597438918 -0.69314718055974389177 -0.68024377572386796054 -0.68024377572386796054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2.1168020688533193407 -0.8093248737405495108 -0.8093248737405495108 -0.70487643696046942132  1.30747719511276994098  1.41644351709993920885</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.0028735632183839455  0.3333333333333780568  0.3333333333333780568  0.33333333333337805682  0.33620689655176200228  0.33620689655176200228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  4.4808524808522314231 -1.5064935064935922604 -1.5064935064935922604 -1.50000000000010080825  2.97435897435863916272  2.99999999999959765518</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.1259859866585055777 -0.7147711506869917075 -0.7147711506869917075 -0.71007160249679768249  1.41121483597151375911  1.42014320499330959358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.1259859866585055777 -0.7147711506869917075 -0.7147711506869917075 -0.71007160249679768249  1.41121483597151375911  1.42014320499330959358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.0000000000000002311 -0.0000000000000001723 -0.0000000000000001438  0.00000000000000007191  0.00000000000000008728  0.00000000000000008728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.0126050420168078749 -0.0126050420168076546 -0.0126050420168076546 -0.00000000000000011134  0.00000000000000021982  0.02521008403361022984</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.0130999435347270762 -0.0130999435347269894 -0.0130999435347269894 -0.00000000000000004296  0.00000000000000008592  0.02586399108137966626</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.1968371025658003370 -0.0666527645042176292 -0.0666527645042176292 -0.06509216903080446148  0.13018433806158269395  0.13159648376471502762</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.0002873563218390909  0.0083333333333333419  0.0083333333333333419  0.00862068965517243276  0.00862068965517243276  0.00862068965517243276</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Call"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -247,12 +247,12 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> glm(formula = case ~ education, family = gaussian, data = infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                 Estimate              Std. Error t value Pr(&gt;|t|)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       0.33333333333333331483  0.13705014769145770770    2.43    0.016 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs -0.00000000000000000838  0.14373940754182695789    0.00    1.000  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.00287356321839085270  0.14396452813010765515    0.02    0.984  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                              Estimate           Std. Error t value Pr(&gt;|t|)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       0.33333333333333520  0.13705014769145682    2.43    0.016 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs -0.00000000000000129  0.14373940754182551    0.00    1.000  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.00287356321838873  0.14396452813010696    0.02    0.984  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for gaussian family taken to be 0.2254)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -271,15 +271,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0    88.00 44.00 132.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    77.00 39.00 116.00 0.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0    80.00 40.00 120.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    85.00 43.00 128.00 0.34</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.53  0.47   1.00 0.51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.48  0.52   1.00 0.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.51               0.67               0.34            0.53            0.47          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333     0.5               0.67               0.34            0.48            0.52          0.5025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -307,36 +307,36 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                        mean       sd                    median                    trimmed                     mad       min     max    range    skew kurtosis         se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.334677419354838689979914 0.472832  0.0000000000000000000000  0.29499999999999998445688 0.000000000000000000000  0.000000 1.00000 1.000000  0.6965   -1.521 0.03002485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  1.000000000000000000000000 0.000000  1.0000000000000000000000  1.00000000000000000000000 0.000000000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.000000000000000000000000 0.000000  1.0000000000000000000000  1.00000000000000000000000 0.000000000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248  0.334677419354838689979914 0.001437  0.3333333333333333148296  0.33465517241379311164096 0.000000000000000000000  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.057300250869784595530998 0.576833 -0.3323415113618682914520 -0.07520480277709898353500 0.073908710144913958295 -5.270505 0.66766 5.938164 -2.5086   24.663 0.03662890</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.334677419354838689979914 0.001437  0.3333333333333333148296  0.33465517241379311164096 0.000000000000000000000  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248  0.000000000000000008672962 0.472830 -0.3333333333333333148296 -0.03965517241379309942850 0.004260344827586242701 -0.336207 0.66667 1.002874  0.6965   -1.521 0.03002471</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.000000000000000014724165 1.002161 -0.7050594805604689652156 -0.08411264527362505294406 0.009164180284971460561 -0.733336 1.46667 2.200007  0.6966   -1.520 0.06363727</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248  0.001438856241412376276573 1.003176 -0.7043340276583159864643 -0.08276966248042898210979 0.009173609923280994297 -0.732642 1.47014 2.202786  0.6966   -1.520 0.06370171</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248  0.000000000000000000002459 0.009446  0.0000000000000000004435  0.00000000000000000008886 0.000000000000000001538 -0.030303 0.06061 0.090909  3.1951   27.751 0.00059982</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.000000000000000000028286 0.009841 -0.0000000000000000002990 -0.00016806722689075628005 0.004152941176470589281 -0.060606 0.03030 0.090909 -2.8031   23.119 0.00062492</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248 -0.000000000000000000338583 0.009856 -0.0000000000000000011682 -0.00016941529235382324185 0.004334437781109443631 -0.060606 0.03030 0.090909 -2.7888   22.959 0.00062589</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248  0.000149395992770223263232 0.113650 -0.0645661944560204925647 -0.00766433632636565574658 0.002506010676265285880 -0.220900 0.44326 0.664165  1.0762    1.808 0.00721679</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.012096774193548388495745 0.016096  0.0086206896551724136735  0.00848275862068965588736 0.000426034482758618068  0.008333 0.08333 0.075000  4.1833   15.564 0.00102213</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        IQR                     Q0.1                     Q0.25                      Q0.5                    Q0.75                    Q0.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.000000000000000000000  0.000000000000000000000  0.0000000000000000000000  0.0000000000000000000000 1.0000000000000000000000 1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.000000000000000000000  1.000000000000000000000  1.0000000000000000000000  1.0000000000000000000000 1.0000000000000000000000 1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.000000000000000000000  1.000000000000000000000  1.0000000000000000000000  1.0000000000000000000000 1.0000000000000000000000 1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.002873563218390828844  0.333333333333333314830  0.3333333333333333148296  0.3333333333333333148296 0.3362068965517241436736 0.336206896551724143674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.999999999999999888978 -0.382192253399446846274 -0.3821922533994468462737 -0.3323415113618682914520 0.6178077466005530427040 0.667658488638131708548</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.002873563218390828844  0.333333333333333314830  0.3333333333333333148296  0.3333333333333333148296 0.3362068965517241436736 0.336206896551724143674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1.000000000000000000000 -0.336206896551724143674 -0.3362068965517241436736 -0.3333333333333333148296 0.6637931034482758008153 0.666666666666666740682</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.115484967071274979844 -0.711240635480859806350 -0.7112406354808598063499 -0.7050594805604689652156 1.4042443315904151734941 1.410118961120938152476</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.117570953941211975291 -0.710521542782611814637 -0.7105215427826118146371 -0.7043340276583159864643 1.4070494111586000496317 1.412983839556670062620</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.000000000000000002357 -0.000000000000000002962 -0.0000000000000000008757  0.0000000000000000004435 0.0000000000000000014811 0.000000000000000001481</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.002801120448179273466 -0.002801120448179273033 -0.0028011204481792730328 -0.0000000000000000002990 0.0000000000000000005904 0.005602240896358546933</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.002923538230884560433 -0.002923538230884558265 -0.0029235382308845582651 -0.0000000000000000011682 0.0000000000000000023365 0.005772113943028485752</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.195784491704986185479 -0.066256475500311121096 -0.0662564755003111210963 -0.0645661944560204925647 0.1295280162046750782601 0.131208034133709655622</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.000287356321839078721  0.008333333333333334952  0.0083333333333333349524  0.0086206896551724136735 0.0086206896551724136735 0.008620689655172413673</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                      mean       sd                   median                  trimmed                     mad       min     max    range    skew kurtosis         se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.3346774193548386899799 0.472832  0.000000000000000000000  0.294999999999999984457 0.000000000000000000000  0.000000 1.00000 1.000000  0.6965   -1.521 0.03002485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  1.0000000000000000000000 0.000000  1.000000000000000000000  1.000000000000000000000 0.000000000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.0000000000000000000000 0.000000  1.000000000000000000000  1.000000000000000000000 0.000000000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248  0.3346774193548389675357 0.001437  0.333333333333335202209  0.334655172413793389197 0.000000000000001892919  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.0573002508697849008423 0.576833 -0.332341511361869512697 -0.075204802777099219457 0.073908710144911168860 -5.270505 0.66766 5.938164 -2.5086   24.663 0.03662890</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.3346774193548389675357 0.001437  0.333333333333335202209  0.334655172413793389197 0.000000000000001892919  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.0000000000000002855297 0.472830 -0.333333333333333925452 -0.039655172413793411679 0.004260344827585008445 -0.336207 0.66667 1.002874  0.6965   -1.521 0.03002471</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.0000000000000005725798 1.002161 -0.705059480560470186461 -0.084112645273625399889 0.009164180284968827250 -0.733336 1.46667 2.200007  0.6966   -1.520 0.06363727</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248  0.0014388562414116830377 1.003176 -0.704334027658317651799 -0.082769662480429523344 0.009173609923278360986 -0.732642 1.47014 2.202786  0.6966   -1.520 0.06370171</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248  0.0000000000000000005021 0.009446 -0.000000000000000008804 -0.000000000000000001706 0.000000000000000008027 -0.030303 0.06061 0.090909  3.1951   27.751 0.00059982</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248 -0.0000000000000000029098 0.009841  0.000000000000000010166 -0.000168067226890756958 0.004152941176470575403 -0.060606 0.03030 0.090909 -2.8031   23.119 0.00062492</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248 -0.0000000000000000007484 0.009856  0.000000000000000008134 -0.000169415292353821859 0.004334437781109439294 -0.060606 0.03030 0.090909 -2.7888   22.959 0.00062589</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248  0.0001493959927701828225 0.113650 -0.064566194456020548076 -0.007664336326365706054 0.002506010676265059498 -0.220900 0.44326 0.664165  1.0762    1.808 0.00721679</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.0120967741935483451277 0.016096  0.008620689655172391122  0.008482758620689631601 0.000426034482758623218  0.008333 0.08333 0.075000  4.1833   15.564 0.00102213</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      IQR                    Q0.1                   Q0.25                     Q0.5                   Q0.75                   Q0.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.0000000000000000000  0.00000000000000000000  0.00000000000000000000  0.000000000000000000000 1.000000000000000000000 1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.0000000000000000000  1.00000000000000000000  1.00000000000000000000  1.000000000000000000000 1.000000000000000000000 1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.0000000000000000000  1.00000000000000000000  1.00000000000000000000  1.000000000000000000000 1.000000000000000000000 1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.0028735632183899962  0.33333333333333392545  0.33333333333333392545  0.333333333333335202209 0.336206896551723921629 0.33620689655172392163</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.0000000000000000000 -0.38219225339944618014 -0.38219225339944618014 -0.332341511361869512697 0.617807746600553819860 0.66765848863813048730</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.0028735632183899962  0.33333333333333392545  0.33333333333333392545  0.333333333333335202209 0.336206896551723921629 0.33620689655172392163</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1.0000000000000000000 -0.33620689655172392163 -0.33620689655172392163 -0.333333333333333925452 0.663793103448276022860 0.66666666666666607455</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.1154849670712749798 -0.71124063548085925124 -0.71124063548085925124 -0.705059480560470186461 1.404244331590415839628 1.41011896112093659816</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.1175709539412128635 -0.71052154278261170361 -0.71052154278261170361 -0.704334027658317651799 1.407049411158600937810 1.41298383955666917444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.0000000000000000316 -0.00000000000000001422 -0.00000000000000001422 -0.000000000000000008804 0.000000000000000017383 0.00000000000000002844</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.0028011204481792631 -0.00280112044817925308 -0.00280112044817925308  0.000000000000000010166 0.000000000000000010166 0.00560224089635849142</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.0029235382308845539 -0.00292353823088454569 -0.00292353823088454569  0.000000000000000008134 0.000000000000000008134 0.00577211394302846667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.1957844917049858524 -0.06625647550031102395 -0.06625647550031102395 -0.064566194456020548076 0.129528016204674828460 0.13120803413370957236</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.0002873563218390822  0.00833333333333330893  0.00833333333333330893  0.008620689655172391122 0.008620689655172391122 0.00862068965517239112</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Call"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -359,12 +359,12 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> glm(formula = case ~ education, family = poisson, data = infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                              Estimate           Std. Error z value Pr(&gt;|z|)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)      -1.09861228733042560  0.49998706906001272   -2.20    0.028 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs  0.00000000000000131  0.52439086200080176    0.00    1.000  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.00858374359702303  0.52500172977880533    0.02    0.987  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                             Estimate          Std. Error z value Pr(&gt;|z|)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)      -1.0986122873304081  0.4999870690600114   -2.20    0.028 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs -0.0000000000000151  0.5243908620007999    0.00    1.000  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.0085837435970055  0.5250017297788065    0.02    0.987  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for poisson family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -383,15 +383,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0     8.00  4.00  12.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   157.00 79.00 236.00 0.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0    80.00 40.00 120.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    85.00 43.00 128.00 0.34</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.05  0.95   1.00 0.35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.48  0.52   1.00 0.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.35               0.67               0.33            0.05            0.95             0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333     0.5               0.67               0.34            0.48            0.52          0.5025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -419,36 +419,36 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                mean       sd                    median                    trimmed                      mad       min      max     range    skew kurtosis         se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.3346774193548387 0.472832  0.0000000000000000000000  0.29499999999999998445688 0.0000000000000000000000  0.000000  1.00000  1.000000  0.6965   -1.521 0.03002485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  0.3346944386190310 0.001436  0.3333505752555100398737  0.33467219536335895968548 0.0000000000000007407075  0.333351  0.33622  0.002873  0.1285   -1.991 0.00009121</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.0000000000000000 0.000000  1.0000000000000000000000  1.00000000000000000000000 0.0000000000000000000000  1.000000  1.00000  0.000000     NaN      NaN 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248 -1.0945973104866562 0.004292 -1.0986122873304242641979 -1.09466376527579423161285 0.0000000000000019752200 -1.098612 -1.09003  0.008584  0.1285   -1.991 0.00027252</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.0221865975917645 1.034464 -0.5754099864767479033389 -0.12133645560358886916763 0.1248446178763895353381 -0.906896  9.97234 10.879239  3.9178   32.689 0.06568854</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.3346774197876914 0.001437  0.3333333337792284689627  0.33465517284686169263708 0.0000000000000006584067  0.333333  0.33621  0.002874  0.1285   -1.991 0.00009123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.0000000012935446 1.412818 -1.0000000000000000000000 -0.12000000112242864558354 0.0000000000000000000000 -1.000000  2.00000  3.000000  0.6966   -1.521 0.08971404</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.0000000007529640 0.822431 -0.5797710360402240636901 -0.06936628254403265358974 0.0038221878970772474489 -0.603023  1.20605  1.809068  0.6966   -1.520 0.05222444</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248 -0.0000000007529640 0.822431 -0.5797710360402240636901 -0.06936628254403265358974 0.0038221878970772474489 -0.603023  1.20605  1.809068  0.6966   -1.520 0.05222444</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248 -0.0000000000058842 0.028338  0.0000000000000000008869  0.00000000000000000007836 0.0000000000000000006899 -0.090909  0.18182  0.272727  3.1951   27.751 0.00179945</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.0000000000004450 0.029524  0.0000000000000000008915 -0.00050420168471904808216 0.0124588235294117652407 -0.181818  0.09091  0.272727 -2.8031   23.119 0.00187475</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248  0.0000000000008273 0.029549 -0.0000000000000000009346 -0.00050390189890430966968 0.0128921739130434757220 -0.181818  0.09091  0.272727 -2.7952   23.031 0.00187636</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248 -0.0000000000777518 0.093228 -0.0531488982307357152313 -0.00637743684775580067098 0.0017150512078150004398 -0.181823  0.36365  0.545469  1.0751    1.818 0.00592000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.0120967741935484 0.016096  0.0086206896551724136735  0.00848275862068965588736 0.0004260344827586180685  0.008333  0.08333  0.075000  4.1833   15.564 0.00102213</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        IQR                    Q0.1                    Q0.25                      Q0.5                     Q0.75                     Q0.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.000000000000000000000  0.00000000000000000000  0.000000000000000000000  0.0000000000000000000000  1.0000000000000000000000  1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.002873087190976897354  0.33335057525550954027  0.333350575255509540273  0.3333505752555100398737  0.3362236624464864376272  0.336223662446486437627</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.000000000000000000000  1.00000000000000000000  1.000000000000000000000  1.0000000000000000000000  1.0000000000000000000000  1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.008583743597021742389 -1.09861228733042426420 -1.098612287330424264198 -1.0986122873304242641979 -1.0900285437334025218092 -1.090028543733402521809</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.724589996795717228295 -0.65961652760475919521 -0.659616527604759195214 -0.5754099864767479033389  1.0649734691909580330815  1.156596027002034565712</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.002873563190506966958  0.33333333377922846896  0.333333333779228468963  0.3333333337792284689627  0.3362068969697354359205  0.336206896969735435921</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2.974358970660907708350 -1.00000000000000000000 -1.000000000000000000000 -1.0000000000000000000000  1.9743589706609074863053  1.999999995986943890358</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  1.732115169874720583820 -0.58234906645778594658 -0.582349066457785946582 -0.5797710360402240636901  1.1497661034169346372380  1.159542069753794368836</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  1.732115169874720583820 -0.58234906645778594658 -0.582349066457785946582 -0.5797710360402240636901  1.1497661034169346372380  1.159542069753794368836</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.000000000000000003126 -0.00000000000000000267 -0.000000000000000001774  0.0000000000000000008869  0.0000000000000000013522  0.000000000000000001352</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.008403361344537816496 -0.00840336134453781476 -0.008403361344537814762  0.0000000000000000008915  0.0000000000000000008915  0.016806722655352469842</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.008695652173913045319 -0.00869565217391304358 -0.008695652173913043584 -0.0000000000000000009346  0.0000000000000000018693  0.017168338875312241093</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.160603480670618026238 -0.05430568442243610683 -0.054305684422436106829 -0.0531488982307357152313  0.1062977962481819055318  0.107218915197317021804</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.000287356321839078721  0.00833333333333333495  0.008333333333333334952  0.0086206896551724136735  0.0086206896551724136735  0.008620689655172413673</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                mean       sd                  median                  trimmed                    mad       min      max     range    skew kurtosis         se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.3346774193548387 0.472832  0.00000000000000000000  0.294999999999999984457 0.00000000000000000000  0.000000  1.00000  1.000000  0.6965   -1.521 0.03002485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  0.3346944386190289 0.001436  0.33335057525550787494  0.334672195363357016795 0.00000000000000625486  0.333351  0.33622  0.002873  0.1285   -1.991 0.00009121</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.0000000000000000 0.000000  1.00000000000000000000  1.000000000000000000000 0.00000000000000000000  1.000000  1.00000  0.000000     NaN      NaN 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248 -1.0945973104866547 0.004292 -1.09861228733040805494 -1.094663765275792677301 0.00000000000002238583 -1.098612 -1.09003  0.008584  0.1285   -1.991 0.00027252</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.0221865975917655 1.034464 -0.57540998647675056787 -0.121336455603589479790 0.12484461787638756469 -0.906896  9.97234 10.879239  3.9178   32.689 0.06568854</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.3346774197876918 0.001437  0.33333333377923385354  0.334655172846862192237 0.00000000000000740707  0.333333  0.33621  0.002874  0.1285   -1.991 0.00009123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.0000000012935460 1.412818 -1.00000000000000000000 -0.120000001122429894584 0.00000000000000000000 -1.000000  2.00000  3.000000  0.6966   -1.521 0.08971404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.0000000007529648 0.822431 -0.57977103604022439676 -0.069366282544032917268 0.00382218789707675349 -0.603023  1.20605  1.809068  0.6966   -1.520 0.05222444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248 -0.0000000007529648 0.822431 -0.57977103604022439676 -0.069366282544032917268 0.00382218789707675349 -0.603023  1.20605  1.809068  0.6966   -1.520 0.05222444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248 -0.0000000000058843 0.028338 -0.00000000000000001302 -0.000000000000000005108 0.00000000000000004382 -0.090909  0.18182  0.272727  3.1951   27.751 0.00179945</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.0000000000004450 0.029524  0.00000000000000001961 -0.000504201684719046781 0.01245882352941168891 -0.181818  0.09091  0.272727 -2.8031   23.119 0.00187475</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248  0.0000000000008273 0.029549  0.00000000000000002863 -0.000503901898904309778 0.01289217391304351389 -0.181818  0.09091  0.272727 -2.7952   23.031 0.00187636</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248 -0.0000000000777519 0.093228 -0.05314889823073548625 -0.006377436847755800671 0.00171505120781496965 -0.181823  0.36365  0.545469  1.0751    1.818 0.00592000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.0120967741935484 0.016096  0.00862068965517238939  0.008482758620689628132 0.00042603448275862837  0.008333  0.08333  0.075000  4.1833   15.564 0.00102213</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       IQR                    Q0.1                   Q0.25                    Q0.5                   Q0.75                    Q0.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.00000000000000000000  0.00000000000000000000  0.00000000000000000000  0.00000000000000000000  1.00000000000000000000  1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.00287308719097639775  0.33335057525550787494  0.33335057525550787494  0.33335057525550787494  0.33622366244648427269  0.33622366244648427269</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.00000000000000000000  1.00000000000000000000  1.00000000000000000000  1.00000000000000000000  1.00000000000000000000  1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.00858374359702063217 -1.09861228733042315397 -1.09861228733042315397 -1.09861228733040805494 -1.09002854373340252181 -1.09002854373340252181</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.72458999679572322350 -0.65961652760476052748 -0.65961652760476052748 -0.57540998647675056787  1.06497346919096269602  1.15659602700203589798</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.00287356319050657838  0.33333333377922885754  0.33333333377922885754  0.33333333377923385354  0.33620689696973543592  0.33620689696973543592</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2.97435897066090770835 -1.00000000000000000000 -1.00000000000000000000 -1.00000000000000000000  1.97435897066090748631  1.99999999598694055969</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  1.73211516987472058382 -0.58234906645778594658 -0.58234906645778594658 -0.57977103604022439676  1.14976610341693463724  1.15954206975379303657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  1.73211516987472058382 -0.58234906645778594658 -0.58234906645778594658 -0.57977103604022439676  1.14976610341693463724  1.15954206975379303657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.00000000000000006827 -0.00000000000000004257 -0.00000000000000004257 -0.00000000000000001302  0.00000000000000002570  0.00000000000000008514</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.00840336134453776445 -0.00840336134453774537 -0.00840336134453774537  0.00000000000000001961  0.00000000000000001961  0.01680672265535230678</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.00869565217391306787 -0.00869565217391303838 -0.00869565217391303838  0.00000000000000002863  0.00000000000000002863  0.01716833887531222722</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.16060348067061713806 -0.05430568442243585703 -0.05430568442243585703 -0.05314889823073548625  0.10629779624818129491  0.10721891519731653608</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.00028735632183908566  0.00833333333333330373  0.00833333333333330373  0.00862068965517238939  0.00862068965517238939  0.00862068965517238939</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Call"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -469,12 +469,12 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> glm(formula = case ~ education, family = quasi, data = infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                 Estimate              Std. Error t value Pr(&gt;|t|)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       0.33333333333333331483  0.13705014769145770770    2.43    0.016 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs -0.00000000000000000838  0.14373940754182695789    0.00    1.000  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.00287356321839085270  0.14396452813010765515    0.02    0.984  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                              Estimate           Std. Error t value Pr(&gt;|t|)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       0.33333333333333520  0.13705014769145682    2.43    0.016 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs -0.00000000000000129  0.14373940754182551    0.00    1.000  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.00287356321838873  0.14396452813010696    0.02    0.984  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for quasi family taken to be 0.2254)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -493,15 +493,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0    88.00 44.00 132.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    77.00 39.00 116.00 0.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0    80.00 40.00 120.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    85.00 43.00 128.00 0.34</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.53  0.47   1.00 0.51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.48  0.52   1.00 0.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.51               0.67               0.34            0.53            0.47          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333     0.5               0.67               0.34            0.48            0.52          0.5025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -529,36 +529,36 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                        mean       sd                    median                    trimmed                     mad       min     max    range    skew kurtosis         se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.334677419354838689979914 0.472832  0.0000000000000000000000  0.29499999999999998445688 0.000000000000000000000  0.000000 1.00000 1.000000  0.6965   -1.521 0.03002485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  1.000000000000000000000000 0.000000  1.0000000000000000000000  1.00000000000000000000000 0.000000000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.000000000000000000000000 0.000000  1.0000000000000000000000  1.00000000000000000000000 0.000000000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248  0.334677419354838689979914 0.001437  0.3333333333333333148296  0.33465517241379311164096 0.000000000000000000000  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.057300250869784595530998 0.576833 -0.3323415113618682914520 -0.07520480277709898353500 0.073908710144913958295 -5.270505 0.66766 5.938164 -2.5086   24.663 0.03662890</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.334677419354838689979914 0.001437  0.3333333333333333148296  0.33465517241379311164096 0.000000000000000000000  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248  0.000000000000000008672962 0.472830 -0.3333333333333333148296 -0.03965517241379309942850 0.004260344827586242701 -0.336207 0.66667 1.002874  0.6965   -1.521 0.03002471</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.000000000000000014724165 1.002161 -0.7050594805604689652156 -0.08411264527362505294406 0.009164180284971460561 -0.733336 1.46667 2.200007  0.6966   -1.520 0.06363727</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248  0.001438856241412376276573 1.003176 -0.7043340276583159864643 -0.08276966248042898210979 0.009173609923280994297 -0.732642 1.47014 2.202786  0.6966   -1.520 0.06370171</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248  0.000000000000000000002459 0.009446  0.0000000000000000004435  0.00000000000000000008886 0.000000000000000001538 -0.030303 0.06061 0.090909  3.1951   27.751 0.00059982</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.000000000000000000028286 0.009841 -0.0000000000000000002990 -0.00016806722689075628005 0.004152941176470589281 -0.060606 0.03030 0.090909 -2.8031   23.119 0.00062492</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248 -0.000000000000000000338583 0.009856 -0.0000000000000000011682 -0.00016941529235382324185 0.004334437781109443631 -0.060606 0.03030 0.090909 -2.7888   22.959 0.00062589</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248  0.000149395992770223263232 0.113650 -0.0645661944560204925647 -0.00766433632636565574658 0.002506010676265285880 -0.220900 0.44326 0.664165  1.0762    1.808 0.00721679</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.012096774193548388495745 0.016096  0.0086206896551724136735  0.00848275862068965588736 0.000426034482758618068  0.008333 0.08333 0.075000  4.1833   15.564 0.00102213</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        IQR                     Q0.1                     Q0.25                      Q0.5                    Q0.75                    Q0.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.000000000000000000000  0.000000000000000000000  0.0000000000000000000000  0.0000000000000000000000 1.0000000000000000000000 1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.000000000000000000000  1.000000000000000000000  1.0000000000000000000000  1.0000000000000000000000 1.0000000000000000000000 1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.000000000000000000000  1.000000000000000000000  1.0000000000000000000000  1.0000000000000000000000 1.0000000000000000000000 1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.002873563218390828844  0.333333333333333314830  0.3333333333333333148296  0.3333333333333333148296 0.3362068965517241436736 0.336206896551724143674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.999999999999999888978 -0.382192253399446846274 -0.3821922533994468462737 -0.3323415113618682914520 0.6178077466005530427040 0.667658488638131708548</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.002873563218390828844  0.333333333333333314830  0.3333333333333333148296  0.3333333333333333148296 0.3362068965517241436736 0.336206896551724143674</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1.000000000000000000000 -0.336206896551724143674 -0.3362068965517241436736 -0.3333333333333333148296 0.6637931034482758008153 0.666666666666666740682</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.115484967071274979844 -0.711240635480859806350 -0.7112406354808598063499 -0.7050594805604689652156 1.4042443315904151734941 1.410118961120938152476</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.117570953941211975291 -0.710521542782611814637 -0.7105215427826118146371 -0.7043340276583159864643 1.4070494111586000496317 1.412983839556670062620</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.000000000000000002357 -0.000000000000000002962 -0.0000000000000000008757  0.0000000000000000004435 0.0000000000000000014811 0.000000000000000001481</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.002801120448179273466 -0.002801120448179273033 -0.0028011204481792730328 -0.0000000000000000002990 0.0000000000000000005904 0.005602240896358546933</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.002923538230884560433 -0.002923538230884558265 -0.0029235382308845582651 -0.0000000000000000011682 0.0000000000000000023365 0.005772113943028485752</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.195784491704986185479 -0.066256475500311121096 -0.0662564755003111210963 -0.0645661944560204925647 0.1295280162046750782601 0.131208034133709655622</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.000287356321839078721  0.008333333333333334952  0.0083333333333333349524  0.0086206896551724136735 0.0086206896551724136735 0.008620689655172413673</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                      mean       sd                   median                  trimmed                     mad       min     max    range    skew kurtosis         se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.3346774193548386899799 0.472832  0.000000000000000000000  0.294999999999999984457 0.000000000000000000000  0.000000 1.00000 1.000000  0.6965   -1.521 0.03002485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  1.0000000000000000000000 0.000000  1.000000000000000000000  1.000000000000000000000 0.000000000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.0000000000000000000000 0.000000  1.000000000000000000000  1.000000000000000000000 0.000000000000000000000  1.000000 1.00000 0.000000     NaN      NaN 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248  0.3346774193548389675357 0.001437  0.333333333333335202209  0.334655172413793389197 0.000000000000001892919  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.0573002508697849008423 0.576833 -0.332341511361869512697 -0.075204802777099219457 0.073908710144911168860 -5.270505 0.66766 5.938164 -2.5086   24.663 0.03662890</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.3346774193548389675357 0.001437  0.333333333333335202209  0.334655172413793389197 0.000000000000001892919  0.333333 0.33621 0.002874  0.1285   -1.991 0.00009123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.0000000000000002855297 0.472830 -0.333333333333333925452 -0.039655172413793411679 0.004260344827585008445 -0.336207 0.66667 1.002874  0.6965   -1.521 0.03002471</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.0000000000000005725798 1.002161 -0.705059480560470186461 -0.084112645273625399889 0.009164180284968827250 -0.733336 1.46667 2.200007  0.6966   -1.520 0.06363727</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248  0.0014388562414116830377 1.003176 -0.704334027658317651799 -0.082769662480429523344 0.009173609923278360986 -0.732642 1.47014 2.202786  0.6966   -1.520 0.06370171</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248  0.0000000000000000005021 0.009446 -0.000000000000000008804 -0.000000000000000001706 0.000000000000000008027 -0.030303 0.06061 0.090909  3.1951   27.751 0.00059982</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248 -0.0000000000000000029098 0.009841  0.000000000000000010166 -0.000168067226890756958 0.004152941176470575403 -0.060606 0.03030 0.090909 -2.8031   23.119 0.00062492</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248 -0.0000000000000000007484 0.009856  0.000000000000000008134 -0.000169415292353821859 0.004334437781109439294 -0.060606 0.03030 0.090909 -2.7888   22.959 0.00062589</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248  0.0001493959927701828225 0.113650 -0.064566194456020548076 -0.007664336326365706054 0.002506010676265059498 -0.220900 0.44326 0.664165  1.0762    1.808 0.00721679</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.0120967741935483451277 0.016096  0.008620689655172391122  0.008482758620689631601 0.000426034482758623218  0.008333 0.08333 0.075000  4.1833   15.564 0.00102213</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      IQR                    Q0.1                   Q0.25                     Q0.5                   Q0.75                   Q0.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.0000000000000000000  0.00000000000000000000  0.00000000000000000000  0.000000000000000000000 1.000000000000000000000 1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.0000000000000000000  1.00000000000000000000  1.00000000000000000000  1.000000000000000000000 1.000000000000000000000 1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.0000000000000000000  1.00000000000000000000  1.00000000000000000000  1.000000000000000000000 1.000000000000000000000 1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.0028735632183899962  0.33333333333333392545  0.33333333333333392545  0.333333333333335202209 0.336206896551723921629 0.33620689655172392163</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.0000000000000000000 -0.38219225339944618014 -0.38219225339944618014 -0.332341511361869512697 0.617807746600553819860 0.66765848863813048730</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.0028735632183899962  0.33333333333333392545  0.33333333333333392545  0.333333333333335202209 0.336206896551723921629 0.33620689655172392163</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  1.0000000000000000000 -0.33620689655172392163 -0.33620689655172392163 -0.333333333333333925452 0.663793103448276022860 0.66666666666666607455</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.1154849670712749798 -0.71124063548085925124 -0.71124063548085925124 -0.705059480560470186461 1.404244331590415839628 1.41011896112093659816</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.1175709539412128635 -0.71052154278261170361 -0.71052154278261170361 -0.704334027658317651799 1.407049411158600937810 1.41298383955666917444</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.0000000000000000316 -0.00000000000000001422 -0.00000000000000001422 -0.000000000000000008804 0.000000000000000017383 0.00000000000000002844</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.0028011204481792631 -0.00280112044817925308 -0.00280112044817925308  0.000000000000000010166 0.000000000000000010166 0.00560224089635849142</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.0029235382308845539 -0.00292353823088454569 -0.00292353823088454569  0.000000000000000008134 0.000000000000000008134 0.00577211394302846667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.1957844917049858524 -0.06625647550031102395 -0.06625647550031102395 -0.064566194456020548076 0.129528016204674828460 0.13120803413370957236</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.0002873563218390822  0.00833333333333330893  0.00833333333333330893  0.008620689655172391122 0.008620689655172391122 0.00862068965517239112</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Call"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -580,9 +580,9 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              Estimate           Std. Error t value Pr(&gt;|t|)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)      -0.69314718055974034  0.61611024197222464   -1.13     0.26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs -0.00000000000000298  0.64618187322872223    0.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.01290340483587012  0.64706480822329060    0.02     0.98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)      -0.69314718055974534  0.61611024197222919   -1.13     0.26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs  0.00000000000000142  0.64618187322872922    0.00     1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.01290340483587743  0.64706480822329404    0.02     0.98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for quasibinomial family taken to be 1.012)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -601,15 +601,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0    80.00 40.00 120.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    85.00 43.00 128.00 0.34</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0     8.00  4.00  12.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   157.00 79.00 236.00 0.33</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.48  0.52   1.00 0.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.05  0.95   1.00 0.35</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333     0.5               0.67               0.34            0.48            0.52          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.35               0.67               0.33            0.05            0.95             0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -637,36 +637,36 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                    mean        sd                   median                    trimmed                    mad       min      max     range    skew kurtosis         se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.33467741935483868998 0.4728318  0.000000000000000000000  0.29499999999999998445688 0.00000000000000000000  0.000000  1.00000 1.0000000  0.6965  -1.5210 0.03002485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  0.22266646654342805989 0.0004748  0.222222303827444594981  0.22265911488468076440128 0.00000000000000024690  0.222222  0.22317 0.0009496  0.1285  -1.9915 0.00003015</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.00000000000000000000 0.0000000  1.000000000000000000000  1.00000000000000000000000 0.00000000000000000000  1.000000  1.00000 0.0000000     NaN      NaN 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248 -0.68711171700747997182 0.0064513 -0.693147180559740339056 -0.68721161433524147188479 0.00000000000000444424 -0.693147 -0.68024 0.0129034  0.1285  -1.9915 0.00040966</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.05585842072013468690 1.0518897 -0.704876436960470975635 -0.14850361166036746274344 0.15485525237014260980 -1.110883  5.10590 6.2167788  1.0429   0.5662 0.06679506</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.33467741935488010130 0.0014367  0.333333333333378833974  0.33465517241383452295977 0.00000000000000090531  0.333333  0.33621 0.0028736  0.1285  -1.9915 0.00009123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.00000000000018590232 2.1234939 -1.500000000000101030295 -0.17922077922095114299594 0.00962727272724845165 -1.506494  3.00000 4.5064935  0.6965  -1.5209 0.13484200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.00000000000008772299 1.0021643 -0.705763623581222354630 -0.08431795193381524944343 0.00692527827022547740 -0.734068  1.46814 2.2022046  0.6966  -1.5204 0.06363750</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248  0.00143892390164848455 1.0031793 -0.705038878729441376159 -0.08297668893140895673977 0.00693240099513271497 -0.733376  1.47162 2.2050004  0.6966  -1.5204 0.06370195</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248 -0.00000000000000089436 0.0425065 -0.000000000000000001943 -0.00000000000000000007598 0.00000000000000000683 -0.136364  0.27273 0.4090909  3.1951  27.7505 0.00269917</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.00000000000000007323 0.0442853  0.000000000000000004024 -0.00075630252100906492172 0.01868823529411891074 -0.272727  0.13636 0.4090909 -2.8031  23.1188 0.00281212</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248  0.00000000000000021321 0.0443388 -0.000000000000000002821 -0.00075912493303851712612 0.01942197628458606010 -0.272727  0.13636 0.4090909 -2.7920  22.9947 0.00281551</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248  0.00014944824050792878 0.1136873 -0.064630819914745951671 -0.00765539127827052912068 0.00229866727875537545 -0.221121  0.44371 0.6648327  1.0773   1.8184 0.00721915</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.01209677419354838676 0.0160965  0.008620689655172415408  0.00848275862068965588736 0.00042603448275862582  0.008333  0.08333 0.0750000  4.1833  15.5641 0.00102213</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        IQR                     Q0.1                    Q0.25                     Q0.5                    Q0.75                     Q0.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.000000000000000000000  0.000000000000000000000  0.000000000000000000000  0.000000000000000000000  1.000000000000000000000  1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.000949589254861243903  0.222222303827444594981  0.222222303827444594981  0.222222303827444594981  0.223171893082305838885  0.223171893082305838885</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.000000000000000000000  1.000000000000000000000  1.000000000000000000000  1.000000000000000000000  1.000000000000000000000  1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.012903404835873155676 -0.693147180559743336659 -0.693147180559743336659 -0.693147180559740339056 -0.680243775723870180983 -0.680243775723870180983</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2.116802068853321117103 -0.809324873740548289547 -0.809324873740548289547 -0.704876436960470975635  1.307477195112773049601  1.416443517099937876580</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.002873563218383223816  0.333333333333378223351  0.333333333333378223351  0.333333333333378833974  0.336206896551761447167  0.336206896551761447167</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  4.480852480852234975828 -1.506493506493591150175 -1.506493506493591150175 -1.500000000000101030295  2.974358974358643603608  2.999999999999596322908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.113087706015920552716 -0.710434659781293498249 -0.710434659781293498249 -0.705763623581222354630  1.402653046234626943445  1.411527247162159603988</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.115156752980367649286 -0.709714719141644745370 -0.709714719141644745370 -0.705038878729441376159  1.405442033838722792893  1.414406553000183031088</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.000000000000000004607 -0.000000000000000005327 -0.000000000000000001943 -0.000000000000000001943  0.000000000000000002663  0.000000000000000003837</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.012605042016807576494 -0.012605042016807573024 -0.012605042016807573024  0.000000000000000004024  0.000000000000000004024  0.025210084033610056370</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.013099943534726887079 -0.013099943534726881875 -0.013099943534726881875 -0.000000000000000002821  0.000000000000000005642  0.025863991081379513609</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.195839709692395613772 -0.066181249753377663358 -0.066181249753377663358 -0.064630819914745951671  0.129658459939017950413  0.131058167101099465324</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.000287356321839083925  0.008333333333333331483  0.008333333333333331483  0.008620689655172415408  0.008620689655172415408  0.008620689655172415408</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                   mean        sd                  median                  trimmed                    mad       min      max     range    skew kurtosis         se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.3346774193548386900 0.4728318  0.00000000000000000000  0.294999999999999984457 0.00000000000000000000  0.000000  1.00000 1.0000000  0.6965  -1.5210 0.03002485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  0.2226664665434283097 0.0004748  0.22222230382744470600  0.222659114884680986446 0.00000000000000008230  0.222222  0.22317 0.0009496  0.1285  -1.9915 0.00003015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.0000000000000000000 0.0000000  1.00000000000000000000  1.000000000000000000000 0.00000000000000000000  1.000000  1.00000 0.0000000     NaN      NaN 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248 -0.6871117170074794167 0.0064513 -0.69314718055974389177 -0.687211614335240916773 0.00000000000000213982 -0.693147 -0.68024 0.0129034  0.1285  -1.9915 0.00040966</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.0558584207201347979 1.0518897 -0.70487643696046942132 -0.148503611660367684788 0.15485525237014674538 -1.110883  5.10590 6.2167788  1.0429   0.5662 0.06679506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.3346774193548802123 0.0014367  0.33333333333337805682  0.334655172413834689493 0.00000000000000032920  0.333333  0.33621 0.0028736  0.1285  -1.9915 0.00009123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.0000000000001864443 2.1234939 -1.50000000000010080825 -0.179220779220951864641 0.00962727272725042577 -1.506494  3.00000 4.5064935  0.6965  -1.5209 0.13484200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.0000000000000879778 1.0021643 -0.70576362358122179952 -0.084317951933815610266 0.00692527827022712279 -0.734068  1.46814 2.2022046  0.6966  -1.5204 0.06363750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248  0.0014389239016483362 1.0031793 -0.70503887872943804549 -0.082976688931408915106 0.00693240099513452515 -0.733376  1.47162 2.2050004  0.6966  -1.5204 0.06370195</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248 -0.0000000000000009193 0.0425065  0.00000000000000007191  0.000000000000000005058 0.00000000000000002279 -0.136364  0.27273 0.4090909  3.1951  27.7505 0.00269917</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.0000000000000001021 0.0442853 -0.00000000000000011134 -0.000756302521009068825 0.01868823529411886217 -0.272727  0.13636 0.4090909 -2.8031  23.1188 0.00281212</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248  0.0000000000000002330 0.0443388 -0.00000000000000004296 -0.000759124933038530353 0.01942197628458616765 -0.272727  0.13636 0.4090909 -2.7920  22.9947 0.00281551</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248  0.0001494482405078589 0.1136873 -0.06463081991474571575 -0.007655391278270523049 0.00229866727875556063 -0.221121  0.44371 0.6648327  1.0773   1.8184 0.00721915</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.0120967741935484197 0.0160965  0.00862068965517243276  0.008482758620689669765 0.00042603448275863607  0.008333  0.08333 0.0750000  4.1833  15.5641 0.00102213</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      IQR                   Q0.1                  Q0.25                    Q0.5                   Q0.75                    Q0.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.0000000000000000000  0.0000000000000000000  0.0000000000000000000  0.00000000000000000000  1.00000000000000000000  1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.0009495892548616047  0.2222223038274446505  0.2222223038274446505  0.22222230382744470600  0.22317189308230625522  0.22317189308230625522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.0000000000000000000  1.0000000000000000000  1.0000000000000000000  1.00000000000000000000  1.00000000000000000000  1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.0129034048358759312 -0.6931471805597438918 -0.6931471805597438918 -0.69314718055974389177 -0.68024377572386796054 -0.68024377572386796054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2.1168020688533193407 -0.8093248737405495108 -0.8093248737405495108 -0.70487643696046942132  1.30747719511276994098  1.41644351709993920885</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.0028735632183839455  0.3333333333333780568  0.3333333333333780568  0.33333333333337805682  0.33620689655176200228  0.33620689655176200228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  4.4808524808522314231 -1.5064935064935922604 -1.5064935064935922604 -1.50000000000010080825  2.97435897435863916272  2.99999999999959765518</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.1130877060159187764 -0.7104346597812940534 -0.7104346597812940534 -0.70576362358122179952  1.40265304623462494504  1.41152724716215938194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.1151567529803578793 -0.7097147191416426359 -0.7097147191416426359 -0.70503887872943804549  1.40544203383871546542  1.41440655300017792406</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.0000000000000002311 -0.0000000000000001723 -0.0000000000000001438  0.00000000000000007191  0.00000000000000008728  0.00000000000000008728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.0126050420168078749 -0.0126050420168076546 -0.0126050420168076546 -0.00000000000000011134  0.00000000000000021982  0.02521008403361022984</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.0130999435347270762 -0.0130999435347269894 -0.0130999435347269894 -0.00000000000000004296  0.00000000000000008592  0.02586399108137966626</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.1958397096923951419 -0.0661812497533775523 -0.0661812497533775523 -0.06463081991474571575  0.12965845993901758959  0.13105816710109893797</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.0002873563218390909  0.0083333333333333419  0.0083333333333333419  0.00862068965517243276  0.00862068965517243276  0.00862068965517243276</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Call"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -687,12 +687,12 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> glm(formula = case ~ education, family = quasipoisson, data = infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                              Estimate           Std. Error t value Pr(&gt;|t|)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)      -1.09861228733042560  0.41032572491473840   -2.68   0.0079 **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs  0.00000000000000131  0.43035325092240911    0.00   1.0000   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.00858374359702303  0.43085457341522393    0.02   0.9841   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                             Estimate          Std. Error t value Pr(&gt;|t|)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)      -1.0986122873304081  0.4103257249147355   -2.68   0.0079 **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs -0.0000000000000151  0.4303532509224056    0.00   1.0000   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.0085837435970055  0.4308545734152230    0.02   0.9841   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for quasipoisson family taken to be 0.6735)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -711,15 +711,15 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          0     1    sum    p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0     8.00  4.00  12.00 0.67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   157.00 79.00 236.00 0.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0    80.00 40.00 120.00 0.67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    85.00 43.00 128.00 0.34</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sum 165.00 83.00 248.00 1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.05  0.95   1.00 0.35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p     0.48  0.52   1.00 0.50</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333    0.35               0.67               0.33            0.05            0.95             0.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.3333     0.5               0.67               0.34            0.48            0.52          0.5025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -747,36 +747,36 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                mean       sd                    median                    trimmed                      mad       min      max     range    skew kurtosis         se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.3346774193548387 0.472832  0.0000000000000000000000  0.29499999999999998445688 0.0000000000000000000000  0.000000  1.00000  1.000000  0.6965   -1.521 0.03002485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  0.3346944386190310 0.001436  0.3333505752555100398737  0.33467219536335895968548 0.0000000000000007407075  0.333351  0.33622  0.002873  0.1285   -1.991 0.00009121</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.0000000000000000 0.000000  1.0000000000000000000000  1.00000000000000000000000 0.0000000000000000000000  1.000000  1.00000  0.000000     NaN      NaN 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248 -1.0945973104866562 0.004292 -1.0986122873304242641979 -1.09466376527579423161285 0.0000000000000019752200 -1.098612 -1.09003  0.008584  0.1285   -1.991 0.00027252</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.0221865975917645 1.034464 -0.5754099864767479033389 -0.12133645560358886916763 0.1248446178763895353381 -0.906896  9.97234 10.879239  3.9178   32.689 0.06568854</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.3346774197876914 0.001437  0.3333333337792284689627  0.33465517284686169263708 0.0000000000000006584067  0.333333  0.33621  0.002874  0.1285   -1.991 0.00009123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.0000000012935446 1.412818 -1.0000000000000000000000 -0.12000000112242864558354 0.0000000000000000000000 -1.000000  2.00000  3.000000  0.6966   -1.521 0.08971404</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.0000000009174961 1.002143 -0.7064583169770122239584 -0.08452368982711536138375 0.0046573841414731210683 -0.734791  1.46958  2.204372  0.6966   -1.520 0.06363613</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248  0.0014389605654268 1.003158 -0.7057343116176809649787 -0.08318419839348169253501 0.0046621701947464682866 -0.734099  1.47309  2.207186  0.6966   -1.520 0.06370060</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248 -0.0000000000058842 0.028338  0.0000000000000000008869  0.00000000000000000007836 0.0000000000000000006899 -0.090909  0.18182  0.272727  3.1951   27.751 0.00179945</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.0000000000004450 0.029524  0.0000000000000000008915 -0.00050420168471904808216 0.0124588235294117652407 -0.181818  0.09091  0.272727 -2.8031   23.119 0.00187475</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248  0.0000000000008273 0.029549 -0.0000000000000000009346 -0.00050390189890430966968 0.0128921739130434757220 -0.181818  0.09091  0.272727 -2.7952   23.031 0.00187636</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248  0.0001495016074699 0.113725 -0.0646962313990175064138 -0.00764631792361617282361 0.0020885612157228645482 -0.221345  0.44416  0.665509  1.0783    1.829 0.00722154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.0120967741935484 0.016096  0.0086206896551724136735  0.00848275862068965588736 0.0004260344827586180685  0.008333  0.08333  0.075000  4.1833   15.564 0.00102213</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        IQR                    Q0.1                    Q0.25                      Q0.5                     Q0.75                     Q0.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.000000000000000000000  0.00000000000000000000  0.000000000000000000000  0.0000000000000000000000  1.0000000000000000000000  1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.002873087190976897354  0.33335057525550954027  0.333350575255509540273  0.3333505752555100398737  0.3362236624464864376272  0.336223662446486437627</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.000000000000000000000  1.00000000000000000000  1.000000000000000000000  1.0000000000000000000000  1.0000000000000000000000  1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.008583743597021742389 -1.09861228733042426420 -1.098612287330424264198 -1.0986122873304242641979 -1.0900285437334025218092 -1.090028543733402521809</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.724589996795717228295 -0.65961652760475919521 -0.659616527604759195214 -0.5754099864767479033389  1.0649734691909580330815  1.156596027002034565712</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.002873563190506966958  0.33333333377922846896  0.333333333779228468963  0.3333333337792284689627  0.3362068969697354359205  0.336206896969735435921</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2.974358970660907708350 -1.00000000000000000000 -1.000000000000000000000 -1.0000000000000000000000  1.9743589706609074863053  1.999999995986943890358</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.110604172429113134513 -0.70959967954376867993 -0.709599679543768679935 -0.7064583169770122239584  1.4010044928853446766226  1.412916631118967591974</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.112656037278997978035 -0.70887890233314465593 -0.708878902333144655934 -0.7057343116176809649787  1.4037771349458534331234  1.415810501507583918368</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.000000000000000003126 -0.00000000000000000267 -0.000000000000000001774  0.0000000000000000008869  0.0000000000000000013522  0.000000000000000001352</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.008403361344537816496 -0.00840336134453781476 -0.008403361344537814762  0.0000000000000000008915  0.0000000000000000008915  0.016806722655352469842</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.008695652173913045319 -0.00869565217391304358 -0.008695652173913043584 -0.0000000000000000009346  0.0000000000000000018693  0.017168338875312241093</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.195895439059829423734 -0.06610494663962378226 -0.066104946639623782256 -0.0646962313990175064138  0.1297904924202056275995  0.130906156600367973297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.000287356321839078721  0.00833333333333333495  0.008333333333333334952  0.0086206896551724136735  0.0086206896551724136735  0.008620689655172413673</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                mean       sd                  median                  trimmed                    mad       min      max     range    skew kurtosis         se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.3346774193548387 0.472832  0.00000000000000000000  0.294999999999999984457 0.00000000000000000000  0.000000  1.00000  1.000000  0.6965   -1.521 0.03002485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  0.3346944386190289 0.001436  0.33335057525550787494  0.334672195363357016795 0.00000000000000625486  0.333351  0.33622  0.002873  0.1285   -1.991 0.00009121</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.0000000000000000 0.000000  1.00000000000000000000  1.000000000000000000000 0.00000000000000000000  1.000000  1.00000  0.000000     NaN      NaN 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248 -1.0945973104866547 0.004292 -1.09861228733040805494 -1.094663765275792677301 0.00000000000002238583 -1.098612 -1.09003  0.008584  0.1285   -1.991 0.00027252</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.0221865975917655 1.034464 -0.57540998647675056787 -0.121336455603589479790 0.12484461787638756469 -0.906896  9.97234 10.879239  3.9178   32.689 0.06568854</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.3346774197876918 0.001437  0.33333333377923385354  0.334655172846862192237 0.00000000000000740707  0.333333  0.33621  0.002874  0.1285   -1.991 0.00009123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.0000000012935460 1.412818 -1.00000000000000000000 -0.120000001122429894584 0.00000000000000000000 -1.000000  2.00000  3.000000  0.6966   -1.521 0.08971404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.0000000009174970 1.002143 -0.70645831697701588769 -0.084523689827116027518 0.00465738414147246274 -0.734791  1.46958  2.204372  0.6966   -1.520 0.06363613</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248  0.0014389605654257 1.003158 -0.70573431161768451769 -0.083184198393482483569 0.00466217019474597389 -0.734099  1.47309  2.207186  0.6966   -1.520 0.06370060</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248 -0.0000000000058843 0.028338 -0.00000000000000001302 -0.000000000000000005108 0.00000000000000004382 -0.090909  0.18182  0.272727  3.1951   27.751 0.00179945</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.0000000000004450 0.029524  0.00000000000000001961 -0.000504201684719046781 0.01245882352941168891 -0.181818  0.09091  0.272727 -2.8031   23.119 0.00187475</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248  0.0000000000008273 0.029549  0.00000000000000002863 -0.000503901898904309778 0.01289217391304351389 -0.181818  0.09091  0.272727 -2.7952   23.031 0.00187636</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248  0.0001495016074698 0.113725 -0.06469623139901752029 -0.007646317923616210120 0.00208856121572282335 -0.221345  0.44416  0.665509  1.0783    1.829 0.00722154</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.0120967741935484 0.016096  0.00862068965517238939  0.008482758620689628132 0.00042603448275862837  0.008333  0.08333  0.075000  4.1833   15.564 0.00102213</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                       IQR                    Q0.1                   Q0.25                    Q0.5                   Q0.75                    Q0.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.00000000000000000000  0.00000000000000000000  0.00000000000000000000  0.00000000000000000000  1.00000000000000000000  1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.00287308719097639775  0.33335057525550787494  0.33335057525550787494  0.33335057525550787494  0.33622366244648427269  0.33622366244648427269</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.00000000000000000000  1.00000000000000000000  1.00000000000000000000  1.00000000000000000000  1.00000000000000000000  1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.00858374359702063217 -1.09861228733042315397 -1.09861228733042315397 -1.09861228733040805494 -1.09002854373340252181 -1.09002854373340252181</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  1.72458999679572322350 -0.65961652760476052748 -0.65961652760476052748 -0.57540998647675056787  1.06497346919096269602  1.15659602700203589798</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.00287356319050657838  0.33333333377922885754  0.33333333377922885754  0.33333333377923385354  0.33620689696973543592  0.33620689696973543592</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  2.97435897066090770835 -1.00000000000000000000 -1.00000000000000000000 -1.00000000000000000000  1.97435897066090748631  1.99999999598694055969</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.11060417242912334856 -0.70959967954377189958 -0.70959967954377189958 -0.70645831697701588769  1.40100449288535133796  1.41291663111897247695</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.11265603727900730391 -0.70887890233314787558 -0.70887890233314787558 -0.70573431161768451769  1.40377713494585942833  1.41581050150758835926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.00000000000000006827 -0.00000000000000004257 -0.00000000000000004257 -0.00000000000000001302  0.00000000000000002570  0.00000000000000008514</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.00840336134453776445 -0.00840336134453774537 -0.00840336134453774537  0.00000000000000001961  0.00000000000000001961  0.01680672265535230678</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.00869565217391306787 -0.00869565217391303838 -0.00869565217391303838  0.00000000000000002863  0.00000000000000002863  0.01716833887531222722</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.19589543905982922944 -0.06610494663962376838 -0.06610494663962376838 -0.06469623139901752029  0.12979049242020546107  0.13090615660036794554</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.00028735632183908566  0.00833333333333330373  0.00833333333333330373  0.00862068965517238939  0.00862068965517238939  0.00862068965517238939</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Call"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -801,7 +801,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -0.701308   0.271601   -2.58   0.0098 **</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stratum      0.000339   0.005626    0.06   0.9520   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for binomial family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1023,9 +1023,9 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                              Estimate           Std. Error z value Pr(&gt;|z|)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)      -0.69314718055974034  0.61237232325705038   -1.13     0.26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs -0.00000000000000298  0.64226151100650664    0.00     1.00</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.01290340483587012  0.64313908926616681    0.02     0.98</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)      -0.69314718055974534  0.61237232325705460   -1.13     0.26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education6-11yrs  0.00000000000000142  0.64226151100651341    0.00     1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> education12+ yrs  0.01290340483587743  0.64313908926617003    0.02     0.98</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for binomial family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1052,12 +1052,12 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Performance"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   -0.6931    0.50               0.67               0.34            0.48            0.52          0.5025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   -0.6931    0.35               0.67               0.33            0.05            0.95          0.5000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   -0.6831    0.51               0.67               0.34            0.53            0.47          0.5025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Confusion Matrix Best Cut"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.6931 -0.6831</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.6831</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Pseudo R^2"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -1081,36 +1081,36 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                    mean        sd                   median                    trimmed                    mad       min      max     range    skew kurtosis         se</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.33467741935483868998 0.4728318  0.000000000000000000000  0.29499999999999998445688 0.00000000000000000000  0.000000  1.00000 1.0000000  0.6965  -1.5210 0.03002485</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  0.22266646654342805989 0.0004748  0.222222303827444594981  0.22265911488468076440128 0.00000000000000024690  0.222222  0.22317 0.0009496  0.1285  -1.9915 0.00003015</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.00000000000000000000 0.0000000  1.000000000000000000000  1.00000000000000000000000 0.00000000000000000000  1.000000  1.00000 0.0000000     NaN      NaN 0.00000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248 -0.68711171700747997182 0.0064513 -0.693147180559740339056 -0.68721161433524147188479 0.00000000000000444424 -0.693147 -0.68024 0.0129034  0.1285  -1.9915 0.00040966</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.05585842072013468690 1.0518897 -0.704876436960470975635 -0.14850361166036746274344 0.15485525237014260980 -1.110883  5.10590 6.2167788  1.0429   0.5662 0.06679506</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.33467741935488010130 0.0014367  0.333333333333378833974  0.33465517241383452295977 0.00000000000000090531  0.333333  0.33621 0.0028736  0.1285  -1.9915 0.00009123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.00000000000018590232 2.1234939 -1.500000000000101030295 -0.17922077922095114299594 0.00962727272724845165 -1.506494  3.00000 4.5064935  0.6965  -1.5209 0.13484200</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.00000000000008822538 1.0082815 -0.710071602496798015558 -0.08483262844447500561351 0.00696755014677985073 -0.738549  1.47710 2.2156468  0.6966  -1.5204 0.06402594</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248 -0.00000000000008822538 1.0082815 -0.710071602496798015558 -0.08483262844447500561351 0.00696755014677985073 -0.738549  1.47710 2.2156468  0.6966  -1.5204 0.06402594</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248 -0.00000000000000089436 0.0425065 -0.000000000000000001943 -0.00000000000000000007598 0.00000000000000000683 -0.136364  0.27273 0.4090909  3.1951  27.7505 0.00269917</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.00000000000000007323 0.0442853  0.000000000000000004024 -0.00075630252100906492172 0.01868823529411891074 -0.272727  0.13636 0.4090909 -2.8031  23.1188 0.00281212</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248  0.00000000000000021321 0.0443388 -0.000000000000000002821 -0.00075912493303851712612 0.01942197628458606010 -0.272727  0.13636 0.4090909 -2.7920  22.9947 0.00281551</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248 -0.00000000000000916281 0.1142557 -0.065092169030804419849 -0.00782742721614365297156 0.00231373884888215649 -0.222681  0.44536 0.6680428  1.0740   1.8074 0.00725524</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.01209677419354838676 0.0160965  0.008620689655172415408  0.00848275862068965588736 0.00042603448275862582  0.008333  0.08333 0.0750000  4.1833  15.5641 0.00102213</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        IQR                     Q0.1                    Q0.25                     Q0.5                    Q0.75                     Q0.9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.000000000000000000000  0.000000000000000000000  0.000000000000000000000  0.000000000000000000000  1.000000000000000000000  1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.000949589254861243903  0.222222303827444594981  0.222222303827444594981  0.222222303827444594981  0.223171893082305838885  0.223171893082305838885</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.000000000000000000000  1.000000000000000000000  1.000000000000000000000  1.000000000000000000000  1.000000000000000000000  1.000000000000000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.012903404835873155676 -0.693147180559743336659 -0.693147180559743336659 -0.693147180559740339056 -0.680243775723870180983 -0.680243775723870180983</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2.116802068853321117103 -0.809324873740548289547 -0.809324873740548289547 -0.704876436960470975635  1.307477195112773049601  1.416443517099937876580</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.002873563218383223816  0.333333333333378223351  0.333333333333378223351  0.333333333333378833974  0.336206896551761447167  0.336206896551761447167</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  4.480852480852234975828 -1.506493506493591150175 -1.506493506493591150175 -1.500000000000101030295  2.974358974358643603608  2.999999999999596322908</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.125985986658506021740 -0.714771150686990819345 -0.714771150686990819345 -0.710071602496798015558  1.411214835971515313418  1.420143204993309149486</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.125985986658506021740 -0.714771150686990819345 -0.714771150686990819345 -0.710071602496798015558  1.411214835971515313418  1.420143204993309149486</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.000000000000000004607 -0.000000000000000005327 -0.000000000000000001943 -0.000000000000000001943  0.000000000000000002663  0.000000000000000003837</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.012605042016807576494 -0.012605042016807573024 -0.012605042016807573024  0.000000000000000004024  0.000000000000000004024  0.025210084033610056370</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.013099943534726887079 -0.013099943534726881875 -0.013099943534726881875 -0.000000000000000002821  0.000000000000000005642  0.025863991081379513609</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.196837102565800003973 -0.066652764504217448804 -0.066652764504217448804 -0.065092169030804419849  0.130184338061582555168  0.131596483764714999865</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.000287356321839083925  0.008333333333333331483  0.008333333333333331483  0.008620689655172415408  0.008620689655172415408  0.008620689655172415408</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   variable   n                   mean        sd                  median                  trimmed                    mad       min      max     range    skew kurtosis         se</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1            variable.case 248  0.3346774193548386900 0.4728318  0.00000000000000000000  0.294999999999999984457 0.00000000000000000000  0.000000  1.00000 1.0000000  0.6965  -1.5210 0.03002485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                  weights 248  0.2226664665434283097 0.0004748  0.22222230382744470600  0.222659114884680986446 0.00000000000000008230  0.222222  0.22317 0.0009496  0.1285  -1.9915 0.00003015</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3            prior_weights 248  1.0000000000000000000 0.0000000  1.00000000000000000000  1.000000000000000000000 0.00000000000000000000  1.000000  1.00000 0.0000000     NaN      NaN 0.00000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        linear_predictors 248 -0.6871117170074794167 0.0064513 -0.69314718055974389177 -0.687211614335240916773 0.00000000000000213982 -0.693147 -0.68024 0.0129034  0.1285  -1.9915 0.00040966</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                  effects 248 -0.0558584207201347979 1.0518897 -0.70487643696046942132 -0.148503611660367684788 0.15485525237014674538 -1.110883  5.10590 6.2167788  1.0429   0.5662 0.06679506</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                   fitted 248  0.3346774193548802123 0.0014367  0.33333333333337805682  0.334655172413834689493 0.00000000000000032920  0.333333  0.33621 0.0028736  0.1285  -1.9915 0.00009123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                residuals 248 -0.0000000000001864443 2.1234939 -1.50000000000010080825 -0.179220779220951864641 0.00962727272725042577 -1.506494  3.00000 4.5064935  0.6965  -1.5209 0.13484200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   standardized_residuals 248 -0.0000000000000884804 1.0082815 -0.71007160249679768249 -0.084832628444475408069 0.00696755014678166092 -0.738549  1.47710 2.2156468  0.6966  -1.5204 0.06402594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        student_residuals 248 -0.0000000000000884804 1.0082815 -0.71007160249679768249 -0.084832628444475408069 0.00696755014678166092 -0.738549  1.47710 2.2156468  0.6966  -1.5204 0.06402594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      dfbeta.(Intercept) 248 -0.0000000000000009193 0.0425065  0.00000000000000007191  0.000000000000000005058 0.00000000000000002279 -0.136364  0.27273 0.4090909  3.1951  27.7505 0.00269917</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 dfbeta.education6-11yrs 248  0.0000000000000001021 0.0442853 -0.00000000000000011134 -0.000756302521009068825 0.01868823529411886217 -0.272727  0.13636 0.4090909 -2.8031  23.1188 0.00281212</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 dfbeta.education12+ yrs 248  0.0000000000000002330 0.0443388 -0.00000000000000004296 -0.000759124933038530353 0.01942197628458616765 -0.272727  0.13636 0.4090909 -2.7920  22.9947 0.00281551</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                  dffits 248 -0.0000000000000092466 0.1142557 -0.06509216903080446148 -0.007827427216143694605 0.00231373884888236249 -0.222681  0.44536 0.6680428  1.0740   1.8074 0.00725524</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14               hatvalues 248  0.0120967741935484197 0.0160965  0.00862068965517243276  0.008482758620689669765 0.00042603448275863607  0.008333  0.08333 0.0750000  4.1833  15.5641 0.00102213</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                      IQR                   Q0.1                  Q0.25                    Q0.5                   Q0.75                    Q0.9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1.0000000000000000000  0.0000000000000000000  0.0000000000000000000  0.00000000000000000000  1.00000000000000000000  1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.0009495892548616047  0.2222223038274446505  0.2222223038274446505  0.22222230382744470600  0.22317189308230625522  0.22317189308230625522</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.0000000000000000000  1.0000000000000000000  1.0000000000000000000  1.00000000000000000000  1.00000000000000000000  1.00000000000000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.0129034048358759312 -0.6931471805597438918 -0.6931471805597438918 -0.69314718055974389177 -0.68024377572386796054 -0.68024377572386796054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  2.1168020688533193407 -0.8093248737405495108 -0.8093248737405495108 -0.70487643696046942132  1.30747719511276994098  1.41644351709993920885</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.0028735632183839455  0.3333333333333780568  0.3333333333333780568  0.33333333333337805682  0.33620689655176200228  0.33620689655176200228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  4.4808524808522314231 -1.5064935064935922604 -1.5064935064935922604 -1.50000000000010080825  2.97435897435863916272  2.99999999999959765518</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  2.1259859866585055777 -0.7147711506869917075 -0.7147711506869917075 -0.71007160249679768249  1.41121483597151375911  1.42014320499330959358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  2.1259859866585055777 -0.7147711506869917075 -0.7147711506869917075 -0.71007160249679768249  1.41121483597151375911  1.42014320499330959358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.0000000000000002311 -0.0000000000000001723 -0.0000000000000001438  0.00000000000000007191  0.00000000000000008728  0.00000000000000008728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.0126050420168078749 -0.0126050420168076546 -0.0126050420168076546 -0.00000000000000011134  0.00000000000000021982  0.02521008403361022984</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.0130999435347270762 -0.0130999435347269894 -0.0130999435347269894 -0.00000000000000004296  0.00000000000000008592  0.02586399108137966626</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13 0.1968371025658003370 -0.0666527645042176292 -0.0666527645042176292 -0.06509216903080446148  0.13018433806158269395  0.13159648376471502762</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14 0.0002873563218390909  0.0083333333333333419  0.0083333333333333419  0.00862068965517243276  0.00862068965517243276  0.00862068965517243276</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Call"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
@@ -1135,7 +1135,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept) -0.701308   0.271601   -2.58   0.0098 **</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> stratum      0.000339   0.005626    0.06   0.9520   </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Dispersion parameter for binomial family taken to be 1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

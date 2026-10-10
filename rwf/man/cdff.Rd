@@ -24,8 +24,9 @@ truncated. Defaults to \code{getOption("width") / 3}.}
 \item{digits}{Integer. Number of decimal places used when rounding MEAN,
 MEDIAN, and SD for numeric columns. Defaults to \code{2}.}
 
-\item{nuniques}{Integer. If \code{> 0}, appends UNIQUES and LEVELS columns
-to the output. Columns with more distinct entries than \code{nuniques} are
+\item{nuniques}{Integer. If \code{> 0}, appends a UNIQUES column to the
+output, plus a LEVELS column when at least one column is a factor. Columns
+with more distinct entries than \code{nuniques} are
 summarised as \code{"N Uniques"} / \code{"N Levels"}. Set to \code{0} to
 skip (faster). Defaults to \code{0}.}
 
