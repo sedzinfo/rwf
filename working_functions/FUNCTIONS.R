@@ -225,6 +225,7 @@ remove_nc <- function(df, value = NA, remove_rows = FALSE, aggressive = FALSE, r
 #' @keywords functions
 #' @export
 #' @examples
+#' set.seed(12345)
 #' df1 <- generate_missing(rnorm(10), missing = 5)
 #' df2 <- generate_missing(rnorm(10), missing = 5)
 #' df3 <- generate_missing(rnorm(10), missing = 5)
@@ -235,14 +236,15 @@ remove_nc <- function(df, value = NA, remove_rows = FALSE, aggressive = FALSE, r
 #' replace_na_with_previous(df1)
 #' df[] <- lapply(df, replace_na_with_previous)
 replace_na_with_previous <- function(vector) {
+  if (length(vector) == 0) {
+    return(vector)
+  }
   if (is.na(vector[1])) {
     vector[1] <- na.omit(vector)[1]
   }
-  for (i in 1:length(vector)) {
-    if ((i - 1) > 0) {
-      if (is.na(vector[i])) {
-        vector[i] <- vector[i - 1]
-      }
+  for (i in seq_along(vector)[-1]) {
+    if (is.na(vector[i])) {
+      vector[i] <- vector[i - 1]
     }
   }
   return(vector)

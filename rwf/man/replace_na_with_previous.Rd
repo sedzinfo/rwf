@@ -22,6 +22,7 @@ Replaces each \code{NA} in a vector with the most recent
   column of a data frame use \code{df[] <- lapply(df, replace_na_with_previous)}.
 }
 \examples{
+set.seed(12345)
 df1 <- generate_missing(rnorm(10), missing = 5)
 df2 <- generate_missing(rnorm(10), missing = 5)
 df3 <- generate_missing(rnorm(10), missing = 5)
