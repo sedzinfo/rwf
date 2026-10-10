@@ -244,7 +244,6 @@ test_that("response_frequency returns NULL when there are too many response opti
 })
 
 test_that("response_frequency reports values outside uniqueitems as missing only", {
-  skip("rwf bug: out-of-range values get their own response column (with a count of 0) instead of only counting as miss")
   result <- response_frequency(data.frame(a = c(1, 2, 9, 2)), uniqueitems = 1:3, type = "frequency")
   expect_named(result, c("type", "variable", "1", "2", "3", "miss", "responses"))
   expect_equal(result$miss, 1)

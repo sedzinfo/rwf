@@ -283,13 +283,9 @@ response_frequency <- function(df, max = 10, uniqueitems = NULL, type = "percent
   if ((max.item - min.item > max) || (nlevels(factor(df[, 1])) > max) || length(uniqueitems) > max) {
     result <- NULL
   } else {
-    n_var <- dim(df)[2]
     n_cases <- dim(df)[1]
-    dummy <- matrix(rep(uniqueitems, n_var), ncol = n_var)
-    colnames(dummy) <- names(df)
-    xdum <- rbind(df, dummy)
-    frequency <- apply(xdum, 2, table)
-    frequency <- t(frequency - 1)
+    # count each column against uniqueitems only, values outside it end up in miss
+    frequency <- do.call(rbind, lapply(df, function(x) table(factor(x, levels = sort(uniqueitems)))))
     responses <- rowSums(frequency)
     if (type == "frequency") {
       result <- data.frame(type = "Frequency", variable = row.names(frequency), frequency, miss = n_cases - responses, responses, check.names = FALSE)
