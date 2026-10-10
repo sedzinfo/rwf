@@ -212,7 +212,6 @@ test_that("cdff counts missing, NaN, finite, empty and distinct values like base
 })
 
 test_that("cdff does not count non-numeric values as infinite", {
-  skip("rwf bug: cdff INF uses !is.finite & !is.na, so every non-NA character value counts as Inf")
   df <- mixed_check_frame()
   rwf <- cdff(df = df, name_length = 200)
   check_counts(rwf, df, "INF")

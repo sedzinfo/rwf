@@ -172,10 +172,11 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 #' Check dataframe (optimised)
 #'
 #' A faster equivalent of \code{\link{cdf}}. Produces the same column-level
-#' diagnostic summary (except MIN and MAX, see Note) but avoids repeated passes
-#' over each column, eliminates row-by-row \code{rbind} calls, and removes the
-#' \code{gtools} and \code{plyr} dependencies. Recommended for large dataframes
-#' (> 100k rows or > 50 columns).
+#' diagnostic summary (except for the cases listed in Note) but computes every
+#' statistic, including UNIQUES and LEVELS, in a single pass over each column,
+#' builds the result without \code{rbind} calls, and removes the \code{gtools}
+#' and \code{plyr} dependencies. Recommended for large dataframes (> 100k rows
+#' or > 50 columns).
 #'
 #' @inheritParams cdf
 #'
@@ -191,6 +192,11 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 #'   (use \code{nuniques} to list their values instead), as are columns with
 #'   only missing values. This differs from \code{\link{cdf}}, which reports
 #'   the first and last label in sorted order for non-double columns.
+#'
+#'   MEAN, MEDIAN and SD are \code{NA} (rather than \code{NaN}) for numeric
+#'   columns without any observed value. UNIQUES lists the values in their
+#'   natural order (numbers by value, factor levels in level order, dates by
+#'   time), leaving out \code{NA} and \code{NaN}; RANGE still counts them.
 #'
 #' @import future.apply
 #' @importFrom future availableCores plan multisession sequential
@@ -225,12 +231,15 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
     apply_fun <- lapply
   }
 
-  check_df <- apply_fun(df, function(y) {
+  # one pass per column: every statistic (and UNIQUES / LEVELS when requested) comes from
+  # the same cached vectors, so no column is scanned twice
+  check_list <- apply_fun(df, function(y) {
     # --- cache expensive operations ---
     y_na <- is.na(y)
     y_notna <- !y_na
+    has_data <- any(y_notna)
     y_unlisted <- unlist(y) # once only
-    u <- unique(y) # once only
+    u <- unique(y) # once only, reused for RANGE and UNIQUES
 
     is_num <- is.numeric(y)
     is_fin <- is.finite(y_unlisted)
@@ -239,7 +248,7 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
     # by value, ordered factors by level order, dates by time; unordered factors,
     # text and logicals have no order, so MIN / MAX stay NA
     col_min <- col_max <- NA
-    if (any(y_notna)) {
+    if (has_data) {
       if (is_num) {
         col_min <- min(y, na.rm = TRUE)
         col_max <- max(y, na.rm = TRUE)
@@ -253,37 +262,49 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
       }
     }
 
-    list(
+    result <- list(
       # only text can be empty; converting numbers to text just to count "" was the slow part
       EMPTY   = if (is.character(y) || is.factor(y)) sum(y == "", na.rm = TRUE) else 0L,
       null    = sum(is.null(y)), # always 0 for df columns; kept for parity
       na      = sum(y_na),
       NOT_NA  = sum(y_notna),
-      NAN     = sum(is.nan(y_unlisted)),
+      # only doubles (and complex numbers) can hold NaN
+      NAN     = if (is.double(y_unlisted) || is.complex(y_unlisted)) sum(is.nan(y_unlisted)) else 0L,
       # only numbers and dates can be Inf; for them "not finite and not NA" is exactly +-Inf
       # (NaN counts as NA), and reusing is_fin / y_notna avoids another pass over the column
       INF     = if (is_num || inherits(y, c("Date", "POSIXt"))) sum(!is_fin & y_notna) else 0L,
       FIN     = sum(is_fin),
       RANGE   = length(u),
-      MEAN    = if (is_num) round(mean(y, na.rm = TRUE), digits) else NA,
-      MEDIAN  = if (is_num) round(stats::median(y, na.rm = TRUE), digits) else NA,
-      SD      = if (is_num) round(stats::sd(y, na.rm = TRUE), digits) else NA,
+      # NA (not NaN) when a numeric column has no observed values
+      MEAN    = if (is_num && has_data) round(mean(y, na.rm = TRUE), digits) else NA,
+      MEDIAN  = if (is_num && has_data) round(stats::median(y, na.rm = TRUE), digits) else NA,
+      SD      = if (is_num && has_data) round(stats::sd(y, na.rm = TRUE), digits) else NA,
       MIN     = col_min,
       MAX     = col_max,
       MODE    = mode(y),
       TYPE    = typeof(y),
-      CLASS   = class(y)[1],
+      CLASS   = toString(class(y)),
       FACTOR  = is.factor(y)
     )
+    if (nuniques > 0) {
+      lv <- levels(y)
+      # sort the values themselves, so numbers list as 1, 2, 10 and not as text 1, 10, 2
+      result$UNIQUES <- if (length(u) > nuniques) paste(length(u), "Uniques") else toString(if (is.list(u)) sort(as.character(u)) else sort(u))
+      result$LEVELS <- if (length(lv) > nuniques) paste(length(lv), "Levels") else toString(lv)
+    }
+    result
   })
 
-  # Build check_df in one shot — NO loop, NO rbind.fill
-  check_df <- data.frame(
-    NAMES = names(df),
-    do.call(rbind, lapply(check_df, function(x) as.data.frame(x, stringsAsFactors = FALSE))),
-    stringsAsFactors = FALSE,
-    check.names = FALSE
-  )
+  # build check_df column by column (much faster than rbind of one-row data frames on wide data)
+  fields <- if (length(check_list)) names(check_list[[1]]) else character(0)
+  check_df <- data.frame(NAMES = names(df), stringsAsFactors = FALSE, check.names = FALSE)
+  for (field in fields) {
+    check_df[[field]] <- unlist(lapply(check_list, `[[`, field), use.names = FALSE)
+  }
+  # the LEVELS column is only kept when at least one column is a factor
+  if (nuniques > 0 && all(check_df$LEVELS == "")) {
+    check_df$LEVELS <- NULL
+  }
 
   # Summary — reuse check_df instead of re-scanning df
   summary_dataframe <- data.frame(
@@ -301,34 +322,6 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
     check.names = FALSE,
     stringsAsFactors = FALSE
   )
-
-  # Uniques / Levels — single pass, pre-allocated with lapply
-  if (nuniques > 0) {
-    uniques_list <- apply_fun(df, function(y) {
-      u <- unique(y)
-      lv <- levels(y)
-
-      u_str <- if (length(u) > nuniques) paste(length(u), "Uniques") else toString(sort(as.character(u)))
-      lv_str <- if (length(lv) > nuniques) paste(length(lv), "Levels") else toString(lv)
-
-      list(UNIQUES = u_str, LEVELS = lv_str)
-    })
-
-    uniques_df <- data.frame(
-      UNIQUES = vapply(uniques_list, `[[`, character(1), "UNIQUES"),
-      stringsAsFactors = FALSE
-    )
-    levels_df <- data.frame(
-      LEVELS = vapply(uniques_list, `[[`, character(1), "LEVELS"),
-      stringsAsFactors = FALSE
-    )
-
-    if (all(levels_df$LEVELS == "")) {
-      check_df <- cbind(check_df, uniques_df)
-    } else {
-      check_df <- cbind(check_df, uniques_df, levels_df)
-    }
-  }
 
   if (!is.null(file)) {
     filename <- paste0(file, ".xlsx")
