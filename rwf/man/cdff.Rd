@@ -47,10 +47,11 @@ Identical structure to \code{\link{cdf}}: a named \code{list} with
 }
 \description{
 A faster equivalent of \code{\link{cdf}}. Produces the same column-level
-diagnostic summary (except MIN and MAX, see Note) but avoids repeated passes
-over each column, eliminates row-by-row \code{rbind} calls, and removes the
-\code{gtools} and \code{plyr} dependencies. Recommended for large dataframes
-(> 100k rows or > 50 columns).
+diagnostic summary (except for the cases listed in Note) but computes every
+statistic, including UNIQUES and LEVELS, in a single pass over each column,
+builds the result without \code{rbind} calls, and removes the \code{gtools}
+and \code{plyr} dependencies. Recommended for large dataframes (> 100k rows
+or > 50 columns).
 }
 \note{
 MIN and MAX are only reported where the values have a natural order:
@@ -61,6 +62,11 @@ MIN and MAX are only reported where the values have a natural order:
   (use \code{nuniques} to list their values instead), as are columns with
   only missing values. This differs from \code{\link{cdf}}, which reports
   the first and last label in sorted order for non-double columns.
+
+  MEAN, MEDIAN and SD are \code{NA} (rather than \code{NaN}) for numeric
+  columns without any observed value. UNIQUES lists the values in their
+  natural order (numbers by value, factor levels in level order, dates by
+  time), leaving out \code{NA} and \code{NaN}; RANGE still counts them.
 }
 \examples{
 cdff(df = mtcars, parralel = TRUE)
