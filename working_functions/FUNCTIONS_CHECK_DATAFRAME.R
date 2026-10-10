@@ -168,10 +168,11 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 ##########################################################################################
 #' Check dataframe (optimised)
 #'
-#' A faster equivalent of \code{\link{cdf}}. Produces an identical column-level
-#' diagnostic summary but avoids repeated passes over each column, eliminates
-#' row-by-row \code{rbind} calls, and removes the \code{gtools} and \code{plyr}
-#' dependencies. Recommended for large dataframes (> 100k rows or > 50 columns).
+#' A faster equivalent of \code{\link{cdf}}. Produces the same column-level
+#' diagnostic summary (except MIN and MAX, see Note) but avoids repeated passes
+#' over each column, eliminates row-by-row \code{rbind} calls, and removes the
+#' \code{gtools} and \code{plyr} dependencies. Recommended for large dataframes
+#' (> 100k rows or > 50 columns).
 #'
 #' @inheritParams cdf
 #'
@@ -179,10 +180,14 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 #'   elements \code{$summary} and \code{$check}. See \code{\link{cdf}} for full
 #'   field descriptions.
 #'
-#' @note MIN and MAX for non-double columns use base \code{min()} / \code{max()}
-#'   on character representations. Unlike \code{\link{cdf}}, mixed alphanumeric
-#'   ordering (e.g. \code{"V1"} < \code{"V10"} < \code{"V2"}) is \emph{not}
-#'   guaranteed — lexicographic order is used instead.
+#' @note MIN and MAX are only reported where the values have a natural order:
+#'   numeric columns (double or integer) give the smallest and largest value,
+#'   ordered factors the lowest and highest level that occurs, and dates or
+#'   date-times the earliest and latest value. Unordered factors, character and
+#'   logical columns have no natural order, so their MIN and MAX are \code{NA}
+#'   (use \code{nuniques} to list their values instead), as are columns with
+#'   only missing values. This differs from \code{\link{cdf}}, which reports
+#'   the first and last label in sorted order for non-double columns.
 #'
 #' @import future.apply
 #' @importFrom future availableCores plan multisession sequential
@@ -225,18 +230,20 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
     u <- unique(y) # once only
 
     is_num <- is.numeric(y)
-    is_dbl <- is.double(y)
     is_fin <- is.finite(y_unlisted)
 
-    # MIN / MAX: avoid mixedsort — just use base sort or min/max
-    u_clean <- na.omit(u)
-    if (is_dbl) {
-      col_min <- min(y, na.rm = TRUE)
-      col_max <- max(y, na.rm = TRUE)
-    } else {
-      u_char <- as.character(u_clean)
-      col_min <- if (length(u_char)) min(u_char) else NA
-      col_max <- if (length(u_char)) max(u_char) else NA
+    # MIN / MAX only where values have a natural order: numbers (double or integer)
+    # by value, ordered factors by level order, dates by time; unordered factors,
+    # text and logicals have no order, so MIN / MAX stay NA
+    col_min <- col_max <- NA
+    if (any(y_notna)) {
+      if (is_num) {
+        col_min <- min(y, na.rm = TRUE)
+        col_max <- max(y, na.rm = TRUE)
+      } else if (is.ordered(y) || inherits(y, c("Date", "POSIXt"))) {
+        col_min <- as.character(min(y, na.rm = TRUE))
+        col_max <- as.character(max(y, na.rm = TRUE))
+      }
     }
 
     list(

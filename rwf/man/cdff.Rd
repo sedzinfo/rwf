@@ -45,16 +45,21 @@ Identical structure to \code{\link{cdf}}: a named \code{list} with
   field descriptions.
 }
 \description{
-A faster equivalent of \code{\link{cdf}}. Produces an identical column-level
-diagnostic summary but avoids repeated passes over each column, eliminates
-row-by-row \code{rbind} calls, and removes the \code{gtools} and \code{plyr}
-dependencies. Recommended for large dataframes (> 100k rows or > 50 columns).
+A faster equivalent of \code{\link{cdf}}. Produces the same column-level
+diagnostic summary (except MIN and MAX, see Note) but avoids repeated passes
+over each column, eliminates row-by-row \code{rbind} calls, and removes the
+\code{gtools} and \code{plyr} dependencies. Recommended for large dataframes
+(> 100k rows or > 50 columns).
 }
 \note{
-MIN and MAX for non-double columns use base \code{min()} / \code{max()}
-  on character representations. Unlike \code{\link{cdf}}, mixed alphanumeric
-  ordering (e.g. \code{"V1"} < \code{"V10"} < \code{"V2"}) is \emph{not}
-  guaranteed — lexicographic order is used instead.
+MIN and MAX are only reported where the values have a natural order:
+  numeric columns (double or integer) give the smallest and largest value,
+  ordered factors the lowest and highest level that occurs, and dates or
+  date-times the earliest and latest value. Unordered factors, character and
+  logical columns have no natural order, so their MIN and MAX are \code{NA}
+  (use \code{nuniques} to list their values instead), as are columns with
+  only missing values. This differs from \code{\link{cdf}}, which reports
+  the first and last label in sorted order for non-double columns.
 }
 \examples{
 cdff(df = mtcars, parralel = TRUE)
