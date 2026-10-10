@@ -132,7 +132,6 @@ test_that("cdf truncates min and max values to name_length, not name_length / 6"
 })
 
 test_that("cdf rounds mean, median and sd to digits", {
-  skip("rwf bug: cdf ignores digits and always rounds to 2 decimal places")
   df <- data.frame(a = c(1.23456, 2, 2.5))
   rwf <- cdf(df = df, digits = 4)
   expect_equal(flat(rwf$check$MEAN), round(mean(df$a), 4))
@@ -150,7 +149,6 @@ test_that("cdf with nuniques lists unique values and factor levels", {
 })
 
 test_that("cdf with nuniques works when every column has the same number of unique values", {
-  skip("rwf bug: apply(df, 2, unique) returns a matrix here and cdf fails with 'subscript out of bounds'")
   df <- data.frame(a = c(1, 2, 3, 1), b = c(3, 2, 1, 3))
   rwf <- cdf(df = df, nuniques = 5)
   expect_identical(rwf$check$UNIQUES, c("1, 2, 3", "1, 2, 3"))
@@ -240,14 +238,24 @@ test_that("cdff rounds mean, median and sd to digits", {
   expect_equal(rwf$check$SD, unname(round(apply(df, 2, stats::sd, na.rm = TRUE), 4)))
 })
 
-test_that("cdff uses lexicographic min and max for non-double columns", {
+test_that("cdff reports MIN and MAX only for values with a natural order", {
   rwf <- cdff(df = mixed_check_frame(), name_length = 200)
-  ch <- rwf$check[rwf$check$NAMES == "ch", ]
-  expect_identical(c(ch$MIN, ch$MAX), c(min(c("b", "", "a10", "a9")), max(c("b", "", "a10", "a9"))))
-  f <- rwf$check[rwf$check$NAMES == "f", ]
-  expect_identical(c(f$MIN, f$MAX), c("x", "z"))
-  int <- rwf$check[rwf$check$NAMES == "int", ]
-  expect_identical(c(int$MIN, int$MAX), c("1", "6"))
+  minmax <- function(name) unlist(rwf$check[rwf$check$NAMES == name, c("MIN", "MAX")], use.names = FALSE)
+  expect_identical(minmax("num"), c("-Inf", "Inf"))
+  expect_identical(minmax("int"), c("1", "6"))
+  expect_identical(minmax("dt"), c("2020-01-01", "2020-01-06"))
+  expect_identical(minmax("ch"), c(NA_character_, NA_character_))
+  expect_identical(minmax("f"), c(NA_character_, NA_character_))
+  expect_identical(minmax("lg"), c(NA_character_, NA_character_))
+  df <- data.frame(
+    int = c(9L, 10L, 250L),
+    ord = factor(c("low", "high", "mid"), levels = c("low", "mid", "high"), ordered = TRUE),
+    time = as.POSIXct(c("2020-01-01 10:00:00", "2020-01-01 09:30:00", "2020-01-02 00:00:00"), tz = "UTC"),
+    allna = NA_real_
+  )
+  check <- cdff(df = df, name_length = 200)$check
+  expect_identical(check$MIN, c("9", "low", "2020-01-01 09:30:00", NA))
+  expect_identical(check$MAX, c("250", "high", "2020-01-02 00:00:00", NA))
 })
 
 test_that("cdff with nuniques lists unique values and factor levels", {

@@ -14,8 +14,9 @@
 #'   truncated. Defaults to \code{getOption("width") / 3}.
 #' @param digits Integer. Number of decimal places used when rounding MEAN,
 #'   MEDIAN, and SD for numeric columns. Defaults to \code{2}.
-#' @param nuniques Integer. If \code{> 0}, appends UNIQUES and LEVELS columns
-#'   to the output. Columns with more distinct entries than \code{nuniques} are
+#' @param nuniques Integer. If \code{> 0}, appends a UNIQUES column to the
+#'   output, plus a LEVELS column when at least one column is a factor. Columns
+#'   with more distinct entries than \code{nuniques} are
 #'   summarised as \code{"N Uniques"} / \code{"N Levels"}. Set to \code{0} to
 #'   skip (faster). Defaults to \code{0}.
 #' @param parralel Logical. If \code{TRUE}, uses \code{future.apply} with a
@@ -100,9 +101,9 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
       INF = length(which(is.infinite(unlist(y)))),
       FIN = length(which(is.finite(unlist(y)))),
       RANGE = length(unique(y)),
-      MEAN = if (is.numeric(y)) round(mean(y, na.rm = TRUE), 2) else NA,
-      MEDIAN = if (is.numeric(y)) round(stats::median(y, na.rm = TRUE), 2) else NA,
-      SD = if (is.numeric(y)) round(stats::sd(y, na.rm = TRUE), 2) else NA,
+      MEAN = if (is.numeric(y)) round(mean(y, na.rm = TRUE), digits) else NA,
+      MEDIAN = if (is.numeric(y)) round(stats::median(y, na.rm = TRUE), digits) else NA,
+      SD = if (is.numeric(y)) round(stats::sd(y, na.rm = TRUE), digits) else NA,
       MIN = if (is.double(y)) min(y, na.rm = TRUE) else gtools::mixedsort(as.character(na.omit(unique(y))))[1],
       MAX = if (is.double(y)) max(y, na.rm = TRUE) else gtools::mixedsort(as.character(na.omit(unique(y))))[length(na.omit(unique(y)))],
       MODE = mode(y),
@@ -128,8 +129,8 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
     stringsAsFactors = FALSE
   )
   if (nuniques > 0) {
-    uniques <- future.apply::future_apply(df, 2, unique)
-    level <- future.apply::future_sapply(df, function(y) levels(y))
+    uniques <- future.apply::future_lapply(df, unique)
+    level <- future.apply::future_lapply(df, levels)
     uniques_df <- levels_df <- data.frame()
     for (i in 1:length(uniques)) {
       if (length(uniques[[i]]) > nuniques) {
