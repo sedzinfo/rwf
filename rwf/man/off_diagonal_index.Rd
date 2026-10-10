@@ -2,27 +2,38 @@
 % Please edit documentation in R/FUNCTIONS_MATRIX.R
 \name{off_diagonal_index}
 \alias{off_diagonal_index}
-\title{Get off-diagonal indices for a square matrix}
+\title{Row and column indices around the diagonal of a square matrix}
 \usage{
 off_diagonal_index(length)
 }
 \arguments{
-\item{length}{Integer. The size of the diagonal (i.e. number of rows/columns
-in the square matrix).}
+\item{length}{Integer (at least 1). Number of rows and columns of the
+square matrix.}
 }
 \value{
-A data frame with \code{length} rows and four columns:
+A data frame (not a matrix) with \code{length} rows and four numeric
+  columns:
   \describe{
-    \item{x1}{Row index.}
-    \item{x2}{Column index (same as \code{x1}, i.e. the diagonal position).}
-    \item{x3}{Index of the element just above (\code{i + 1}).}
-    \item{x4}{Index of the element just below (\code{i - 1}).}
+    \item{x1}{Row index \code{i}.}
+    \item{x2}{Column index of the diagonal cell (same as \code{x1}).}
+    \item{x3}{Column index of the cell to the right, \code{i + 1}; in the
+      last row this is \code{length + 1}, outside the matrix.}
+    \item{x4}{Column index of the cell to the left, \code{i - 1}; in the
+      first row this is \code{0}, outside the matrix.}
   }
 }
 \description{
-Returns a data frame of row/column index pairs for navigating just above and
-below the diagonal, useful for accessing or modifying off-diagonal neighbours.
+For each diagonal position \code{i} of a \code{length} x \code{length}
+matrix, returns the indices of the diagonal cell and of its two neighbours
+in the same row: the cell to the right (just above the diagonal, column
+\code{i + 1}) and the cell to the left (just below the diagonal, column
+\code{i - 1}).
 }
 \examples{
 off_diagonal_index(length=6)
 }
+\seealso{
+\code{\link{matrix_triangle}}
+}
+\keyword{functions}
+\keyword{matrix}

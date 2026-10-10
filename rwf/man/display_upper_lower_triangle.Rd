@@ -2,19 +2,31 @@
 % Please edit documentation in R/FUNCTIONS_MATRIX.R
 \name{display_upper_lower_triangle}
 \alias{display_upper_lower_triangle}
-\title{Return upper diagonal from one matrix and lower diagonal from another matrix}
+\title{Combine the upper triangle of one matrix with the lower triangle of another}
 \usage{
 display_upper_lower_triangle(m_upper, m_lower, diagonal = NA)
 }
 \arguments{
-\item{m_upper}{matrix}
+\item{m_upper}{A square numeric matrix (or an object that \code{as.matrix()}
+turns into one) supplying the upper triangle.}
 
-\item{m_lower}{matrix}
+\item{m_lower}{A square numeric matrix of the same size supplying the lower
+triangle.}
 
-\item{diagonal}{if "upper" it returns upper diagonal if "lower" it returns lower diagonal if NA returns NA in diagonal otherwise it returns any value specified}
+\item{diagonal}{What to place on the diagonal: \code{NA} (default) for
+\code{NA}, \code{"upper"} for the diagonal of \code{m_upper},
+\code{"lower"} for the diagonal of \code{m_lower}, or any other value(s),
+either a single value or one value per diagonal element.}
+}
+\value{
+A matrix with the dimensions and row/column names of
+  \code{m_lower}. It is numeric, unless \code{diagonal} contains text, in
+  which case the whole matrix becomes character.
 }
 \description{
-Return upper diagonal from one matrix and lower diagonal from another matrix
+Builds a matrix whose upper triangle comes from \code{m_upper} and whose
+lower triangle comes from \code{m_lower}, e.g. to show two correlation
+matrices, or correlations and p values, in a single table.
 }
 \examples{
 m1<-matrix(1:9,nrow=3,ncol=3)
@@ -26,6 +38,9 @@ display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=1)
 display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=c("X1","X2","X3"))
 display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=c(1,2,3))
 display_upper_lower_triangle(m_upper=m1,m2)
+}
+\seealso{
+\code{\link{matrix_triangle}}, \code{\link{symmetric_matrix}}
 }
 \keyword{functions}
 \keyword{matrix}

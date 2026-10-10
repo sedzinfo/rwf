@@ -2,27 +2,31 @@
 % Please edit documentation in R/FUNCTIONS_MATRIX.R
 \name{symmetric_matrix}
 \alias{symmetric_matrix}
-\title{Make a symmetric matrix by duplicating one triangle}
+\title{Make a matrix symmetric by mirroring one triangle}
 \usage{
 symmetric_matrix(matrix, duplicate = "lower", diagonal = NULL)
 }
 \arguments{
-\item{matrix}{A square numeric matrix.}
+\item{matrix}{A square matrix. Unlike \code{\link{matrix_triangle}}, a data
+frame is not accepted; convert it with \code{as.matrix()} first.}
 
-\item{duplicate}{Character. Which triangle to use as the source. One of:
-\code{"lower"} mirrors the lower triangle to the upper, or \code{"upper"}
-mirrors the upper triangle to the lower. Default is \code{"lower"}.}
+\item{duplicate}{Character, \code{"lower"} (default) to copy the lower
+triangle into the upper, or \code{"upper"} to copy the upper triangle
+into the lower.}
 
-\item{diagonal}{Value to place on the diagonal. If omitted, the original
-diagonal of \code{matrix} is preserved. Pass \code{NA} to fill with
-\code{NA}.}
+\item{diagonal}{Value(s) to place on the diagonal: a single value (e.g.
+\code{NA}) or one value per diagonal element. Leave it out to keep the
+original diagonal; passing \code{NULL} explicitly is an error.}
 }
 \value{
-A symmetric matrix of the same dimensions as the input.
+A symmetric matrix with the same dimensions as \code{matrix}, whose
+  row names are the column names of \code{matrix}.
 }
 \description{
-Mirrors either the lower or upper triangle of a matrix to the opposite side,
-producing a symmetric matrix. Optionally sets the diagonal.
+Copies the lower or upper triangle of a square matrix onto the opposite
+triangle, producing a symmetric matrix; optionally replaces the diagonal.
+The row names are set to the column names, so both sides carry the same
+labels.
 }
 \examples{
 m_lower<-matrix_triangle(matrix(1:9,nrow=3,ncol=3),type="lower",diagonal=NA)
@@ -31,5 +35,8 @@ symmetric_matrix(matrix=m_lower,duplicate="lower",diagonal=NA)
 symmetric_matrix(matrix=m_upper,duplicate="upper",diagonal=NA)
 }
 \seealso{
-\code{\link{matrix_triangle}}
+\code{\link{matrix_triangle}},
+  \code{\link{display_upper_lower_triangle}}
 }
+\keyword{functions}
+\keyword{matrix}

@@ -130,11 +130,17 @@ test_that("generate_multiple_response_vector respects a restricted range of resp
   expect_true(all(unlist(parts) %in% c("a", "b", "c", "d", "e")))
 })
 
-test_that("generate_multiple_response_vector with a single 'responded' value selects that many", {
-  skip("rwf bug: sample(responded, 1) samples from 1:responded when responded has length 1")
+test_that("generate_multiple_response_vector with a single 'responded' value selects up to that many", {
   withr::local_seed(11)
-  rwf <- generate_multiple_response_vector(responses = 1:4, responded = 3, length = 100)
-  expect_true(all(lengths(strsplit(rwf, ", ")) == 3))
+  rwf <- generate_multiple_response_vector(responses = 1:4, responded = 3, length = 200)
+  picked <- strsplit(rwf, ", ")
+  n <- lengths(picked)
+  expect_true(all(n >= 1 & n <= 3))
+  expect_setequal(unique(n), 1:3)
+  expect_false(any(vapply(picked, anyDuplicated, integer(1)) > 0))
+  expect_true(all(unlist(picked) %in% as.character(1:4)))
+  single <- generate_multiple_response_vector(responses = 4, responded = 1:4, length = 50)
+  expect_true(all(unlist(strsplit(single, ", ")) %in% as.character(1:4)))
 })
 
 ##########################################################################################

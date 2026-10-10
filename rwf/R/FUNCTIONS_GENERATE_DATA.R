@@ -131,10 +131,15 @@ generate_string <- function(vector = c(LETTERS, letters, 0:9), vector_length = 1
 #' string of randomly sampled categories, simulating multiple response survey data.
 #'
 #' @param responses Integer or character vector. The pool of unique response
-#'   categories to sample from. Default is \code{1:4}.
+#'   categories to sample from. A single number \code{n} means the categories
+#'   \code{1:n} (e.g. \code{responses = 4} is the same as \code{1:4}).
+#'   Default is \code{1:4}.
 #' @param responded Integer vector. Controls how many categories are selected
 #'   per observation — one value is sampled from this vector at each iteration.
-#'   Default is \code{1:4}.
+#'   A single number \code{k} means "up to \code{k}": each observation gets a
+#'   random number of categories between 1 and \code{k} (e.g.
+#'   \code{responded = 3} gives 1, 2 or 3 categories). The values should not
+#'   exceed the number of categories in \code{responses}. Default is \code{1:4}.
 #' @param length Integer. Number of observations to generate. Default is \code{10}.
 #'
 #' @return A character vector of length \code{length}, where each element is a

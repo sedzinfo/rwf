@@ -2,29 +2,32 @@
 % Please edit documentation in R/FUNCTIONS_MATRIX.R
 \name{matrix_triangle}
 \alias{matrix_triangle}
-\title{Extract the upper or lower triangle of a matrix}
+\title{Keep the lower or upper triangle of a matrix}
 \usage{
 matrix_triangle(m, off_diagonal = NA, diagonal = NULL, type = "lower")
 }
 \arguments{
-\item{m}{A numeric matrix or object coercible to one.}
+\item{m}{A numeric matrix, or an object that \code{as.matrix()} turns into
+a numeric matrix (e.g. a data frame of numbers).}
 
-\item{off_diagonal}{Value to fill the suppressed triangle with. Default is \code{NA}.}
+\item{off_diagonal}{Value used to fill the dropped triangle. Default
+\code{NA}.}
 
-\item{diagonal}{Value to place on the diagonal. If \code{NULL}, the original
-diagonal of \code{m} is preserved. Default is \code{NULL}.}
+\item{diagonal}{Value(s) to place on the diagonal: a single value or one
+value per diagonal element. If \code{NULL} (default), the original
+diagonal is kept.}
 
-\item{type}{Character. Which triangle to retain. One of \code{"lower"} or
-\code{"upper"}. Default is \code{"lower"}.}
+\item{type}{Character, \code{"lower"} (default) or \code{"upper"}: the
+triangle to keep.}
 }
 \value{
-A matrix of the same dimensions as \code{m}, with the off-triangle
-  filled by \code{off_diagonal} and the diagonal set by \code{diagonal}.
+A numeric matrix with the same dimensions and row/column names as
+  \code{m}.
 }
 \description{
-Returns a matrix with the off-triangle values replaced by a fill value,
-optionally overriding the diagonal. Useful for displaying correlation or
-covariance matrices without redundant values.
+Keeps one triangle of a matrix, including the diagonal, and fills the other
+triangle with \code{off_diagonal}; optionally replaces the diagonal. Useful
+for displaying correlation or covariance matrices without repeated values.
 }
 \examples{
 m<-matrix(1:9,nrow=3,ncol=3)
@@ -34,3 +37,9 @@ matrix_triangle(m=m,diagonal=NULL,type="lower")
 matrix_triangle(m=m,diagonal=NA,type="upper")
 matrix_triangle(m=m,diagonal=NULL,type="upper")
 }
+\seealso{
+\code{\link{display_upper_lower_triangle}},
+  \code{\link{symmetric_matrix}}
+}
+\keyword{functions}
+\keyword{matrix}

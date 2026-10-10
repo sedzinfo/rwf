@@ -148,21 +148,20 @@ getfwp <- function() {
       if (!is.null(sys.frames()[[1]]$ofile)) {
         return(normalizePath(sys.frames()[[1]]$ofile))
       } else {
-        path <- rstudioapi::getActiveDocumentContext()$path
-        if (path != "") {
-          return(normalizePath(path))
-        } else {
-          tryCatch(
-            {
-              path <- rstudioapi::getSourceEditorContext()$path
-              path <- normalizePath(path)
-            },
-            error = function(e) {
-              path <- ""
-            }
-          )
-          return(path)
+        # rstudioapi errors outside RStudio and may return NULL when no editor is open,
+        # so every failure becomes "" instead of an error
+        rstudio_path <- function(context) {
+          path <- tryCatch(context()$path, error = function(e) "")
+          if (length(path) == 1 && !is.na(path)) path else ""
         }
+        path <- rstudio_path(rstudioapi::getActiveDocumentContext)
+        if (path == "") {
+          path <- rstudio_path(rstudioapi::getSourceEditorContext)
+        }
+        if (path == "") {
+          return("")
+        }
+        return(normalizePath(path))
       }
     }
   }
@@ -208,7 +207,8 @@ write_txt <- function(input, file = NULL) {
 #'   \code{output_file}. Each file's contents are preceded by a
 #'   \code{# FILE: <path>} header block so the origin of every section is
 #'   visible. If \code{output_file} lies inside \code{input_dir}, it is
-#'   excluded so the file does not include itself.
+#'   excluded so the file does not include itself. If no file matches,
+#'   an empty \code{output_file} is written.
 #' @param input_dir Character string. Directory to read files from. Default
 #'   \code{"working_functions"}.
 #' @param output_file Character string. Path of the combined file to write.
@@ -247,7 +247,8 @@ combine_files<-function(input_dir="working_functions",
       readLines(f,warn=FALSE,encoding="UTF-8"),
       "")
   })
-  writeLines(unlist(contents),output_file,useBytes=TRUE)
+  # as.character() turns NULL (no matching files) into character(0), so an empty file is written
+  writeLines(as.character(unlist(contents)),output_file,useBytes=TRUE)
   cat("Combined",length(files),"files into",output_file,"\n")
   invisible(files)
 }

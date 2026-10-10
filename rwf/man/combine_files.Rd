@@ -37,7 +37,8 @@ Lists the files in \code{input_dir} that match \code{pattern},
   \code{output_file}. Each file's contents are preceded by a
   \code{# FILE: <path>} header block so the origin of every section is
   visible. If \code{output_file} lies inside \code{input_dir}, it is
-  excluded so the file does not include itself.
+  excluded so the file does not include itself. If no file matches,
+  an empty \code{output_file} is written.
 }
 \examples{
 # input_dir <- file.path(tempdir(), "combine_files_example")
