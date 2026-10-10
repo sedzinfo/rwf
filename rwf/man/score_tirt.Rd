@@ -8,9 +8,9 @@ score_tirt(patterns, lambda, theta_diag, tau, Psi, nu = NULL)
 }
 \arguments{
 \item{patterns}{A matrix or data.frame of response patterns
-(rows = respondents, columns = pair/items).}
+(rows = respondents, columns = pair / items).}
 
-\item{lambda}{Loading matrix (rows = pair/items, columns = latent traits).}
+\item{lambda}{Loading matrix (rows = pair / items, columns = latent traits).}
 
 \item{theta_diag}{Numeric vector of residual variances aligned to
 rows of lambda.}

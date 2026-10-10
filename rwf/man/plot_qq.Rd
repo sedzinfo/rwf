@@ -24,7 +24,7 @@ A named list of \code{ggplot} objects, one per numeric column.
 Produces one quantile-quantile plot per numeric column of
   \code{df}, comparing the empirical distribution to the theoretical normal.
   A reference line is fitted through the 25th and 75th percentiles (the same
-  convention used by \code{\link[stats]{qqline}}). Non-numeric columns are
+  convention used by \code{stats::qqline()}). Non-numeric columns are
   skipped silently. A progress bar is printed to the console.
 }
 \examples{

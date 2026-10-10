@@ -35,7 +35,7 @@ the three pair combinations:
 (1,2), (1,3), and (2,3).
 
 Labels are returned as strings such as \code{"i1i2"}, \code{"i1i3"},
-\code{"i2i3"} (or with your chosen separator/prefix).
+\code{"i2i3"} (or with your chosen separator / prefix).
 }
 \details{
 If there are \eqn{T} triplets, output length is \eqn{3T}, because each

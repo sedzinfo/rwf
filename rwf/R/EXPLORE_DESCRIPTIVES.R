@@ -326,8 +326,8 @@ response_frequency <- function(df, max = 10, uniqueitems = NULL, type = "percent
 #' @param combinations A data frame with two character columns named
 #'   \code{index1} and \code{index2}, each row specifying one variable pair to
 #'   cross-tabulate. Takes precedence over \code{factor_index}.
-#' @return A data frame with one row per combination of variable-pair levels,
-#'   containing the following columns:
+#' @return A data frame with one row for each combination of levels of each
+#'   pair of variables, with the following columns:
 #'   \describe{
 #'     \item{f1}{Name of the first variable.}
 #'     \item{f2}{Name of the second variable.}

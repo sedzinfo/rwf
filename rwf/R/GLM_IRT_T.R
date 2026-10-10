@@ -193,7 +193,7 @@ rank_df_to_binary<-function(mydata,items,reverse=TRUE) {
 #' (1,2), (1,3), and (2,3).
 #'
 #' Labels are returned as strings such as \code{"i1i2"}, \code{"i1i3"},
-#' \code{"i2i3"} (or with your chosen separator/prefix).
+#' \code{"i2i3"} (or with your chosen separator / prefix).
 #'
 #' @param n Either:
 #' \itemize{
@@ -653,7 +653,7 @@ extract_tirt_params<-function(fit_lavaan_obj) {
 ##########################################################################################
 #' @title Score a Single Thurstonian IRT Response Pattern (MAP / EBM)
 #' @description Computes the maximum a posteriori (MAP), also called empirical
-#' Bayes modal (EBM), estimate of latent traits for one binary/ordinal
+#' Bayes modal (EBM), estimate of latent traits for one binary / ordinal
 #' response pattern under a Thurstonian IRT parameterization.
 #'
 #' Missing responses are allowed and are ignored in the likelihood.
@@ -861,8 +861,8 @@ compute_solve <- function(a, b) {
 #'   checking and aligning item columns so they match lambda row order.
 #'
 #' @param patterns A matrix or data.frame of response patterns
-#'   (rows = respondents, columns = pair/items).
-#' @param lambda Loading matrix (rows = pair/items, columns = latent traits).
+#'   (rows = respondents, columns = pair / items).
+#' @param lambda Loading matrix (rows = pair / items, columns = latent traits).
 #' @param theta_diag Numeric vector of residual variances aligned to
 #'   rows of lambda.
 #' @param tau Numeric vector of thresholds aligned to rows of lambda.
@@ -988,7 +988,7 @@ score_tirt<-function(patterns, lambda, theta_diag, tau, Psi, nu=NULL) {
 #' @return An invisible list with:
 #' \itemize{
 #'   \item \code{has_issues}: Logical, \code{TRUE} if any issue was detected.
-#'   \item \code{issues}: Named list of detected issue tables/messages.
+#'   \item \code{issues}: Named list of detected issue tables / messages.
 #'   \item \code{converged}: Logical convergence flag from
 #'     \code{lavaan::lavInspect(fit_model, "converged")}.
 #' }

@@ -29,10 +29,10 @@ Draws a 2x2 confusion matrix (raw counts, sequential-blue by magnitude)
 alongside the row/column/overall measures:
 \describe{
   \item{Total measures}{Accuracy, Prevalence, Proportion Incorrectly Classified}
-  \item{Horizontal measures}{Sensitivity/Miss Rate (observed positive column),
-    Specificity/Fall-out (observed negative column)}
-  \item{Vertical measures}{Precision/False Discovery Rate (predicted positive row),
-    Negative Predictive Value/False Omission Rate (predicted negative row)}
+  \item{Horizontal measures}{Sensitivity / Miss Rate (observed positive column),
+    Specificity / Fall-out (observed negative column)}
+  \item{Vertical measures}{Precision / False Discovery Rate (predicted positive row),
+    Negative Predictive Value / False Omission Rate (predicted negative row)}
 }
 }
 \details{

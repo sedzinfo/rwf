@@ -21,7 +21,7 @@ A data frame with 3376 rows and 13 variables. Each of Q1-Q10 is
   \item{Q9}{Sexual compatibility item 9 (0-4)}
   \item{Q10}{Sexual compatibility item 10 (0-4)}
   \item{score}{Total scale score (sum of Q1-Q10, range 0-40)}
-  \item{gender}{Gender (1=Male, 2=Female; 0 and 3 = missing/other)}
+  \item{gender}{Gender (1=Male, 2=Female; 0 and 3 = missing / other)}
   \item{age}{Age in years (999 = missing)}
 }
 }

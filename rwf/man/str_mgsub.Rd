@@ -13,14 +13,14 @@ str_mgsub(mydata, pattern, replacement, ...)
 
 \item{replacement}{Character. The replacement string applied for all patterns.}
 
-\item{...}{Additional arguments passed to \code{\link[base]{gsub}},}
+\item{...}{Additional arguments passed to \code{base::gsub()},}
 }
 \value{
 A character vector with all pattern matches replaced.
 }
 \description{
 Iterates over a vector of patterns, applying
-\code{\link[base]{gsub}} sequentially with the same replacement string for
+\code{base::gsub()} sequentially with the same replacement string for
 each.
 }
 \examples{

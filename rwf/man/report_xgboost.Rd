@@ -35,8 +35,36 @@ report_xgboost(
 
 \item{fast}{if TRUE error values are not saved in output}
 }
+\value{
+Invisibly, a list with
+  \describe{
+    \item{plots}{ggplot objects: \code{regression} (observed vs predicted on
+      the validation data), \code{performance} (cut-point diagnostics, not for
+      regression objectives), \code{depth}, \code{cover}, \code{weight}
+      (tree structure), \code{error} (training log) and \code{importance}.}
+    \item{result}{tables: \code{parameters} (hyperparameters),
+      \code{model_call}, \code{evaluation_log}, \code{importance}
+      (\code{xgboost::xgb.importance}), \code{model_summary} (objective,
+      boosting rounds, number of features, and with early stopping the best
+      iteration and score) and, with validation data, \code{validation_metrics}
+      (regression: N, RMSE, MAE, mean error, R squared; binary
+      classification: N, AUC, log loss and accuracy at a 0.5 cut-off).}
+    \item{observed, predicted}{validation outcome and predictions
+      (\code{NULL} without \code{validation_data}).}
+    \item{feature_names}{the model's features, in the model's order.}
+  }
+}
 \description{
 Report for xgboost::xgb.train
+}
+\details{
+Works with xgboost 3, which stores the call, parameters and
+  evaluation log as attributes of the model, and with older versions that
+  store them as list elements. Validation predictions use the model's own
+  feature order. When \code{file} is given, the plots are written to
+  \code{<file>.pdf} and the tables to \code{<file>.xlsx} (sheets: confusion
+  matrix for classification, Model Summary, Validation Metrics, Feature
+  Importance, Hyperparameters and, unless \code{fast = TRUE}, Evaluation Log).
 }
 \examples{
 infert_formula<-formula(case~education+spontaneous+induced)
@@ -52,7 +80,6 @@ xgb_regression<-xgboost::xgb.train(
                 data=train_test_regression$xgb$f1$train,
                 evals=train_test_regression$xgb$f1$watchlist,
                 nround=20)
-\dontrun{
 report_xgboost(model=xgb_classification,
                validation_data=train_test_classification$f$test$f1,
                label=train_test_classification$outcome,
@@ -61,6 +88,5 @@ report_xgboost(model=xgb_regression,
                validation_data=train_test_regression$f$test$f1,
                label=train_test_regression$outcome,
                file="Regression")
-}
 }
 \keyword{ML}

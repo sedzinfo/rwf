@@ -19,7 +19,7 @@ plot_normality_diagnostics(
 dropped. Columns with fewer than three non-missing values or zero variance
 are skipped.}
 
-\item{breaks}{Histogram breaks passed to \code{\link[graphics]{hist}}. May
+\item{breaks}{Histogram breaks passed to \code{graphics::hist()}. May
 be a method name (\code{"Sturges"}, \code{"Scott"}, \code{"FD"}) or a
 positive integer specifying the number of bins. Default is
 \code{"Sturges"}.}
@@ -39,8 +39,8 @@ Default is \code{FALSE}.}
 }
 \value{
 A named list of recorded plots (one element per numeric column),
-  returned invisibly. Each element is a \code{\link[grDevices]{recordPlot}}
-  object.
+  returned invisibly. Each element is a plot recorded with
+  \code{grDevices::recordPlot()}.
 }
 \description{
 For each numeric column of \code{df}, produces a 2×2 panel of

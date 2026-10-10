@@ -13,8 +13,8 @@ A data frame with the following variables:
   \item{name}{Name of the passenger}
   \item{sex}{Gender of the passenger}
   \item{age}{Age of the passenger}
-  \item{sibsp}{Number of siblings/spouses aboard the Titanic}
-  \item{parch}{Number of parents/children aboard the Titanic}
+  \item{sibsp}{Number of siblings / spouses aboard the Titanic}
+  \item{parch}{Number of parents / children aboard the Titanic}
   \item{ticket}{Ticket number}
   \item{fare}{Passenger fare}
   \item{cabin}{Cabin number}

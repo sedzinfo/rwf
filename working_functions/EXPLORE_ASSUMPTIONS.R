@@ -10,7 +10,7 @@
 #' @param df Data frame or numeric vector. Non-numeric columns are silently
 #'   dropped. Columns with fewer than three non-missing values or zero variance
 #'   are skipped.
-#' @param breaks Histogram breaks passed to \code{\link[graphics]{hist}}. May
+#' @param breaks Histogram breaks passed to \code{graphics::hist()}. May
 #'   be a method name (\code{"Sturges"}, \code{"Scott"}, \code{"FD"}) or a
 #'   positive integer specifying the number of bins. Default is
 #'   \code{"Sturges"}.
@@ -23,8 +23,8 @@
 #' @param pb Logical; whether to display a progress bar in the console.
 #'   Default is \code{FALSE}.
 #' @return A named list of recorded plots (one element per numeric column),
-#'   returned invisibly. Each element is a \code{\link[grDevices]{recordPlot}}
-#'   object.
+#'   returned invisibly. Each element is a plot recorded with
+#'   \code{grDevices::recordPlot()}.
 #' @importFrom graphics plot par hist boxplot title
 #' @importFrom stats qqnorm qqline na.omit density
 #' @importFrom utils txtProgressBar setTxtProgressBar
@@ -98,7 +98,7 @@ plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NUL
 #'   observations coloured by outlier status and row-name labels repelled away
 #'   from flagged points. Three outlier-detection rules are available via
 #'   \code{method}: mean ± 2 SD, median ± 2 MAD (rescaled), or boxplot IQR
-#'   fences. Reference lines for the centre and the upper/lower bounds are
+#'   fences. Reference lines for the centre and the upper / lower bounds are
 #'   overlaid on each plot.
 #' @param df Data frame or numeric vector. Non-numeric columns are silently
 #'   dropped.
@@ -216,7 +216,7 @@ plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = F
 #' @param df Data frame or numeric vector. Non-numeric columns are silently
 #'   dropped.
 #' @param bins Number of histogram bins passed to
-#'   \code{\link[ggplot2]{geom_histogram}}. Default is \code{30}.
+#'   \code{ggplot2::geom_histogram()}. Default is \code{30}.
 #' @param xlims Length-2 numeric vector setting the x-axis limits, e.g.
 #'   \code{c(0, 50)}. When \code{NULL} (default) limits are determined
 #'   automatically.
@@ -284,7 +284,7 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
 #' @description Produces one quantile-quantile plot per numeric column of
 #'   \code{df}, comparing the empirical distribution to the theoretical normal.
 #'   A reference line is fitted through the 25th and 75th percentiles (the same
-#'   convention used by \code{\link[stats]{qqline}}). Non-numeric columns are
+#'   convention used by \code{stats::qqline()}). Non-numeric columns are
 #'   skipped silently. A progress bar is printed to the console.
 #' @param df Data frame or vector. Non-numeric columns are skipped.
 #' @param title Character string used as the plot title. Default is \code{""}.
@@ -391,7 +391,7 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
 ##########################################################################################
 #' @title Battery of normality tests
 #' @description Runs eight normality tests on each numeric column of \code{df}:
-#'   Shapiro-Wilk, Anderson-Darling, Cramér-von Mises, Shapiro-Francia,
+#'   Shapiro-Wilk, Anderson-Darling, \enc{Cramér}{Cramer}-von Mises, Shapiro-Francia,
 #'   Jarque-Bera, Kolmogorov-Smirnov, Lilliefors, and Pearson chi-squared.
 #'   Each column is z-standardised before testing. Columns with fewer than 8 or
 #'   more than 4999 non-missing observations are skipped with a console message.
@@ -547,7 +547,7 @@ outlier_summary <- function(vector) {
 #'   \code{c(0.25, 0.75)} (standard quartiles).
 #' @param na.rm Logical; whether to remove \code{NA} values when computing
 #'   quantiles and IQR. Default is \code{TRUE}.
-#' @param ... Additional arguments passed to \code{\link[stats]{quantile}}.
+#' @param ... Additional arguments passed to \code{stats::quantile()}.
 #' @return A numeric vector the same length as \code{vector} with outlying
 #'   values replaced by \code{NA}.
 #' @importFrom stats quantile IQR

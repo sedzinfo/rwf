@@ -21,7 +21,7 @@ generated automatically from \code{cols}. Default is \code{NULL}.}
 }
 \value{
 If a single plot is provided, returns it directly. Otherwise returns
-  a list of recorded plots (\code{\link[grDevices]{recordPlot}}), one per page.
+  a list of recorded plots (\code{grDevices::recordPlot()}), one per page.
 }
 \description{
 Combines multiple ggplot objects into a single paged display using a grid

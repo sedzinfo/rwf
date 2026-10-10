@@ -213,7 +213,7 @@ write_txt <- function(input, file = NULL) {
 #'   \code{"working_functions"}.
 #' @param output_file Character string. Path of the combined file to write.
 #'   An existing file is overwritten. Default \code{"all_functions.R"}.
-#' @param pattern Regular expression passed to \code{\link[base]{list.files}}
+#' @param pattern Regular expression passed to \code{base::list.files()}
 #'   to select files. Default \code{"\\\\.[Rr]$"} selects R scripts. Use
 #'   \code{NULL} to include every file.
 #' @param recursive Logical. If \code{TRUE} (default), files in

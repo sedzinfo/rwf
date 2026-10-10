@@ -45,7 +45,7 @@ from colnames(lambda).
 }
 \description{
 Computes the maximum a posteriori (MAP), also called empirical
-Bayes modal (EBM), estimate of latent traits for one binary/ordinal
+Bayes modal (EBM), estimate of latent traits for one binary / ordinal
 response pattern under a Thurstonian IRT parameterization.
 
 Missing responses are allowed and are ignored in the likelihood.

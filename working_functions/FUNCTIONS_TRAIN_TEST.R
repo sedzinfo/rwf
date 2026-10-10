@@ -244,7 +244,7 @@ result_confusion_performance<-function(observed,predicted,step=.1,base_size=10,t
 #' This function performs k-fold cross-validation by splitting the input dataframe into k folds. 
 #' Each fold serves as a test set once,while the remaining k-1 folds form the training set.
 #'
-#' The function prepares data objects for xgboost model training and evaluation,including train/test datasets and xgboost DMatrix objects.
+#' The function prepares data objects for xgboost model training and evaluation, including train / test datasets and xgboost DMatrix objects.
 #'
 #' The output is a list containing the following elements:
 #'-`f`: List of train and test datasets for each fold.
@@ -418,7 +418,7 @@ k_sample<-function(df,model_formula,k=1) {
 #' 2. Identifies character and factor variables and creates dummy variables if they meet the criteria.
 #' 3. Combines the scaled numeric variables and dummy variables into a single dataframe.
 #'
-#' The output is a dataframe with scaled numeric variables and dummy-coded character/factor variables.
+#' The output is a dataframe with scaled numeric variables and dummy-coded character / factor variables.
 #' @examples
 #' # Example with the 'infert' dataset
 #' recode_scale_dummy(infert)
@@ -599,10 +599,10 @@ confusion_matrix_percent<-function(observed,predicted) {
 #' alongside the row/column/overall measures:
 #' \describe{
 #'   \item{Total measures}{Accuracy, Prevalence, Proportion Incorrectly Classified}
-#'   \item{Horizontal measures}{Sensitivity/Miss Rate (observed positive column),
-#'     Specificity/Fall-out (observed negative column)}
-#'   \item{Vertical measures}{Precision/False Discovery Rate (predicted positive row),
-#'     Negative Predictive Value/False Omission Rate (predicted negative row)}
+#'   \item{Horizontal measures}{Sensitivity / Miss Rate (observed positive column),
+#'     Specificity / Fall-out (observed negative column)}
+#'   \item{Vertical measures}{Precision / False Discovery Rate (predicted positive row),
+#'     Negative Predictive Value / False Omission Rate (predicted negative row)}
 #' }
 #'
 #' @details

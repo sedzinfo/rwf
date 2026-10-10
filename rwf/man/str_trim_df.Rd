@@ -14,7 +14,7 @@ A data frame of the same dimensions with whitespace trimmed from
   all character cells. Non-character cells are unchanged.
 }
 \description{
-Applies \code{\link[base]{strwrap}} to every character cell in
+Applies \code{base::strwrap()} to every character cell in
 a data frame, removing leading and trailing whitespace.
 }
 \examples{

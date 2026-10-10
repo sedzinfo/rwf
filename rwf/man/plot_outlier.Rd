@@ -37,7 +37,7 @@ For each numeric column of \code{df}, draws a dot plot with
   observations coloured by outlier status and row-name labels repelled away
   from flagged points. Three outlier-detection rules are available via
   \code{method}: mean ± 2 SD, median ± 2 MAD (rescaled), or boxplot IQR
-  fences. Reference lines for the centre and the upper/lower bounds are
+  fences. Reference lines for the centre and the upper / lower bounds are
   overlaid on each plot.
 }
 \examples{

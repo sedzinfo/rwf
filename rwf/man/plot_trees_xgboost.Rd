@@ -9,12 +9,21 @@ plot_trees_xgboost(model, train, file = "xgboost")
 \arguments{
 \item{model}{object from xgboost::xgb.train}
 
-\item{train}{Train dataset}
+\item{train}{Train dataset; its column names label the features. With
+xgboost 3 they are used only when the model itself has no feature names
+and the number of columns matches the number of model features.}
 
 \item{file}{output filename}
 }
+\value{
+Called for its side effect of writing \code{<file>.html}; returns
+  the value of \code{htmlwidgets::saveWidget} invisibly.
+}
 \description{
-Plot trees for xgboost::xgb.train
+Draws the trees of an xgboost model combined into one diagram
+  (\code{xgboost::xgb.plot.multi.trees}, keeping the 10 most important
+  features) and saves it as a self-contained \code{<file>.html} in the
+  working directory. Works with xgboost 3 and with older versions.
 }
 \examples{
 infert_formula<-formula(case~education+spontaneous+induced)

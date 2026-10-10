@@ -21,7 +21,7 @@ diagonal is kept.}
 triangle to keep.}
 }
 \value{
-A numeric matrix with the same dimensions and row/column names as
+A numeric matrix with the same dimensions and row / column names as
   \code{m}.
 }
 \description{

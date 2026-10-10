@@ -7,7 +7,7 @@
 \format{
 A data frame with 19719 rows and 57 variables:
 \describe{
-  \item{race}{Race/ethnic background (1–13, 0=missing)}
+  \item{race}{Race / ethnic background (1–13, 0=missing)}
   \item{age}{Age (integer; only responses from participants 13 and older included)}
   \item{engnat}{Is English your native language? (1=Yes, 2=No, 0=missing)}
   \item{gender}{1=Male, 2=Female, 3=Other, 0=missing}
@@ -17,7 +17,7 @@ A data frame with 19719 rows and 57 variables:
     2=Google,
     3=Facebook,
     4=.edu site,
-    6=Other/unknown}
+    6=Other / unknown}
   \item{country}{Two-letter ISO country code (e.g., "US", "GB")}
   \item{E1}{I am the life of the party.}
   \item{E2}{I don't talk a lot.}
@@ -102,11 +102,11 @@ In psychological trait theory, the Big Five personality traits, also known as th
 
 The theory identifies five factors:
 \itemize{
-  \item \strong{Openness to experience (O)} (inventive/curious vs. consistent/cautious)
-  \item \strong{Conscientiousness (C)} (efficient/organized vs. extravagant/careless)
-  \item \strong{Extraversion (E)} (outgoing/energetic vs. solitary/reserved)
-  \item \strong{Agreeableness (A)} (friendly/compassionate vs. challenging/callous)
-  \item \strong{Neuroticism (N)} (sensitive/nervous vs. resilient/confident)
+  \item \strong{Openness to experience (O)} (inventive / curious vs. consistent / cautious)
+  \item \strong{Conscientiousness (C)} (efficient / organized vs. extravagant / careless)
+  \item \strong{Extraversion (E)} (outgoing / energetic vs. solitary / reserved)
+  \item \strong{Agreeableness (A)} (friendly / compassionate vs. challenging / callous)
+  \item \strong{Neuroticism (N)} (sensitive / nervous vs. resilient / confident)
 }
 The five factors are represented using the acronyms OCEAN or CANOE. Beneath each proposed global factor, there are a number of correlated and more specific primary factors. For example, extroversion is typically associated with qualities such as gregariousness, assertiveness, excitement-seeking, warmth, activity, and positive emotions.  
 Family life and the way someone was raised will affect these traits. Twin studies and other research have shown that about half of the variation between individuals results from their genetics and half from their environments. Researchers have found conscientiousness, extroversion, openness to experience, and neuroticism to be relatively stable from childhood through adulthood.

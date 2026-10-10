@@ -19,15 +19,15 @@ A data frame with 1010 rows and 151 variables. All preference and
   \item \strong{Musical}: Interest in musicals
   \item \strong{Pop}: Interest in pop music
   \item \strong{Rock}: Interest in rock music
-  \item \strong{Metal or Hardrock}: Interest in metal/hardrock
+  \item \strong{Metal or Hardrock}: Interest in metal / hardrock
   \item \strong{Punk}: Interest in punk music
-  \item \strong{Hiphop, Rap}: Interest in hiphop/rap
-  \item \strong{Reggae, Ska}: Interest in reggae/ska
-  \item \strong{Swing, Jazz}: Interest in swing/jazz
+  \item \strong{Hiphop, Rap}: Interest in hiphop / rap
+  \item \strong{Reggae, Ska}: Interest in reggae / ska
+  \item \strong{Swing, Jazz}: Interest in swing / jazz
   \item \strong{Rock n roll}: Interest in rock n roll
   \item \strong{Alternative}: Interest in alternative music
   \item \strong{Latino}: Interest in Latino music
-  \item \strong{Techno, Trance}: Interest in techno/trance
+  \item \strong{Techno, Trance}: Interest in techno / trance
   \item \strong{Opera}: Interest in opera
   \item \strong{Movies}: Interest in movies generally
   \item \strong{Horror}: Interest in horror films
@@ -36,7 +36,7 @@ A data frame with 1010 rows and 151 variables. All preference and
   \item \strong{Romantic}: Interest in romantic films
   \item \strong{Sci-fi}: Interest in sci-fi films
   \item \strong{War}: Interest in war films
-  \item \strong{Fantasy/Fairy tales}: Interest in fantasy films
+  \item \strong{Fantasy / Fairy tales}: Interest in fantasy films
   \item \strong{Animated}: Interest in animated films
   \item \strong{Documentary}: Interest in documentaries
   \item \strong{Western}: Interest in westerns
@@ -48,7 +48,7 @@ A data frame with 1010 rows and 151 variables. All preference and
   \item \strong{Physics}: Interest in physics
   \item \strong{Internet}: Interest in internet
   \item \strong{PC}: Interest in computers
-  \item \strong{Economy Management}: Interest in economy/management
+  \item \strong{Economy Management}: Interest in economy / management
   \item \strong{Biology}: Interest in biology
   \item \strong{Chemistry}: Interest in chemistry
   \item \strong{Reading}: Interest in reading
@@ -59,7 +59,7 @@ A data frame with 1010 rows and 151 variables. All preference and
   \item \strong{Cars}: Interest in cars
   \item \strong{Art exhibitions}: Interest in art exhibitions
   \item \strong{Religion}: Interest in religion
-  \item \strong{Countryside, outdoors}: Interest in countryside/outdoors
+  \item \strong{Countryside, outdoors}: Interest in countryside / outdoors
   \item \strong{Dancing}: Interest in dancing
   \item \strong{Musical instruments}: Interest in playing musical instruments
   \item \strong{Writing}: Interest in writing
@@ -83,8 +83,8 @@ A data frame with 1010 rows and 151 variables. All preference and
   \item \strong{Ageing}: Fear of ageing
   \item \strong{Dangerous dogs}: Fear of dangerous dogs
   \item \strong{Fear of public speaking}: Fear of public speaking
-  \item \strong{Smoking}: Smoking behaviour/attitude
-  \item \strong{Alcohol}: Alcohol consumption/attitude
+  \item \strong{Smoking}: Smoking behaviour / attitude
+  \item \strong{Alcohol}: Alcohol consumption / attitude
   \item \strong{Healthy eating}: Attitude toward healthy eating
   \item \strong{Daily events}: Attitude toward planning daily events
   \item \strong{Prioritising workload}: Ability to prioritise workload
@@ -156,7 +156,7 @@ A data frame with 1010 rows and 151 variables. All preference and
   \item \strong{Number of siblings}: Number of siblings
   \item \strong{Gender}: 1=Female, 2=Male
   \item \strong{Left - right handed}: 1=Right, 2=Left
-  \item \strong{Education}: 1=Primary, 2=Secondary, 3=College/University, 4=Masters, 5=Doctorate
+  \item \strong{Education}: 1=Primary, 2=Secondary, 3=College / University, 4=Masters, 5=Doctorate
   \item \strong{Only child}: 1=Yes, 2=No
   \item \strong{Village - town}: 1=Village, 2=City
   \item \strong{House - block of flats}: 1=House, 2=Block of flats

@@ -17,7 +17,7 @@
 #'   generated automatically from \code{cols}. Default is \code{NULL}.
 #'
 #' @return If a single plot is provided, returns it directly. Otherwise returns
-#'   a list of recorded plots (\code{\link[grDevices]{recordPlot}}), one per page.
+#'   a list of recorded plots (\code{grDevices::recordPlot()}), one per page.
 #'
 #' @importFrom grid grid.newpage pushViewport viewport grid.layout
 #' @importFrom grDevices recordPlot

@@ -70,7 +70,10 @@ compute_cohens_d <- function(formula, data) {
 #' downstream summaries.
 #' @param file output filename
 #' @inheritParams plot_oneway_diagnostics
-#' @inheritDotParams stats::t.test
+#' @param ... Further arguments passed to \code{stats::t.test()} for every
+#'   comparison, e.g. \code{alternative}, \code{mu}, \code{var.equal} or
+#'   \code{conf.level}. The formula and data are built by the function, so do
+#'   not pass \code{x}, \code{y}, \code{formula}, \code{data} or \code{paired}.
 #' @importFrom stats t.test formula bartlett.test
 #'
 #' @return A data frame where each row is one pairwise group comparison for one
@@ -106,7 +109,7 @@ compute_cohens_d <- function(formula, data) {
 #'   Small values suggest heteroscedasticity.
 #'   \item bonferroni_p: Bonferroni-adjusted alpha threshold computed for the
 #'   number of tests in the output table.
-#'   \item significant: Logical-like character flag (TRUE/FALSE) indicating
+#'   \item significant: Logical-like character flag (TRUE / FALSE) indicating
 #'   whether p is below bonferroni_p.
 #' }
 #'
@@ -282,10 +285,10 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
 # WILCOXON EFFECT SIZE
 ##########################################################################################
 #' @title Compute Wilcoxon Effect Size
-#' @description Computes the Wilcoxon rank-sum/signed-rank effect size
+#' @description Computes the Wilcoxon rank-sum / signed-rank effect size
 #' r = abs(Z) / sqrt(N), with Z derived from the p-value of
 #' stats::wilcox.test (Z = qnorm(p / 2, lower.tail = FALSE)). This avoids a
-#' dependency on rstatix/coin, using only stats::wilcox.test under the hood.
+#' dependency on rstatix / coin, using only stats::wilcox.test under the hood.
 #' The effect size magnitude is computed from the two-sided p-value
 #' regardless of the alternative used for the underlying hypothesis test.
 #'
@@ -348,7 +351,11 @@ compute_wilcoxon_effect_size <- function(formula, data,
 #'
 #' @param file output filename
 #' @inheritParams plot_oneway_diagnostics
-#' @inheritDotParams stats::wilcox.test
+#' @param ... Further arguments passed to \code{stats::wilcox.test()} for every
+#'   comparison, e.g. \code{alternative}, \code{mu}, \code{exact} or
+#'   \code{correct}. The formula and data are built by the function and
+#'   \code{conf.int = TRUE} is always used, so do not pass \code{x}, \code{y},
+#'   \code{formula}, \code{data}, \code{paired} or \code{conf.int}.
 #'
 #' @importFrom stats wilcox.test formula sd
 #'
@@ -384,7 +391,7 @@ compute_wilcoxon_effect_size <- function(formula, data,
 #'   Small values suggest heteroscedasticity.
 #'   \item bonferroni_p: Bonferroni-adjusted alpha threshold computed for the
 #'   number of tests in the output table.
-#'   \item significant: Logical-like character flag (TRUE/FALSE) indicating
+#'   \item significant: Logical-like character flag (TRUE / FALSE) indicating
 #'   whether p is below bonferroni_p.
 #' }
 #'

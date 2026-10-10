@@ -24,7 +24,7 @@ The function performs the following steps:
 2. Identifies character and factor variables and creates dummy variables if they meet the criteria.
 3. Combines the scaled numeric variables and dummy variables into a single dataframe.
 
-The output is a dataframe with scaled numeric variables and dummy-coded character/factor variables.
+The output is a dataframe with scaled numeric variables and dummy-coded character / factor variables.
 }
 \examples{
 # Example with the 'infert' dataset

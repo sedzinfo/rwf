@@ -21,7 +21,7 @@ plot_histogram(
 dropped.}
 
 \item{bins}{Number of histogram bins passed to
-\code{\link[ggplot2]{geom_histogram}}. Default is \code{30}.}
+\code{ggplot2::geom_histogram()}. Default is \code{30}.}
 
 \item{title}{Character string used as the plot title. Default is \code{""}.}
 

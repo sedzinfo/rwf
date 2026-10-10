@@ -19,7 +19,7 @@ triangle.}
 either a single value or one value per diagonal element.}
 }
 \value{
-A matrix with the dimensions and row/column names of
+A matrix with the dimensions and row / column names of
   \code{m_lower}. It is numeric, unless \code{diagonal} contains text, in
   which case the whole matrix becomes character.
 }

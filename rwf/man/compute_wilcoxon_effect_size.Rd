@@ -36,10 +36,10 @@ correction, same as stats::wilcox.test.}
 A single numeric value, the Wilcoxon effect size (r).
 }
 \description{
-Computes the Wilcoxon rank-sum/signed-rank effect size
+Computes the Wilcoxon rank-sum / signed-rank effect size
 r = abs(Z) / sqrt(N), with Z derived from the p-value of
 stats::wilcox.test (Z = qnorm(p / 2, lower.tail = FALSE)). This avoids a
-dependency on rstatix/coin, using only stats::wilcox.test under the hood.
+dependency on rstatix / coin, using only stats::wilcox.test under the hood.
 The effect size magnitude is computed from the two-sided p-value
 regardless of the alternative used for the underlying hypothesis test.
 }

@@ -9,9 +9,10 @@
 #'
 #' @param df A \code{data.frame} to inspect. Accepts any column types: numeric,
 #'   integer, character, factor, logical, \code{Date}, \code{POSIXct}.
-#' @param name_length Integer. Maximum number of characters displayed for column
-#'   names and MIN/MAX values in the printed output. Longer strings are
-#'   truncated. Defaults to \code{getOption("width") / 3}.
+#' @param name_length Integer. Maximum number of characters shown for column
+#'   names and for the MIN and MAX values in the printed output; longer strings
+#'   are truncated. The default is one third of the console width,
+#'   \code{getOption("width") / 3}.
 #' @param digits Integer. Number of decimal places used when rounding MEAN,
 #'   MEDIAN, and SD for numeric columns. Defaults to \code{2}.
 #' @param nuniques Integer. If \code{> 0}, appends a UNIQUES column to the

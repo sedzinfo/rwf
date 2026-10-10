@@ -247,7 +247,7 @@ plot_acf <- function(df, lag.max = length(df), base_size = 10, title = "") {
 #'     \item{\code{"friedman"}}{Friedman's super-smoother via \code{supsmu()} — span must be in (0, 1).}
 #'     \item{\code{"splines"}}{Smoothing splines via \code{smooth.spline()} — \code{spar} controls the penalty.}
 #'     \item{\code{"default"}}{Running mean filter via \code{filter()} — bandwidth rounded to an integer window width.}
-#'     \item{\code{"polynomial"}}{Fits a centred cubic polynomial trend with and without seasonal (cos/sin) terms via \code{lm()}.}
+#'     \item{\code{"polynomial"}}{Fits a centred cubic polynomial trend with and without seasonal (cos / sin) terms via \code{lm()}.}
 #'     \item{\code{"linear"}}{Fits a simple linear trend via \code{lm()} and draws the regression line.}
 #'   }
 #' @return Invisibly returns \code{NULL}. The function is called for its side

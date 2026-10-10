@@ -167,7 +167,7 @@
 #'   \item{Q9}{Sexual compatibility item 9 (0-4)}
 #'   \item{Q10}{Sexual compatibility item 10 (0-4)}
 #'   \item{score}{Total scale score (sum of Q1-Q10, range 0-40)}
-#'   \item{gender}{Gender (1=Male, 2=Female; 0 and 3 = missing/other)}
+#'   \item{gender}{Gender (1=Male, 2=Female; 0 and 3 = missing / other)}
 #'   \item{age}{Age in years (999 = missing)}
 #' }
 #' @source researchpy Data-sets repository (\url{https://github.com/researchpy/Data-sets})
@@ -252,8 +252,8 @@
 #'   \item{name}{Name of the passenger}
 #'   \item{sex}{Gender of the passenger}
 #'   \item{age}{Age of the passenger}
-#'   \item{sibsp}{Number of siblings/spouses aboard the Titanic}
-#'   \item{parch}{Number of parents/children aboard the Titanic}
+#'   \item{sibsp}{Number of siblings / spouses aboard the Titanic}
+#'   \item{parch}{Number of parents / children aboard the Titanic}
 #'   \item{ticket}{Ticket number}
 #'   \item{fare}{Passenger fare}
 #'   \item{cabin}{Cabin number}
@@ -304,7 +304,7 @@
 #'
 #' @format A data frame with 19719 rows and 57 variables:
 #' \describe{
-#'   \item{race}{Race/ethnic background (1–13, 0=missing)}
+#'   \item{race}{Race / ethnic background (1–13, 0=missing)}
 #'   \item{age}{Age (integer; only responses from participants 13 and older included)}
 #'   \item{engnat}{Is English your native language? (1=Yes, 2=No, 0=missing)}
 #'   \item{gender}{1=Male, 2=Female, 3=Other, 0=missing}
@@ -314,7 +314,7 @@
 #'     2=Google,
 #'     3=Facebook,
 #'     4=.edu site,
-#'     6=Other/unknown}
+#'     6=Other / unknown}
 #'   \item{country}{Two-letter ISO country code (e.g., "US", "GB")}
 #'   \item{E1}{I am the life of the party.}
 #'   \item{E2}{I don't talk a lot.}
@@ -386,11 +386,11 @@
 #' 
 #' The theory identifies five factors:
 #' \itemize{
-#'   \item \strong{Openness to experience (O)} (inventive/curious vs. consistent/cautious)
-#'   \item \strong{Conscientiousness (C)} (efficient/organized vs. extravagant/careless)
-#'   \item \strong{Extraversion (E)} (outgoing/energetic vs. solitary/reserved)
-#'   \item \strong{Agreeableness (A)} (friendly/compassionate vs. challenging/callous)
-#'   \item \strong{Neuroticism (N)} (sensitive/nervous vs. resilient/confident)
+#'   \item \strong{Openness to experience (O)} (inventive / curious vs. consistent / cautious)
+#'   \item \strong{Conscientiousness (C)} (efficient / organized vs. extravagant / careless)
+#'   \item \strong{Extraversion (E)} (outgoing / energetic vs. solitary / reserved)
+#'   \item \strong{Agreeableness (A)} (friendly / compassionate vs. challenging / callous)
+#'   \item \strong{Neuroticism (N)} (sensitive / nervous vs. resilient / confident)
 #' }
 #' The five factors are represented using the acronyms OCEAN or CANOE. Beneath each proposed global factor, there are a number of correlated and more specific primary factors. For example, extroversion is typically associated with qualities such as gregariousness, assertiveness, excitement-seeking, warmth, activity, and positive emotions.  
 #' Family life and the way someone was raised will affect these traits. Twin studies and other research have shown that about half of the variation between individuals results from their genetics and half from their environments. Researchers have found conscientiousness, extroversion, openness to experience, and neuroticism to be relatively stable from childhood through adulthood.
@@ -443,15 +443,15 @@
 #'   \item \strong{Musical}: Interest in musicals
 #'   \item \strong{Pop}: Interest in pop music
 #'   \item \strong{Rock}: Interest in rock music
-#'   \item \strong{Metal or Hardrock}: Interest in metal/hardrock
+#'   \item \strong{Metal or Hardrock}: Interest in metal / hardrock
 #'   \item \strong{Punk}: Interest in punk music
-#'   \item \strong{Hiphop, Rap}: Interest in hiphop/rap
-#'   \item \strong{Reggae, Ska}: Interest in reggae/ska
-#'   \item \strong{Swing, Jazz}: Interest in swing/jazz
+#'   \item \strong{Hiphop, Rap}: Interest in hiphop / rap
+#'   \item \strong{Reggae, Ska}: Interest in reggae / ska
+#'   \item \strong{Swing, Jazz}: Interest in swing / jazz
 #'   \item \strong{Rock n roll}: Interest in rock n roll
 #'   \item \strong{Alternative}: Interest in alternative music
 #'   \item \strong{Latino}: Interest in Latino music
-#'   \item \strong{Techno, Trance}: Interest in techno/trance
+#'   \item \strong{Techno, Trance}: Interest in techno / trance
 #'   \item \strong{Opera}: Interest in opera
 #'   \item \strong{Movies}: Interest in movies generally
 #'   \item \strong{Horror}: Interest in horror films
@@ -460,7 +460,7 @@
 #'   \item \strong{Romantic}: Interest in romantic films
 #'   \item \strong{Sci-fi}: Interest in sci-fi films
 #'   \item \strong{War}: Interest in war films
-#'   \item \strong{Fantasy/Fairy tales}: Interest in fantasy films
+#'   \item \strong{Fantasy / Fairy tales}: Interest in fantasy films
 #'   \item \strong{Animated}: Interest in animated films
 #'   \item \strong{Documentary}: Interest in documentaries
 #'   \item \strong{Western}: Interest in westerns
@@ -472,7 +472,7 @@
 #'   \item \strong{Physics}: Interest in physics
 #'   \item \strong{Internet}: Interest in internet
 #'   \item \strong{PC}: Interest in computers
-#'   \item \strong{Economy Management}: Interest in economy/management
+#'   \item \strong{Economy Management}: Interest in economy / management
 #'   \item \strong{Biology}: Interest in biology
 #'   \item \strong{Chemistry}: Interest in chemistry
 #'   \item \strong{Reading}: Interest in reading
@@ -483,7 +483,7 @@
 #'   \item \strong{Cars}: Interest in cars
 #'   \item \strong{Art exhibitions}: Interest in art exhibitions
 #'   \item \strong{Religion}: Interest in religion
-#'   \item \strong{Countryside, outdoors}: Interest in countryside/outdoors
+#'   \item \strong{Countryside, outdoors}: Interest in countryside / outdoors
 #'   \item \strong{Dancing}: Interest in dancing
 #'   \item \strong{Musical instruments}: Interest in playing musical instruments
 #'   \item \strong{Writing}: Interest in writing
@@ -507,8 +507,8 @@
 #'   \item \strong{Ageing}: Fear of ageing
 #'   \item \strong{Dangerous dogs}: Fear of dangerous dogs
 #'   \item \strong{Fear of public speaking}: Fear of public speaking
-#'   \item \strong{Smoking}: Smoking behaviour/attitude
-#'   \item \strong{Alcohol}: Alcohol consumption/attitude
+#'   \item \strong{Smoking}: Smoking behaviour / attitude
+#'   \item \strong{Alcohol}: Alcohol consumption / attitude
 #'   \item \strong{Healthy eating}: Attitude toward healthy eating
 #'   \item \strong{Daily events}: Attitude toward planning daily events
 #'   \item \strong{Prioritising workload}: Ability to prioritise workload
@@ -580,7 +580,7 @@
 #'   \item \strong{Number of siblings}: Number of siblings
 #'   \item \strong{Gender}: 1=Female, 2=Male
 #'   \item \strong{Left - right handed}: 1=Right, 2=Left
-#'   \item \strong{Education}: 1=Primary, 2=Secondary, 3=College/University, 4=Masters, 5=Doctorate
+#'   \item \strong{Education}: 1=Primary, 2=Secondary, 3=College / University, 4=Masters, 5=Doctorate
 #'   \item \strong{Only child}: 1=Yes, 2=No
 #'   \item \strong{Village - town}: 1=Village, 2=City
 #'   \item \strong{House - block of flats}: 1=House, 2=Block of flats

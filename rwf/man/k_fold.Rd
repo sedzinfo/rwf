@@ -20,7 +20,7 @@ Splits a dataframe into train and test dataframes for model evaluation. Prepared
 This function performs k-fold cross-validation by splitting the input dataframe into k folds. 
 Each fold serves as a test set once,while the remaining k-1 folds form the training set.
 
-The function prepares data objects for xgboost model training and evaluation,including train/test datasets and xgboost DMatrix objects.
+The function prepares data objects for xgboost model training and evaluation, including train / test datasets and xgboost DMatrix objects.
 
 The output is a list containing the following elements:
 -`f`: List of train and test datasets for each fold.

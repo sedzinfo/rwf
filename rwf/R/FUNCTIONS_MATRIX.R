@@ -17,7 +17,7 @@
 #' @param type Character, \code{"lower"} (default) or \code{"upper"}: the
 #'   triangle to keep.
 #'
-#' @return A numeric matrix with the same dimensions and row/column names as
+#' @return A numeric matrix with the same dimensions and row / column names as
 #'   \code{m}.
 #'
 #' @seealso \code{\link{display_upper_lower_triangle}},
@@ -67,7 +67,7 @@ matrix_triangle<-function(m,off_diagonal=NA,diagonal=NULL,type="lower") {
 #'   \code{"lower"} for the diagonal of \code{m_lower}, or any other value(s),
 #'   either a single value or one value per diagonal element.
 #'
-#' @return A matrix with the dimensions and row/column names of
+#' @return A matrix with the dimensions and row / column names of
 #'   \code{m_lower}. It is numeric, unless \code{diagonal} contains text, in
 #'   which case the whole matrix becomes character.
 #'

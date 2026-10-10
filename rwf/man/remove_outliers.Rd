@@ -16,7 +16,7 @@ probabilities used to define the fence boundaries. Default is
 \item{na.rm}{Logical; whether to remove \code{NA} values when computing
 quantiles and IQR. Default is \code{TRUE}.}
 
-\item{...}{Additional arguments passed to \code{\link[stats]{quantile}}.}
+\item{...}{Additional arguments passed to \code{stats::quantile()}.}
 }
 \value{
 A numeric vector the same length as \code{vector} with outlying

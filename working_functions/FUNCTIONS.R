@@ -165,7 +165,7 @@ rbind_all <- function(df1, df2) {
 #'   TRUE}. When \code{TRUE}, columns with only one unique non-missing value
 #'   (zero variance) are also dropped. Default is \code{FALSE}.
 #' @return A data frame with non-computable values replaced and, depending on
-#'   the flags, rows and/or columns removed.
+#'   the flags, rows and / or columns removed.
 #' @keywords functions
 #' @export
 #' @examples

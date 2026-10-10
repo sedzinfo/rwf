@@ -17,7 +17,7 @@ and a summary to the console. If \code{FALSE}, only returns results.}
 An invisible list with:
 \itemize{
   \item \code{has_issues}: Logical, \code{TRUE} if any issue was detected.
-  \item \code{issues}: Named list of detected issue tables/messages.
+  \item \code{issues}: Named list of detected issue tables / messages.
   \item \code{converged}: Logical convergence flag from
     \code{lavaan::lavInspect(fit_model, "converged")}.
 }

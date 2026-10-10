@@ -40,7 +40,7 @@ TRUE}. When \code{TRUE}, columns with only one unique non-missing value
 }
 \value{
 A data frame with non-computable values replaced and, depending on
-  the flags, rows and/or columns removed.
+  the flags, rows and / or columns removed.
 }
 \description{
 Cleans a data frame by replacing non-computable values

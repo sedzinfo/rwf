@@ -4,13 +4,13 @@
 #' @title Apply gsub for multiple patterns with a single replacement
 #'
 #' @description Iterates over a vector of patterns, applying
-#' \code{\link[base]{gsub}} sequentially with the same replacement string for
+#' \code{base::gsub()} sequentially with the same replacement string for
 #' each.
 #'
 #' @param mydata Character vector to search within.
 #' @param pattern Character vector of patterns to search for.
 #' @param replacement Character. The replacement string applied for all patterns.
-#' @param ... Additional arguments passed to \code{\link[base]{gsub}},
+#' @param ... Additional arguments passed to \code{base::gsub()},
 #'
 #' @return A character vector with all pattern matches replaced.
 #' @keywords strings
@@ -150,7 +150,7 @@ str_proper <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 
 ##########################################################################################
 #' @title Trim whitespace from all character cells in a data frame
 #'
-#' @description Applies \code{\link[base]{strwrap}} to every character cell in
+#' @description Applies \code{base::strwrap()} to every character cell in
 #' a data frame, removing leading and trailing whitespace.
 #'
 #' @param df A data frame containing one or more character columns.

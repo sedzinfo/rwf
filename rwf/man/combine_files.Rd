@@ -18,7 +18,7 @@ combine_files(
 \item{output_file}{Character string. Path of the combined file to write.
 An existing file is overwritten. Default \code{"all_functions.R"}.}
 
-\item{pattern}{Regular expression passed to \code{\link[base]{list.files}}
+\item{pattern}{Regular expression passed to \code{base::list.files()}
 to select files. Default \code{"\\\\.[Rr]$"} selects R scripts. Use
 \code{NULL} to include every file.}
 
