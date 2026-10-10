@@ -64,7 +64,8 @@ A named \code{list} with two elements:
       \item{MAX}{Maximum value or last label in sorted order.}
       \item{MODE}{Storage mode as returned by \code{mode()}.}
       \item{TYPE}{Type as returned by \code{typeof()}.}
-      \item{CLASS}{Class as returned by \code{class()}.}
+      \item{CLASS}{Class as returned by \code{class()}; several classes are
+        joined with \code{", "} (e.g. \code{"ordered, factor"}).}
       \item{FACTOR}{Logical; \code{TRUE} if the column is a factor.}
     }
   }

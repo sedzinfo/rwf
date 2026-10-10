@@ -51,7 +51,8 @@
 #'       \item{MAX}{Maximum value or last label in sorted order.}
 #'       \item{MODE}{Storage mode as returned by \code{mode()}.}
 #'       \item{TYPE}{Type as returned by \code{typeof()}.}
-#'       \item{CLASS}{Class as returned by \code{class()}.}
+#'       \item{CLASS}{Class as returned by \code{class()}; several classes are
+#'         joined with \code{", "} (e.g. \code{"ordered, factor"}).}
 #'       \item{FACTOR}{Logical; \code{TRUE} if the column is a factor.}
 #'     }
 #'   }
@@ -259,7 +260,9 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
       na      = sum(y_na),
       NOT_NA  = sum(y_notna),
       NAN     = sum(is.nan(y_unlisted)),
-      INF     = sum(is_fin == FALSE & !y_na),
+      # only numbers and dates can be Inf; for them "not finite and not NA" is exactly +-Inf
+      # (NaN counts as NA), and reusing is_fin / y_notna avoids another pass over the column
+      INF     = if (is_num || inherits(y, c("Date", "POSIXt"))) sum(!is_fin & y_notna) else 0L,
       FIN     = sum(is_fin),
       RANGE   = length(u),
       MEAN    = if (is_num) round(mean(y, na.rm = TRUE), digits) else NA,
