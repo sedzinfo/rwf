@@ -168,7 +168,6 @@ test_that("cdf writes the variables and summary sheets to an xlsx file", {
 })
 
 test_that("cdf writes an xlsx file for data with missing or non-numeric columns", {
-  skip("rwf bug: file export fails with 'replacement has length zero' unless every column is complete and double")
   file <- file.path(withr::local_tempdir(), "check")
   cdf(df = data.frame(a = c(1, NA), b = c("x", "y")), file = file)
   expect_true(file.exists(paste0(file, ".xlsx")))
