@@ -1,0 +1,43 @@
+name: Build package tarball
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - "rwf/**"                                  # only when the package itself changes
+      - ".github/workflows/build-tarball.yml"
+  workflow_dispatch:                              # also allows a manual run from the Actions tab
+
+permissions:
+  contents: write                                 # needed to commit the tarball back
+
+concurrency:
+  group: build-tarball
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # the package data is stored in Git LFS; fetch only that, not the docs/PDFs
+      - name: Fetch package data from LFS
+        run: git lfs pull --include="rwf/data/*"
+
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Build tarball
+        run: |
+          rm -f rwf_*.tar.gz                      # drop the old build (also an old version number)
+          R CMD build rwf --resave-data --no-build-vignettes --no-manual
+
+      - name: Commit tarball
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- "rwf_*.tar.gz"
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git commit -m "Rebuild package tarball [skip ci]"
+          git pull --rebase
+          git push
