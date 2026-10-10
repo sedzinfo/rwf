@@ -172,7 +172,6 @@ test_that("compute_moving_average keeps the shape and matches stats::filter away
 })
 
 test_that("compute_moving_average uses the last rows of the series", {
-  skip("rwf bug: index_ma < max_row drops the last row from every window, so the end of the series is wrong")
   df <- data.frame(x = c(4, 8, 15, 16, 23, 42, 7, 1, 9, 12), y = 1:10)
   result <- compute_moving_average(df = df, w = 2)
   expect_equal(result$x, reference_moving_average(df$x, 2))

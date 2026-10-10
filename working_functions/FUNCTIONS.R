@@ -78,6 +78,7 @@ round_dataframe <- function(df, digits = 0, type = "round") {
 #' cdf(df = change_data_type(df = mtcars, "factor"))
 #' df <- change_data_type(df = mtcars, "factor")
 #' cdf(df = change_data_type(df = df, "factor_character"))
+#' cdf(df = change_data_type(df = df, "character_factor"))
 change_data_type <- function(df, type) {
   if (type == "character") {
     df[] <- lapply(df, function(x) as.character(trimws(x, which = "both", whitespace = "[\t\r\n]")))
@@ -89,14 +90,10 @@ change_data_type <- function(df, type) {
     df[] <- lapply(df, as.factor)
   }
   if (type == "factor_character") {
-    df[] <- apply(df, 1:2, function(x) {
-      if (is.factor(x)) as.character(x) else x
-    })
+    df[] <- lapply(df, function(x) if (is.factor(x)) as.character(x) else x)
   }
   if (type == "character_factor") {
-    df[] <- apply(df, 1:2, function(x) {
-      if (is.character(x)) factor(x) else x
-    })
+    df[] <- lapply(df, function(x) if (is.character(x)) factor(x) else x)
   }
   return(df)
 }
@@ -124,18 +121,20 @@ change_data_type <- function(df, type) {
 #' row.names(df1) <- 21:30
 #' rbind_all(df1 = df1, df2 = df2)
 rbind_all <- function(df1, df2) {
+  # matrices are accepted, so work on data frames (a matrix cannot gain a new column by name)
+  df1 <- as.data.frame(df1)
+  df2 <- as.data.frame(df2)
   df1_diff <- setdiff(colnames(df1), colnames(df2))
   df2_diff <- setdiff(colnames(df2), colnames(df1))
   df1[, c(as.character(df2_diff))] <- NA
   df2[, c(as.character(df1_diff))] <- NA
   row_names <- c(row.names(df1), row.names(df2))
   result <- rbind(df1, df2)
-  ndf1 <- deparse(substitute(df1))
-  ndf2 <- deparse(substitute(df2))
-  row_names_df1 <- row.names(df1)
-  row_names_df2 <- row.names(df2)
-  if (!TRUE %in% duplicated(row_names)) {
-    row.names(result) <- c(row_names_df1, row_names_df2)
+  # keep the original row names unless they clash, then fall back to 1, 2, 3, ...
+  if (anyDuplicated(row_names)) {
+    row.names(result) <- NULL
+  } else {
+    row.names(result) <- row_names
   }
   return(result)
 }

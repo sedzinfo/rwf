@@ -38,5 +38,6 @@ cdf(df = change_data_type(df = mtcars, "numeric"))
 cdf(df = change_data_type(df = mtcars, "factor"))
 df <- change_data_type(df = mtcars, "factor")
 cdf(df = change_data_type(df = df, "factor_character"))
+cdf(df = change_data_type(df = df, "character_factor"))
 }
 \keyword{functions}

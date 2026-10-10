@@ -357,7 +357,7 @@ compute_moving_average <- function(df, w) {
     for (row_index in 1:max_row) {
       index_ma <- seq(from = (row_index - w), to = (row_index + w), by = 1)
       index_ma <- index_ma[index_ma > 0]
-      index_ma <- index_ma[index_ma < max_row]
+      index_ma <- index_ma[index_ma <= max_row]
       df_ma[row_index, collumn_index] <- mean(df[index_ma, collumn_index])
     }
   }

@@ -81,7 +81,6 @@ test_that("change_data_type factor converts every column with the same levels as
 })
 
 test_that("change_data_type factor_character converts only factor columns", {
-  skip("rwf bug: factor_character uses apply() on a matrix, so every column becomes padded character")
   df <- data.frame(f = factor(c("a", "b")), n = c(1.5, 10), ch = c("x", "y"))
   rwf <- change_data_type(df = df, type = "factor_character")
   expect_identical(rwf$f, c("a", "b"))
@@ -90,7 +89,6 @@ test_that("change_data_type factor_character converts only factor columns", {
 })
 
 test_that("change_data_type character_factor converts only character columns", {
-  skip("rwf bug: character_factor uses apply() on a matrix, so no column becomes a factor")
   df <- data.frame(f = factor(c("a", "b")), n = c(1.5, 10), ch = c("x", "y"))
   rwf <- change_data_type(df = df, type = "character_factor")
   expect_identical(rwf$ch, factor(c("x", "y")))
@@ -128,7 +126,6 @@ test_that("rbind_all keeps unique row names from both inputs", {
 })
 
 test_that("rbind_all uses default integer row names when row names are duplicated", {
-  skip("rwf bug: duplicated row names are made unique by rbind (e.g. 'r11'), not reset to integers")
   df1 <- data.frame(x = 1:2, row.names = c("r1", "r2"))
   df2 <- data.frame(y = 3, row.names = "r1")
   rwf <- rbind_all(df1 = df1, df2 = df2)
@@ -136,7 +133,6 @@ test_that("rbind_all uses default integer row names when row names are duplicate
 })
 
 test_that("rbind_all accepts matrices as documented", {
-  skip("rwf bug: adding a missing column to a matrix fails with 'subscript out of bounds'")
   m1 <- matrix(1:4, 2, dimnames = list(NULL, c("x", "y")))
   m2 <- matrix(5:6, 1, dimnames = list(NULL, c("y", "z")))
   rwf <- rbind_all(df1 = m1, df2 = m2)
