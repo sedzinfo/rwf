@@ -58,8 +58,8 @@ A list with:
   \item \code{fisher}, \code{welch}: one row per combination, with the output of
   \code{compute_one_way_test} (sums of squares, F, degrees of freedom, p-value,
   effect sizes and power)
-  \item \code{kruskal_wallis}: one row per combination, with the output of
-  \code{compute_kruskal_wallis_test}
+  \item \code{kruskal_wallis}: the output of \code{compute_kruskal_wallis_test},
+  with one row per combination
   \item \code{tukey}, \code{games_howell}: one row per pair of groups in each
   combination, with the output of \code{compute_posthoc} (\code{LEVEL} names the
   pair)
@@ -115,7 +115,7 @@ Which test to read:
   \item The Games-Howell test handles unequal group sizes and unequal variances.
 }
 
-The Excel workbook has the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
+The Excel workbook contains the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
 "Tukey", "Games-Howell" and "Descriptives". The plots are written to PDF files
 named after \code{file}. With \code{pb = TRUE}, a progress bar is printed
 to the console while the tests run.

@@ -43,7 +43,7 @@ see \url{https://www.kaggle.com/toramky/automobile-dataset}
 df_automotive_data
 }
 \description{
-This data set contains various automotive information including 
+This data set contains a range of automotive information including 
 engine location, dimensions, weight, engine type, number of cylinders, 
 and other specifications.
 }

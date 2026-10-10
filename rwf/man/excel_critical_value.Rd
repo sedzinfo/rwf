@@ -39,8 +39,8 @@ columns. Default is \code{"#0.00"}.}
 \itemize{
   \item A single character string with an Excel expression (e.g. \code{"<0.05"},
     \code{">20"}, \code{"=0"}). Matching cells are highlighted in red.
-  \item A character vector of length 2 with two expressions
-    (e.g. \code{c(">20", "<11")}). The first condition highlights in red,
+  \item A character vector of length 2 with two expressions, for example
+    \code{c(">20", "<11")}. The first condition highlights in red,
     the second in purple.
 }
 \code{NA} cells in the target column are skipped. Default is \code{NULL}.}

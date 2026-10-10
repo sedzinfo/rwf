@@ -52,8 +52,8 @@ plot_ts <- function(df, base_size = 10, ylab = "Count", title = "") {
 #'   values, making it easy to identify significant lags and seasonal patterns.
 #'   Missing values are excluded via \code{na.action = stats::na.exclude}.
 #' @param df A \code{ts} object containing the time series to analyse.
-#' @param lag.max Integer specifying the maximum number of lags to compute.
-#'   Default is \code{length(df)} (all possible lags).
+#' @param lag.max Integer. Maximum number of lags to compute. Default is
+#'   \code{length(df)}, which gives all possible lags.
 #' @param base_size Base font size passed to \code{theme_bw()}. Default is
 #'   \code{10}.
 #' @param title Character string used as the plot title. Default is \code{""}.
@@ -245,7 +245,7 @@ plot_acf <- function(df, lag.max = length(df), base_size = 10, title = "") {
 #'     \item{\code{"kernel"}}{Gaussian kernel smoother via \code{ksmooth()} — bandwidth controls the smoothing window (default).}
 #'     \item{\code{"lowess"}}{Locally weighted regression via \code{lowess()} — \code{f} controls the span proportion.}
 #'     \item{\code{"friedman"}}{Friedman's super-smoother via \code{supsmu()} — span must be in (0, 1).}
-#'     \item{\code{"splines"}}{Smoothing splines via \code{smooth.spline()} — \code{spar} controls the penalty.}
+#'     \item{\code{"splines"}}{Smoothing splines via \code{smooth.spline()}, where \code{spar} controls the penalty.}
 #'     \item{\code{"default"}}{Running mean filter via \code{filter()} — bandwidth rounded to an integer window width.}
 #'     \item{\code{"polynomial"}}{Fits a centred cubic polynomial trend with and without seasonal (cos / sin) terms via \code{lm()}.}
 #'     \item{\code{"linear"}}{Fits a simple linear trend via \code{lm()} and draws the regression line.}

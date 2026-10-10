@@ -24,11 +24,11 @@ stats::wilcox.test's data argument.}
 
 \item{mu}{a number specifying an optional shift, same as stats::wilcox.test.}
 
-\item{exact}{logical indicating whether an exact p-value should be
-computed, same as stats::wilcox.test.}
+\item{exact}{logical, as in stats::wilcox.test, indicating whether an exact
+p-value should be computed.}
 
-\item{correct}{logical indicating whether to apply the continuity
-correction, same as stats::wilcox.test.}
+\item{correct}{logical, as in stats::wilcox.test, indicating whether to apply
+the continuity correction.}
 
 \item{...}{additional arguments passed to stats::wilcox.test.}
 }

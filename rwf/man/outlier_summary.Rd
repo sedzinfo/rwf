@@ -7,8 +7,8 @@
 outlier_summary(vector)
 }
 \arguments{
-\item{vector}{Numeric vector. Missing values are removed before
-z-standardisation and counts.}
+\item{vector}{Numeric vector. Missing values are removed before the
+z-standardisation and the counts.}
 }
 \value{
 A one-row data frame with three character columns:

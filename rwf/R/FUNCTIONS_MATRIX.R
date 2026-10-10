@@ -4,7 +4,7 @@
 #' Keep the lower or upper triangle of a matrix
 #'
 #' Keeps one triangle of a matrix, including the diagonal, and fills the other
-#' triangle with \code{off_diagonal}; optionally replaces the diagonal. Useful
+#' triangle with the value of \code{off_diagonal}; optionally replaces the diagonal. Useful
 #' for displaying correlation or covariance matrices without repeated values.
 #'
 #' @param m A numeric matrix, or an object that \code{as.matrix()} turns into
@@ -111,7 +111,7 @@ display_upper_lower_triangle<-function(m_upper,m_lower,diagonal=NA) {
 #'
 #' @param matrix A square matrix. Unlike \code{\link{matrix_triangle}}, a data
 #'   frame is not accepted; convert it with \code{as.matrix()} first.
-#' @param duplicate Character, \code{"lower"} (default) to copy the lower
+#' @param duplicate Character. Use \code{"lower"} (default) to copy the lower
 #'   triangle into the upper, or \code{"upper"} to copy the upper triangle
 #'   into the lower.
 #' @param diagonal Value(s) to place on the diagonal: a single value (e.g.

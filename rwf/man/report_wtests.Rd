@@ -79,8 +79,8 @@ current dependent and independent variables.
 For each independent variable, all pairwise level combinations are tested
 using utils::combn.
 
-The function calls stats::wilcox.test with conf.int = TRUE and forwards
-additional arguments through ....
+The function calls stats::wilcox.test with conf.int = TRUE and passes any
+additional arguments on through ....
 
 The function also calls report_dataframe to generate a formatted report.
 }

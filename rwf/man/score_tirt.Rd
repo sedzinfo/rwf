@@ -38,7 +38,7 @@ Scores many respondents at once using Thurstonian IRT
 }
 \details{
 Name alignment is the key safeguard:
-if both rownames(lambda) and colnames(patterns) are present,
+when both rownames(lambda) and colnames(patterns) are present,
 patterns is reordered to match lambda row order before scoring.
 
 If required lambda names are missing from patterns, the function stops

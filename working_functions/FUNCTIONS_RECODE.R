@@ -118,8 +118,8 @@ dummy_arrange <- function(vector) {
 #' drops all unused levels.
 #'
 #' @param df A data frame containing one or more factor columns.
-#' @param factor_index Integer vector or \code{NULL}. Column indices of factors
-#'   to process. If \code{NULL}, all columns identified by \code{is.factor()}
+#' @param factor_index Integer vector or \code{NULL}. Column indices of the
+#'   factors to process. If \code{NULL}, all columns identified by \code{is.factor()}
 #'   are processed. Default is \code{NULL}.
 #' @param minimum_frequency Integer. Levels with a frequency less than or equal
 #'   to this value are collapsed into \code{"Other"}. Default is \code{5}.

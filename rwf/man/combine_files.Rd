@@ -18,8 +18,8 @@ combine_files(
 \item{output_file}{Character string. Path of the combined file to write.
 An existing file is overwritten. Default \code{"all_functions.R"}.}
 
-\item{pattern}{Regular expression passed to \code{base::list.files()}
-to select files. Default \code{"\\\\.[Rr]$"} selects R scripts. Use
+\item{pattern}{Regular expression that selects the files, passed to
+\code{base::list.files()}. Default \code{"\\\\.[Rr]$"} selects R scripts. Use
 \code{NULL} to include every file.}
 
 \item{recursive}{Logical. If \code{TRUE} (default), files in

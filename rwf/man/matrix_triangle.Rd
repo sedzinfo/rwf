@@ -26,7 +26,7 @@ A numeric matrix with the same dimensions and row / column names as
 }
 \description{
 Keeps one triangle of a matrix, including the diagonal, and fills the other
-triangle with \code{off_diagonal}; optionally replaces the diagonal. Useful
+triangle with the value of \code{off_diagonal}; optionally replaces the diagonal. Useful
 for displaying correlation or covariance matrices without repeated values.
 }
 \examples{

@@ -49,7 +49,7 @@ generate_data <- function(nrows = 10, ncols = 5, mean = 0, sd = 1, min = 1, max 
 #' values sampled from a supplied pool, either randomly or in a balanced
 #' distribution across levels.
 #'
-#' @param vector Character vector. The pool of factor levels to sample from.
+#' @param vector Character vector of factor levels to sample from.
 #'   Default is \code{LETTERS[1:5]}.
 #' @param nrows Integer. Number of rows to generate. For \code{type = "balanced"},
 #'   \code{nrows} should be divisible by \code{length(vector)}. Default is \code{2}.

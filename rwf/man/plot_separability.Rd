@@ -23,7 +23,7 @@ This function generates a separability plot using ggplot2. It shows the density 
 The plot helps to visualize how well the predicted probabilities separate the different observed categories.
 
 The plot includes the following components:
--Density curves for each observed category,representing the distribution of predicted probabilities.
+-Density curves for each observed category, representing the distribution of predicted probabilities.
 -A legend indicating the observed categories.
 -The total number of observations is included in the plot caption.
 }

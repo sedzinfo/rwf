@@ -71,7 +71,7 @@ compute_cohens_d <- function(formula, data) {
 #' @param file output filename
 #' @inheritParams plot_oneway_diagnostics
 #' @param ... Further arguments passed to \code{stats::t.test()} for every
-#'   comparison, e.g. \code{alternative}, \code{mu}, \code{var.equal} or
+#'   comparison, for example \code{alternative}, \code{mu}, \code{var.equal} or
 #'   \code{conf.level}. The formula and data are built by the function, so do
 #'   not pass \code{x}, \code{y}, \code{formula}, \code{data} or \code{paired}.
 #' @importFrom stats t.test formula bartlett.test
@@ -299,10 +299,10 @@ report_ttests <- function(df, dv, iv, file = NULL, ...) {
 #' @param data data frame containing the variables in formula, same as
 #' stats::wilcox.test's data argument.
 #' @param mu a number specifying an optional shift, same as stats::wilcox.test.
-#' @param exact logical indicating whether an exact p-value should be
-#' computed, same as stats::wilcox.test.
-#' @param correct logical indicating whether to apply the continuity
-#' correction, same as stats::wilcox.test.
+#' @param exact logical, as in stats::wilcox.test, indicating whether an exact
+#' p-value should be computed.
+#' @param correct logical, as in stats::wilcox.test, indicating whether to apply
+#' the continuity correction.
 #' @param ... additional arguments passed to stats::wilcox.test.
 #'
 #' @importFrom stats wilcox.test model.frame qnorm
@@ -402,8 +402,8 @@ compute_wilcoxon_effect_size <- function(formula, data,
 #' For each independent variable, all pairwise level combinations are tested
 #' using utils::combn.
 #'
-#' The function calls stats::wilcox.test with conf.int = TRUE and forwards
-#' additional arguments through ....
+#' The function calls stats::wilcox.test with conf.int = TRUE and passes any
+#' additional arguments on through ....
 #'
 #' The function also calls report_dataframe to generate a formatted report.
 #' @keywords wilcoxon nonparametric pairwise inference effect-size reporting

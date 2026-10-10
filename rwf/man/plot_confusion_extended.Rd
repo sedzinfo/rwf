@@ -25,8 +25,8 @@ sorted level (matches rwf's \code{confusion()} convention).}
 \item{title}{Plot title suffix.}
 }
 \description{
-Draws a 2x2 confusion matrix (raw counts, sequential-blue by magnitude)
-alongside the row/column/overall measures:
+Draws a 2x2 confusion matrix (raw counts, shaded blue by magnitude)
+alongside the row, column and overall measures:
 \describe{
   \item{Total measures}{Accuracy, Prevalence, Proportion Incorrectly Classified}
   \item{Horizontal measures}{Sensitivity / Miss Rate (observed positive column),

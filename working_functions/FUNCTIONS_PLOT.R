@@ -17,7 +17,7 @@
 #'   generated automatically from \code{cols}. Default is \code{NULL}.
 #'
 #' @return If a single plot is provided, returns it directly. Otherwise returns
-#'   a list of recorded plots (\code{grDevices::recordPlot()}), one per page.
+#'   a list of plots recorded with \code{grDevices::recordPlot()}, one per page.
 #'
 #' @importFrom grid grid.newpage pushViewport viewport grid.layout
 #' @importFrom grDevices recordPlot
@@ -45,7 +45,8 @@
 #' cars_plot <- plot_histogram(mtcars[1:4])
 #' plot_multiplot(p1, p2, p3, p4, cols = 2)
 #' plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
-#' plot_multiplot(plotlist = plot_histogram(mtcars), layout = matrix(1:4, ncol = 2, byrow = TRUE))
+#' plot_multiplot(plotlist = plot_histogram(mtcars),
+#'                layout = matrix(1:4, ncol = 2, byrow = TRUE))
 #' plot_multiplot(plotlist = cars_plot, layout = matrix(1:4, ncol = 2, byrow = TRUE))
 #' plot_multiplot(plotlist = cars_plot, cols = 3)
 plot_multiplot <- function(..., plotlist = NULL, cols = 2, layout = NULL) {

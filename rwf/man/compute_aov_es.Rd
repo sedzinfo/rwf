@@ -98,10 +98,10 @@ with \eqn{\eta^2=d^2/(d^2+4)} and \eqn{f=d/2}:
 }
 These are rough guides; what counts as a meaningful effect depends on the field.
 
-The effect sizes match \code{effectsize::eta_squared},
-\code{effectsize::omega_squared}, \code{effectsize::epsilon_squared} and
-\code{effectsize::cohens_f} (apart from the truncation of negative values) and
-\code{sjstats::anova_stats}.
+The effect sizes match the results of \code{effectsize::eta_squared},
+\code{effectsize::omega_squared} and \code{effectsize::epsilon_squared}. They
+also match \code{effectsize::cohens_f} (apart from the truncation of negative
+values) and \code{sjstats::anova_stats}.
 }
 \examples{
 one_way_between <- aov(uptake ~ Treatment, data = CO2)

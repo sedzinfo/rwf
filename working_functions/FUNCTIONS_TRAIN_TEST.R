@@ -133,7 +133,7 @@ plot_confusion<-function(observed,predicted,base_size=10,title="") {
 #' The plot helps to visualize how well the predicted probabilities separate the different observed categories.
 #'
 #' The plot includes the following components:
-#'-Density curves for each observed category,representing the distribution of predicted probabilities.
+#'-Density curves for each observed category, representing the distribution of predicted probabilities.
 #'-A legend indicating the observed categories.
 #'-The total number of observations is included in the plot caption.
 #' @examples
@@ -317,7 +317,7 @@ k_fold<-function(df,model_formula,k=10) {
 #' This function performs k-fold cross-validation or a simple train-test split (if k=1) by splitting the input dataframe into k folds. 
 #' Each fold serves as a test set once,while the remaining k-1 folds form the training set.
 #'
-#' The function prepares data objects for xgboost model training and evaluation,including train,test,and validation datasets and xgboost DMatrix objects.
+#' The function prepares data objects for xgboost model training and evaluation, including train, test, and validation datasets and xgboost DMatrix objects.
 #'
 #' The output is a list containing the following elements:
 #'-`f`: List of train,test,and validation datasets for each fold.
@@ -595,8 +595,8 @@ confusion_matrix_percent<-function(observed,predicted) {
 ##########################################################################################
 #' Plot a confusion matrix with the full set of derived measures
 #'
-#' Draws a 2x2 confusion matrix (raw counts, sequential-blue by magnitude)
-#' alongside the row/column/overall measures:
+#' Draws a 2x2 confusion matrix (raw counts, shaded blue by magnitude)
+#' alongside the row, column and overall measures:
 #' \describe{
 #'   \item{Total measures}{Accuracy, Prevalence, Proportion Incorrectly Classified}
 #'   \item{Horizontal measures}{Sensitivity / Miss Rate (observed positive column),

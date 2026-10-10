@@ -30,7 +30,7 @@ A one-row data frame with:
   \item \code{etasq}: eta-squared, \eqn{SS_{effect}/SS_{total}}
   \item \code{partial.etasq}: partial eta-squared, \eqn{SS_{effect}/(SS_{effect}+SS_{error})}
   \item \code{omegasq}: omega-squared, \eqn{(SS_{effect}-df_{effect} MS_{error})/(SS_{total}+MS_{error})}
-  \item \code{partial.omegasq}: partial omega-squared, \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(df_{error}+1) MS_{error})}
+  \item \code{partial.omegasq}: partial omega-squared,\cr \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(df_{error}+1) MS_{error})}
   \item \code{cohens.f}: Cohen's f, \eqn{\sqrt{\eta^2/(1-\eta^2)}}
   \item \code{power}: observed power of the F test at \eqn{\alpha = 0.05}
   \item \code{statistic}: F statistic, \eqn{MS_{effect}/MS_{error}}

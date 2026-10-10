@@ -43,7 +43,7 @@ plot_corrplot<-function(mydata,title="",base_size=10,fill_limits=c(-1,0,1)) {
 #' @param n number of observations
 #' @param r correlation coefficient
 #' @param sig.level alpha (type I error probability)
-#' @param alternative a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less"
+#' @param alternative a character string specifying the alternative hypothesis, which must be one of "two.sided" (default), "greater" or "less"
 #' @param title plot title
 #' @param base_size base font size
 #' @import ggplot2

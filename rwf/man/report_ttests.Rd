@@ -19,7 +19,7 @@ variables.}
 \item{file}{output filename}
 
 \item{...}{Further arguments passed to \code{stats::t.test()} for every
-comparison, e.g. \code{alternative}, \code{mu}, \code{var.equal} or
+comparison, for example \code{alternative}, \code{mu}, \code{var.equal} or
 \code{conf.level}. The formula and data are built by the function, so do
 not pass \code{x}, \code{y}, \code{formula}, \code{data} or \code{paired}.}
 }

@@ -25,8 +25,8 @@
 #'   \code{NULL} invisibly.
 #'
 #' @details
-#' The function assumes that data has already been written to the worksheet via
-#' \code{openxlsx::writeData()} with both \code{colNames = TRUE} and
+#' The function assumes that \code{openxlsx::writeData()} has already been used
+#' to write the data to the worksheet, with both \code{colNames = TRUE} and
 #' \code{rowNames = TRUE}, as it offsets column indices by 1 to account for the
 #' row name column.
 #'
@@ -221,8 +221,8 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 #'   \itemize{
 #'     \item A single character string with an Excel expression (e.g. \code{"<0.05"},
 #'       \code{">20"}, \code{"=0"}). Matching cells are highlighted in red.
-#'     \item A character vector of length 2 with two expressions
-#'       (e.g. \code{c(">20", "<11")}). The first condition highlights in red,
+#'     \item A character vector of length 2 with two expressions, for example
+#'       \code{c(">20", "<11")}. The first condition highlights in red,
 #'       the second in purple.
 #'   }
 #'   \code{NA} cells in the target column are skipped. Default is \code{NULL}.

@@ -7,7 +7,7 @@
 generate_factor(vector = LETTERS[1:5], nrows = 2, ncols = 10, type = "random")
 }
 \arguments{
-\item{vector}{Character vector. The pool of factor levels to sample from.
+\item{vector}{Character vector of factor levels to sample from.
 Default is \code{LETTERS[1:5]}.}
 
 \item{nrows}{Integer. Number of rows to generate. For \code{type = "balanced"},

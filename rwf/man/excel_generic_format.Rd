@@ -43,8 +43,8 @@ Handles header styling, cell borders, number formatting, column auto-widths,
 frozen panes, and optional comments on column headers.
 }
 \details{
-The function assumes that data has already been written to the worksheet via
-\code{openxlsx::writeData()} with both \code{colNames = TRUE} and
+The function assumes that \code{openxlsx::writeData()} has already been used
+to write the data to the worksheet, with both \code{colNames = TRUE} and
 \code{rowNames = TRUE}, as it offsets column indices by 1 to account for the
 row name column.
 

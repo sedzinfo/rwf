@@ -57,8 +57,8 @@ distribution with \eqn{k-1} degrees of freedom.
 \code{kendall_w} is in [0, 1]. 0 means the blocks rank the groups in no consistent
 order; 1 means every block ranks the groups in the same order.
 
-Rules of thumb for \code{kendall_w}, the Cohen (1988) benchmarks for correlations
-that \code{rstatix::friedman_effsize} also uses:
+As in \code{rstatix::friedman_effsize}, the rules of thumb for \code{kendall_w}
+are the Cohen (1988) benchmarks for correlations:
 \itemize{
   \item tiny: < 0.1
   \item small: 0.1 to < 0.3
@@ -80,7 +80,8 @@ recomputes \code{kendall_w} in each resample and takes the
 \examples{
 form <- formula(uptake ~ conc | Plant)
 friedman.test(formula = form, data = df_co2)
-rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
+rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95,
+                          ci.type = "perc", nboot = 100)
 effectsize::kendalls_w(form, data = df_co2)
 compute_friedman_test(formula = form, df = df_co2)
 set.seed(1)

@@ -359,7 +359,7 @@ icc_cfa<-function(eta,gamma,lambda,psi) {
 # PLOT ICC THURSTONIAN
 ##########################################################################################
 #' @title Plot thurstonian icc
-#' @description Plot icc curves for binary thurstonian coded items for a single dimension using the compute_icc_thurstonian function
+#' @description Plot icc curves, computed with the compute_icc_thurstonian function, for binary thurstonian coded items for a single dimension
 #' @param mydata dataframe from compute_icc_thurstonian function
 #' @param title plot title
 #' @import ggplot2
@@ -577,8 +577,8 @@ compute_map<-function(eta,mean=0,sd=1) {
 #' \item \code{Lambda}: factor loading matrix.
 #' \item \code{theta_diag}: residual variances (diagonal of \code{theta}),
 #' reordered to \code{rownames(Lambda)} when names are available.
-#' \item \code{tau}: thresholds from \code{tau}, with row suffixes like
-#' \code{"|t1"} removed and reordered to \code{rownames(Lambda)}.
+#' \item \code{tau}: thresholds from \code{tau}, reordered to
+#' \code{rownames(Lambda)} and with row suffixes like \code{"|t1"} removed.
 #' \item \code{nu}: indicator intercepts; defaults to zero when unavailable.
 #' \item \code{Psi}: latent covariance matrix (\code{psi}).
 #' }
@@ -876,7 +876,7 @@ compute_solve <- function(a, b) {
 #'
 #' @details
 #' Name alignment is the key safeguard:
-#' if both rownames(lambda) and colnames(patterns) are present,
+#' when both rownames(lambda) and colnames(patterns) are present,
 #' patterns is reordered to match lambda row order before scoring.
 #'
 #' If required lambda names are missing from patterns, the function stops
@@ -980,8 +980,8 @@ score_tirt<-function(patterns, lambda, theta_diag, tau, Psi, nu=NULL) {
 #'   contains suspicious estimates that often indicate misspecification,
 #'   weak identification, or numerical instability.
 #'
-#' @param fit_model A fitted lavaan model object (for example, from
-#'   \code{lavaan::cfa()}, \code{lavaan::sem()}, or related wrappers).
+#' @param fit_model A fitted lavaan model object, for example the result of a call to
+#'   \code{lavaan::cfa()}, \code{lavaan::sem()} or related wrappers.
 #' @param verbose Logical. If \code{TRUE} (default), prints diagnostic sections
 #'   and a summary to the console. If \code{FALSE}, only returns results.
 #'
@@ -989,8 +989,8 @@ score_tirt<-function(patterns, lambda, theta_diag, tau, Psi, nu=NULL) {
 #' \itemize{
 #'   \item \code{has_issues}: Logical, \code{TRUE} if any issue was detected.
 #'   \item \code{issues}: Named list of detected issue tables / messages.
-#'   \item \code{converged}: Logical convergence flag from
-#'     \code{lavaan::lavInspect(fit_model, "converged")}.
+#'   \item \code{converged}: \code{lavaan::lavInspect(fit_model, "converged")},
+#'     the logical convergence flag of the fit.
 #' }
 #'
 #' @details

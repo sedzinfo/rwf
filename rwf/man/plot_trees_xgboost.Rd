@@ -20,14 +20,15 @@ Called for its side effect of writing \code{<file>.html}; returns
   the value of \code{htmlwidgets::saveWidget} invisibly.
 }
 \description{
-Draws the trees of an xgboost model combined into one diagram
-  (\code{xgboost::xgb.plot.multi.trees}, keeping the 10 most important
+Uses \code{xgboost::xgb.plot.multi.trees} to draw the trees of an
+  xgboost model combined into one diagram (keeping the 10 most important
   features) and saves it as a self-contained \code{<file>.html} in the
   working directory. Works with xgboost 3 and with older versions.
 }
 \examples{
 infert_formula<-formula(case~education+spontaneous+induced)
-boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+dis+rad+tax+ptratio+black+lstat)
+boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+
+                         dis+rad+tax+ptratio+black+lstat)
 train_test_classification<-k_fold(df=infert,model_formula=infert_formula)
 train_test_regression<-k_fold(df=MASS::Boston,model_formula=boston_formula)
 xgb_classification<-xgboost::xgb.train(

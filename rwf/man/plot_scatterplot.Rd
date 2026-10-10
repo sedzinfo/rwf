@@ -21,7 +21,7 @@ plot_scatterplot(
 columns the first is treated as the predictor and the second as the
 outcome.}
 
-\item{method}{Smoothing method passed to \code{geom_smooth}. Accepts
+\item{method}{Smoothing method passed to \code{geom_smooth}. It accepts
 \code{"lm"}, \code{"glm"}, \code{"gam"}, \code{"loess"}, or a function
 such as \code{MASS::rlm}. Default \code{lm}.}
 
@@ -66,7 +66,8 @@ result <- plot_scatterplot(df = mtcars, title = "", coord_equal = TRUE, base_siz
 plot_multiplot(plotlist = result[1:12], cols = 4)
 
 # Two-column data frame: first column = predictor, second = outcome
-plot_scatterplot(df = mtcars[, 1:2], base_size = 10, coord_equal = TRUE, all_orders = FALSE)
+plot_scatterplot(df = mtcars[, 1:2], base_size = 10, coord_equal = TRUE,
+                 all_orders = FALSE)
 
 # Custom variable pairs
 plot_scatterplot(

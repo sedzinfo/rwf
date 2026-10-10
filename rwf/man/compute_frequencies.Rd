@@ -7,8 +7,8 @@
 compute_frequencies(df, file = NULL)
 }
 \arguments{
-\item{df}{A data frame whose columns are the categorical variables to
-tabulate. All columns are processed regardless of class.}
+\item{df}{A data frame with the categorical variables to tabulate as
+columns. All columns are processed regardless of class.}
 
 \item{file}{Character string naming the output Excel file (without
 extension). When \code{NULL} (default) no file is written.}

@@ -24,7 +24,7 @@ compute_kruskal_wallis_test(
 
 \item{df}{A data frame containing the variables in \code{formula}.}
 
-\item{ci}{If TRUE, adds percentile bootstrap confidence intervals for
+\item{ci}{If TRUE, adds percentile bootstrap confidence intervals for both
 \code{etasq} and \code{epsilonsq}.}
 
 \item{conf.level}{Confidence level of the intervals.}
@@ -97,7 +97,8 @@ rcompanion::epsilonSquared(
   R = 1000,
   digits = 3
 )
-rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
+rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95,
+                         ci.type = "perc", nboot = 100)
 compute_kruskal_wallis_test(formula = form, df = df_blood_pressure)
 set.seed(1)
 compute_kruskal_wallis_test(formula = form, df = df_blood_pressure, ci = TRUE)

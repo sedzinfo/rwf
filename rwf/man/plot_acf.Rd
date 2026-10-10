@@ -9,8 +9,8 @@ plot_acf(df, lag.max = length(df), base_size = 10, title = "")
 \arguments{
 \item{df}{A \code{ts} object containing the time series to analyse.}
 
-\item{lag.max}{Integer specifying the maximum number of lags to compute.
-Default is \code{length(df)} (all possible lags).}
+\item{lag.max}{Integer. Maximum number of lags to compute. Default is
+\code{length(df)}, which gives all possible lags.}
 
 \item{base_size}{Base font size passed to \code{theme_bw()}. Default is
 \code{10}.}

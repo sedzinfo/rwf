@@ -7,7 +7,7 @@
 detach_package(package)
 }
 \arguments{
-\item{package}{Character string giving the name of the package to detach
+\item{package}{Character string, the name of the package to detach
 (without the \code{"package:"} prefix), e.g. \code{"ggplot2"}.}
 }
 \value{

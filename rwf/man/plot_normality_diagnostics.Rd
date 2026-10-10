@@ -19,8 +19,8 @@ plot_normality_diagnostics(
 dropped. Columns with fewer than three non-missing values or zero variance
 are skipped.}
 
-\item{breaks}{Histogram breaks passed to \code{graphics::hist()}. May
-be a method name (\code{"Sturges"}, \code{"Scott"}, \code{"FD"}) or a
+\item{breaks}{Histogram breaks passed to \code{graphics::hist()}. This
+may be a method name (\code{"Sturges"}, \code{"Scott"}, \code{"FD"}) or a
 positive integer specifying the number of bins. Default is
 \code{"Sturges"}.}
 

@@ -20,7 +20,7 @@ compute_power_r(
 
 \item{sig.level}{alpha (type I error probability)}
 
-\item{alternative}{a character string specifying the alternative hypothesis, must be one of "two.sided" (default), "greater" or "less"}
+\item{alternative}{a character string specifying the alternative hypothesis, which must be one of "two.sided" (default), "greater" or "less"}
 
 \item{title}{plot title}
 

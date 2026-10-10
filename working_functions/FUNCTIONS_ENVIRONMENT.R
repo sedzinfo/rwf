@@ -75,8 +75,9 @@ install_all_packages <- function() {
 #'   field (i.e. neither \code{"base"} nor \code{"recommended"}) are removed.
 #'   \strong{Warning:} this operation is irreversible. All third-party packages
 #'   will need to be reinstalled afterwards.
-#' @return Invisibly returns a named list with one element per removed package
-#'   (the result of \code{remove.packages()}). Called primarily for its side
+#' @return Invisibly returns a named list holding the result of
+#'   \code{remove.packages()} for each removed package (one element per
+#'   package). Called primarily for its side
 #'   effect of uninstalling packages.
 #' @importFrom utils remove.packages
 #' @keywords functions
@@ -96,7 +97,7 @@ remove_user_packages <- function() {
 #' @description Removes a package from the R search path and unloads its
 #'   namespace. If the package was attached more than once, all instances are
 #'   removed. Does nothing if the package is not currently attached.
-#' @param package Character string giving the name of the package to detach
+#' @param package Character string, the name of the package to detach
 #'   (without the \code{"package:"} prefix), e.g. \code{"ggplot2"}.
 #' @return Invisibly returns \code{NULL}. Called for its side effect of
 #'   detaching the package.
@@ -213,8 +214,8 @@ write_txt <- function(input, file = NULL) {
 #'   \code{"working_functions"}.
 #' @param output_file Character string. Path of the combined file to write.
 #'   An existing file is overwritten. Default \code{"all_functions.R"}.
-#' @param pattern Regular expression passed to \code{base::list.files()}
-#'   to select files. Default \code{"\\\\.[Rr]$"} selects R scripts. Use
+#' @param pattern Regular expression that selects the files, passed to
+#'   \code{base::list.files()}. Default \code{"\\\\.[Rr]$"} selects R scripts. Use
 #'   \code{NULL} to include every file.
 #' @param recursive Logical. If \code{TRUE} (default), files in
 #'   subdirectories of \code{input_dir} are included; if \code{FALSE}, only

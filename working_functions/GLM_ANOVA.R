@@ -14,7 +14,7 @@
 #'
 #' @param formula A one-way formula in the form \code{y ~ group}.
 #' @param df A data frame containing the variables in \code{formula}.
-#' @param ci If TRUE, adds percentile bootstrap confidence intervals for
+#' @param ci If TRUE, adds percentile bootstrap confidence intervals for both
 #' \code{etasq} and \code{epsilonsq}.
 #' @param conf.level Confidence level of the intervals.
 #' @param nboot Number of bootstrap resamples.
@@ -95,7 +95,8 @@
 #'   R = 1000,
 #'   digits = 3
 #' )
-#' rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
+#' rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95,
+#'                          ci.type = "perc", nboot = 100)
 #' compute_kruskal_wallis_test(formula = form, df = df_blood_pressure)
 #' set.seed(1)
 #' compute_kruskal_wallis_test(formula = form, df = df_blood_pressure, ci = TRUE)
@@ -181,8 +182,8 @@ compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.
 #' \code{kendall_w} is in [0, 1]. 0 means the blocks rank the groups in no consistent
 #' order; 1 means every block ranks the groups in the same order.
 #'
-#' Rules of thumb for \code{kendall_w}, the Cohen (1988) benchmarks for correlations
-#' that \code{rstatix::friedman_effsize} also uses:
+#' As in \code{rstatix::friedman_effsize}, the rules of thumb for \code{kendall_w}
+#' are the Cohen (1988) benchmarks for correlations:
 #' \itemize{
 #'   \item tiny: < 0.1
 #'   \item small: 0.1 to < 0.3
@@ -220,7 +221,8 @@ compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.
 #' @examples
 #' form <- formula(uptake ~ conc | Plant)
 #' friedman.test(formula = form, data = df_co2)
-#' rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
+#' rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95,
+#'                           ci.type = "perc", nboot = 100)
 #' effectsize::kendalls_w(form, data = df_co2)
 #' compute_friedman_test(formula = form, df = df_co2)
 #' set.seed(1)
@@ -296,7 +298,7 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 #'   \item \code{etasq}: eta-squared, \eqn{SS_{effect}/SS_{total}}
 #'   \item \code{partial.etasq}: partial eta-squared, \eqn{SS_{effect}/(SS_{effect}+SS_{error})}
 #'   \item \code{omegasq}: omega-squared, \eqn{(SS_{effect}-df_{effect} MS_{error})/(SS_{total}+MS_{error})}
-#'   \item \code{partial.omegasq}: partial omega-squared, \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(df_{error}+1) MS_{error})}
+#'   \item \code{partial.omegasq}: partial omega-squared,\cr \eqn{df_{effect}(MS_{effect}-MS_{error})/(df_{effect} MS_{effect}+(df_{error}+1) MS_{error})}
 #'   \item \code{cohens.f}: Cohen's f, \eqn{\sqrt{\eta^2/(1-\eta^2)}}
 #'   \item \code{power}: observed power of the F test at \eqn{\alpha = 0.05}
 #'   \item \code{statistic}: F statistic, \eqn{MS_{effect}/MS_{error}}
@@ -468,8 +470,8 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #'   \item \code{fisher}, \code{welch}: one row per combination, with the output of
 #'   \code{compute_one_way_test} (sums of squares, F, degrees of freedom, p-value,
 #'   effect sizes and power)
-#'   \item \code{kruskal_wallis}: one row per combination, with the output of
-#'   \code{compute_kruskal_wallis_test}
+#'   \item \code{kruskal_wallis}: the output of \code{compute_kruskal_wallis_test},
+#'   with one row per combination
 #'   \item \code{tukey}, \code{games_howell}: one row per pair of groups in each
 #'   combination, with the output of \code{compute_posthoc} (\code{LEVEL} names the
 #'   pair)
@@ -508,7 +510,7 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #'   \item The Games-Howell test handles unequal group sizes and unequal variances.
 #' }
 #'
-#' The Excel workbook has the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
+#' The Excel workbook contains the sheets "Fisher", "Welch", "Kruskal", "Homogeneity",
 #' "Tukey", "Games-Howell" and "Descriptives". The plots are written to PDF files
 #' named after \code{file}. With \code{pb = TRUE}, a progress bar is printed
 #' to the console while the tests run.
@@ -774,9 +776,9 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #'   test is added with the suffix \code{[L]}, Mauchly's test with \code{[M]}, and
 #'   the sphericity corrections as \code{GGe}, \code{p[GG]}, \code{HFe} and
 #'   \code{p[HF]}.
-#'   \item \code{omnibus_effect_size}: eta-squared, partial eta-squared,
+#'   \item \code{omnibus_effect_size}: for every term, from
+#'   \code{sjstats::anova_stats}, the eta-squared, partial eta-squared,
 #'   omega-squared, partial omega-squared, epsilon-squared, Cohen's f and power
-#'   for every term, from \code{sjstats::anova_stats}
 #'   \item \code{post_hoc}: pairwise comparisons for every main effect and
 #'   interaction, with the estimate, standard error, degrees of freedom,
 #'   t ratio and p-value
@@ -846,7 +848,8 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #' # 36 participants: B1 and B2 vary between participants (4 per cell),
 #' # W1 and W2 vary within participants (every participant has all 9 conditions)
 #' set.seed(12345)
-#' df <- expand.grid(W1 = c("A", "B", "C"), W2 = c("D", "E", "F"), id = 1:36, stringsAsFactors = FALSE)
+#' df <- expand.grid(W1 = c("A", "B", "C"), W2 = c("D", "E", "F"), id = 1:36,
+#'                   stringsAsFactors = FALSE)
 #' df$B1 <- c("G", "H", "I")[(df$id - 1) %% 3 + 1]
 #' df$B2 <- c("J", "K", "L")[(df$id - 1) %/% 3 %% 3 + 1]
 #' df <- df[, c("id", "B1", "B2", "W1", "W2")]
@@ -1116,7 +1119,8 @@ report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NUL
 #' ## Set orthogonal contrasts.
 #' op <- options(contrasts = c("contr.helmert", "contr.poly"))
 #' model_mixed <- manova(cbind(yield, foo) ~ N * P * K, within(npk, foo <- rnorm(24)))
-#' model_between <- manova(cbind(rnorm(24), rnorm(24)) ~ round(rnorm(24), 0) * round(rnorm(24), 0))
+#' model_between <- manova(cbind(rnorm(24), rnorm(24)) ~
+#'                           round(rnorm(24), 0) * round(rnorm(24), 0))
 #' report_manova(model = model_mixed)
 #' result <- report_manova(model = model_between)
 #' result$multivariate
@@ -1234,10 +1238,10 @@ report_manova <- function(model, file = NULL) {
 #' }
 #' These are rough guides; what counts as a meaningful effect depends on the field.
 #'
-#' The effect sizes match \code{effectsize::eta_squared},
-#' \code{effectsize::omega_squared}, \code{effectsize::epsilon_squared} and
-#' \code{effectsize::cohens_f} (apart from the truncation of negative values) and
-#' \code{sjstats::anova_stats}.
+#' The effect sizes match the results of \code{effectsize::eta_squared},
+#' \code{effectsize::omega_squared} and \code{effectsize::epsilon_squared}. They
+#' also match \code{effectsize::cohens_f} (apart from the truncation of negative
+#' values) and \code{sjstats::anova_stats}.
 #'
 #' @source The computation of \code{partial_omegasq} is adapted from the answer
 #' of Stephen Martin (2014) to the question "Omega squared for measure of effect

@@ -26,8 +26,8 @@ Specifically, this function returns:
 \item \code{Lambda}: factor loading matrix.
 \item \code{theta_diag}: residual variances (diagonal of \code{theta}),
 reordered to \code{rownames(Lambda)} when names are available.
-\item \code{tau}: thresholds from \code{tau}, with row suffixes like
-\code{"|t1"} removed and reordered to \code{rownames(Lambda)}.
+\item \code{tau}: thresholds from \code{tau}, reordered to
+\code{rownames(Lambda)} and with row suffixes like \code{"|t1"} removed.
 \item \code{nu}: indicator intercepts; defaults to zero when unavailable.
 \item \code{Psi}: latent covariance matrix (\code{psi}).
 }

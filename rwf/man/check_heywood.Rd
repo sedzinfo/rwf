@@ -7,8 +7,8 @@
 check_heywood(fit_model, verbose = TRUE)
 }
 \arguments{
-\item{fit_model}{A fitted lavaan model object (for example, from
-\code{lavaan::cfa()}, \code{lavaan::sem()}, or related wrappers).}
+\item{fit_model}{A fitted lavaan model object, for example the result of a call to
+\code{lavaan::cfa()}, \code{lavaan::sem()} or related wrappers.}
 
 \item{verbose}{Logical. If \code{TRUE} (default), prints diagnostic sections
 and a summary to the console. If \code{FALSE}, only returns results.}
@@ -18,8 +18,8 @@ An invisible list with:
 \itemize{
   \item \code{has_issues}: Logical, \code{TRUE} if any issue was detected.
   \item \code{issues}: Named list of detected issue tables / messages.
-  \item \code{converged}: Logical convergence flag from
-    \code{lavaan::lavInspect(fit_model, "converged")}.
+  \item \code{converged}: \code{lavaan::lavInspect(fit_model, "converged")},
+    the logical convergence flag of the fit.
 }
 }
 \description{

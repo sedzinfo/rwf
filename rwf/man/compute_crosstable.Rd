@@ -16,7 +16,7 @@ excluded).}
 
 \item{combinations}{A data frame with two character columns named
 \code{index1} and \code{index2}, each row specifying one variable pair to
-cross-tabulate. Takes precedence over \code{factor_index}.}
+cross-tabulate. This argument takes precedence over \code{factor_index}.}
 }
 \value{
 A data frame with one row for each combination of levels of each

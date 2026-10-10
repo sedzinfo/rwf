@@ -10,7 +10,7 @@ symmetric_matrix(matrix, duplicate = "lower", diagonal = NULL)
 \item{matrix}{A square matrix. Unlike \code{\link{matrix_triangle}}, a data
 frame is not accepted; convert it with \code{as.matrix()} first.}
 
-\item{duplicate}{Character, \code{"lower"} (default) to copy the lower
+\item{duplicate}{Character. Use \code{"lower"} (default) to copy the lower
 triangle into the upper, or \code{"upper"} to copy the upper triangle
 into the lower.}
 

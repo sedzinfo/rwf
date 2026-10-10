@@ -10,8 +10,8 @@
 #' @param df Data frame or numeric vector. Non-numeric columns are silently
 #'   dropped. Columns with fewer than three non-missing values or zero variance
 #'   are skipped.
-#' @param breaks Histogram breaks passed to \code{graphics::hist()}. May
-#'   be a method name (\code{"Sturges"}, \code{"Scott"}, \code{"FD"}) or a
+#' @param breaks Histogram breaks passed to \code{graphics::hist()}. This
+#'   may be a method name (\code{"Sturges"}, \code{"Scott"}, \code{"FD"}) or a
 #'   positive integer specifying the number of bins. Default is
 #'   \code{"Sturges"}.
 #' @param title Character string used as the outer plot title and as the PDF
@@ -390,8 +390,8 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
 # NORMALITY TESTS
 ##########################################################################################
 #' @title Battery of normality tests
-#' @description Runs eight normality tests on each numeric column of \code{df}:
-#'   Shapiro-Wilk, Anderson-Darling, \enc{Cramér}{Cramer}-von Mises, Shapiro-Francia,
+#' @description Runs eight normality tests on each numeric column of \code{df}.
+#'   The tests are Shapiro-Wilk, Anderson-Darling, \enc{Cramér}{Cramer}-von Mises, Shapiro-Francia,
 #'   Jarque-Bera, Kolmogorov-Smirnov, Lilliefors, and Pearson chi-squared.
 #'   Each column is z-standardised before testing. Columns with fewer than 8 or
 #'   more than 4999 non-missing observations are skipped with a console message.
@@ -495,8 +495,8 @@ report_normality_tests <- function(df, file = NULL) {
 #'   corresponding approximately to the 95 \%, 99 \%, and 99.9 \% tails of the
 #'   normal distribution. Designed to be applied across columns with
 #'   \code{sapply}.
-#' @param vector Numeric vector. Missing values are removed before
-#'   z-standardisation and counts.
+#' @param vector Numeric vector. Missing values are removed before the
+#'   z-standardisation and the counts.
 #' @return A one-row data frame with three character columns:
 #'   \describe{
 #'     \item{abs_z_1.96}{Percentage of observations with \eqn{|z| \ge 1.96}.}

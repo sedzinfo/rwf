@@ -12,7 +12,7 @@ plot_icc_thurstonian(mydata, title = "Item Characteristic Curve")
 \item{title}{plot title}
 }
 \description{
-Plot icc curves for binary thurstonian coded items for a single dimension using the compute_icc_thurstonian function
+Plot icc curves, computed with the compute_icc_thurstonian function, for binary thurstonian coded items for a single dimension
 }
 \examples{
 gamma<-c(0.556,-1.253,-1.729,0.618,0.937,0.295,-0.672,-1.127,-0.446,0.632,1.147,0.498)

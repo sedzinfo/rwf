@@ -21,7 +21,7 @@ generated automatically from \code{cols}. Default is \code{NULL}.}
 }
 \value{
 If a single plot is provided, returns it directly. Otherwise returns
-  a list of recorded plots (\code{grDevices::recordPlot()}), one per page.
+  a list of plots recorded with \code{grDevices::recordPlot()}, one per page.
 }
 \description{
 Combines multiple ggplot objects into a single paged display using a grid
@@ -50,7 +50,8 @@ p4 <- ggplot(subset(ChickWeight, Time == 21), aes(x = weight, fill = Diet)) +
 cars_plot <- plot_histogram(mtcars[1:4])
 plot_multiplot(p1, p2, p3, p4, cols = 2)
 plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
-plot_multiplot(plotlist = plot_histogram(mtcars), layout = matrix(1:4, ncol = 2, byrow = TRUE))
+plot_multiplot(plotlist = plot_histogram(mtcars),
+               layout = matrix(1:4, ncol = 2, byrow = TRUE))
 plot_multiplot(plotlist = cars_plot, layout = matrix(1:4, ncol = 2, byrow = TRUE))
 plot_multiplot(plotlist = cars_plot, cols = 3)
 }

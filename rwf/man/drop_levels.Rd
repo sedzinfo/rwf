@@ -9,8 +9,8 @@ drop_levels(df, factor_index = NULL, minimum_frequency = 5)
 \arguments{
 \item{df}{A data frame containing one or more factor columns.}
 
-\item{factor_index}{Integer vector or \code{NULL}. Column indices of factors
-to process. If \code{NULL}, all columns identified by \code{is.factor()}
+\item{factor_index}{Integer vector or \code{NULL}. Column indices of the
+factors to process. If \code{NULL}, all columns identified by \code{is.factor()}
 are processed. Default is \code{NULL}.}
 
 \item{minimum_frequency}{Integer. Levels with a frequency less than or equal

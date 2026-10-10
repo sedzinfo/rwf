@@ -16,7 +16,7 @@
 #' @param dv Integer vector of column indices for the continuous dependent
 #'   variables.
 #' @param iv Integer vector of column indices for the categorical independent
-#'   variables. Columns are coerced to factors automatically.
+#'   variables. The columns are coerced to factors automatically.
 #' @param base_size Base font size in pt passed to \code{theme_bw}. Default
 #'   \code{20}.
 #' @param type Type of error bar to display. One of \code{"se"} (standard
@@ -32,8 +32,8 @@
 #'
 #' @return A named list with three elements:
 #'   \itemize{
-#'     \item \code{plot_data} — named list of summary data frames (one per
-#'       IV-DV pair) as returned by \code{Rmisc::summarySE}.
+#'     \item \code{plot_data} — named list of summary data frames as returned
+#'       by \code{Rmisc::summarySE} (one per IV-DV pair).
 #'     \item \code{plot_data_df} — single data frame combining all summary
 #'       data frames row-wise.
 #'     \item \code{plots} — named list of ggplot objects (one per IV-DV pair).
@@ -206,7 +206,8 @@ plot_oneway <- function(df, dv, iv, base_size = 20, type = "se", order_factor = 
 #' plot_interaction(df = mtcars, dv = 2:3, iv = 9:10, base_size = 20, type = "sd")
 #'
 #' # No error bars, unordered factor axis
-#' plot_interaction(df = mtcars, dv = 2, iv = 9:10, base_size = 20, type = "", order_factor = FALSE)
+#' plot_interaction(df = mtcars, dv = 2, iv = 9:10, base_size = 20, type = "",
+#'                  order_factor = FALSE)
 plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_factor = TRUE, title = "", note = "") {
   se <- ci <- NULL
   output_data <- function(i) {

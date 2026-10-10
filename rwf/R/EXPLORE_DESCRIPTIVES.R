@@ -175,8 +175,8 @@ compute_aggregate <- function(df, iv, file = NULL) {
 #'   results are stacked into a single long-format table. Missing values are
 #'   excluded from the frequency counts via \code{table()}. Results can be
 #'   exported to an Excel file.
-#' @param df A data frame whose columns are the categorical variables to
-#'   tabulate. All columns are processed regardless of class.
+#' @param df A data frame with the categorical variables to tabulate as
+#'   columns. All columns are processed regardless of class.
 #' @param file Character string naming the output Excel file (without
 #'   extension). When \code{NULL} (default) no file is written.
 #' @return A data frame in long format with one row per observed level per
@@ -325,7 +325,7 @@ response_frequency <- function(df, max = 10, uniqueitems = NULL, type = "percent
 #'   excluded).
 #' @param combinations A data frame with two character columns named
 #'   \code{index1} and \code{index2}, each row specifying one variable pair to
-#'   cross-tabulate. Takes precedence over \code{factor_index}.
+#'   cross-tabulate. This argument takes precedence over \code{factor_index}.
 #' @return A data frame with one row for each combination of levels of each
 #'   pair of variables, with the following columns:
 #'   \describe{

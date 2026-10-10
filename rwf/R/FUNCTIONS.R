@@ -64,9 +64,9 @@ round_dataframe <- function(df, digits = 0, type = "round") {
 #'       with whitespace trimming). Non-numeric strings become \code{NA}.}
 #'     \item{\code{"factor"}}{Converts all columns to factor.}
 #'     \item{\code{"factor_character"}}{Converts only factor columns to
-#'       character; all other columns are left unchanged.}
+#'       character. All other columns are left unchanged.}
 #'     \item{\code{"character_factor"}}{Converts only character columns to
-#'       factor; all other columns are left unchanged.}
+#'       factor. All other columns are left unchanged.}
 #'   }
 #' @return A data frame with the same dimensions as \code{df} with column
 #'   types converted as specified.

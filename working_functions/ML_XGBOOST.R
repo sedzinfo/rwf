@@ -2,8 +2,8 @@
 # TREE PLOT
 #########################################################################################
 #' @title Plot trees for xgboost::xgb.train
-#' @description Draws the trees of an xgboost model combined into one diagram
-#'   (\code{xgboost::xgb.plot.multi.trees}, keeping the 10 most important
+#' @description Uses \code{xgboost::xgb.plot.multi.trees} to draw the trees of an
+#'   xgboost model combined into one diagram (keeping the 10 most important
 #'   features) and saves it as a self-contained \code{<file>.html} in the
 #'   working directory. Works with xgboost 3 and with older versions.
 #' @param model object from xgboost::xgb.train
@@ -18,7 +18,8 @@
 #' @export
 #' @examples
 #' infert_formula<-formula(case~education+spontaneous+induced)
-#' boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+dis+rad+tax+ptratio+black+lstat)
+#' boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+
+#'                          dis+rad+tax+ptratio+black+lstat)
 #' train_test_classification<-k_fold(df=infert,model_formula=infert_formula)
 #' train_test_regression<-k_fold(df=MASS::Boston,model_formula=boston_formula)
 #' xgb_classification<-xgboost::xgb.train(
@@ -85,12 +86,12 @@ plot_trees_xgboost<-function(model,train,file="xgboost") {
 #'       the validation data), \code{performance} (cut-point diagnostics, not for
 #'       regression objectives), \code{depth}, \code{cover}, \code{weight}
 #'       (tree structure), \code{error} (training log) and \code{importance}.}
-#'     \item{result}{tables: \code{parameters} (hyperparameters),
-#'       \code{model_call}, \code{evaluation_log}, \code{importance}
-#'       (\code{xgboost::xgb.importance}), \code{model_summary} (objective,
+#'     \item{result}{tables: \code{importance} (from
+#'       \code{xgboost::xgb.importance}), \code{parameters} (hyperparameters),
+#'       \code{model_call}, \code{evaluation_log}, \code{model_summary} (objective,
 #'       boosting rounds, number of features, and with early stopping the best
-#'       iteration and score) and, with validation data, \code{validation_metrics}
-#'       (regression: N, RMSE, MAE, mean error, R squared; binary
+#'       iteration and score). With validation data, there is also
+#'       \code{validation_metrics} (regression: N, RMSE, MAE, mean error, R squared; binary
 #'       classification: N, AUC, log loss and accuracy at a 0.5 cut-off).}
 #'     \item{observed, predicted}{validation outcome and predictions
 #'       (\code{NULL} without \code{validation_data}).}
@@ -105,7 +106,8 @@ plot_trees_xgboost<-function(model,train,file="xgboost") {
 #' @export
 #' @examples
 #' infert_formula<-formula(case~education+spontaneous+induced)
-#' boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+dis+rad+tax+ptratio+black+lstat)
+#' boston_formula<-formula(medv~crim+zn+indus+chas+nox+rm+age+
+#'                          dis+rad+tax+ptratio+black+lstat)
 #' train_test_classification<-k_fold(df=infert,model_formula=infert_formula)
 #' train_test_regression<-k_fold(df=MASS::Boston,model_formula=boston_formula)
 #' xgb_classification<-xgboost::xgb.train(

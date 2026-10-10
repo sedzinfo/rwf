@@ -23,7 +23,7 @@ variables.}
 variables.}
 
 \item{iv}{Integer vector of column indices for the categorical independent
-variables. Columns are coerced to factors automatically.}
+variables. The columns are coerced to factors automatically.}
 
 \item{base_size}{Base font size in pt passed to \code{theme_bw}. Default
 \code{20}.}
@@ -72,6 +72,7 @@ plot_interaction(df = mtcars, dv = 2:3, iv = 8:9, base_size = 20, type = "ci")
 plot_interaction(df = mtcars, dv = 2:3, iv = 9:10, base_size = 20, type = "sd")
 
 # No error bars, unordered factor axis
-plot_interaction(df = mtcars, dv = 2, iv = 9:10, base_size = 20, type = "", order_factor = FALSE)
+plot_interaction(df = mtcars, dv = 2, iv = 9:10, base_size = 20, type = "",
+                 order_factor = FALSE)
 }
 \keyword{ANOVA}

@@ -24,7 +24,7 @@ variables.}
 variables.}
 
 \item{iv}{Integer vector of column indices for the categorical independent
-variables. Columns are coerced to factors automatically.}
+variables. The columns are coerced to factors automatically.}
 
 \item{base_size}{Base font size in pt passed to \code{theme_bw}. Default
 \code{20}.}
@@ -47,8 +47,8 @@ Default \code{60}.}
 \value{
 A named list with three elements:
   \itemize{
-    \item \code{plot_data} — named list of summary data frames (one per
-      IV-DV pair) as returned by \code{Rmisc::summarySE}.
+    \item \code{plot_data} — named list of summary data frames as returned
+      by \code{Rmisc::summarySE} (one per IV-DV pair).
     \item \code{plot_data_df} — single data frame combining all summary
       data frames row-wise.
     \item \code{plots} — named list of ggplot objects (one per IV-DV pair).

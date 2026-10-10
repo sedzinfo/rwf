@@ -7,8 +7,9 @@
 remove_user_packages()
 }
 \value{
-Invisibly returns a named list with one element per removed package
-  (the result of \code{remove.packages()}). Called primarily for its side
+Invisibly returns a named list holding the result of
+  \code{remove.packages()} for each removed package (one element per
+  package). Called primarily for its side
   effect of uninstalling packages.
 }
 \description{

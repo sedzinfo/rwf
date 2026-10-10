@@ -15,7 +15,7 @@
 #' @param df A data frame of numeric variables. When \code{df} has exactly two
 #'   columns the first is treated as the predictor and the second as the
 #'   outcome.
-#' @param method Smoothing method passed to \code{geom_smooth}. Accepts
+#' @param method Smoothing method passed to \code{geom_smooth}. It accepts
 #'   \code{"lm"}, \code{"glm"}, \code{"gam"}, \code{"loess"}, or a function
 #'   such as \code{MASS::rlm}. Default \code{lm}.
 #' @param formula Formula passed to \code{geom_smooth}. Default \code{y ~ x}.
@@ -50,7 +50,8 @@
 #' plot_multiplot(plotlist = result[1:12], cols = 4)
 #'
 #' # Two-column data frame: first column = predictor, second = outcome
-#' plot_scatterplot(df = mtcars[, 1:2], base_size = 10, coord_equal = TRUE, all_orders = FALSE)
+#' plot_scatterplot(df = mtcars[, 1:2], base_size = 10, coord_equal = TRUE,
+#'                  all_orders = FALSE)
 #'
 #' # Custom variable pairs
 #' plot_scatterplot(
