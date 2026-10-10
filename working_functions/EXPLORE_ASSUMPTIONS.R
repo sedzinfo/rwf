@@ -47,9 +47,11 @@ plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NUL
   }
   plot <- list()
   data_name <- deparse(substitute(df))
+  # name the column after the argument only for vector input, a data frame keeps its column names
+  is_vector <- is.null(dim(df))
   df <- data.frame(df)
-  df <- data.frame(df[, sapply(df, is.numeric)])
-  if (length(df) == 1) {
+  df <- df[, sapply(df, is.numeric), drop = FALSE]
+  if (is_vector && length(df) == 1) {
     names(df) <- data_name
   }
   if (pb)
@@ -136,10 +138,12 @@ plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = F
   obs <- Outlier <- NULL
   plot <- list()
   data_name <- deparse(substitute(df))
+  # name the column after the argument only for vector input, a data frame keeps its column names
+  is_vector <- is.null(dim(df))
   df <- data.frame(df)
-  df <- data.frame(df[, sapply(df, is.numeric)])
+  df <- df[, sapply(df, is.numeric), drop = FALSE]
   id <- row.names(df)
-  if (length(names(df)) == 1) {
+  if (is_vector && length(df) == 1) {
     names(df) <- data_name
   }
   if(pb)
@@ -302,8 +306,10 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
 plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
   resids <- NULL
   data_name <- deparse(substitute(df))
+  # name the column after the argument only for vector input, a data frame keeps its column names
+  is_vector <- is.null(dim(df))
   df <- data.frame(df)
-  if (length(names(df)) == 1) {
+  if (is_vector && length(df) == 1) {
     names(df) <- data_name
   }
   names_df <- names(df)
@@ -364,9 +370,11 @@ plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
 plot_boxplot <- function(df, title = "", base_size = 10) {
   variable <- value <- NULL
   data_name <- deparse(substitute(df))
+  # name the column after the argument only for vector input, a data frame keeps its column names
+  is_vector <- is.null(dim(df))
   df <- data.frame(df)
-  df <- data.frame(df[, sapply(df, is.numeric)])
-  if (length(df) == 1) {
+  df <- df[, sapply(df, is.numeric), drop = FALSE]
+  if (is_vector && length(df) == 1) {
     names(df) <- data_name
   }
   vector <- reshape2::melt(df, measure.vars = names(df), value.name = "value", variable.name = "variable")
@@ -433,9 +441,11 @@ report_normality_tests <- function(df, file = NULL) {
     )
   }
   for (i in names(df)) {
-    vector <- compute_standard(stats::na.omit(df[, i]), type = "z")
+    # check the variance on the raw values: a constant column z-standardises to NaN
+    vector <- stats::na.omit(df[, i])
     N <- length(vector)
-    if (length(vector) < 5000 & length(vector) > 7 & var(vector) != 0) {
+    if (N < 5000 & N > 7 && isTRUE(stats::var(vector) != 0)) {
+      vector <- compute_standard(vector, type = "z")
       # ties make the Kolmogorov-Smirnov p value approximate, so say so in the output instead of warning
       if (anyDuplicated(vector)) {
         instruction_kolmogorov_i <- paste(instruction_kolmogorov, "(ties present, p value is approximate)")
@@ -550,7 +560,8 @@ outlier_summary <- function(vector) {
 #' data.frame(sapply(df, remove_outliers))
 remove_outliers <- function(vector, probs = c(.25, .75), na.rm = TRUE, ...) {
   qnt <- stats::quantile(vector, probs = probs, na.rm = na.rm, ...)
-  H <- 1.5 * stats::IQR(vector, na.rm = na.rm)
+  # fence width from the same quantiles as the fences, so probs is respected
+  H <- 1.5 * unname(qnt[2] - qnt[1])
   y <- vector
   y[vector < (qnt[1] - H)] <- NA
   y[vector > (qnt[2] + H)] <- NA

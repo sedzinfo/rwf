@@ -72,7 +72,7 @@ compute_descriptives <- function(df, dv, iv = NULL, file = NULL) {
   )
   result_df <- data.frame()
   describe <- function(x) psych::describe(x, skew = TRUE, ranges = TRUE, check = TRUE, fast = FALSE, IQR = TRUE, quant = c(.1, .25, .5, .75, .90), na.rm = TRUE)
-  if (missing(iv)) {
+  if (is.null(iv)) {
     for (i in names(df)[dv]) {
       result_df <- plyr::rbind.fill(result_df, data.frame(variable = i, describe(df[, i])))
     }
@@ -150,7 +150,7 @@ compute_aggregate <- function(df, iv, file = NULL) {
   result_median <- data.frame(statistic = "median", plyr::ddply(df, factornames, plyr::numcolwise(median, na.rm = TRUE)))
   result_mad <- data.frame(statistic = "mad", plyr::ddply(df, factornames, plyr::numcolwise(stats::mad, na.rm = TRUE)))
   result_trimmed_mean <- data.frame(statistic = "trimmed mean", plyr::ddply(df, factornames, plyr::numcolwise(mean, trim = .5, na.rm = TRUE)))
-  result_obs <- data.frame(statistic = "N", plyr::ddply(df, factornames, plyr::numcolwise(length)))
+  result_obs <- data.frame(statistic = "N", plyr::ddply(df, factornames, plyr::numcolwise(function(x) sum(!is.na(x)))))
   result_min <- data.frame(statistic = "min", plyr::ddply(df, factornames, plyr::numcolwise(min, na.rm = TRUE)))
   result_max <- data.frame(statistic = "max", plyr::ddply(df, factornames, plyr::numcolwise(max, na.rm = TRUE)))
   result_range <- data.frame(statistic = "range", plyr::ddply(df, factornames, plyr::numcolwise(function(x) max(x, na.rm = TRUE) - min(x, na.rm = TRUE))))
@@ -281,7 +281,7 @@ response_frequency <- function(df, max = 10, uniqueitems = NULL, type = "percent
     uniqueitems <- unique(as.vector(unlist(df)))
   }
   if ((max.item - min.item > max) || (nlevels(factor(df[, 1])) > max) || length(uniqueitems) > max) {
-    frequency <- NULL
+    result <- NULL
   } else {
     n_var <- dim(df)[2]
     n_cases <- dim(df)[1]
@@ -308,8 +308,8 @@ response_frequency <- function(df, max = 10, uniqueitems = NULL, type = "percent
       )
     }
   }
-  row.names(result) <- NULL
-  if (!is.null(file)) {
+  if (!is.null(result)) row.names(result) <- NULL
+  if (!is.null(file) && !is.null(result)) {
     report_dataframe(result, file = file, sheet = "Frequency")
   }
   return(result)

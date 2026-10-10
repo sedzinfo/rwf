@@ -75,7 +75,6 @@ test_that("compute_descriptives drops unused factor levels and accepts a charact
 })
 
 test_that("compute_descriptives with an explicit iv = NULL describes the full sample", {
-  skip("rwf bug: compute_descriptives tests missing(iv), so an explicit iv = NULL returns an empty data frame")
   expect_equal(compute_descriptives(df = mtcars, dv = 1:2, iv = NULL), compute_descriptives(df = mtcars, dv = 1:2))
 })
 
@@ -139,7 +138,6 @@ test_that("compute_aggregate ignores missing values and character columns", {
 })
 
 test_that("compute_aggregate N counts non-missing observations", {
-  skip("rwf bug: compute_aggregate N uses length(), which counts NA values")
   df <- data.frame(group = c("a", "a", "a", "b", "b", "b"), x = c(1, 2, NA, 4, 5, 9))
   result <- compute_aggregate(df = df, iv = 1)
   expect_equal(result$x[result$statistic == "N"], c(2, 3))
@@ -242,7 +240,6 @@ test_that("response_frequency uses the observed values when uniqueitems is NULL"
 })
 
 test_that("response_frequency returns NULL when there are too many response options", {
-  skip("rwf bug: response_frequency assigns frequency <- NULL but then uses the undefined object 'result'")
   expect_null(response_frequency(data.frame(a = 1:20), max = 10))
 })
 

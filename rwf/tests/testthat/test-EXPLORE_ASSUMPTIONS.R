@@ -245,7 +245,6 @@ test_that("report_normality_tests skips columns with out of bounds sample size",
 })
 
 test_that("report_normality_tests skips a constant column instead of failing", {
-  skip("rwf bug: zero-variance check runs after z-standardisation, so var() is NA and the if() errors")
   df <- data.frame(constant = rep(1, 20), x = c(2, 5, 1, 8, 3, 9, 4, 7, 6, 10, 12, 11, 15, 13, 14, 16, 18, 17, 20, 19))
   expect_output(report_normality_tests(df = df), "OUT OF BOUNDS SAMPLE SIZE FOR constant")
 })
