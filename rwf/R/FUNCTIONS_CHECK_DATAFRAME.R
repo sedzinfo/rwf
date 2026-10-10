@@ -156,8 +156,8 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
     openxlsx::saveWorkbook(wb = wb, file = filename, overwrite = TRUE)
   }
   check_df$NAMES <- substr(check_df$NAMES, 1, name_length)
-  check_df$MIN <- substr(check_df$MIN, 1, floor(name_length / 6))
-  check_df$MAX <- substr(check_df$MAX, 1, floor(name_length / 6))
+  check_df$MIN <- substr(check_df$MIN, 1, name_length)
+  check_df$MAX <- substr(check_df$MAX, 1, name_length)
 
   row.names(check_df) <- NULL
   result <- list(summary = summary_dataframe, check = check_df)
@@ -325,8 +325,8 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
   }
 
   check_df$NAMES <- substr(check_df$NAMES, 1, name_length)
-  check_df$MIN <- substr(check_df$MIN, 1, floor(name_length / 6))
-  check_df$MAX <- substr(check_df$MAX, 1, floor(name_length / 6))
+  check_df$MIN <- substr(check_df$MIN, 1, name_length)
+  check_df$MAX <- substr(check_df$MAX, 1, name_length)
 
   row.names(check_df) <- NULL
   list(summary = summary_dataframe, check = check_df)

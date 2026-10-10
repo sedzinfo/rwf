@@ -127,7 +127,6 @@ test_that("cdf truncates names to name_length", {
 })
 
 test_that("cdf truncates min and max values to name_length, not name_length / 6", {
-  skip("rwf bug: MIN and MAX are cut to floor(name_length / 6) characters, so 12345.5 shows as '1234'")
   rwf <- cdf(df = data.frame(a = c(12345.5, 2)), name_length = 26)
   expect_identical(rwf$check$MAX, "12345.5")
 })

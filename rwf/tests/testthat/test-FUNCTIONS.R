@@ -233,7 +233,6 @@ test_that("replace_na_with_previous works column-wise on a data frame", {
 })
 
 test_that("replace_na_with_previous returns an empty vector unchanged", {
-  skip("rwf bug: an empty vector is returned as a length-1 NA")
   expect_identical(replace_na_with_previous(numeric(0)), numeric(0))
 })
 
