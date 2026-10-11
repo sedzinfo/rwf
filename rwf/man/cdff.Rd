@@ -47,12 +47,12 @@ Identical structure to \code{\link{cdf}}: a named \code{list} with
   field descriptions.
 }
 \description{
-A faster equivalent of \code{\link{cdf}}. Produces the same column-level
-diagnostic summary (except for the cases listed in Note) but computes every
-statistic, including UNIQUES and LEVELS, in a single pass over each column,
-builds the result without \code{rbind} calls, and removes the \code{gtools}
-and \code{plyr} dependencies. Recommended for large dataframes (> 100k rows
-or > 50 columns).
+A faster equivalent of \code{\link{cdf}}. Produces the same
+column-level diagnostic summary (except for the cases listed in Note) but
+computes every statistic, including UNIQUES and LEVELS, in a single pass
+over each column, builds the result without \code{rbind} calls, and removes
+the \code{gtools} and \code{plyr} dependencies. Recommended for large
+dataframes (> 100k rows #' or > 50 columns).
 }
 \note{
 MIN and MAX are only reported where the values have a natural order:

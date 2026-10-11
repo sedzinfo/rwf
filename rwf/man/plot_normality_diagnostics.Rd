@@ -45,9 +45,8 @@ A named list of recorded plots (one element per numeric column),
 \description{
 For each numeric column of \code{df}, produces a 2×2 panel of
   base-graphics normality diagnostics: histogram, density curve, boxplot, and
-  Q-Q plot with a reference line. A progress bar is printed to the console.
-  When \code{file} is supplied the panels are also written to a PDF via
-  \code{\link{report_pdf}}.
+  Q-Q plot with a reference line. When \code{file} is supplied the panels
+  are also written to a PDF.
 }
 \examples{
 vector <- generate_missing(rnorm(50), missing = 10)

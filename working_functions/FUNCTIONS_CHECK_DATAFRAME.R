@@ -6,7 +6,6 @@
 #' values, data types, range statistics, and optionally unique values and factor
 #' levels. Returns a named list with a per-column table and a whole-dataframe
 #' summary. Can optionally export results to an \code{.xlsx} file.
-#'
 #' @param df A \code{data.frame} to inspect. Accepts any column types: numeric,
 #'   integer, character, factor, logical, \code{Date}, \code{POSIXct}.
 #' @param name_length Integer. Maximum number of characters shown for column
@@ -28,7 +27,6 @@
 #'   results to \code{<file>.xlsx} with two sheets: \code{variables} and
 #'   \code{summary}. Any existing file with the same name is overwritten.
 #'   Defaults to \code{NULL}.
-#'
 #' @return A named \code{list} with two elements:
 #' \describe{
 #'   \item{\code{$summary}}{A single-row \code{data.frame} with whole-dataframe
@@ -58,20 +56,16 @@
 #'     }
 #'   }
 #' }
-#'
 #' @note MEAN, MEDIAN, and SD are \code{NA} for non-numeric columns. MIN and
 #'   MAX for non-double columns are derived from \code{sort()} on character
 #'   representations — natural sort ordering is not guaranteed for mixed
 #'   alphanumeric strings.
-#'
 #' @import future.apply
 #' @importFrom future availableCores plan multisession sequential
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @importFrom stats median sd
-#'
 #' @keywords dataframe diagnostics summary missing-values
 #' @export
-#'
 #' @examples
 #' cdf(df = mtcars, parralel = TRUE)
 #' cdf(df = change_data_type(mtcars, "factor"), nuniques = 3)
@@ -170,21 +164,17 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 ##########################################################################################
 # CHECK DATAFRAME (OPTIMISED)
 ##########################################################################################
-#' Check dataframe (optimised)
-#'
-#' A faster equivalent of \code{\link{cdf}}. Produces the same column-level
-#' diagnostic summary (except for the cases listed in Note) but computes every
-#' statistic, including UNIQUES and LEVELS, in a single pass over each column,
-#' builds the result without \code{rbind} calls, and removes the \code{gtools}
-#' and \code{plyr} dependencies. Recommended for large dataframes (> 100k rows
-#' or > 50 columns).
-#'
+#' @title Check dataframe (optimised)
+#' @description A faster equivalent of \code{\link{cdf}}. Produces the same
+#' column-level diagnostic summary (except for the cases listed in Note) but
+#' computes every statistic, including UNIQUES and LEVELS, in a single pass
+#' over each column, builds the result without \code{rbind} calls, and removes
+#' the \code{gtools} and \code{plyr} dependencies. Recommended for large
+#' dataframes (> 100k rows #' or > 50 columns).
 #' @inheritParams cdf
-#'
 #' @return Identical structure to \code{\link{cdf}}: a named \code{list} with
 #'   elements \code{$summary} and \code{$check}. See \code{\link{cdf}} for full
 #'   field descriptions.
-#'
 #' @note MIN and MAX are only reported where the values have a natural order:
 #'   numeric columns (double or integer) give the smallest and largest value,
 #'   ordered factors the lowest and highest level that occurs, and dates or
@@ -203,10 +193,8 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 #' @importFrom future availableCores plan multisession sequential
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @importFrom stats median sd
-#'
 #' @keywords dataframe diagnostics summary missing-values
 #' @export
-#'
 #' @examples
 #' cdff(df = mtcars, parralel = TRUE)
 #' cdff(df = change_data_type(mtcars, "factor"), nuniques = 3)
@@ -340,3 +328,4 @@ cdff <- function(df, name_length = (getOption("width") / 3), digits = 2, nunique
   row.names(check_df) <- NULL
   list(summary = summary_dataframe, check = check_df)
 }
+
