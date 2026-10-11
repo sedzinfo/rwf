@@ -24,6 +24,8 @@
   : Compute the disattenuation correction for measurement error
 - [`compute_dummy_comparisons()`](https://sedzinfo.github.io/rwf/reference/compute_dummy_comparisons.md)
   : Compute number of dummy comparisons
+- [`compute_efa_cfa()`](https://sedzinfo.github.io/rwf/reference/compute_efa_cfa.md)
+  : Exploratory and confirmatory factor analysis for each dimension
 - [`compute_frequencies()`](https://sedzinfo.github.io/rwf/reference/compute_frequencies.md)
   : Frequency table for categorical variables
 - [`compute_friedman_test()`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)

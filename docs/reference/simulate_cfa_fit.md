@@ -135,6 +135,8 @@ result<-simulate_cfa_fit(model_sim=model_sim, model=model,
 
 
 
+
+
 plot_multiplot(plotlist=result[[2]], cols=4)
 
 # Correlation-based: resample from observed data

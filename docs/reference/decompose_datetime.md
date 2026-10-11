@@ -57,16 +57,16 @@ d1 <- Sys.Date()
 d2 <- Sys.time()
 decompose_datetime(x = d1)
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1 2026            10          10 2026-10-10
+#> 1 2026            10          11 2026-10-11
 decompose_datetime(x = d2)
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME
-#> 1 2026            10          10   17     31     43      754239 2026-10-10     17:31
+#> 1 2026            10          11   14     25     54       61897 2026-10-11     14:25
 decompose_datetime(x = d1, extended = TRUE)
-#>   QUARTER   MONTH     JULIAN  WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1      Q4 October 20736 days Saturday       <NA> 2026            10          10 2026-10-10
+#>   QUARTER   MONTH     JULIAN WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
+#> 1      Q4 October 20737 days  Sunday       <NA> 2026            10          11 2026-10-11
 decompose_datetime(x = d2, extended = TRUE)
-#>   QUARTER   MONTH        JULIAN  WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME
-#> 1      Q4 October 20736.73 days Saturday  Afternoon 2026            10          10   17     31     43      754239 2026-10-10     17:31
+#>   QUARTER   MONTH       JULIAN WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME
+#> 1      Q4 October 20737.6 days  Sunday       Noon 2026            10          11   14     25     54       61897 2026-10-11     14:25
 decompose_datetime(x = "01/15/1900", format = "%m/%e/%Y")
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
 #> 1 1900            01          15 1900-01-15
@@ -81,11 +81,11 @@ decompose_datetime(
   format = "%m/%e/%Y"
 )
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1 2026            10          10 2026-10-10
+#> 1 2026            10          11 2026-10-11
 decompose_datetime(
   x = as.Date(as.POSIXct(timestamp2, origin = "1970-01-01")),
   format = "%m/%e/%Y"
 )
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1 2026            10          10 2026-10-10
+#> 1 2026            10          11 2026-10-11
 ```

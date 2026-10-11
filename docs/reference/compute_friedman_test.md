@@ -140,12 +140,12 @@ rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95,
 #> # A tibble: 1 × 7
 #>   .y.        n effsize conf.low conf.high method    magnitude
 #> * <chr>  <int>   <dbl>    <dbl>     <dbl> <chr>     <ord>    
-#> 1 uptake    12   0.829     0.73      0.92 Kendall W large    
+#> 1 uptake    12   0.829     0.75      0.94 Kendall W large    
 effectsize::kendalls_w(form, data = df_co2)
 #> Warning: 1 block(s) contain ties.
 #> Kendall's W |       95% CI
 #> --------------------------
-#> 0.83        | [0.77, 1.00]
+#> 0.83        | [0.76, 1.00]
 #> 
 #> - One-sided CIs: upper bound fixed at [1.00].
 compute_friedman_test(formula = form, df = df_co2)

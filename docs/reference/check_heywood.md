@@ -63,7 +63,7 @@ variances or standardized loadings greater than 1 in absolute value.
 
 ``` r
 library(lavaan)
-#> This is lavaan 0.7-2
+#> This is lavaan 0.7-3
 #> lavaan is FREE software! Please report any bugs.
 
 # Example model

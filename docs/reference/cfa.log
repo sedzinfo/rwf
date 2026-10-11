@@ -1,7 +1,7 @@
 [1] "##################################################"
 [1] "SUMMARY"
 [1] "##################################################"
-lavaan 0.7-2 ended normally after 23 iterations
+lavaan 0.7-3 ended normally after 26 iterations
 
   Estimator                                         ML
   Optimization method                           NLMINB
@@ -12,59 +12,64 @@ lavaan 0.7-2 ended normally after 23 iterations
 
 Model Test User Model:
                                                       
-  Test statistic                                 1.444
+  Test statistic                                 0.674
   Degrees of freedom                                 5
-  P-value (Chi-square)                           0.919
+  P-value (Chi-square)                           0.984
+                                                      
+  Browne's residual (NT model-based) test             
+  Test statistic                                 1.993
+  Degrees of freedom                                 5
+  P-value (Chi-square)                           0.850
 
 Model Test Baseline Model:
 
-  Test statistic                               241.776
+  Test statistic                               174.479
   Degrees of freedom                                10
   P-value                                        0.000
 
 User Model versus Baseline Model:
 
   Comparative Fit Index (CFI)                    1.000
-  Tucker-Lewis Index (TLI)                       1.031
+  Tucker-Lewis Index (TLI)                       1.053
                                                       
   Robust Comparative Fit Index (CFI)             1.000
-  Robust Tucker-Lewis Index (TLI)                1.033
+  Robust Tucker-Lewis Index (TLI)                1.055
 
 Loglikelihood and Information Criteria:
 
-  Loglikelihood user model (H0)               -752.005
-  Loglikelihood unrestricted model (H1)       -751.283
+  Loglikelihood user model (H0)               -749.132
+  Loglikelihood unrestricted model (H1)       -748.795
                                                       
-  Akaike (AIC)                                1534.011
-  Bayesian (BIC)                              1573.088
-  Sample-size adjusted Bayesian (SABIC)       1525.715
+  Akaike (AIC)                                1528.264
+  Bayesian (BIC)                              1567.341
+  Sample-size adjusted Bayesian (SABIC)       1519.967
 
 Root Mean Square Error of Approximation:
 
   RMSEA                                          0.000
   90 Percent confidence interval - lower         0.000
-  90 Percent confidence interval - upper         0.049
-  P-value H_0: RMSEA <= 0.050                    0.951
-  P-value H_0: RMSEA >= 0.080                    0.022
+  90 Percent confidence interval - upper         0.000
+  P-value H_0: RMSEA <= 0.050                    0.991
+  P-value H_0: RMSEA >= 0.080                    0.004
                                                       
   Robust RMSEA                                   0.000
   90 Percent confidence interval - lower         0.000
-  90 Percent confidence interval - upper         0.052
-  P-value H_0: Robust RMSEA <= 0.050             0.948
-  P-value H_0: Robust RMSEA >= 0.080             0.026
+  90 Percent confidence interval - upper         0.000
+  P-value H_0: Robust RMSEA <= 0.050             0.989
+  P-value H_0: Robust RMSEA >= 0.080             0.005
 
 Standardized Root Mean Square Residual:
 
-  SRMR                                           0.011
+  SRMR                                           0.010
 
 Goodness of Fit Index:
 
   Goodness of Fit Index (GFI)                    1.000
-  90 Percent confidence interval - lower         0.995
+  90 Percent confidence interval - lower         1.000
   90 Percent confidence interval - upper         1.000
                                                       
   Robust GFI                                     1.000
-  90 Percent confidence interval - lower         0.995
+  90 Percent confidence interval - lower         1.000
   90 Percent confidence interval - upper         1.000
 
 Parameter Estimates:
@@ -76,168 +81,168 @@ Parameter Estimates:
 Latent Variables:
                    Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
   LATENT =~                                                             
-    ITEM1             1.000                               1.140    0.795
-    ITEM2             0.979    0.124    7.910    0.000    1.116    0.774
-    ITEM3             1.050    0.131    7.993    0.000    1.197    0.777
-    ITEM4             1.046    0.135    7.730    0.000    1.193    0.775
-    ITEM5             1.136    0.140    8.133    0.000    1.296    0.796
+    ITEM1             1.000                               1.116    0.704
+    ITEM2             0.894    0.145    6.165    0.000    0.998    0.716
+    ITEM3             1.075    0.158    6.786    0.000    1.200    0.815
+    ITEM4             0.820    0.140    5.875    0.000    0.915    0.691
+    ITEM5             0.781    0.132    5.911    0.000    0.872    0.688
 
 Intercepts:
                    Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
-   .ITEM1             0.078    0.145    0.540    0.589    0.078    0.055
-   .ITEM2            -0.194    0.146   -1.327    0.185   -0.194   -0.134
-   .ITEM3            -0.179    0.156   -1.145    0.252   -0.179   -0.116
-   .ITEM4            -0.034    0.156   -0.220    0.826   -0.034   -0.022
-   .ITEM5             0.015    0.165    0.093    0.926    0.015    0.009
+   .ITEM1            -0.053    0.161   -0.332    0.740   -0.053   -0.034
+   .ITEM2            -0.207    0.142   -1.458    0.145   -0.207   -0.148
+   .ITEM3            -0.139    0.149   -0.931    0.352   -0.139   -0.094
+   .ITEM4            -0.088    0.134   -0.656    0.512   -0.088   -0.067
+   .ITEM5            -0.265    0.129   -2.058    0.040   -0.265   -0.209
 
 Variances:
                    Estimate  Std.Err  z-value  P(>|z|)   Std.lv  Std.all
-   .ITEM1             0.756    0.143    5.271    0.000    0.756    0.368
-   .ITEM2             0.832    0.151    5.528    0.000    0.832    0.401
-   .ITEM3             0.939    0.172    5.470    0.000    0.939    0.396
-   .ITEM4             0.943    0.173    5.451    0.000    0.943    0.399
-   .ITEM5             0.969    0.185    5.245    0.000    0.969    0.366
-    LATENT            1.300    0.290    4.481    0.000    1.000    1.000
+   .ITEM1             1.267    0.226    5.612    0.000    1.267    0.504
+   .ITEM2             0.949    0.171    5.553    0.000    0.949    0.488
+   .ITEM3             0.728    0.167    4.351    0.000    0.728    0.336
+   .ITEM4             0.915    0.160    5.723    0.000    0.915    0.522
+   .ITEM5             0.846    0.147    5.753    0.000    0.846    0.526
+    LATENT            1.246    0.338    3.688    0.000    1.000    1.000
 
 R-Square:
                    Estimate
-    ITEM1             0.632
-    ITEM2             0.599
-    ITEM3             0.604
-    ITEM4             0.601
-    ITEM5             0.634
+    ITEM1             0.496
+    ITEM2             0.512
+    ITEM3             0.664
+    ITEM4             0.478
+    ITEM5             0.474
 
 [1] "##################################################"
 [1] "R_SQUARED"
 [1] "##################################################"
       r_squared
-ITEM1    0.6323
-ITEM2    0.5995
-ITEM3    0.6042
-ITEM4    0.6013
-ITEM5    0.6340
+ITEM1    0.4960
+ITEM2    0.5121
+ITEM3    0.6642
+ITEM4    0.4778
+ITEM5    0.4737
 [1] "##################################################"
 [1] "FIT INDICES"
 [1] "##################################################"
-                                    fit
-npar                           15.00000
-fmin                            0.00722
-chisq                           1.44405
-df                              5.00000
-pvalue                          0.91943
-baseline.chisq                241.77594
-baseline.df                    10.00000
-baseline.pvalue                 0.00000
-cfi                             1.00000
-tli                             1.03068
-cfi.robust                      1.00000
-tli.robust                      1.03312
-nnfi                            1.03068
-rfi                             0.98805
-nfi                             0.99403
-pnfi                            0.49701
-ifi                             1.01502
-rni                             1.01534
-nnfi.robust                     1.03312
-rni.robust                      1.01656
-logl                         -752.00543
-unrestricted.logl            -751.28340
-aic                          1534.01086
-bic                          1573.08841
-ntotal                        100.00000
-bic2                         1525.71464
-rmsea                           0.00000
-rmsea.ci.lower                  0.00000
-rmsea.ci.upper                  0.04866
-rmsea.ci.level                  0.90000
-rmsea.pvalue                    0.95132
-rmsea.close.h0                  0.05000
-rmsea.notclose.pvalue           0.02206
-rmsea.notclose.h0               0.08000
-rmsea.robust                    0.00000
-rmsea.ci.lower.robust           0.00000
-rmsea.ci.upper.robust           0.05227
-rmsea.pvalue.robust             0.94792
-rmsea.notclose.pvalue.robust    0.02620
-rmr                             0.02589
-rmr_nomean                      0.02988
-srmr                            0.01120
-srmr_bentler                    0.01120
-srmr_bentler_nomean             0.01291
-crmr                            0.01284
-crmr_nomean                     0.01570
-srmr_mplus                      0.01115
-srmr_mplus_nomean               0.01285
-gfi                             1.00000
-gfi.ci.lower                    0.99529
-gfi.ci.upper                    1.00000
-gfi.ci.level                    0.90000
-gfi.robust                      1.00000
-gfi.ci.lower.robust             0.99457
-gfi.ci.upper.robust             1.00000
-cn_05                         767.62724
-cn_01                        1045.71794
-gfi_lisrel                      0.98261
-agfi_lisrel                     0.93043
-pgfi                            0.24565
-mfi                             1.01794
-ecvi                            0.31444
+                                     fit
+npar                           15.000000
+fmin                            0.003370
+chisq                           0.674046
+df                              5.000000
+pvalue                          0.984363
+baseline.chisq                174.478659
+baseline.df                    10.000000
+baseline.pvalue                 0.000000
+cfi                             1.000000
+tli                             1.052602
+cfi.robust                      1.000000
+tli.robust                      1.055065
+nnfi                            1.052602
+rfi                             0.992274
+nfi                             0.996137
+pnfi                            0.498068
+ifi                             1.025525
+rni                             1.026301
+nnfi.robust                     1.055065
+rni.robust                      1.027533
+logl                         -749.131822
+unrestricted.logl            -748.794799
+aic                          1528.263645
+bic                          1567.341197
+ntotal                        100.000000
+bic2                         1519.967429
+rmsea                           0.000000
+rmsea.ci.lower                  0.000000
+rmsea.ci.upper                  0.000000
+rmsea.ci.level                  0.900000
+rmsea.pvalue                    0.991126
+rmsea.close.h0                  0.050000
+rmsea.notclose.pvalue           0.003662
+rmsea.notclose.h0               0.080000
+rmsea.robust                    0.000000
+rmsea.ci.lower.robust           0.000000
+rmsea.ci.upper.robust           0.000000
+rmsea.pvalue.robust             0.989151
+rmsea.notclose.pvalue.robust    0.004981
+rmr                             0.019733
+rmr_nomean                      0.022770
+srmr                            0.010002
+srmr_bentler                    0.010002
+srmr_bentler_nomean             0.011538
+crmr                            0.011490
+crmr_nomean                     0.014058
+srmr_mplus                      0.010000
+srmr_mplus_nomean               0.011535
+gfi                             1.000000
+gfi.ci.lower                    1.000000
+gfi.ci.upper                    1.000000
+gfi.ci.level                    0.900000
+gfi.robust                      1.000000
+gfi.ci.lower.robust             1.000000
+gfi.ci.upper.robust             1.000000
+cn_05                        1643.395407
+cn_01                        2239.167181
+gfi_lisrel                      0.990266
+agfi_lisrel                     0.961064
+pgfi                            0.247566
+mfi                             1.021865
+ecvi                            0.306740
 [1] "##################################################"
 [1] "PARAMETERS"
 [1] "##################################################"
-      lhs op    rhs exo      est     se       z                pvalue ci.lower ci.upper   std.lv   std.all
-1  LATENT =~  ITEM1   0  1.00000 0.0000      NA                    NA   1.0000  1.00000  1.14012  0.795174
-2  LATENT =~  ITEM2   0  0.97901 0.1238  7.9096 0.0000000000000026645   0.7364  1.22160  1.11619  0.774263
-3  LATENT =~  ITEM3   0  1.05004 0.1314  7.9926 0.0000000000000013323   0.7925  1.30753  1.19717  0.777273
-4  LATENT =~  ITEM4   0  1.04607 0.1353  7.7303 0.0000000000000106581   0.7808  1.31129  1.19265  0.775453
-5  LATENT =~  ITEM5   0  1.13646 0.1397  8.1329 0.0000000000000004441   0.8626  1.41034  1.29570  0.796234
-6   ITEM1 ~~  ITEM1   0  0.75591 0.1434  5.2710 0.0000001356631531557   0.4748  1.03699  0.75591  0.367699
-7   ITEM2 ~~  ITEM2   0  0.83237 0.1506  5.5276 0.0000000324550872843   0.5372  1.12751  0.83237  0.400516
-8   ITEM3 ~~  ITEM3   0  0.93905 0.1717  5.4695 0.0000000451253359124   0.6026  1.27556  0.93905  0.395847
-9   ITEM4 ~~  ITEM4   0  0.94304 0.1730  5.4514 0.0000000499656345188   0.6040  1.28210  0.94304  0.398673
-10  ITEM5 ~~  ITEM5   0  0.96922 0.1848  5.2453 0.0000001559956859243   0.6071  1.33138  0.96922  0.366011
-11 LATENT ~~ LATENT   0  1.29988 0.2901  4.4812 0.0000074222706858418   0.7313  1.86841  1.00000  1.000000
-12  ITEM1 ~1          0  0.07839 0.1451  0.5402 0.5890267286129460267  -0.2060  0.36278  0.07839  0.054672
-13  ITEM2 ~1          0 -0.19368 0.1460 -1.3266 0.1846250653790726393  -0.4798  0.09246 -0.19368 -0.134351
-14  ITEM3 ~1          0 -0.17870 0.1560 -1.1454 0.2520441596297475773  -0.4845  0.12709 -0.17870 -0.116023
-15  ITEM4 ~1          0 -0.03428 0.1558 -0.2201 0.8257840965289942048  -0.3396  0.27099 -0.03428 -0.022291
-16  ITEM5 ~1          0  0.01537 0.1647  0.0933 0.9256638379686097373  -0.3074  0.33814  0.01537  0.009442
-17 LATENT ~1          0  0.00000 0.0000      NA                    NA   0.0000  0.00000  0.00000  0.000000
-18  ITEM1 r2  ITEM1   0  0.63230     NA      NA                    NA       NA       NA       NA        NA
-19  ITEM2 r2  ITEM2   0  0.59948     NA      NA                    NA       NA       NA       NA        NA
-20  ITEM3 r2  ITEM3   0  0.60415     NA      NA                    NA       NA       NA       NA        NA
-21  ITEM4 r2  ITEM4   0  0.60133     NA      NA                    NA       NA       NA       NA        NA
-22  ITEM5 r2  ITEM5   0  0.63399     NA      NA                    NA       NA       NA       NA        NA
+      lhs op    rhs exo      est     se       z           pvalue ci.lower ci.upper   std.lv  std.all
+1  LATENT =~  ITEM1   0  1.00000 0.0000      NA               NA   1.0000  1.00000  1.11643  0.70424
+2  LATENT =~  ITEM2   0  0.89419 0.1451  6.1647 0.00000000070625   0.6099  1.17848  0.99829  0.71562
+3  LATENT =~  ITEM3   0  1.07504 0.1584  6.7855 0.00000000001157   0.7645  1.38555  1.20020  0.81498
+4  LATENT =~  ITEM4   0  0.81956 0.1395  5.8746 0.00000000423789   0.5461  1.09299  0.91498  0.69123
+5  LATENT =~  ITEM5   0  0.78140 0.1322  5.9106 0.00000000340802   0.5223  1.04051  0.87237  0.68825
+6   ITEM1 ~~  ITEM1   0  1.26674 0.2257  5.6124 0.00000001995429   0.8244  1.70911  1.26674  0.50405
+7   ITEM2 ~~  ITEM2   0  0.94947 0.1710  5.5531 0.00000002806169   0.6144  1.28458  0.94947  0.48789
+8   ITEM3 ~~  ITEM3   0  0.72828 0.1674  4.3510 0.00001355217445   0.4002  1.05634  0.72828  0.33581
+9   ITEM4 ~~  ITEM4   0  0.91499 0.1599  5.7229 0.00000001047405   0.6016  1.22836  0.91499  0.52220
+10  ITEM5 ~~  ITEM5   0  0.84560 0.1470  5.7529 0.00000000877034   0.5575  1.13368  0.84560  0.52632
+11 LATENT ~~ LATENT   0  1.24641 0.3379  3.6884 0.00022571087869   0.5841  1.90874  1.00000  1.00000
+12  ITEM1 ~1          0 -0.05338 0.1610 -0.3316 0.74021280963860  -0.3689  0.26217 -0.05338 -0.03367
+13  ITEM2 ~1          0 -0.20653 0.1417 -1.4580 0.14484703309578  -0.4842  0.07111 -0.20653 -0.14805
+14  ITEM3 ~1          0 -0.13891 0.1492 -0.9313 0.35170464156875  -0.4312  0.15343 -0.13891 -0.09432
+15  ITEM4 ~1          0 -0.08822 0.1345 -0.6561 0.51177311709724  -0.3518  0.17533 -0.08822 -0.06665
+16  ITEM5 ~1          0 -0.26501 0.1288 -2.0580 0.03958868413543  -0.5174 -0.01263 -0.26501 -0.20908
+17 LATENT ~1          0  0.00000 0.0000      NA               NA   0.0000  0.00000  0.00000  0.00000
+18  ITEM1 r2  ITEM1   0  0.49595     NA      NA               NA       NA       NA       NA       NA
+19  ITEM2 r2  ITEM2   0  0.51211     NA      NA               NA       NA       NA       NA       NA
+20  ITEM3 r2  ITEM3   0  0.66419     NA      NA               NA       NA       NA       NA       NA
+21  ITEM4 r2  ITEM4   0  0.47780     NA      NA               NA       NA       NA       NA       NA
+22  ITEM5 r2  ITEM5   0  0.47368     NA      NA               NA       NA       NA       NA       NA
 [1] "##################################################"
 [1] "UNSTANDARDIZED PARAMETERS"
 [1] "##################################################"
 $lambda
       LATENT
 ITEM1  1.000
-ITEM2  0.979
-ITEM3  1.050
-ITEM4  1.046
-ITEM5  1.136
+ITEM2  0.894
+ITEM3  1.075
+ITEM4  0.820
+ITEM5  0.781
 
 $theta
       ITEM1 ITEM2 ITEM3 ITEM4 ITEM5
-ITEM1 0.756                        
-ITEM2 0.000 0.832                  
-ITEM3 0.000 0.000 0.939            
-ITEM4 0.000 0.000 0.000 0.943      
-ITEM5 0.000 0.000 0.000 0.000 0.969
+ITEM1 1.267                        
+ITEM2 0.000 0.949                  
+ITEM3 0.000 0.000 0.728            
+ITEM4 0.000 0.000 0.000 0.915      
+ITEM5 0.000 0.000 0.000 0.000 0.846
 
 $psi
        LATENT
-LATENT    1.3
+LATENT  1.246
 
 $nu
       intrcp
-ITEM1  0.078
-ITEM2 -0.194
-ITEM3 -0.179
-ITEM4 -0.034
-ITEM5  0.015
+ITEM1 -0.053
+ITEM2 -0.207
+ITEM3 -0.139
+ITEM4 -0.088
+ITEM5 -0.265
 
 $alpha
        intrcp
@@ -248,19 +253,19 @@ LATENT      0
 [1] "##################################################"
 $lambda
       LATENT
-ITEM1  0.795
-ITEM2  0.774
-ITEM3  0.777
-ITEM4  0.775
-ITEM5  0.796
+ITEM1  0.704
+ITEM2  0.716
+ITEM3  0.815
+ITEM4  0.691
+ITEM5  0.688
 
 $theta
       ITEM1 ITEM2 ITEM3 ITEM4 ITEM5
-ITEM1 0.368                        
-ITEM2 0.000 0.401                  
-ITEM3 0.000 0.000 0.396            
-ITEM4 0.000 0.000 0.000 0.399      
-ITEM5 0.000 0.000 0.000 0.000 0.366
+ITEM1 0.504                        
+ITEM2 0.000 0.488                  
+ITEM3 0.000 0.000 0.336            
+ITEM4 0.000 0.000 0.000 0.522      
+ITEM5 0.000 0.000 0.000 0.000 0.526
 
 $psi
        LATENT
@@ -268,11 +273,11 @@ LATENT      1
 
 $nu
       intrcp
-ITEM1  0.055
-ITEM2 -0.134
-ITEM3 -0.116
-ITEM4 -0.022
-ITEM5  0.009
+ITEM1 -0.034
+ITEM2 -0.148
+ITEM3 -0.094
+ITEM4 -0.067
+ITEM5 -0.209
 
 $alpha
        intrcp
@@ -281,12 +286,12 @@ LATENT      0
 [1] "##################################################"
 [1] "SAMPLE COVARIANCE"
 [1] "##################################################"
-     X1    X2    X3    X4    X5
-1 2.058 1.355 1.439 1.236 1.475
-2 1.355 2.122 1.389 1.413 1.472
-3 1.439 1.389 2.387 1.385 1.548
-4 1.236 1.413 1.385 2.339 1.638
-5 1.475 1.472 1.548 1.638 2.666
+     X1     X2    X3     X4     X5
+1 2.526 1.1726 1.355 1.0057 1.0740
+2 1.173 1.9700 1.226 0.9421 0.8961
+3 1.355 1.2262 2.198 1.1661 1.0095
+4 1.006 0.9421 1.166 1.7480 0.7210
+5 1.074 0.8961 1.010 0.7210 1.5890
 [1] "##################################################"
 [1] "CALL"
 [1] "##################################################"

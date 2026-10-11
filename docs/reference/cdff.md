@@ -6,7 +6,7 @@ same column-level diagnostic summary (except for the cases listed in
 Note) but computes every statistic, including UNIQUES and LEVELS, in a
 single pass over each column, builds the result without `rbind` calls,
 and removes the `gtools` and `plyr` dependencies. Recommended for large
-dataframes (\> 100k rows or \> 50 columns).
+dataframes (\> 100k rows \#' or \> 50 columns).
 
 ## Usage
 
