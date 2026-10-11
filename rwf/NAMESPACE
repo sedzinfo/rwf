@@ -22,6 +22,7 @@ export(compute_crosstable)
 export(compute_descriptives)
 export(compute_dissatenuation)
 export(compute_dummy_comparisons)
+export(compute_efa_cfa)
 export(compute_frequencies)
 export(compute_friedman_test)
 export(compute_icc_thurstonian)
@@ -289,9 +290,13 @@ importFrom(igraph,
 )
 importFrom(irr,kappa2)
 importFrom(lavaan,
+  cfa,
   inspect,
+  lavInspect,
   lavNames,
+  lavPredict,
   modificationIndices,
+  modindices,
   parameterEstimates
 )
 importFrom(mirt,
@@ -338,8 +343,10 @@ importFrom(psych,
   corr.test,
   describe,
   dummy.code,
+  fa,
   fa.sort,
   polyserial,
+  reverse.code,
   tetrachoric
 )
 importFrom(purrr,walk)
