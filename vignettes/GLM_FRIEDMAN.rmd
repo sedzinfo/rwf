@@ -17,11 +17,11 @@ vignette: >
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
-directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
-source(paste0(directory, "R/code_options.R"))
-source(paste0(directory, "R/code_rwf.R"))
-load(paste0(directory, "data/df_co2.rda"))
-load(paste0(directory, "data/df_blood_pressure.rda"))
+directory <- dirname(knitr::current_input())
+source(file.path(directory, "R", "code_options.R"))
+source(file.path(directory, "R", "code_rwf.R"))
+load(file.path(directory, "data", "df_co2.rda"))
+load(file.path(directory, "data", "df_blood_pressure.rda"))
 ```
 
 ## Description

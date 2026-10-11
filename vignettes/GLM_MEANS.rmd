@@ -17,10 +17,10 @@ vignette: >
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
-directory<-if (rstudioapi::isAvailable()) paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/") else ""
-source(paste0(directory, "R/code_options.R"))
-source(paste0(directory, "R/code_rwf.R"))
-
+directory <- dirname(knitr::current_input())
+source(file.path(directory, "R", "code_options.R"))
+source(file.path(directory, "R", "code_rwf.R"))
+load(file.path(directory, "data", "df_insurance.rda"))
 ```
 
 ## Description
@@ -51,7 +51,6 @@ Format: A data frame with 1338 rows and 7 variables:
 Source: researchpy repo
 
 ```{r, data}
-load(paste0(directory,"data/df_insurance.rda"))
 head(df_insurance)
 cdf(df_insurance)
 ```

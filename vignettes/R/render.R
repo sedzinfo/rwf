@@ -22,7 +22,9 @@ render_all_rmd <- function(path = ".",
         input = f,
         knit_root_dir=path,
         output_format = output_format,
-        envir = new.env(parent = globalenv())
+        envir = new.env(parent = globalenv()),
+        quiet = TRUE
+        
       ),
       error = function(e) {
         message("Failed: ", basename(f))
@@ -36,8 +38,3 @@ render_all_rmd <- function(path = ".",
 
 directory<-paste0(dirname(rstudioapi::getActiveDocumentContext()$path),"/")
 render_all_rmd(path="C:/Users/dzach/Documents/GitHub/rwf/vignettes/")
-
-
-
-
-list.files("C:/Users/dzach/Documents/GitHub/rwf", recursive = TRUE)
