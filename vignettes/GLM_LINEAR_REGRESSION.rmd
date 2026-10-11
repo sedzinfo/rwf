@@ -84,8 +84,7 @@ Two models are demonstrated:
 - **Multiple regression with interactions** (`mpg ~ qsec * hp * wt * drat`): all main effects and their two-, three-, and four-way interactions. This tests how the function handles a highly parameterised model and whether collinearity among interaction terms is flagged in the VIF output.
 
 ```{r, report_regression,fig.width=8,fig.height=8}
-form<-formula(mpg~qsec)
-regressionmodel<-lm(form,data=mtcars)
+regressionmodel<-lm(stats::formula(mpg~qsec),data=mtcars)
 multipleregressionmodel<-lm(mpg~qsec*hp*wt*drat,data=mtcars)
 res<-report_regression(model=regressionmodel,plot_diagnostics=TRUE)
 res<-report_regression(model=multipleregressionmodel)
