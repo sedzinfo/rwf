@@ -13,3 +13,23 @@ pre.sourceCode code {
   overflow-wrap: normal;
   white-space: inherit;
 }
+
+/* Footer like https://sedzinfo.github.io/: one centred line of small grey text under a full-width rule */
+footer {
+  display: block;
+  margin-top: 3rem;
+  padding: 1rem 0;
+  text-align: center;
+  font-size: .875em;
+  color: var(--bs-secondary-color);
+  border-top: 1px solid var(--bs-border-color);
+  border-image: linear-gradient(var(--bs-border-color), var(--bs-border-color)) 1 / 1px 0 0 / 0 100vmax;
+}
+
+footer .pkgdown-footer-right {
+  display: none;
+}
+
+footer a {
+  color: inherit;
+}

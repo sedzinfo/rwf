@@ -22,8 +22,13 @@ destination: ../docs
 navbar:
   structure:
     left: [intro, reference, articles]
-    right: [github]
+    right: [sedzinfo, github]
   components:
+    sedzinfo:
+      icon: fas fa-house
+      text: home
+      href: https://sedzinfo.github.io/
+      aria-label: sedzinfo home page
     github:
       icon: fab fa-github
       href: https://github.com/sedzinfo/rwf
@@ -260,3 +265,10 @@ reference:
       - df_sexual_comp
       - df_titanic
 
+footer:
+  structure:
+    left: sedzinfo
+    right: blank
+  components:
+    sedzinfo: '[github.com/sedzinfo](https://github.com/sedzinfo) · [Cookie settings](#cookie-settings)'
+    blank: ''
