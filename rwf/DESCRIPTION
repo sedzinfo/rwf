@@ -21,6 +21,7 @@ Suggests:
     nortest,
     openNLPdata,
     rcompanion,
+    Rcsdp,
     rJava,
     rmarkdown,
     rstatix,
