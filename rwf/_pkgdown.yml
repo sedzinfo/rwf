@@ -10,6 +10,7 @@ repo:
 template:
   bootstrap: 5
   bootswatch: flatly
+  math-rendering: katex   # renders the \eqn and \deqn maths of the help pages
   includes:
     # cookie banner and Google Analytics, shared by every site under sedzinfo.github.io (consent.js in that repository)
     after_body: '<script src="/consent.js" defer></script>'
