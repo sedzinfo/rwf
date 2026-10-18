@@ -269,7 +269,7 @@ reference:
 footer:
   structure:
     left: sedzinfo
-    right: blank
+    right: sedzinfo_home
   components:
     sedzinfo: '[github.com/sedzinfo](https://github.com/sedzinfo) · [Cookie settings](#cookie-settings)'
-    blank: ''
+    sedzinfo_home: '[home](https://sedzinfo.github.io/)'
