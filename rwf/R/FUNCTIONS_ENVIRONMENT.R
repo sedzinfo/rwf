@@ -140,7 +140,8 @@ getfwp <- function() {
   needle <- "--file="
   match <- grep(needle, command_arguments)
   if (length(match) > 0) {
-    return(normalizePath(sub(needle, "", command_arguments[match])))
+    # on Linux and macOS, Rscript passes the spaces of the file name as "~+~"
+    return(normalizePath(gsub("~+~", " ", sub(needle, "", command_arguments[match]), fixed = TRUE)))
   } else {
     ls_vars <- ls(sys.frames()[[1]])
     if ("fileName" %in% ls_vars) {
