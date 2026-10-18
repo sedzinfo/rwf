@@ -29,6 +29,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      # the package data is stored in Git LFS; fetch only that, not the docs/PDFs
+      - name: Fetch package data from LFS
+        run: git lfs pull --include="rwf/data/*"
+
       - name: Set up R ${{ matrix.r-version }}
         uses: r-lib/actions/setup-r@v2
         with:
