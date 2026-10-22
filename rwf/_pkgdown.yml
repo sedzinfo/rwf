@@ -12,8 +12,9 @@ template:
   bootswatch: flatly
   math-rendering: katex   # renders the \eqn and \deqn maths of the help pages
   includes:
-    # cookie banner and Google Analytics, shared by every site under sedzinfo.github.io (consent.js in that repository)
-    after_body: '<script src="/consent.js" defer></script>'
+    # the footer of every site under sedzinfo.github.io (footer.js) and the cookie banner + Google Analytics
+    # (consent.js), both in the sedzinfo.github.io repository; footer.js loads first and fills pkgdown's footer
+    after_body: '<script src="https://sedzinfo.github.io/footer.js" defer></script><script src="/consent.js" defer></script>'
 
 code:
   width: 200
@@ -265,11 +266,3 @@ reference:
       - df_responses_state
       - df_sexual_comp
       - df_titanic
-
-footer:
-  structure:
-    left: sedzinfo
-    right: sedzinfo_home
-  components:
-    sedzinfo: '[github.com/sedzinfo](https://github.com/sedzinfo) · [Cookie settings](#cookie-settings)'
-    sedzinfo_home: '[home](https://sedzinfo.github.io/)'
