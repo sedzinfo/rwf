@@ -6,7 +6,7 @@ title: "Plotting means, interactions and ANOVA diagnostics"
 library(rwf)
 options(width = 200)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE,
-                      fig.width = 7, fig.height = 6, fig.align = "center", out.width = "50%")
+                      fig.width = 7, fig.height = 6, fig.align = "center", out.width = "100%")
 library(reshape)
 library(ggplot2)
 library(ggfortify)
