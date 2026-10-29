@@ -34,8 +34,12 @@ jobs:
 
       - uses: r-lib/actions/setup-tinytex@v2
 
+      # tlmgr refuses to install anything when the package server has a newer
+      # tlmgr than the TinyTeX just installed, so it updates itself first
       - name: Install LaTeX packages for the R manual
-        run: tlmgr install inconsolata upquote makeindex
+        run: |
+          tlmgr update --self
+          tlmgr install inconsolata upquote makeindex
 
       - name: Build PDF manual
         run: R CMD Rd2pdf rwf --force --no-preview --output=rwf.pdf
