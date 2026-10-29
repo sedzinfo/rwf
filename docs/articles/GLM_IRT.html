@@ -181,7 +181,7 @@ and the expected total score curve, all against <span class="math inline">\theta
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_irt_onefactor.html">plot_irt_onefactor</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_normal</span>, base_size <span class="op">=</span> <span class="fl">10</span>, title <span class="op">=</span> <span class="st">"Normal Test"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GLM_IRT_files/figure-html/plot_normal-1.png" class="r-plt" alt="" width="50%" style="display: block; margin: auto;"></p>
+<p><img src="GLM_IRT_files/figure-html/plot_normal-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>Items targeted across the middle of the ability range produce
 information that peaks near <span class="math inline">\theta=0</span> —
 this is where the test measures most precisely.</p>
@@ -191,7 +191,7 @@ this is where the test measures most precisely.</p>
 </h3>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_irt_onefactor.html">plot_irt_onefactor</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_easy</span>, base_size <span class="op">=</span> <span class="fl">10</span>, title <span class="op">=</span> <span class="st">"Easy Items"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GLM_IRT_files/figure-html/plot_easy-1.png" class="r-plt" alt="" width="50%" style="display: block; margin: auto;"></p>
+<p><img src="GLM_IRT_files/figure-html/plot_easy-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>Information concentrates at very low <span class="math inline">\theta</span> — the test discriminates well among
 low-ability examinees but provides almost no information for anyone of
 average or high ability, since nearly everyone above that range answers
@@ -202,7 +202,7 @@ correctly.</p>
 </h3>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_irt_onefactor.html">plot_irt_onefactor</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_hard</span>, base_size <span class="op">=</span> <span class="fl">10</span>, title <span class="op">=</span> <span class="st">"Difficult Items"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GLM_IRT_files/figure-html/plot_hard-1.png" class="r-plt" alt="" width="50%" style="display: block; margin: auto;"></p>
+<p><img src="GLM_IRT_files/figure-html/plot_hard-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>The mirror image of the easy case — information concentrates at high
 <span class="math inline">\theta</span>, and the test provides little
 precision for low- or average-ability examinees.</p>
@@ -212,7 +212,7 @@ precision for low- or average-ability examinees.</p>
 </h3>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_irt_onefactor.html">plot_irt_onefactor</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_lowdisc</span>, base_size <span class="op">=</span> <span class="fl">10</span>, title <span class="op">=</span> <span class="st">"Low Discrimination"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GLM_IRT_files/figure-html/plot_lowdisc-1.png" class="r-plt" alt="" width="50%" style="display: block; margin: auto;"></p>
+<p><img src="GLM_IRT_files/figure-html/plot_lowdisc-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>With discrimination near zero, information is low and nearly flat
 across the whole ability range — the items barely distinguish between
 high- and low-ability examinees at all, regardless of where they’re
@@ -226,7 +226,7 @@ targeted.</p>
 <span>                                     mu <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="fl">1</span>, cat <span class="op">=</span> <span class="fl">5</span>, mod <span class="op">=</span> <span class="st">"logistic"</span>, theta <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">$</span><span class="va">items</span></span>
 <span><span class="va">model_graded</span> <span class="op">&lt;-</span> <span class="fu">mirt</span><span class="fu">::</span><span class="fu"><a href="https://philchalmers.github.io/mirt/reference/mirt.html" class="external-link">mirt</a></span><span class="op">(</span><span class="va">cormatrix_graded</span>, <span class="fl">1</span>, itemtype <span class="op">=</span> <span class="st">"graded"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/plot_irt_onefactor.html">plot_irt_onefactor</a></span><span class="op">(</span>model <span class="op">=</span> <span class="va">model_graded</span>, base_size <span class="op">=</span> <span class="fl">10</span>, title <span class="op">=</span> <span class="st">"Graded Response"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="GLM_IRT_files/figure-html/plot_graded-1.png" class="r-plt" alt="" width="50%" style="display: block; margin: auto;"></p>
+<p><img src="GLM_IRT_files/figure-html/plot_graded-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>The same information/expected-score logic extends directly to ordinal
 (Likert-type) items scored with a graded response model.</p>
 </div>
