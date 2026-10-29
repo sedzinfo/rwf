@@ -82,52 +82,52 @@ report_correlation(x=generate_missing(mtcars[,1:3],10))
 
 
 #> $r_lower
-#>          mpg   cyl disp
-#> mpg       NA    NA   NA
-#> cyl  -0.8346    NA   NA
-#> disp -0.8652 0.904   NA
+#>          mpg    cyl disp
+#> mpg       NA     NA   NA
+#> cyl  -0.8673     NA   NA
+#> disp -0.8391 0.9063   NA
 #> 
 #> $r_squared_lower
 #>         mpg    cyl disp
 #> mpg      NA     NA   NA
-#> cyl  0.6965     NA   NA
-#> disp 0.7486 0.8172   NA
+#> cyl  0.7522     NA   NA
+#> disp 0.7041 0.8213   NA
 #> 
 #> $p_lower
 #>             mpg         cyl disp
 #> mpg          NA          NA   NA
-#> cyl  0.00020510          NA   NA
-#> disp 0.00006439 0.000003782   NA
+#> cyl  0.00000655          NA   NA
+#> disp 0.00001344 0.000001326   NA
 #> 
 #> $p_lower_adjusted
-#>            mpg        cyl disp
-#> mpg         NA         NA   NA
-#> cyl  0.0002051         NA   NA
-#> disp 0.0001288 0.00001135   NA
+#>             mpg         cyl disp
+#> mpg          NA          NA   NA
+#> cyl  0.00001310          NA   NA
+#> disp 0.00001344 0.000003977   NA
 #> 
 #> $t_lower
 #>         mpg   cyl disp
 #> mpg      NA    NA   NA
-#> cyl  -5.248    NA   NA
-#> disp -5.977 7.622   NA
+#> cyl  -6.748    NA   NA
+#> disp -6.171 8.022   NA
 #> 
 #> $n_lower
 #>      mpg cyl disp
 #> mpg   NA  NA   NA
-#> cyl   14  NA   NA
-#> disp  14  15   NA
+#> cyl   17  NA   NA
+#> disp  18  16   NA
 #> 
 #> $se_lower
-#>         mpg    cyl disp
-#> mpg      NA     NA   NA
-#> cyl  0.1590     NA   NA
-#> disp 0.1448 0.1186   NA
+#>         mpg   cyl disp
+#> mpg      NA    NA   NA
+#> cyl  0.1285    NA   NA
+#> disp 0.1360 0.113   NA
 #> 
 #> $ci
 #>            lower       r   upper           p lower.adj upper.adj
-#> mpg-cyl  -0.9462 -0.8346 -0.5456 0.000205103   -0.9462   -0.5456
-#> mpg-disp -0.9566 -0.8652 -0.6186 0.000064385   -0.9633   -0.5634
-#> cyl-disp  0.7295  0.9040  0.9680 0.000003782    0.6654    0.9750
+#> mpg-cyl  -0.9514 -0.8673 -0.6630 0.000006550   -0.9580   -0.6188
+#> mpg-disp -0.9384 -0.8391 -0.6120 0.000013445   -0.9384   -0.6120
+#> cyl-disp  0.7455  0.9063  0.9674 0.000001326    0.6870    0.9743
 #> 
 #> $call
 #>                  function_arguments function_values
@@ -146,50 +146,50 @@ report_correlation(x=generate_missing(mtcars[,1:3],10),
 #> $r_lower
 #>          mpg    cyl disp
 #> mpg       NA     NA   NA
-#> cyl  -0.8971     NA   NA
-#> disp -0.8487 0.9074   NA
+#> cyl  -0.8581     NA   NA
+#> disp -0.7978 0.9269   NA
 #> 
 #> $r_squared_lower
 #>         mpg    cyl disp
 #> mpg      NA     NA   NA
-#> cyl  0.8048     NA   NA
-#> disp 0.7204 0.8234   NA
+#> cyl  0.7363     NA   NA
+#> disp 0.6365 0.8592   NA
 #> 
 #> $p_lower
-#>             mpg         cyl disp
-#> mpg          NA          NA   NA
-#> cyl  0.00001369          NA   NA
-#> disp 0.00006310 0.000001223   NA
+#>             mpg          cyl disp
+#> mpg          NA           NA   NA
+#> cyl  0.00008627           NA   NA
+#> disp 0.00062777 0.0000002452   NA
 #> 
 #> $p_lower_adjusted
-#>             mpg         cyl disp
-#> mpg          NA          NA   NA
-#> cyl  0.00002738          NA   NA
-#> disp 0.00006310 0.000003669   NA
+#>            mpg          cyl disp
+#> mpg         NA           NA   NA
+#> cyl  0.0001725           NA   NA
+#> disp 0.0006278 0.0000007355   NA
 #> 
 #> $t_lower
 #>         mpg   cyl disp
 #> mpg      NA    NA   NA
-#> cyl  -7.033    NA   NA
-#> disp -5.787 8.078   NA
+#> cyl  -5.788    NA   NA
+#> disp -4.584 9.244   NA
 #> 
 #> $n_lower
 #>      mpg cyl disp
 #> mpg   NA  NA   NA
 #> cyl   14  NA   NA
-#> disp  15  16   NA
+#> disp  14  16   NA
 #> 
 #> $se_lower
 #>         mpg    cyl disp
 #> mpg      NA     NA   NA
-#> cyl  0.1275     NA   NA
-#> disp 0.1467 0.1123   NA
+#> cyl  0.1482     NA   NA
+#> disp 0.1740 0.1003   NA
 #> 
 #> $ci
-#>            lower       r   upper           p lower.adj upper.adj
-#> mpg-cyl  -0.9673 -0.8971 -0.6994 0.000013691   -0.9723   -0.6535
-#> mpg-disp -0.9486 -0.8487 -0.5953 0.000063105   -0.9486   -0.5953
-#> cyl-disp  0.7482  0.9074  0.9678 0.000001223    0.6903    0.9746
+#>            lower       r   upper            p lower.adj upper.adj
+#> mpg-cyl  -0.9542 -0.8581 -0.6012 0.0000862744   -0.9612   -0.5443
+#> mpg-disp -0.9333 -0.7978 -0.4634 0.0006277709   -0.9333   -0.4634
+#> cyl-disp  0.7978  0.9269  0.9748 0.0000002452    0.7497    0.9801
 #> 
 #> $call
 #>                  function_arguments function_values

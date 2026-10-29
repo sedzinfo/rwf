@@ -1,0 +1,79 @@
+---
+title: "Linear regression"
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+library(rwf)
+options(width = 200)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE,
+                      fig.width = 7, fig.height = 6, fig.align = "center", out.width = "50%")
+library(ggplot2)
+library(grid)
+library(ggfortify)
+```
+
+## Description
+
+This shows the output of linear regression functions from the package rwf. The functions cover scatterplot visualisation and full regression reporting for both simple and multiple regression models.
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_LINEAR_REGRESSION.R)
+
+## Plot Scatterplot
+
+`plot_scatterplot` produces scatterplots with a fitted regression line and confidence band. It supports pairwise plots across all columns of a dataframe, specific variable combinations, and symmetric vs. non-symmetric axis scaling.
+
+The examples show:
+
+- **Full `mtcars` matrix**: all pairwise scatterplots stored in `result` for later multiplot use.
+- **Single pair, equal axes** (`coord_equal = TRUE`): both axes share the same scale — useful when variables are on comparable units.
+- **Single pair, free axes** (`coord_equal = FALSE`): each axis scales independently — better for variables with very different ranges.
+- **Custom combinations**: only selected x–y pairs are plotted using the `combinations` argument, avoiding a full matrix when you only care about specific relationships.
+- **All orders** (`all_orders = TRUE`): plots both x~y and y~x for a given pair, showing how the regression line changes with axis assignment.
+- **Random simulation**: x and y generated with near-perfect correlation (sd = 0.1 noise) — confirms the function handles near-linear data cleanly.
+- **Negative correlation simulation**: a matrix with r = −0.999 is generated and plotted — a stress test for strong negative linear relationships.
+
+```{r, plot_scatterplot,fig.width=8,fig.height=8,message=FALSE,warning=FALSE,results='hide'}
+result<-plot_scatterplot(df=mtcars,title="",coord_equal=TRUE,base_size=10)
+plot_scatterplot(df=mtcars[,1:2],base_size=10,coord_equal=TRUE,all_orders=FALSE)
+plot_scatterplot(df=mtcars[,1:2],base_size=10,coord_equal=FALSE,all_orders=FALSE)
+plot_scatterplot(df=mtcars,base_size=10,coord_equal=TRUE,all_orders=FALSE,
+                 combinations=data.frame(x=c("mpg","mpg","mpg"),
+                                         y=c("cyl","hp","mpg")))
+plot_scatterplot(df=mtcars,base_size=10,coord_equal=TRUE,all_orders=TRUE,
+                 combinations=data.frame(x=c("mpg"),y=c("cyl")))
+x<-rnorm(1000)
+y<-x+rnorm(x,sd=.1)
+plot_scatterplot(df=data.frame(x,y),title="Random Simulation",coord_equal=TRUE)
+df<-data.frame(matrix(-.999,ncol=2,nrow=2))
+correlation_martix<-as.matrix(df)
+diag(correlation_martix)<-1
+df<-generate_correlation_matrix(correlation_martix,nrows=1000)
+plot_scatterplot(df,title="Simulation of -.999 Correlation",coord_equal=TRUE,base_size=10)
+```
+
+## Plot Multiplot
+
+`plot_multiplot` arranges multiple ggplot objects into a grid. Here it displays the first 12 pairwise scatterplots from the full `mtcars` matrix generated above, laid out in 4 columns. This is useful for quickly scanning all pairwise relationships in a dataset side by side.
+
+```{r, plot_multiplot,fig.width=20,fig.height=20}
+plot_multiplot(plotlist=result[1:12],cols=4)
+```
+
+## Report Regression
+
+`report_regression` fits a linear model and returns a structured report with model fit statistics (R², adjusted R², F, p), a coefficient table with standardized and unstandardized betas, confidence intervals, and tolerance/VIF collinearity diagnostics.
+
+Two models are demonstrated:
+
+- **Simple regression** (`mpg ~ qsec`): one predictor, with `plot_diagnostics = TRUE` to produce residual diagnostic plots (residuals vs. fitted, Q-Q plot, scale-location, leverage). These help assess whether linearity, homoscedasticity, and normality assumptions hold.
+- **Multiple regression with interactions** (`mpg ~ qsec * hp * wt * drat`): all main effects and their two-, three-, and four-way interactions. This tests how the function handles a highly parameterised model and whether collinearity among interaction terms is flagged in the VIF output.
+
+```{r, report_regression,fig.width=8,fig.height=8}
+regressionmodel<-lm(stats::formula(mpg~qsec),data=mtcars)
+multipleregressionmodel<-lm(mpg~qsec*hp*wt*drat,data=mtcars)
+res<-report_regression(model=regressionmodel,plot_diagnostics=TRUE)
+res<-report_regression(model=multipleregressionmodel)
+res
+```

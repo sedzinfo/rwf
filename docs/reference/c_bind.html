@@ -24,6 +24,32 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/EXPLORE_ASSUMPTIONS.html">Checking normality and outliers</a></li>
+    <li><a class="dropdown-item" href="../articles/FUNCTIONS_RECODE.html">Recoding and stacking data</a></li>
+    <li><a class="dropdown-item" href="../articles/FUNCTIONS_STATISTICAL.html">Basic statistical functions</a></li>
+    <li><a class="dropdown-item" href="../articles/FUNCTIONS_TRAIN_TEST.html">Training and testing models</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_ANOVA.html">ANOVA</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_COMPUTE_AOV_ES.html">ANOVA effect sizes</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_COMPUTE_POSTHOC.html">Post hoc comparisons</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_CORRELATION.html">Correlation</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_MEANS.html">t tests and Wilcoxon tests</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_ONE_WAY.html">One-way ANOVA</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_PLOT_ANOVA.html">Plotting means, interactions and ANOVA diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_RELIABILITY.html">Reliability and validity</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_SEM.html">Structural equation modeling and CFA</a></li>
+    <li><a class="dropdown-item" href="../articles/NLP.html">Natural language processing</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://sedzinfo.github.io/" aria-label="sedzinfo home page"><span class="fa fas fa-house"></span> home</a></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/sedzinfo/rwf" aria-label="GitHub"><span class="fa fab fa-github"></span></a></li>
       </ul></div>
@@ -82,20 +108,20 @@ prepended at the top.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">c_bind</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">11</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">13</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     rnorm(10)   rnorm(11)   rnorm(12)   rnorm(13)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.6010915  0.49926364  0.99967633 -1.74550515</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  -2.7671158 -0.37971579 -0.25402600 -0.20723144</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0.1815231  0.27895349  0.76922242 -0.02346067</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   2.2618871  0.02597137 -0.10234503 -1.48048653</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0.7119713  1.34252439 -1.49921376  2.72769292</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   1.1572727 -1.68496253  0.10291082  0.29197216</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   0.2509712 -1.89403426  1.46249872  1.44972635</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  -1.0991411 -1.38330270 -0.83939182 -0.63243773</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   0.3724235 -0.83727797  1.17592794 -0.07519550</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 -1.7843500  0.00256629  0.04779855 -0.23536331</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11         NA -1.77304002  2.35389080  2.38749939</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12         NA          NA -0.57521892 -1.13864182</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13         NA          NA          NA -1.27214497</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       rnorm(10)   rnorm(11)   rnorm(12)   rnorm(13)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  -1.400043517 -0.55369938  0.36295126  1.62354888</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.255317055  0.62898204 -1.30454355  0.11203808</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  -2.437263611  2.06502490  0.73777632 -0.13399701</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  -0.005571287 -1.63098940  1.88850493 -1.91008747</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0.621552721  0.51242695 -0.09744510 -0.27923724</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6   1.148411606 -1.86301149 -0.93584735 -0.31344598</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  -1.821817661 -0.52201251 -0.01595031  1.06730788</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8  -0.247325302 -0.05260191 -0.82678895  0.07003485</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9  -0.244199607  0.54299634 -1.51239965 -0.63912332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10 -0.282705449 -0.91407483  0.93536319 -0.04996490</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11           NA  0.46815442  0.17648861 -0.25148344</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12           NA          NA  0.24368546  0.44479712</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13           NA          NA          NA  2.75541758</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -16,6 +16,32 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/EXPLORE_ASSUMPTIONS.html">Checking normality and outliers</a></li>
+    <li><a class="dropdown-item" href="../articles/FUNCTIONS_RECODE.html">Recoding and stacking data</a></li>
+    <li><a class="dropdown-item" href="../articles/FUNCTIONS_STATISTICAL.html">Basic statistical functions</a></li>
+    <li><a class="dropdown-item" href="../articles/FUNCTIONS_TRAIN_TEST.html">Training and testing models</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_ANOVA.html">ANOVA</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_COMPUTE_AOV_ES.html">ANOVA effect sizes</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_COMPUTE_POSTHOC.html">Post hoc comparisons</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_CORRELATION.html">Correlation</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_MEANS.html">t tests and Wilcoxon tests</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_ONE_WAY.html">One-way ANOVA</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_PLOT_ANOVA.html">Plotting means, interactions and ANOVA diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_RELIABILITY.html">Reliability and validity</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_SEM.html">Structural equation modeling and CFA</a></li>
+    <li><a class="dropdown-item" href="../articles/NLP.html">Natural language processing</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://sedzinfo.github.io/" aria-label="sedzinfo home page"><span class="fa fas fa-house"></span> home</a></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/sedzinfo/rwf" aria-label="GitHub"><span class="fa fab fa-github"></span></a></li>
       </ul></div>
@@ -58,8 +84,14 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12345</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">cormatrix</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/sim.irt.html" class="external-link">sim.rasch</a></span><span class="op">(</span>nvar<span class="op">=</span><span class="fl">5</span>,n<span class="op">=</span><span class="fl">50000</span>,low<span class="op">=</span><span class="op">-</span><span class="fl">4</span>,high<span class="op">=</span><span class="fl">4</span>,d<span class="op">=</span><span class="cn">NULL</span>,a<span class="op">=</span><span class="fl">1</span>,mu<span class="op">=</span><span class="fl">0</span>,sd<span class="op">=</span><span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">items</span></span></span>
 <span class="r-in"><span><span class="va">irt_onefactor</span><span class="op">&lt;-</span><span class="fu">mirt</span><span class="fu">::</span><span class="fu"><a href="https://philchalmers.github.io/mirt/reference/mirt.html" class="external-link">mirt</a></span><span class="op">(</span><span class="va">cormatrix</span>,<span class="fl">1</span>,empiricalhist<span class="op">=</span><span class="cn">TRUE</span>,calcNull<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Observed log-likelihood may still be increasing.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Final log-likelihood values were: </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   -89240.117, -89240.116, -89240.114</span>
 <span class="r-in"><span><span class="va">irt_twofactor</span><span class="op">&lt;-</span><span class="fu">mirt</span><span class="fu">::</span><span class="fu"><a href="https://philchalmers.github.io/mirt/reference/mirt.html" class="external-link">mirt</a></span><span class="op">(</span><span class="va">cormatrix</span>,<span class="fl">2</span>,empiricalhist<span class="op">=</span><span class="cn">TRUE</span>,calcNull<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">irt_threefactor</span><span class="op">&lt;-</span><span class="fu">mirt</span><span class="fu">::</span><span class="fu"><a href="https://philchalmers.github.io/mirt/reference/mirt.html" class="external-link">mirt</a></span><span class="op">(</span><span class="va">cormatrix</span>,<span class="fl">3</span>,empiricalhist<span class="op">=</span><span class="cn">TRUE</span>,calcNull<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Observed log-likelihood may still be increasing.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Final log-likelihood values were: </span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   -89235.596, -89235.595, -89235.592</span>
 <span class="r-in"><span><span class="fu">report_irt</span><span class="op">(</span>model<span class="op">=</span><span class="va">irt_onefactor</span>,file<span class="op">=</span><span class="st">"one_factor"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Q3 summary statistics:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. </span>
@@ -388,7 +420,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> $model_coefficients_oblimin</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      .id       a1       a2       a3         d  g  u  x     F1     F2     F3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V1 items 0.005699  0.01011  8.14833 16.235542  0  1 NA     NA     NA     NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> V2 items 0.017266  1.12695  0.01710  2.060654  0  1 NA     NA     NA     NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> V2 items 0.017266  1.12695  0.01711  2.060654  0  1 NA     NA     NA     NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V3 items 0.979659  0.12596 -0.09645  0.006835  0  1 NA     NA     NA     NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V4 items 0.908478  0.04810  0.11014 -1.995141  0  1 NA     NA     NA     NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> V5 items 1.008980 -0.10254  0.02583 -3.952170  0  1 NA     NA     NA     NA</span>

@@ -36,5 +36,5 @@ changed during the session.
 # Returns the directory of the active script in RStudio
 directory <- get_script_directory()
 directory
-#> [1] "C:/Users/dzach/Documents/GitHub/rwf/docs/reference/"
+#> [1] "/home/dimitrios/GitHub/rwf/docs/reference/"
 ```

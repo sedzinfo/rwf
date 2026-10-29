@@ -12,3 +12,5 @@ vignettes/*.html
 vignettes/*.gif
 vignettes/*.jpg
 vignettes/*.png
+rwf/vignettes/articles/*_cache/
+rwf/vignettes/articles/*_files/

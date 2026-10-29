@@ -1,0 +1,37 @@
+---
+title: "Hierarchical linear regression"
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+library(rwf)
+options(width = 200)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE,
+                      fig.width = 7, fig.height = 6, fig.align = "center", out.width = "50%")
+```
+
+## Description
+
+This shows the output of the Hierarchical Linear Regression (HLR) function `report_hlr` from the package rwf. HLR builds regression models in sequential steps (blocks), adding predictors at each step. This shows how much additional variance each new set of predictors explains beyond the earlier ones, measured as the change in R² (ΔR²).
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_HLR.R)
+
+## Report HLR
+
+`report_hlr` fits a series of hierarchical regression models and returns a structured report with model fit statistics (R², adjusted R², F-change, ΔR²), standardized and unstandardized regression coefficients, and significance tests at each step.
+
+The example uses the built-in `infert` dataset, which records infertility after induced and spontaneous abortions. The arguments specify:
+
+- `df = infert`: the dataset.
+- `corlist = 8`: column index of the continuous predictor(s) to include.
+- `factorlist = 1`: column index of categorical predictor(s) treated as factors.
+- `predictor = "case"`: the outcome variable (case/control status).
+- `random_effect = "case"`: the variable used as a random effect in the mixed model comparison.
+
+The ΔR² column in the output tells you whether each block of predictors significantly improved model fit — a key quantity when building theoretically motivated regression models step by step.
+
+```{r clear_text}
+result<-report_hlr(df=infert,corlist=8,factorlist=1,predictor="case",random_effect="case")
+result
+```

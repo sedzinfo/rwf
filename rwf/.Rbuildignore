@@ -1,3 +1,4 @@
 ^rwf\.Rproj$
 ^\.Rproj\.user$
 ^\.gitignore$
+^vignettes/articles$

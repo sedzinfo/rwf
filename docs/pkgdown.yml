@@ -1,8 +1,31 @@
 pandoc: '3.10'
 pkgdown: 2.2.1
 pkgdown_sha: ~
-articles: {}
-last_built: 2026-10-18T12:21Z
+articles:
+  articles/EXPLORE_ASSUMPTIONS: EXPLORE_ASSUMPTIONS.html
+  articles/FUNCTIONS_RECODE: FUNCTIONS_RECODE.html
+  articles/FUNCTIONS_STATISTICAL: FUNCTIONS_STATISTICAL.html
+  articles/FUNCTIONS_TRAIN_TEST: FUNCTIONS_TRAIN_TEST.html
+  articles/GLM_ANOVA: GLM_ANOVA.html
+  articles/GLM_COMPUTE_AOV_ES: GLM_COMPUTE_AOV_ES.html
+  articles/GLM_COMPUTE_POSTHOC: GLM_COMPUTE_POSTHOC.html
+  articles/GLM_CORRELATION: GLM_CORRELATION.html
+  articles/GLM_EFA: GLM_EFA.html
+  articles/GLM_FRIEDMAN: GLM_FRIEDMAN.html
+  articles/GLM_HLR: GLM_HLR.html
+  articles/GLM_IRT_T: GLM_IRT_T.html
+  articles/GLM_IRT_U: GLM_IRT_U.html
+  articles/GLM_IRT: GLM_IRT.html
+  articles/GLM_KRUSKAL_WALLIS: GLM_KRUSKAL_WALLIS.html
+  articles/GLM_LINEAR_REGRESSION: GLM_LINEAR_REGRESSION.html
+  articles/GLM_LOGISTIC_REGRESSION: GLM_LOGISTIC_REGRESSION.html
+  articles/GLM_MEANS: GLM_MEANS.html
+  articles/GLM_ONE_WAY: GLM_ONE_WAY.html
+  articles/GLM_PLOT_ANOVA: GLM_PLOT_ANOVA.html
+  articles/GLM_RELIABILITY: GLM_RELIABILITY.html
+  articles/GLM_SEM: GLM_SEM.html
+  articles/NLP: NLP.html
+last_built: 2026-10-29T12:48Z
 urls:
   reference: https://sedzinfo.github.io/rwf/reference
   article: https://sedzinfo.github.io/rwf/articles

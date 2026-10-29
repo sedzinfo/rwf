@@ -1,0 +1,142 @@
+---
+title: "Correlation"
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+library(rwf)
+options(width = 200)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE,
+                      fig.width = 7, fig.height = 6, fig.align = "center", out.width = "50%")
+library(ggplot2)
+library(grid)
+```
+
+## Description
+
+This shows the output of correlation functions from the package rwf. The functions include a correlation heatmap plotter, power analysis for correlation tests, a full bivariate correlation report (r, p, CI, adjusted p and sample size, all as lower-triangle matrices), and special correlation types for dichotomous and ordinal data (tetrachoric, polychoric, biserial, polyserial).
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_CORRELATION.R)
+
+## Theoretical Background
+
+### Pearson, Spearman, and Kendall correlation
+
+The Pearson correlation coefficient measures *linear* association:
+
+$$r = \frac{\sum (x_i-\bar x)(y_i-\bar y)}{\sqrt{\sum(x_i-\bar x)^2}\sqrt{\sum(y_i-\bar y)^2}}$$
+
+Spearman's $\rho$ and Kendall's $\tau$ instead correlate the *ranks* of the data, making them robust to outliers and appropriate for monotonic-but-not-linear relationships or ordinal data.
+
+### Multiple-comparison adjustment
+
+When many pairwise correlations are tested at once (as in a full correlation matrix), the chance of at least one false positive grows with the number of tests. `report_correlation` adjusts p-values (Holm by default; also supports Bonferroni, Hochberg, BH/FDR, etc.) so the reported significance accounts for the whole matrix, not just one pair at a time.
+
+### Statistical power for a correlation test
+
+Power is the probability of detecting a true effect of a given size. For a bivariate correlation, power depends on the sample size $n$, the true correlation $r$, and the significance threshold $\alpha$ — `compute_power_r` sweeps over $n$ (via `pwr::pwr.r.test`) to show how power accumulates as sample size grows for a fixed $r$.
+
+### Tetrachoric, polychoric, biserial, and polyserial correlation
+
+Pearson correlation assumes continuous, normally distributed variables. When one or both variables are discrete, the naive Pearson correlation on the raw 0/1 or ordinal codes systematically *underestimates* the true association between the underlying continuous constructs. Four corrections exist depending on variable types:
+
+| Correlation | X | Y |
+|---|---|---|
+| Tetrachoric | dichotomous (assumed to reflect an underlying continuous, normal latent variable) | dichotomous |
+| Polychoric | ordinal (few categories) | ordinal |
+| Biserial | continuous | dichotomous |
+| Polyserial | continuous | ordinal |
+
+All four estimate the correlation between the *latent continuous* variables assumed to underlie the observed discrete/dichotomous scores, rather than the raw observed correlation.
+
+---
+
+## Correlation Matrix Plot
+
+`plot_corrplot` draws a correlation matrix as a colour-coded, annotated heatmap — only the lower triangle is shown (the matrix is symmetric, so the upper triangle is redundant).
+
+```{r plot_corrplot,fig.width=8,fig.height=8,dev='png',fig.retina=2}
+plot_corrplot(stats::cor(mtcars), title = "mtcars correlation matrix")
+```
+
+Blue cells indicate positive correlation, red negative, and white near-zero — `fill_limits` controls the midpoint and endpoints of this gradient (default `c(-1, 0, 1)`).
+
+## Power Analysis for Correlation
+
+`compute_power_r` sweeps sample size from 10 up to `n` and computes the statistical power to detect a correlation of magnitude `r` at the given significance level, via `pwr::pwr.r.test`.
+
+```{r compute_power_r,fig.width=7,fig.height=5,dev='png',fig.retina=2}
+result <- compute_power_r(n = 100, r = 0.5, sig.level = 0.05, alternative = "two.sided")
+result$plot
+head(result$power_table)
+```
+
+Power climbs steeply then flattens as it approaches 1 — the sample size at which the curve crosses the conventional 0.80 threshold is the minimum recommended sample for reliably detecting an effect of this size.
+
+`compute_power_r_matrix` applies this to an entire correlation matrix at once, running the power sweep for the matrix's minimum, maximum, mean, and median absolute correlation (off-diagonal), and arranging all four power curves in one multiplot — a quick way to see the range of power your dataset's correlations imply.
+
+```{r compute_power_r_matrix,fig.width=10,fig.height=8,dev='png',fig.retina=2}
+result_matrix <- compute_power_r_matrix(m = stats::cor(mtcars, use = "pairwise.complete.obs"), n = 100)
+result_matrix$plot
+```
+
+## Full Correlation Report
+
+`report_correlation` wraps `psych::corr.test` and returns every quantity you'd need for a correlation table in a paper: r, r², p (raw and adjusted), t, n, and SE — each as a lower-triangle matrix — plus confidence intervals and (optionally) all pairwise scatterplots.
+
+```{r report_correlation,fig.width=8,fig.height=8,dev='png',fig.retina=2,results='hide'}
+result <- report_correlation(x = mtcars[, 1:5], scatterplot = TRUE)
+```
+
+```{r report_correlation_output}
+result$r_lower
+result$p_lower
+result$p_lower_adjusted
+result$n_lower
+head(result$ci)
+```
+
+The `scatterplot` argument (when `TRUE`) additionally returns a full set of pairwise scatterplots (via `plot_scatterplot`), so you can visually confirm that a Pearson correlation is appropriate (i.e. the relationship looks linear, without strong outliers) before trusting the numeric table.
+
+## Tetrachoric, Polychoric, Biserial, and Polyserial Correlation
+
+`report_choric_serial` dispatches to the appropriate `psych` function based on `type`, and produces both a correlation heatmap and (when `file` is set) an Excel export.
+
+```{r choric_serial_setup}
+set.seed(12345)
+binary_data <- generate_data(min = 0, max = 1, type = "uniform")
+ordinal_data <- generate_data(min = 1, max = 5, type = "uniform")
+```
+
+```{r tetrachoric,fig.width=6,fig.height=6,dev='png',fig.retina=2}
+result_tetrachoric <- report_choric_serial(binary_data, type = "tetrachoric")
+result_tetrachoric$rho
+```
+
+```{r polychoric,fig.width=6,fig.height=6,dev='png',fig.retina=2}
+result_polychoric <- report_choric_serial(ordinal_data, type = "polychoric")
+result_polychoric$rho
+```
+
+```{r polyserial,fig.width=6,fig.height=6,dev='png',fig.retina=2}
+result_polyserial <- report_choric_serial(x = psych::lsat6, y = psych::lsat6, type = "polyserial")
+result_polyserial
+```
+
+```{r biserial,fig.width=6,fig.height=6,dev='png',fig.retina=2}
+result_biserial <- report_choric_serial(x = psych::lsat6, y = psych::lsat6, type = "biserial")
+result_biserial
+```
+
+Notice the tetrachoric/polychoric correlations tend to run *higher in magnitude* than a naive Pearson correlation on the same raw codes would — this is the latent-variable correction described above, not an inflation artifact.
+
+---
+
+## Conclusion
+
+`plot_corrplot` gives a quick visual read of a correlation matrix; `compute_power_r`/`compute_power_r_matrix` tell you whether your sample size is adequate to detect the correlations you care about; `report_correlation` produces a full, publication-ready correlation table with multiple-comparison-adjusted significance; and `report_choric_serial` extends correlation analysis to dichotomous and ordinal variables via their appropriate latent-variable estimators.
+
+---
+
+*Rendered with R `r getRversion()`*

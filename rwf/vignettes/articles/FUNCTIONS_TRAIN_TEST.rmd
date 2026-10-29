@@ -1,0 +1,133 @@
+---
+title: "Training and testing models"
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+library(rwf)
+options(width = 200)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE,
+                      fig.width = 7, fig.height = 6, fig.align = "center", out.width = "50%")
+```
+
+## Description
+
+This shows the output of useful functions for training and testing from the package rwf. The functions include plotting ROC curves, confusion matrices, separability plots, and evaluating confusion matrix performance at different cut-off points. Additionally, it demonstrates k-fold and k-sample cross-validation procedures, scaling data, and calculating confusion matrix statistics.
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/FUNCTIONS_TRAIN_TEST.R)
+
+## Plot Receiver Operating Characteristic ROC Curve
+```{r plot_roc,echo=TRUE,message=FALSE,warning=FALSE,results='hide'}
+# Observed vector binary
+observed<-round(abs(rnorm(100,m=0,sd=.5)))
+# Predicted vector continuous
+predicted<-abs(rnorm(100,m=0,sd=.5))
+plot_roc(observed=observed,predicted=predicted)
+
+# An example with a good prediction
+df1<-data.frame(matrix(.999,ncol=2,nrow=2))
+correlation_martix<-as.matrix(df1)
+diag(correlation_martix)<-1
+df1<-generate_correlation_matrix(correlation_martix,nrows=1000)
+df1$X1<-ifelse(abs(df1$X1)<1,0,1)
+df1$X2<-abs(df1$X2)
+df1$X2<-(df1$X2-min(df1$X2))/(max(df1$X2)-min(df1$X2))
+plot_roc(observed=round(abs(df1$X1),0),predicted=abs(df1$X2))
+```
+
+## Plot Confusion Matrix
+```{r plot_confusion}
+plot_confusion(observed=c(1,2,3,1,2,3),predicted=c(1,2,3,1,2,3))
+observed<-c(rep("male",10),rep("female",10),"male","male")
+predicted<-c(rep("male",10),rep("female",10),"female","female")
+plot_confusion(observed=observed,predicted=predicted)
+```
+
+## Plot Separability
+This function generates a separability plot using ggplot2. It shows the density distribution of predicted probabilities for different observed categories. The plot helps to visualize how well the predicted probabilities separate the different observed categories.
+
+```{r plot_separability}
+df1<-data.frame(matrix(.999,ncol=2,nrow=2))
+correlation_martix<-as.matrix(df1)
+diag(correlation_martix)<-1
+df1<-generate_correlation_matrix(correlation_martix,nrows=1000)
+df1$X1<-ifelse(abs(df1$X1)<1,0,1)
+df1$X2<-abs(df1$X2)
+df1$X2<-(df1$X2-min(df1$X2))/(max(df1$X2)-min(df1$X2))
+plot_separability(observed=round(abs(df1$X1),0),predicted=abs(df1$X2))
+```
+
+## Plot Confusion Matrix Performance
+This function evaluates the performance of a confusion matrix at different cut-off points. It iterates through a range of cut-off points, calculates the confusion matrix,and evaluates the proportion of correct classifications for each cut-off.
+
+```{r plot_confusion_performance,fig.width=9}
+df<-data.frame(matrix(.999,ncol=2,nrow=2))
+correlation_martix<-as.matrix(df)
+diag(correlation_martix)<-1
+df<-generate_correlation_matrix(correlation_martix,nrows=1000)
+df$X1<-ifelse(abs(df$X1)<1,0,1)
+df$X2<-abs(df$X2)
+df$X2<-(df$X2-min(df$X2))/(max(df$X2)-min(df$X2))
+result_confusion_performance(observed=round(abs(df$X1),0),
+                             predicted=abs(df$X2),
+                             step=.01)
+result_confusion_performance(observed=c(1,2,3,1,2,3),predicted=abs(rnorm(6,0,sd=.1)))
+```
+
+## KFOLD
+Sample data for train test validation procedures
+
+```{r kfold}
+infert_formula<-as.formula(factor(case)~age+parity+education+spontaneous+induced)
+result<-k_fold(infert,k=10,model_formula=infert_formula)
+model_formula<-as.formula(mpg~cyl+disp+hp+drat+wt+qsec+vs+am+gear+carb)
+result<-k_fold(mtcars,k=2,model_formula=model_formula)
+```
+
+## KSAMPLE
+Sample data for train test validation procedures
+
+```{r ksample}
+infert_formula<-as.formula(factor(case)~age+parity+education+spontaneous+induced)
+result<-k_sample(df=infert,k=10,model_formula=infert_formula)
+model_formula<-as.formula(mpg~cyl+disp+hp+drat+wt+qsec+vs+am+gear+carb)
+result<-k_sample(df=mtcars,k=10,model_formula=model_formula)
+```
+
+## Scaling
+Scale all data between 0 and 1 
+
+```{r scaling}
+result<-recode_scale_dummy(infert)
+head(result)
+```
+
+## Confusion Matrix
+```{r confusion_classification}
+confusion(observed=c(1,2,3,4,5,10),predicted=c(1,2,3,4,5,11))
+confusion(observed=c(1,2,2,2,2),predicted=c(1,1,2,2,2))
+```
+
+## Proportion Accutate
+```{r proportion_accurate}
+proportion_accurate(observed=c(1,2,3,4,5,10),predicted=c(1,2,3,4,5,11))
+```
+
+## Confusion Matrix Percent
+```{r confusion_percent}
+observed<-factor(round(rnorm(10000,m=10,sd=1)))
+predicted<-factor(round(rnorm(10000,m=10,sd=1)))
+confusion_matrix_percent(observed,predicted)
+```
+
+## Confusion Matrix Percent
+```{r confusion_extended}
+plot_confusion_extended(observed=c(0,0,0,1,1,1),predicted=c(0,0,0,1,1,1))
+```
+
+
+
+
+
+

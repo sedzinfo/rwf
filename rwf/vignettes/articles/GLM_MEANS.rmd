@@ -1,0 +1,401 @@
+---
+title: "t tests and Wilcoxon tests"
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+library(rwf)
+options(width = 200)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE,
+                      fig.width = 7, fig.height = 6, fig.align = "center", out.width = "50%")
+```
+
+## Description
+
+This shows the output of mean comparison functions from the package rwf: `report_ttests` and `report_wtests`. Both functions run pairwise comparisons between the levels of each independent variable and return a table with test statistics, effect sizes, confidence intervals, and Bonferroni-adjusted significance flags.
+
+- Use `report_ttests` when data meet the normality assumption (parametric).
+- Use `report_wtests` when data are ordinal or normality cannot be assumed (non-parametric).
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_MEANS.R)
+
+## Data
+
+The `df_insurance` dataset is used throughout this vignette. It contains insurance data for 1338 individuals with the following variables:
+
+Format: A data frame with 1338 rows and 7 variables:
+
+- **age**: Age of the individual
+- **sex**: Sex of the individual (male/female)
+- **bmi**: Body Mass Index
+- **children**: Number of children covered by the insurance
+- **smoker**: Smoking status (yes/no)
+- **region**: Region of residence (southwest, southeast, northwest, northeast)
+- **charges**: Medical insurance charges billed
+
+Source: researchpy repo
+
+```{r, data}
+head(df_insurance)
+cdf(df_insurance)
+```
+
+## Assumptions
+
+### t-test
+
+- **Independence**: observations are independent within and between groups (Student, 1908). For a within-subjects design, the pairs are independent of each other.
+- **Scale**: the DV is measured on an interval or ratio scale.
+- **Normality**: the DV is normally distributed within each group; for a within-subjects design, the differences $d_i$ are normally distributed (Student, 1908). With large groups the t-test is robust to non-normality. Normality can be checked with the Shapiro-Wilk test (Shapiro & Wilk, 1965).
+- **Equal variances**: Student's t-test (`var.equal = TRUE`) assumes equal variances in both groups. Welch's t-test (the default) does not (Welch, 1947) and is the safer default (Delacre et al., 2017). The Bartlett columns (`k_squared[bartlett]`, `df[bartlett]`, `p[bartlett]`) test this assumption (Bartlett, 1937); `p[bartlett]` < .05 suggests unequal variances. Bartlett's test is itself sensitive to non-normality (Box, 1953).
+
+### Wilcoxon test
+
+- **Independence**: observations are independent within and between groups (Wilcoxon, 1945; Mann & Whitney, 1947). For a within-subjects design (signed-rank test), the pairs are independent of each other.
+- **Scale**: the DV is at least ordinal. For the signed-rank test, the differences $d_i$ must be meaningful to rank, so the DV should be interval.
+- **No normality required**: the test uses ranks instead of raw values (Wilcoxon, 1945).
+- **Shape**: the rank-sum test compares whether values in one group tend to be larger than in the other, $P(X_1>X_2)\neq 0.5$ (Mann & Whitney, 1947). It can be read as a difference in medians only when both groups have the same distribution shape and spread; otherwise it can be significant even with equal medians (Fagerland & Sandvik, 2009). The signed-rank test assumes the differences $d_i$ are symmetric around their median (Wilcoxon, 1945).
+- **Ties**: tied values are given average ranks and the variance is corrected for ties (see Formulas).
+
+## T-Test
+
+`report_ttests` runs independent-samples t-tests for all pairwise combinations of levels of the specified independent variable(s) against a dependent variable. When multiple IVs are provided, it tests all level combinations.
+
+The calls below demonstrate the key options:
+
+- **Single IV** (`iv = 2`, sex): one pairwise comparison (male vs. female).
+- **Single IV** (`iv = 4`, children): pairwise comparisons across all child-count groups.
+- **Multiple IVs** (`iv = c(2,4)`): all combinations of sex and children levels.
+- **`alternative`**: controls the direction of the hypothesis — `"two.sided"` (default), `"less"`, or `"greater"`.
+- **`var.equal = TRUE`**: uses Student's t-test assuming equal variances; default (`FALSE`) uses Welch's t-test which does not assume equal variances and is generally safer.
+
+```{r, report_ttests}
+report_ttests(df=df_insurance,dv=7,iv=c(2))
+report_ttests(df=df_insurance,dv=7,iv=c(4))
+report_ttests(df=df_insurance,dv=7,iv=c(2,4))
+report_ttests(df=df_insurance,dv=7,iv=c(2,4),alternative="two.sided")
+report_ttests(df=df_insurance,dv=7,iv=c(2,4),alternative="less")
+report_ttests(df=df_insurance,dv=7,iv=c(2,4),alternative="greater")
+report_ttests(df=df_insurance,dv=7,iv=c(2,4),var.equal=TRUE)
+```
+
+## Explanation of columns
+| Column   | Effect    |Description                            |  Reference               |
+|----------|-----------|---------------------------------------|--------------------------|
+|DV                  ||dependent variable|
+|IV                  ||independent variable|
+|level1              ||level 1|
+|level2              ||level 2|
+|n1                  ||sample size for level 1|
+|n2                  ||sample size for level 2|
+|t                   ||t statistic|
+|df                  ||degrees of freedom for t statistic|
+|p                   ||p value|
+|CI_l                ||confidence interval lower bound|
+|CI_u                ||confidence interval upper bound|
+|alternative         ||alternative hypothesis|
+|method              ||name of method should be displayed here|
+|mean1               ||mean for level 1|
+|mean2               ||mean for level 2|
+|sd1                 ||standard deviation for level 1|
+|sd2                 ||standard deviation for level 2|
+|sd_pooled           ||pooled standard deviation combined standard deviation of both levels|
+|d                   ||measure of effect size cohen's d|
+|d                   |Very small| 0.01| Sawilowsky (2009)|
+|d                   |Small|      0.20| Cohen (1988)|
+|d                   |Medium|     0.50| Cohen (1988)|
+|d                   |Large|      0.80| Cohen (1988)|
+|d                   |Very large| 1.20| Sawilowsky (2009)|
+|d                   |Huge|       12.0| Sawilowsky (2009)|
+|r                   ||measure of effect size correlation effect size|
+|k_squared bartlett  ||bartlett test for homogeneity of variances|
+|df bartlett         ||bartlett test for homogeneity of variances|
+|p bartlett          ||bartlett test for homogeneity of variances significant values indicate heteroscedasticity|
+|bonferroni_p        ||bonferroni adjusted critical value for a=0.05|
+|significant         ||if TRUE result is significant after bonferroni adjustment|
+
+## Wilcoxon Test
+
+`report_wtests` runs the Wilcoxon rank-sum test (Mann-Whitney U), the non-parametric equivalent of the independent-samples t-test. It makes no assumption about the distribution of the data and compares group medians via rank ordering. Use it when the normality assumption is violated or the outcome is ordinal.
+
+The calls mirror those in the T-Test section exactly, allowing direct comparison of parametric and non-parametric results on the same data. The key difference in the output is the **W statistic** (Wilcoxon rank-sum) in place of t.
+
+```{r, report_wtests}
+report_wtests(df=df_insurance,dv=7,iv=c(2))
+report_wtests(df=df_insurance,dv=7,iv=c(4))
+report_wtests(df=df_insurance,dv=7,iv=c(2,4))
+report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="two.sided")
+report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="less")
+report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="greater")
+report_wtests(df=df_insurance,dv=7,iv=c(2,4),var.equal=FALSE)
+```
+
+## Explanation of columns
+| Column   | Effect    |Description                            |  Reference               |
+|----------|-----------|---------------------------------------|--------------------------|
+|DV                  ||dependent variable|
+|IV                  ||independent variable|
+|level1              ||level 1|
+|level2              ||level 2|
+|n1                  ||sample size for level 1|
+|n2                  ||sample size for level 2|
+|W                   ||wilcoxon statistic|
+|df                  ||degrees of freedom for t statistic|
+|p                   ||p value|
+|CI_l                ||confidence interval lower bound|
+|CI_u                ||confidence interval upper bound|
+|alternative         ||alternative hypothesis|
+|method              ||name of method should be displayed here|
+|mean1               ||mean for level 1|
+|mean2               ||mean for level 2|
+|sd1                 ||standard deviation for level 1|
+|sd2                 ||standard deviation for level 2|
+|sd_pooled           ||pooled standard deviation combined standard deviation of both levels|
+|d                   ||measure of effect size cohen's d|
+|d                   |Very small| 0.01| Sawilowsky (2009)|
+|d                   |Small|      0.20| Cohen (1988)|
+|d                   |Medium|     0.50| Cohen (1988)|
+|d                   |Large|      0.80| Cohen (1988)|
+|d                   |Very large| 1.20| Sawilowsky (2009)|
+|d                   |Huge|       12.0| Sawilowsky (2009)|
+|r                   ||measure of effect size correlation effect size|
+|k_squared bartlett  ||bartlett test for homogeneity of variances|
+|df bartlett         ||bartlett test for homogeneity of variances|
+|p bartlett          ||bartlett test for homogeneity of variances significant values indicate heteroscedasticity|
+|bonferroni_p        ||bonferroni adjusted critical value for a=0.05|
+|significant         ||if TRUE result is significant after bonferroni adjustment|
+
+
+## Formulas
+
+Group 1 = `level1`, group 2 = `level2`; $x_{1i}$ ($i=1,\dots,n_1$) and $x_{2j}$ ($j=1,\dots,n_2$) are the DV values of the complete cases in each group, $g_i$ is the IV value of case $i$; $N=n_1+n_2$; $\alpha=0.05$; $m$ = number of rows in the output table; $\Phi$, $\varphi$ = standard normal CDF and density, $z_q=\Phi^{-1}(q)$; $t_{q,\,df}$ = $q$ quantile of the t distribution.
+
+### report_ttests
+
+**`n1`, `n2`**
+
+$$n_1=\sum_i \mathbf{1}[g_i=\text{level1}],\qquad n_2=\sum_i \mathbf{1}[g_i=\text{level2}]$$
+
+---
+
+**`mean1`, `mean2`**
+
+$$\bar{x}_1=\frac{1}{n_1}\sum_{i=1}^{n_1}x_{1i},\qquad \bar{x}_2=\frac{1}{n_2}\sum_{j=1}^{n_2}x_{2j}$$
+
+---
+
+**`sd1`, `sd2`**
+
+$$s_1=\sqrt{\frac{1}{n_1-1}\sum_{i=1}^{n_1}(x_{1i}-\bar{x}_1)^2},\qquad s_2=\sqrt{\frac{1}{n_2-1}\sum_{j=1}^{n_2}(x_{2j}-\bar{x}_2)^2}$$
+
+---
+
+**`t`**
+
+$$\text{Welch (default):}\quad t=\frac{\bar{x}_1-\bar{x}_2}{SE},\qquad SE=\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}$$
+
+$$\text{Student (var.equal = TRUE):}\quad t=\frac{\bar{x}_1-\bar{x}_2}{SE},\qquad SE=s_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}},\qquad s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{N-2}$$
+
+---
+
+**`df`**
+
+$$\text{Welch:}\quad df=\frac{\left(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}\right)^2}{\frac{(s_1^2/n_1)^2}{n_1-1}+\frac{(s_2^2/n_2)^2}{n_2-1}},\qquad \text{Student:}\quad df=N-2$$
+
+---
+
+**`p`**
+
+$$p_{\text{two.sided}}=2\,P(T_{df}\ge\lvert t\rvert),\qquad p_{\text{less}}=P(T_{df}\le t),\qquad p_{\text{greater}}=P(T_{df}\ge t),\qquad T_{df}\sim t(df)$$
+
+---
+
+**`CI_l`, `CI_u`**
+
+$$\text{two.sided:}\quad \left[(\bar{x}_1-\bar{x}_2)-t_{1-\alpha/2,\,df}\,SE,\ \ (\bar{x}_1-\bar{x}_2)+t_{1-\alpha/2,\,df}\,SE\right]$$
+
+$$\text{less:}\quad \left(-\infty,\ \ (\bar{x}_1-\bar{x}_2)+t_{1-\alpha,\,df}\,SE\right],\qquad \text{greater:}\quad \left[(\bar{x}_1-\bar{x}_2)-t_{1-\alpha,\,df}\,SE,\ \ \infty\right)$$
+
+---
+
+**`sd_pooled`**
+
+$$s_{pooled}=\sqrt{\frac{s_1^2+s_2^2}{2}}$$
+
+---
+
+**`d`**
+
+$$d=\frac{\lvert\bar{x}_2-\bar{x}_1\rvert}{s_{pooled}}$$
+
+---
+
+**`r`**
+
+$$r=\frac{d}{\sqrt{d^2+\frac{N^2}{n_1n_2}}}$$
+
+---
+
+**`k_squared[bartlett]`**
+
+$$K^2=\frac{(N-2)\ln s_p^2-(n_1-1)\ln s_1^2-(n_2-1)\ln s_2^2}{1+\frac{1}{3}\left(\frac{1}{n_1-1}+\frac{1}{n_2-1}-\frac{1}{N-2}\right)},\qquad s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{N-2}$$
+
+---
+
+**`df[bartlett]`**
+
+$$df_{bartlett}=k-1=2-1=1$$
+
+---
+
+**`p[bartlett]`**
+
+$$p_{bartlett}=P\left(\chi^2_{1}\ge K^2\right)$$
+
+---
+
+**`bonferroni_p`**
+
+$$\alpha_{bonferroni}=\frac{\alpha}{m}=\frac{0.05}{m}$$
+
+---
+
+**`significant`**
+
+$$\text{significant}=\begin{cases}\text{TRUE} & p<\alpha_{bonferroni}\\ \text{FALSE} & p\ge\alpha_{bonferroni}\end{cases}$$
+
+### report_wtests
+
+`n1`, `n2`, `mean1`, `mean2`, `sd1`, `sd2`, `sd_pooled`, `d`, `k_squared[bartlett]`, `df[bartlett]`, `p[bartlett]`, `bonferroni_p`, `significant`: as in `report_ttests`.
+
+---
+
+**`W`**
+
+$$W=R_1-\frac{n_1(n_1+1)}{2},\qquad R_1=\sum_{i=1}^{n_1}\operatorname{rank}(x_{1i})\ \ \text{(ranks in the pooled sample of } N \text{ values, ties averaged)}$$
+
+---
+
+**`p`**
+
+$$\text{exact } (n_1<50,\ n_2<50)\text{:}\quad p_{\text{two.sided}}=\min\{1,\ 2P(W_0\le W),\ 2P(W_0\ge W)\},\qquad p_{\text{less}}=P(W_0\le W),\qquad p_{\text{greater}}=P(W_0\ge W)$$
+
+$$\text{normal approximation (otherwise):}\quad p_{\text{two.sided}}=2\min\{\Phi(z),\ 1-\Phi(z)\},\qquad p_{\text{less}}=\Phi(z),\qquad p_{\text{greater}}=1-\Phi(z)$$
+
+$$z=\frac{W-\frac{n_1n_2}{2}-c}{\sigma_W},\qquad \sigma_W=\sqrt{\frac{n_1n_2}{12}\left[(N+1)-\frac{\sum_k(t_k^3-t_k)}{N(N-1)}\right]},\qquad c=\begin{cases}0.5\,\operatorname{sign}\left(W-\frac{n_1n_2}{2}\right) & \text{two.sided}\\ 0.5 & \text{greater}\\ -0.5 & \text{less}\end{cases}$$
+
+$W_0$ = null distribution of $W$ (conditional on the ties), $t_k$ = number of values in tie group $k$.
+
+---
+
+**`CI_l`, `CI_u`**
+
+$$\text{exact, no ties:}\quad \text{two.sided: }\left[D_{(k)},\ D_{(n_1n_2-k+1)}\right],\quad \text{greater: }\left[D_{(k)},\ \infty\right),\quad \text{less: }\left(-\infty,\ D_{(n_1n_2-k+1)}\right]$$
+
+$$k=\min\{w:\ P(W_0\le w)>\alpha/2\}\ \text{(two.sided)},\qquad k=\min\{w:\ P(W_0\le w)>\alpha\}\ \text{(one-sided)}$$
+
+$$\text{normal approximation:}\quad \text{two.sided: } z(CI_l)=z_{1-\alpha/2},\ z(CI_u)=z_{\alpha/2},\qquad \text{greater: } z(CI_l)=z_{1-\alpha},\qquad \text{less: } z(CI_u)=z_{\alpha}$$
+
+$D_{(1)}\le\dots\le D_{(n_1n_2)}$ = sorted differences $x_{1i}-x_{2j}$; $z(\Delta)$ = $z$ computed on $x_{1i}-\Delta$ and $x_{2j}$.
+
+---
+
+**`r`**
+
+$$r=\frac{\lvert Z\rvert}{\sqrt{N}},\qquad Z=\Phi^{-1}\left(1-\frac{p}{2}\right)$$
+
+### Between- and within-subjects designs
+
+Between subjects: two independent groups, $x_{1i}$ ($i=1,\dots,n_1$) and $x_{2j}$ ($j=1,\dots,n_2$), $N=n_1+n_2$. Within subjects: $n$ paired observations $(x_{1i},x_{2i})$ on the same cases, $d_i=x_{1i}-x_{2i}$ ($i=1,\dots,n$).
+
+#### t-test
+
+**Between subjects (independent samples)**
+
+$$\text{Welch:}\quad t=\frac{\bar{x}_1-\bar{x}_2}{\sqrt{\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}}},\qquad df=\frac{\left(\frac{s_1^2}{n_1}+\frac{s_2^2}{n_2}\right)^2}{\frac{(s_1^2/n_1)^2}{n_1-1}+\frac{(s_2^2/n_2)^2}{n_2-1}}$$
+
+$$\text{Student:}\quad t=\frac{\bar{x}_1-\bar{x}_2}{s_p\sqrt{\frac{1}{n_1}+\frac{1}{n_2}}},\qquad s_p^2=\frac{(n_1-1)s_1^2+(n_2-1)s_2^2}{N-2},\qquad df=N-2$$
+
+$$d=\frac{\bar{x}_1-\bar{x}_2}{s_p}$$
+
+---
+
+**Within subjects (paired samples)**
+
+$$\bar{d}=\frac{1}{n}\sum_{i=1}^{n}d_i,\qquad s_d=\sqrt{\frac{1}{n-1}\sum_{i=1}^{n}(d_i-\bar{d})^2},\qquad SE=\frac{s_d}{\sqrt{n}}$$
+
+$$t=\frac{\bar{d}}{s_d/\sqrt{n}},\qquad df=n-1$$
+
+$$p_{\text{two.sided}}=2\,P(T_{n-1}\ge\lvert t\rvert),\qquad p_{\text{less}}=P(T_{n-1}\le t),\qquad p_{\text{greater}}=P(T_{n-1}\ge t)$$
+
+$$\text{two.sided: }\left[\bar{d}-t_{1-\alpha/2,\,n-1}\,SE,\ \ \bar{d}+t_{1-\alpha/2,\,n-1}\,SE\right],\qquad \text{less: }\left(-\infty,\ \bar{d}+t_{1-\alpha,\,n-1}\,SE\right],\qquad \text{greater: }\left[\bar{d}-t_{1-\alpha,\,n-1}\,SE,\ \infty\right)$$
+
+$$d_z=\frac{\bar{d}}{s_d}=\frac{t}{\sqrt{n}}$$
+
+#### Wilcoxon test
+
+**Between subjects (rank-sum test, Mann-Whitney U)**
+
+$$W=\sum_{i=1}^{n_1}\operatorname{rank}(x_{1i})-\frac{n_1(n_1+1)}{2}\ \ \text{(ranks in the pooled sample of } N \text{ values)},\qquad E(W)=\frac{n_1n_2}{2}$$
+
+$$z=\frac{W-\frac{n_1n_2}{2}-c}{\sqrt{\frac{n_1n_2}{12}\left[(N+1)-\frac{\sum_k(t_k^3-t_k)}{N(N-1)}\right]}},\qquad r=\frac{\lvert Z\rvert}{\sqrt{N}}$$
+
+$$\text{CI: Hodges-Lehmann, from the sorted } n_1n_2 \text{ differences } x_{1i}-x_{2j}$$
+
+---
+
+**Within subjects (signed-rank test)**
+
+$$V=\sum_{i:\,d_i>0}\operatorname{rank}\left(\lvert d_i\rvert\right),\qquad E(V)=\frac{n'(n'+1)}{4}$$
+
+$$\text{exact } (n<50)\text{:}\quad p_{\text{two.sided}}=\min\{1,\ 2P(V_0\le V),\ 2P(V_0\ge V)\},\qquad p_{\text{less}}=P(V_0\le V),\qquad p_{\text{greater}}=P(V_0\ge V)$$
+
+$$\text{normal approximation (otherwise):}\quad z=\frac{V-\frac{n'(n'+1)}{4}-c}{\sigma_V},\qquad \sigma_V=\sqrt{\frac{n'(n'+1)(2n'+1)}{24}-\frac{\sum_k(t_k^3-t_k)}{48}}$$
+
+$$p_{\text{two.sided}}=2\min\{\Phi(z),\ 1-\Phi(z)\},\qquad p_{\text{less}}=\Phi(z),\qquad p_{\text{greater}}=1-\Phi(z)$$
+
+$$\text{exact, no ties or zeros:}\quad \text{two.sided: }\left[A_{(k)},\ A_{(M-k+1)}\right],\quad \text{greater: }\left[A_{(k)},\ \infty\right),\quad \text{less: }\left(-\infty,\ A_{(M-k+1)}\right],\qquad M=\frac{n(n+1)}{2}$$
+
+$$k=\min\{v:\ P(V_0\le v)>\alpha/2\}\ \text{(two.sided)},\qquad k=\min\{v:\ P(V_0\le v)>\alpha\}\ \text{(one-sided)}$$
+
+$$r=\frac{\lvert Z\rvert}{\sqrt{n}},\qquad Z=\Phi^{-1}\left(1-\frac{p}{2}\right)$$
+
+$n'$ = number of non-zero $d_i$ (zero differences are dropped in the normal approximation; the exact test ranks all $n$ differences and conditions $V_0$ on their ranks), $t_k$ = number of $\lvert d_i\rvert$ in tie group $k$, $c$ = continuity correction ($0.5\,\operatorname{sign}(V-E(V))$ two.sided, $0.5$ greater, $-0.5$ less), $A_{(1)}\le\dots\le A_{(M)}$ = sorted Walsh averages $(d_i+d_j)/2$, $i\le j$.
+
+
+## References
+
+Bartlett, M. S. (1937). Properties of sufficiency and statistical tests. *Proceedings of the Royal Society of London. Series A, 160*(901), 268–282. https://doi.org/10.1098/rspa.1937.0109
+
+Bonferroni, C. E. (1936). Teoria statistica delle classi e calcolo delle probabilità. *Pubblicazioni del R Istituto Superiore di Scienze Economiche e Commerciali di Firenze, 8*, 3–62.
+
+Borenstein, M., Hedges, L. V., Higgins, J. P. T., & Rothstein, H. R. (2009). *Introduction to meta-analysis*. Wiley. https://doi.org/10.1002/9780470743386
+
+Box, G. E. P. (1953). Non-normality and tests on variances. *Biometrika, 40*(3–4), 318–335. https://doi.org/10.1093/biomet/40.3-4.318
+
+Cohen, J. (1988). *Statistical power analysis for the behavioral sciences* (2nd ed.). Lawrence Erlbaum Associates.
+
+Delacre, M., Lakens, D., & Leys, C. (2017). Why psychologists should by default use Welch's t-test instead of Student's t-test. *International Review of Social Psychology, 30*(1), 92–101. https://doi.org/10.5334/irsp.82
+
+Dunn, O. J. (1961). Multiple comparisons among means. *Journal of the American Statistical Association, 56*(293), 52–64. https://doi.org/10.1080/01621459.1961.10482090
+
+Fagerland, M. W., & Sandvik, L. (2009). The Wilcoxon-Mann-Whitney test under scrutiny. *Statistics in Medicine, 28*(10), 1487–1497. https://doi.org/10.1002/sim.3561
+
+Hodges, J. L., & Lehmann, E. L. (1963). Estimates of location based on rank tests. *The Annals of Mathematical Statistics, 34*(2), 598–611. https://doi.org/10.1214/aoms/1177704172
+
+Mann, H. B., & Whitney, D. R. (1947). On a test of whether one of two random variables is stochastically larger than the other. *The Annals of Mathematical Statistics, 18*(1), 50–60. https://doi.org/10.1214/aoms/1177730491
+
+Rosenthal, R. (1991). *Meta-analytic procedures for social research* (Rev. ed.). Sage. https://doi.org/10.4135/9781412984997
+
+Satterthwaite, F. E. (1946). An approximate distribution of estimates of variance components. *Biometrics Bulletin, 2*(6), 110–114. https://doi.org/10.2307/3002019
+
+Sawilowsky, S. S. (2009). New effect size rules of thumb. *Journal of Modern Applied Statistical Methods, 8*(2), 597–599. https://doi.org/10.22237/jmasm/1257035100
+
+Shapiro, S. S., & Wilk, M. B. (1965). An analysis of variance test for normality (complete samples). *Biometrika, 52*(3–4), 591–611. https://doi.org/10.1093/biomet/52.3-4.591
+
+Student. (1908). The probable error of a mean. *Biometrika, 6*(1), 1–25. https://doi.org/10.1093/biomet/6.1.1
+
+Welch, B. L. (1947). The generalization of "Student's" problem when several different population variances are involved. *Biometrika, 34*(1–2), 28–35. https://doi.org/10.1093/biomet/34.1-2.28
+
+Wilcoxon, F. (1945). Individual comparisons by ranking methods. *Biometrics Bulletin, 1*(6), 80–83. https://doi.org/10.2307/3001968

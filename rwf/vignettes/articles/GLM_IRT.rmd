@@ -1,0 +1,148 @@
+---
+title: "Item response theory reports"
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+library(rwf)
+options(width = 200)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE,
+                      fig.width = 7, fig.height = 6, fig.align = "center", out.width = "50%")
+library(ggplot2)
+library(mirt)
+```
+
+## Description
+
+This shows the output of unidimensional IRT reporting functions from the package rwf. The functions are `plot_irt_onefactor` (test information and expected score curves) and `report_irt` (a full model report: coefficients, local independence diagnostics, absolute and relative fit statistics). Both use models fit with the `mirt` package.
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_IRT.R)
+
+## Theoretical Background
+
+### Item and test information
+
+Item information $I_i(\theta)$ quantifies how precisely an item measures ability at a given point on the $\theta$ scale — the more strongly an item's response probability changes with $\theta$ around a given point, the more information it provides there. Test information is simply the sum of item informations:
+
+$$I(\theta) = \sum_{i=1}^n I_i(\theta)$$
+
+Test information is directly related to measurement precision: the standard error of the ability estimate at $\theta$ is $SE(\theta) = 1/\sqrt{I(\theta)}$. A test with high, flat information across a wide range measures consistently well across the whole ability spectrum; a test with information concentrated in a narrow band measures precisely only there (e.g. around a pass/fail cutoff) and poorly elsewhere.
+
+### Expected score
+
+The expected score at $\theta$ is the sum of item response probabilities at that ability level — essentially the test characteristic curve, mapping $\theta$ onto the raw-score metric test-takers and stakeholders actually see.
+
+### Model fit
+
+- **M2 statistic** (Maydeu-Olivares & Joe, 2006) — a limited-information goodness-of-fit test appropriate for dichotomous IRT models, alongside its associated RMSEA, SRMR, TLI, and CFI.
+- **Item fit** — per-item statistics (e.g. $S-\chi^2$) flagging items whose observed response pattern deviates from what the fitted model predicts.
+- **Q3 statistic** — residual correlations between item pairs after conditioning on $\theta$; large absolute values (there's no firm consensus threshold, but values beyond roughly ±0.2 are commonly flagged) suggest **local dependence** — the items share variance beyond the single common factor, violating the local independence assumption central to unidimensional IRT.
+
+---
+
+## Simulating item banks
+
+`psych::sim.rasch` and `psych::sim.poly` generate dichotomous and polytomous (graded-response) item response data respectively, from known generating parameters — useful for confirming that a fitted model recovers the properties actually built into the simulation.
+
+```{r bank}
+set.seed(12345)
+cormatrix_normal <- psych::sim.rasch(nvar = 5, n = 5000, low = -4, high = 4, d = NULL, a = 1, mu = 0, sd = 1)$items
+cormatrix_easy    <- psych::sim.rasch(nvar = 5, n = 5000, low = -6, high = -4, d = NULL, a = 1, mu = 0, sd = 1)$items
+cormatrix_hard    <- psych::sim.rasch(nvar = 5, n = 5000, low = 4, high = 6, d = NULL, a = 1, mu = 0, sd = 1)$items
+cormatrix_lowdisc <- psych::sim.rasch(nvar = 5, n = 5000, low = -4, high = -4, d = NULL, a = 0.01, mu = 0, sd = 1)$items
+
+model_normal  <- mirt::mirt(cormatrix_normal, 1, empiricalhist = TRUE, calcNull = TRUE)
+model_easy    <- mirt::mirt(cormatrix_easy, 1, empiricalhist = TRUE, calcNull = TRUE)
+model_hard    <- mirt::mirt(cormatrix_hard, 1, empiricalhist = TRUE, calcNull = TRUE)
+model_lowdisc <- mirt::mirt(cormatrix_lowdisc, 1, empiricalhist = TRUE, calcNull = TRUE)
+```
+
+## Test Information and Expected Score Plots
+
+`plot_irt_onefactor` shows, in one faceted plot: each item's individual information curve, the total test information curve, and the expected total score curve, all against $\theta$.
+
+### A normally-targeted item bank
+
+```{r plot_normal,fig.width=10,fig.height=6}
+plot_irt_onefactor(model = model_normal, base_size = 10, title = "Normal Test")
+```
+
+Items targeted across the middle of the ability range produce information that peaks near $\theta=0$ — this is where the test measures most precisely.
+
+### Items that are too easy
+
+```{r plot_easy,fig.width=10,fig.height=6}
+plot_irt_onefactor(model = model_easy, base_size = 10, title = "Easy Items")
+```
+
+Information concentrates at very low $\theta$ — the test discriminates well among low-ability examinees but provides almost no information for anyone of average or high ability, since nearly everyone above that range answers correctly.
+
+### Items that are too hard
+
+```{r plot_hard,fig.width=10,fig.height=6}
+plot_irt_onefactor(model = model_hard, base_size = 10, title = "Difficult Items")
+```
+
+The mirror image of the easy case — information concentrates at high $\theta$, and the test provides little precision for low- or average-ability examinees.
+
+### Low discrimination
+
+```{r plot_lowdisc,fig.width=10,fig.height=6}
+plot_irt_onefactor(model = model_lowdisc, base_size = 10, title = "Low Discrimination")
+```
+
+With discrimination near zero, information is low and nearly flat across the whole ability range — the items barely distinguish between high- and low-ability examinees at all, regardless of where they're targeted.
+
+### Graded response (polytomous) items
+
+```{r plot_graded,fig.width=10,fig.height=6}
+cormatrix_graded <- psych::sim.poly(nvar = 5, n = 5000, low = -4, high = 4, a = 1, c = 0, z = 1, d = NULL,
+                                     mu = 0, sd = 1, cat = 5, mod = "logistic", theta = NULL)$items
+model_graded <- mirt::mirt(cormatrix_graded, 1, itemtype = "graded")
+plot_irt_onefactor(model = model_graded, base_size = 10, title = "Graded Response")
+```
+
+The same information/expected-score logic extends directly to ordinal (Likert-type) items scored with a graded response model.
+
+## Full Model Report
+
+`report_irt` bundles coefficients, local-independence diagnostics (Q3), item fit, and both relative (AIC/BIC/SABIC) and absolute (M2, RMSEA, CFI, TLI, SRMR) fit statistics into one report.
+
+```{r report_irt,results='hide'}
+result <- report_irt(model = model_normal)
+```
+
+```{r report_irt_output}
+result$model_coefficients
+result$q3_matrix
+result$item_fit
+result$m2_fit
+```
+
+- **`model_coefficients`**: discrimination (`a1`), difficulty (`d`), guessing (`g`), and inattentiveness (`u`) for each item.
+- **`q3_matrix`**: pairwise residual correlations (lower triangle) plus each item's min/max residual correlation with any other item — a quick scan for local dependence.
+- **`item_fit`**: per-item fit statistics; large values / small p-values flag items that don't behave as the model predicts.
+- **`m2_fit`**: the overall M2 test and its associated RMSEA/SRMR/CFI/TLI — the standard "does this model fit at all" check.
+
+Comparing models with different numbers of factors illustrates how these statistics respond to model complexity:
+
+```{r compare_factors,results='hide'}
+model_twofactor   <- mirt::mirt(cormatrix_normal, 2, empiricalhist = TRUE, calcNull = TRUE)
+result_twofactor  <- report_irt(model = model_twofactor)
+```
+
+```{r compare_factors_output}
+result$m2_fit
+result_twofactor$m2_fit
+```
+
+---
+
+## Conclusion
+
+`plot_irt_onefactor` makes it immediately visible *where* on the ability scale a test measures well, by plotting information and expected score together; `report_irt` answers the complementary question of *whether the model is even correct* — via absolute fit (M2 family), local independence (Q3), and item-level fit diagnostics that together determine whether the unidimensional IRT model is an adequate description of the data before its parameter estimates are trusted for scoring.
+
+---
+
+*Rendered with R `r getRversion()` · mirt `r as.character(packageVersion("mirt"))`*

@@ -42,7 +42,7 @@ Pattern matrix represents Loadings before rotation\
 ``` r
 model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
 model_loadings(model=model,cut=NULL,matrix_type="pattern")
-#>       Matrix variable   PA1  PA2
+#>       Matrix variable   PA2  PA1
 #> qsec Pattern     qsec -0.92     
 #> hp   Pattern       hp  0.89     
 #> carb Pattern     carb  0.85     
@@ -55,7 +55,7 @@ model_loadings(model=model,cut=NULL,matrix_type="pattern")
 #> wt   Pattern       wt           
 #> disp Pattern     disp           
 model_loadings(model=model,cut=0.4,matrix_type="structure")
-#>         Matrix variable   PA1   PA2
+#>         Matrix variable   PA2   PA1
 #> hp   Structure       hp  0.93      
 #> cyl  Structure      cyl  0.85 -0.68
 #> vs   Structure       vs -0.83      
@@ -68,7 +68,7 @@ model_loadings(model=model,cut=0.4,matrix_type="structure")
 #> wt   Structure       wt  0.61 -0.81
 #> disp Structure     disp  0.75 -0.77
 model_loadings(model=model,cut=0.4,matrix_type="all",sort=FALSE)
-#>       Matrix variable   PA1   PA2
+#>       Matrix variable   PA2   PA1
 #> 1    Pattern      mpg -0.61  0.55
 #> 2    Pattern      cyl  0.71 -0.48
 #> 3    Pattern     disp  0.58  -0.6

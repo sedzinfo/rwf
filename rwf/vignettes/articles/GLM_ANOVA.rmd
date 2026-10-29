@@ -1,0 +1,232 @@
+---
+title: "ANOVA"
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+library(rwf)
+options(width = 200)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE,
+                      fig.width = 7, fig.height = 6, fig.align = "center", out.width = "50%")
+library(ggfortify)
+```
+
+## Description
+
+This shows the output of ANOVA-related functions from the package rwf. The functions cover non-parametric alternatives (Kruskal-Wallis), one-way and factorial ANOVA, MANOVA, effect size estimation, and post hoc comparisons. Each section shows rwf output alongside equivalent results from established packages so you can verify the numbers.
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_ANOVA.R)
+
+## Formula
+The built-in `mtcars` dataset is used throughout the non-parametric and one-way sections. The formula `qsec ~ cyl` models quarter-mile time (`qsec`) as a function of number of cylinders (`cyl`), treating cylinders as a grouping factor.
+
+```{r Kruskal-Wallis0,echo=TRUE}
+mtcars
+form<-formula(qsec~cyl)
+```
+
+## Kruskal-Wallis Test
+
+The Kruskal-Wallis test is the non-parametric equivalent of a one-way ANOVA. It tests whether the distributions of two or more independent groups differ, without assuming normality. Use it when your data violate the normality assumption or when you have ordinal outcomes.
+
+The effect size reported here is **epsilon-squared (ε²)**, the rank-based analogue of eta-squared. Values close to 0 indicate no effect; values close to 1 indicate a strong effect.
+
+`compute_kruskal_wallis_test` is verified against `stats::kruskal.test` (test statistic and p-value), `rcompanion::epsilonSquared` (effect size with confidence intervals), and `rstatix::kruskal_effsize` (effect size via bootstrap CI). All four should produce equivalent results.
+
+```{r Kruskal-Wallis2,echo=TRUE}
+stats::kruskal.test(formula=form,data=mtcars)
+rcompanion::epsilonSquared(x=mtcars$qsec,g=mtcars$cyl,group="row",ci=TRUE,conf=0.95,type="perc",R=1000,digits=3)
+rstatix::kruskal_effsize(mtcars,form,ci=TRUE,conf.level=0.95,ci.type="perc",nboot=100)
+compute_kruskal_wallis_test(formula=form,df=mtcars)
+```
+
+## One-Way ANOVA
+
+`compute_one_way_test` runs a one-way ANOVA and returns the full table including **Sum of Squares (SS)**, **Mean Squares (MS)**, **effect size** (η²), and **observed power**. It supports both equal-variance (`var.equal = TRUE`, classic Fisher ANOVA) and unequal-variance (`var.equal = FALSE`, Welch ANOVA) versions.
+
+Results are verified against `oneway.test` (F and p), `car::Anova` (type II SS), `lsr::etaSquared` (η²), and `sjstats::anova_stats` (full table). All should agree.
+
+```{r one-way,echo=TRUE}
+compute_one_way_test(formula=form,df=mtcars,var.equal=TRUE)
+compute_one_way_test(formula=form,df=mtcars,var.equal=FALSE)
+oneway.test(formula=form,data=mtcars,var.equal=TRUE)
+oneway.test(formula=form,data=mtcars,var.equal=FALSE)
+car::Anova(aov(form,data=mtcars),type=2)
+model<-lm(form,data=mtcars)
+lsr::etaSquared(aov(form,data=mtcars),type=3,anova=TRUE)
+sjstats::anova_stats(model,digits=22)
+```
+
+## Report One-Way ANOVA
+
+`report_oneway` is a convenience wrapper that runs a one-way ANOVA across multiple dependent variables (`dv`) and grouping factors (`iv`) in a single call. It returns a structured report with SS, MS, effect sizes, power, and post hoc pairwise comparisons.
+
+- `result0` skips diagnostic and means plots — useful when you just need the tables.
+- `result1` adds diagnostic plots (residuals, Q-Q) and a means plot with error bars, which helps assess whether ANOVA assumptions are met.
+
+The chunk uses `results='hide'` to suppress raw output during computation; the formatted results are printed in the next chunk.
+
+```{r report_one-way,echo=TRUE,message=FALSE,warning=FALSE,results='hide'}
+result0<-report_oneway(df=mtcars,dv=2:4,iv=9:10,plot_diagnostics=FALSE,plot_means=FALSE)
+result1<-report_oneway(df=mtcars,dv=2:4,iv=9:10,plot_diagnostics=TRUE,plot_means=TRUE)
+```
+
+```{r print_one-way, echo=FALSE}
+result0
+result1
+```
+
+## Report Factorial ANOVA
+
+`report_factorial_anova` handles designs with multiple factors, both within-subjects (repeated measures) and between-subjects, including mixed designs and ANCOVA (with covariates). It returns effect sizes and optionally post hoc comparisons.
+
+### Define models
+
+A synthetic dataset is generated here with 80 subjects (`id`), four independent variables (`IV1`–`IV4`), and four dependent variables (`DV1`–`DV4`). The DVs are drawn from a correlated multivariate distribution (near-zero inter-correlations) and shifted so that `IV1` groups differ on `DV1` — this ensures at least one meaningful effect to detect.
+
+- **r1**: Fully within-subjects design (IV1 × IV2 repeated, with post hocs)
+- **r2**: Fully between-subjects design (IV1 × IV2, with post hocs)
+- **r3**: Between-subjects design without post hocs
+- **r4**: Within-subjects design with covariates (DV3, DV4 as within-covariates)
+
+```{r report_factorial0,echo=TRUE,warning=FALSE}
+set.seed(12345)
+df<-data.frame(id=rep(seq(1,80),each=81,1),
+               IV1=rep(LETTERS[1:3],each=1,2160),
+               IV2=rep(LETTERS[4:6],each=3,720),
+               IV3=rep(LETTERS[7:9],each=9,240),
+               IV4=rep(LETTERS[10:12],each=27,80),
+               stringsAsFactors=FALSE)
+ctdf<-data.frame(matrix(.01,ncol=4,nrow=4))
+correlation_martix<-as.matrix(ctdf)
+diag(correlation_martix)<-1
+ctdf<-generate_correlation_matrix(correlation_martix,nrows=nrow(df))+10
+names(ctdf)<-paste0("DV",1:4)
+df<-data.frame(df,ctdf)
+df$DV2<-df$DV2+10
+df$DV3<-df$DV3+20
+df$DV4<-df$DV4+30
+df[df$IV1%in%"A",]$DV1<-df[df$IV1%in%"A",]$DV1+1
+df[df$IV1%in%"B",]$DV1<-df[df$IV1%in%"B",]$DV1+2
+df[df$IV1%in%"C",]$DV1<-df[df$IV1%in%"C",]$DV1+3
+cdf(df)
+r1<-report_factorial_anova(df=df,
+                           wid="id",
+                           dv=c("DV1","DV2"),
+                           within=c("IV1","IV2"),
+                           within_full=c("IV1","IV2"),
+                           between=NULL,
+                           within_covariates=NULL,
+                           between_covariates=NULL,
+                           post_hoc=TRUE)
+r2<-report_factorial_anova(df=df,
+                           wid="id",
+                           dv=c("DV1","DV2"),
+                           within=NULL,
+                           within_full=NULL,
+                           between=c("IV1","IV2"),
+                           within_covariates=NULL,
+                           between_covariates=NULL,
+                           post_hoc=TRUE)
+r3<-report_factorial_anova(df=df,
+                           wid="id",
+                           dv=c("DV1","DV2"),
+                           # within=c("IV3","IV4"),
+                           # within_full=c("IV3","IV4"),
+                           between=c("IV1","IV2"),
+                           within_covariates=NULL,
+                           between_covariates=NULL,
+                           post_hoc=FALSE)
+r4<-report_factorial_anova(df=df,
+                           wid="id",
+                           dv=c("DV1","DV2"),
+                           within=c("IV1","IV2"),
+                           within_full=c("IV1","IV2"),
+                           between=NULL,
+                           within_covariates=c("DV3","DV4"),
+                           between_covariates=NULL,
+                           post_hoc=TRUE)
+```
+
+### Within-subjects with post hocs
+
+```{r report_factorial1,echo=TRUE,warning=FALSE}
+r1
+```
+
+### Between-subjects with post hocs
+
+```{r report_factorial2,echo=TRUE,warning=FALSE}
+r2
+```
+
+### Between-subjects without post hocs
+
+```{r report_factorial3,echo=TRUE,warning=FALSE}
+r3
+```
+
+### Within-subjects with covariates
+
+```{r report_factorial4,echo=TRUE,warning=FALSE}
+r4
+```
+
+## MANOVA
+
+MANOVA (Multivariate Analysis of Variance) extends ANOVA to situations where you have multiple dependent variables simultaneously. It tests whether group means differ across a linear combination of DVs, which can be more powerful than running separate ANOVAs and controls the family-wise error rate.
+
+`report_manova` wraps R's `manova` and returns the multivariate test statistics (Pillai's trace, Wilks' lambda, Hotelling-Lawley trace, Roy's greatest root) along with approximate F-values and p-values.
+
+Two models are demonstrated:
+
+- `model_mixed`: a within-subjects mixed design using the `npk` dataset (nitrogen/phosphate/potassium effects on crop yield) with an added random noise variable `foo`.
+- `model_between`: a fully between-subjects design with randomly generated variables, serving as a baseline showing near-null results.
+
+```{r report_manova,echo=TRUE}
+## Set orthogonal contrasts.
+op<-options(contrasts=c("contr.helmert","contr.poly"))
+model_mixed<-manova(cbind(yield,foo)~N*P*K,within(npk,foo<-rnorm(24)))
+model_between<-manova(cbind(rnorm(24),rnorm(24))~round(rnorm(24),0)*round(rnorm(24),0))
+report_manova(model=model_mixed)
+report_manova(model=model_between)
+```
+
+## Effect Size
+
+`compute_aov_es` calculates ANOVA effect sizes — **eta-squared (η²)**, **partial eta-squared (η²p)**, and **omega-squared (ω²)** — from a fitted `aov` model. It supports all three sums-of-squares types (I, II, III), which differ in how they partition variance when factors are unbalanced or correlated.
+
+- **Type I (sequential SS)**: each factor is adjusted only for factors listed before it — order matters.
+- **Type II**: each factor is adjusted for all other main effects but not interactions — recommended for main effects when no significant interaction is present.
+- **Type III**: each term is adjusted for all other terms including interactions — required when testing main effects in the presence of interactions.
+
+Results are compared against `sjstats::anova_stats` using the `CO2` dataset, with `uptake` as the outcome. Both one-way (`Treatment`) and factorial (`Treatment × Type`) models are shown.
+
+```{r effect_size,echo=TRUE}
+form<-formula(uptake~Treatment)
+one_way_between<-aov(form,CO2)
+factorial_between<-aov(uptake~Treatment*Type,CO2)
+compute_aov_es(model=one_way_between,ss="I")
+sjstats::anova_stats(one_way_between,digits=10)
+compute_aov_es(model=one_way_between,ss="II")
+sjstats::anova_stats(one_way_between,digits=10)
+compute_aov_es(model=one_way_between,ss="III")
+sjstats::anova_stats(one_way_between,digits=10)
+compute_aov_es(model=factorial_between,ss="I")
+sjstats::anova_stats(factorial_between,digits=10)
+compute_aov_es(model=factorial_between,ss="II")
+sjstats::anova_stats(factorial_between,digits=10)
+compute_aov_es(model=factorial_between,ss="III")
+sjstats::anova_stats(car::Anova(factorial_between,Type=3),digits=10)
+```
+
+## Post Hoc
+
+Post hoc tests are run after a significant ANOVA F-test to identify *which* group pairs actually differ. `compute_posthoc` takes a numeric outcome vector and a grouping vector, then runs pairwise comparisons with p-value adjustment for multiple comparisons.
+
+Here, column 6 (`wt`, car weight) is compared across the groups defined by column 10 (`gear`, number of gears) in `mtcars`.
+
+```{r post_hoc,echo=TRUE}
+compute_posthoc(mtcars[,6],mtcars[,10])
+```

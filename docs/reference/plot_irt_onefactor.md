@@ -44,10 +44,16 @@ plot_irt_onefactor(model=model,base_size=10,title="Difficult Items")
 cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=-4,high=-4,d=NULL,a=0.01,
                             mu=0,sd=1)$items
 model<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
+#> Warning: Observed log-likelihood may still be increasing.
+#>   Final log-likelihood values were: 
+#>   -173244.375, -173244.375, -173244.373
 plot_irt_onefactor(model=model,base_size=10,title="Low Discrimination")
 
 cormatrix<-psych::sim.poly(nvar=5,n=50000,low=-4,high=4,a=1,c=0,z=1,d=NULL, 
                            mu=0,sd=1,cat=5,mod="logistic",theta=NULL)$items
 model<-mirt::mirt(cormatrix,1,itemtype="graded")
+#> Warning: Observed log-likelihood may still be increasing.
+#>   Final log-likelihood values were: 
+#>   -210387.779, -210387.778, -210387.777
 plot_irt_onefactor(model=model,base_size=10,title="graded response")
 ```

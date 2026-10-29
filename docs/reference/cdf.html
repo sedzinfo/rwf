@@ -22,6 +22,32 @@ summary. Can optionally export results to an .xlsx file."></head><body>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/EXPLORE_ASSUMPTIONS.html">Checking normality and outliers</a></li>
+    <li><a class="dropdown-item" href="../articles/FUNCTIONS_RECODE.html">Recoding and stacking data</a></li>
+    <li><a class="dropdown-item" href="../articles/FUNCTIONS_STATISTICAL.html">Basic statistical functions</a></li>
+    <li><a class="dropdown-item" href="../articles/FUNCTIONS_TRAIN_TEST.html">Training and testing models</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_ANOVA.html">ANOVA</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_COMPUTE_AOV_ES.html">ANOVA effect sizes</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_COMPUTE_POSTHOC.html">Post hoc comparisons</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_CORRELATION.html">Correlation</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_MEANS.html">t tests and Wilcoxon tests</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_ONE_WAY.html">One-way ANOVA</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_PLOT_ANOVA.html">Plotting means, interactions and ANOVA diagnostics</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_RELIABILITY.html">Reliability and validity</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_SEM.html">Structural equation modeling and CFA</a></li>
+    <li><a class="dropdown-item" href="../articles/NLP.html">Natural language processing</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><a class="external-link nav-link" href="https://sedzinfo.github.io/" aria-label="sedzinfo home page"><span class="fa fas fa-house"></span> home</a></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/sedzinfo/rwf" aria-label="GitHub"><span class="fa fab fa-github"></span></a></li>
       </ul></div>
@@ -281,17 +307,17 @@ Defaults to <code>NULL</code>.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $check</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    NAMES EMPTY null na NOT_NA NAN INF FIN RANGE   MEAN MEDIAN     SD   MIN   MAX    MODE   TYPE   CLASS FACTOR</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    mpg     0    0  5     27   0   0  27    22  20.07  19.20   5.96  10.4  33.9 numeric double numeric  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    mpg     0    0  5     27   0   0  27    24  20.72  19.70   6.17  10.4  33.9 numeric double numeric  FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    cyl     0    0  5     27   0   0  27     4   6.22   6.00   1.78     4     8 numeric double numeric  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   disp     0    0  5     27   0   0  27    23 225.38 167.60 117.06  71.1   460 numeric double numeric  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4     hp     0    0  5     27   0   0  27    21 145.11 123.00  67.02    52   335 numeric double numeric  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   drat     0    0  5     27   0   0  27    20   3.64   3.73   0.54  2.76  4.93 numeric double numeric  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6     wt     0    0  5     27   0   0  27    25   3.28   3.44   1.01 1.513 5.424 numeric double numeric  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   qsec     0    0  5     27   0   0  27    27  17.86  17.82   1.93  14.5  22.9 numeric double numeric  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8     vs     0    0  5     27   0   0  27     3   0.44   0.00   0.51     0     1 numeric double numeric  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9     am     0    0  5     27   0   0  27     3   0.41   0.00   0.50     0     1 numeric double numeric  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  gear     0    0  5     27   0   0  27     4   3.67   3.00   0.78     3     5 numeric double numeric  FALSE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  carb     0    0  5     27   0   0  27     7   2.85   2.00   1.68     1     8 numeric double numeric  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   disp     0    0  5     27   0   0  27    25 224.41 167.60 118.92  71.1   460 numeric double numeric  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4     hp     0    0  5     27   0   0  27    19 141.93 123.00  69.14    52   335 numeric double numeric  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   drat     0    0  5     27   0   0  27    22   3.55   3.62   0.55  2.76  4.93 numeric double numeric  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     wt     0    0  5     27   0   0  27    26   3.11   3.19   0.96 1.513 5.345 numeric double numeric  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7   qsec     0    0  5     27   0   0  27    27  17.70  17.42   1.78  14.5  22.9 numeric double numeric  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8     vs     0    0  5     27   0   0  27     3   0.48   0.00   0.51     0     1 numeric double numeric  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9     am     0    0  5     27   0   0  27     3   0.37   0.00   0.49     0     1 numeric double numeric  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10  gear     0    0  5     27   0   0  27     4   3.56   3.00   0.70     3     5 numeric double numeric  FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11  carb     0    0  5     27   0   0  27     7   2.81   2.00   1.69     1     8 numeric double numeric  FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">cdf</span><span class="op">(</span>df <span class="op">=</span> <span class="va">infert</span>, nuniques <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $summary</span>

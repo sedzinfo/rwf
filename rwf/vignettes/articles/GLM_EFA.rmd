@@ -1,0 +1,134 @@
+---
+title: "Exploratory factor analysis"
+---
+
+```{r options,echo=FALSE,warning=FALSE,message=FALSE}
+library(rwf)
+options(width = 200)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE, cache = TRUE,
+                      fig.width = 7, fig.height = 6, fig.align = "center", out.width = "50%")
+```
+
+## Description
+
+This shows the output of Exploratory Factor Analysis (EFA) functions from the package rwf. EFA uncovers the latent structure underlying a set of observed variables: it identifies groups of variables that share common variance, which are interpreted as factors. The functions include loading plots, scree plots, loading tables, residual diagnostics, and a full EFA report.
+
+Installation instructions for rwf can be found [here](https://github.com/sedzinfo/rwf)
+
+The code can be found [here](https://github.com/sedzinfo/rwf/blob/main/rwf/R/GLM_EFA.R)
+
+## Plot Loadings
+
+`plot_loadings` produces a heatmap of factor loadings, making it easy to see which variables belong to which factor and how strongly they load. Two matrix types are available:
+
+- **Structure matrix**: correlations between each variable and each factor — shows total association including shared variance between factors.
+- **Pattern matrix**: unique contribution of each factor to each variable after accounting for factor intercorrelations — use this to interpret factor meaning in oblique rotation.
+
+Four datasets are shown to illustrate how the plot looks under different factor structures:
+
+1. `mtcars` — a real dataset with a moderate two-factor structure.
+2. A simulated dataset with two clear, well-separated factors (high within-factor correlations ~0.8, low cross-factor correlations ~0.1).
+3. A simulated dataset where only one factor has strong internal correlations — tests asymmetric structure detection.
+4. A near-identity correlation matrix (all correlations ~0.01) — no real factor structure; loadings should be near zero.
+
+```{r, plot_loadings,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE,results='hide'}
+model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
+plot_loadings(model=model,matrix_type="structure")
+plot_loadings(model=model,matrix_type="pattern")
+cm<-matrix(c(1,.8,.8,.1,.1,.1,
+             .8,1,.8,.1,.1,.1,
+             .8,.8,1,.1,.1,.1,
+             .1,.1,.1,1,.8,.8,
+             .1,.1,.1,.8,1,.8,
+             .1,.1,.1,.8,.8,1),
+           ncol=6,nrow=6)
+df1<-generate_correlation_matrix(cm,nrows=10000)
+model1<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
+plot_loadings(model=model1,matrix_type="pattern",base_size=10)
+cm<-matrix(c(1,.1,.1,.1,.1,.1,
+             .1,1,.1,.1,.1,.1,
+             .1,.1,1,.1,.1,.1,
+             .1,.1,.1,1,.8,.8,
+             .1,.1,.1,.8,1,.8,
+             .1,.1,.1,.8,.8,1),
+           ncol=6,nrow=6)
+df1<-generate_correlation_matrix(cm,nrows=10000)
+model2<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
+plot_loadings(model=model2,matrix_type="pattern",base_size=10)
+cm<-matrix(c(1,.01,.01,.01,.01,.01,
+             .01,1,.01,.01,.01,.01,
+             .01,.01,1,.01,.01,.01,
+             .01,.01,.01,1,.01,.01,
+             .01,.01,.01,.01,1,.01,
+             .01,.01,.01,.01,.01,1),
+           ncol=6,nrow=6)
+df1<-generate_correlation_matrix(cm,nrows=10000)
+model3<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
+plot_loadings(model=model3,matrix_type="pattern",base_size=10)
+```
+
+## Plot Scree
+
+A scree plot shows eigenvalues (the amount of variance each factor explains) in descending order. It is used to decide how many factors to retain. The conventional rule is to keep factors whose eigenvalue exceeds 1 (Kaiser criterion) or to look for the "elbow" — the point where the curve flattens out.
+
+`plot_scree` plots eigenvalues alongside parallel analysis results, which compares observed eigenvalues against those from random data of the same size. Factors with eigenvalues above the parallel analysis line are unlikely to be noise and should be retained.
+
+```{r, plot_scree,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE,results='hide'}
+plot_scree(df=mtcars,title="",base_size=15)
+```
+
+## Model Loadings
+
+`model_loadings` returns the factor loading matrix as a formatted table. The `cut` argument suppresses loadings below a threshold so only meaningful loadings are shown — this makes factor interpretation cleaner. The `sort` argument reorders variables so that items loading on the same factor appear together.
+
+Three calls demonstrate the options:
+
+- `cut = NULL`: all loadings shown, pattern matrix.
+- `cut = 0.4`: only loadings ≥ 0.4 shown, structure matrix — a common threshold for "meaningful" loadings in applied research.
+- `cut = 0.4, matrix_type = "all"`: both pattern and structure matrices side by side, unsorted.
+
+```{r, model_loadings,fig.width=20,fig.height=10,echo=TRUE,message=FALSE,warning=FALSE}
+model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
+model_loadings(model=model,cut=NULL,matrix_type="pattern")
+model_loadings(model=model,cut=0.4,matrix_type="structure")
+model_loadings(model=model,cut=0.4,matrix_type="all",sort=FALSE)
+```
+
+## Compute Residual
+
+Residuals in EFA are the differences between the observed correlation matrix and the correlation matrix reproduced by the factor model. A good-fitting model produces small residuals.
+
+`compute_residual_stats` returns summary statistics of these residuals (mean, RMSR — root mean square of residuals, and the proportion of residuals above a given threshold). A low RMSR (typically < 0.05) and few large residuals indicate that the factor model adequately reproduces the observed correlations.
+
+```{r, compute_residual,fig.width=10,fig.height=5}
+model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
+compute_residual_stats(model)
+```
+
+## Report EFA
+
+`report_efa` bundles all the above steps into a single call — it fits the EFA model, extracts loadings, computes residual statistics, and produces plots. It returns a structured list suitable for inclusion in a report.
+
+The example uses a simulated dataset with a known two-factor structure (the same 6×6 correlation matrix used in the Plot Loadings section), so the output should cleanly recover the two factors. The computation chunk uses `results='hide'` to suppress intermediate output; the formatted result is printed in the next chunk.
+
+```{r, report_efa,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE,results='hide'}
+cm<-matrix(c(1,.8,.8,.1,.1,.1,
+             .8,1,.8,.1,.1,.1,
+             .8,.8,1,.1,.1,.1,
+             .1,.1,.1,1,.8,.8,
+             .1,.1,.1,.8,1,.8,
+             .1,.1,.1,.8,.8,1),
+           ncol=6,nrow=6)
+df1<-generate_correlation_matrix(cm,nrows=10000)
+model<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
+result<-report_efa(model=model,df=df1)
+```
+
+```{r, print_output,fig.width=10,fig.height=5,echo=TRUE,message=FALSE,warning=FALSE}
+result
+```
+
+
+
+
+
