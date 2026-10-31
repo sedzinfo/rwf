@@ -3,10 +3,6 @@
 ##########################################################################################
 #source("https://www.statmodel.com/mplus-R/mplus.R")
 ##########################################################################################
-# OPEN MX
-##########################################################################################
-source('https://vipbg.vcu.edu/vipbg/OpenMx2/software/getOpenMx.R')
-##########################################################################################
 # INSTALL OLDER PACKAGES
 ##########################################################################################
 # packageurl<-"http://cran.r-project.org/src/contrib/Archive/ggplot2/ggplot2_0.9.1.tar.gz"
@@ -17,7 +13,7 @@ source('https://vipbg.vcu.edu/vipbg/OpenMx2/software/getOpenMx.R')
 packages1<-c("DescTools","mvoutlier","corpcor","pastecs","mvtnorm","RHRV","car","psych","mice","Matrix","astsa","splines","forecast","Rmisc","QuantPsyc","irr","Rcsdp","bindata")
 environment<-c("devtools","git2r","roxygen","getPass","rsconnect","Rcpp","doSNOW","future.apply")
 glm<-c("boot","pwr","nlme","lme4","sjstats","lmerTest","emmeans","rcompanion","lsr","mixlm")
-factor<-c("GPArotation","lavaan","sem","OpenMx","semPlot")
+factor<-c("GPArotation","lavaan","sem","semPlot")
 irt<-c("mirt","irtDemo","catR")
 machine_learning<-c("neuralnet","nnet","RSNNS","tree","party","rpart","randomForest","ggRandomForests","randomForestSRC","gbm","xgboost","gamlss.add")
 strings<-c("stringi","stringr","BBmisc","NLP","openNLP","tcR","tm","spelling","corpus")
