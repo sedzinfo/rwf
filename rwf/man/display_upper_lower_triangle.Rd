@@ -24,20 +24,20 @@ A matrix with the dimensions and row / column names of
   which case the whole matrix becomes character.
 }
 \description{
-Builds a matrix whose upper triangle comes from \code{m_upper} and whose
-lower triangle comes from \code{m_lower}, e.g. to show two correlation
-matrices, or correlations and p values, in a single table.
+Builds a matrix whose upper triangle comes from \code{m_upper}
+and whose lower triangle comes from \code{m_lower}, e.g. to show two
+correlation matrices, or correlations and p values, in a single table.
 }
 \examples{
-m1<-matrix(1:9,nrow=3,ncol=3)
-m2<-matrix(11:19,nrow=3,ncol=3)
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal="upper")
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal="lower")
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=NA)
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=1)
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=c("X1","X2","X3"))
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=c(1,2,3))
-display_upper_lower_triangle(m_upper=m1,m2)
+m1 <- matrix(1:9, nrow = 3, ncol = 3)
+m2 <- matrix(11:19, nrow = 3, ncol = 3)
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = "upper")
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = "lower")
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = NA)
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = 1)
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = c("X1", "X2", "X3"))
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = c(1, 2, 3))
+display_upper_lower_triangle(m_upper = m1, m2)
 }
 \seealso{
 \code{\link{matrix_triangle}}, \code{\link{symmetric_matrix}}

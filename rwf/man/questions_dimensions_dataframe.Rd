@@ -35,16 +35,17 @@ A data frame with one row per question and four columns:
   }
 }
 \description{
-Returns a data frame that maps each question to its dimension, including question
-order, short dimension name, and full dimension description. Useful for documenting
-scoring keys and validating test structure.
+Returns a data frame that maps each question to its dimension,
+including questionrder, short dimension name, and full dimension
+description. Useful for documenting scoring keys and validating test
+structure.
 }
 \examples{
-key<-c(1,2,3,4,5,1,2,3,4,5)
-dimensions<-paste0("Dimension",1:10)
-elaborate_dimensions<-paste0("Elaborated_Dimension",1:10)
-questions<-paste0("Question",1:65)
-questions_dimensions_dataframe(key,dimensions,elaborate_dimensions,questions)
+key <- c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5)
+dimensions <- paste0("Dimension", 1:10)
+elaborate_dimensions <- paste0("Elaborated_Dimension", 1:10)
+questions <- paste0("Question", 1:65)
+questions_dimensions_dataframe(key, dimensions, elaborate_dimensions, questions)
 }
 \seealso{
 \code{\link{questions_by_keys}}

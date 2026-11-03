@@ -61,7 +61,6 @@ useful for correlation matrices.
 Unlike \code{\link{excel_generic_format}}, this function creates the worksheet
 and writes the data internally — do not call \code{addWorksheet()} or
 \code{writeData()} beforehand.
-
 The diagonal highlight is skipped silently for non-square data frames.
 }
 \examples{
@@ -81,8 +80,8 @@ comment <- list(
   extra_comment2 = "test2"
 )
 mtcor <- data.frame(cor(mtcars))
-filename <- file.path(tempdir(), "excel_matrix.xlsx")
-if (file.exists(filename)) file.remove(filename)
+file <- file.path(tempdir(), "excel_matrix.xlsx")
+if (file.exists(file)) file.remove(file)
 wb <- openxlsx::createWorkbook()
 excel_matrix(mtcars, wb,
   sheet = "matrix", comment = comment,
@@ -112,7 +111,7 @@ excel_matrix(mtcor, wb,
   sheet = "conditional_formatting_r", comment = comment,
   conditional_formatting = TRUE, diagonal = TRUE
 )
-openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
+openxlsx::saveWorkbook(wb, file, TRUE)
 }
 \seealso{
 \code{\link{excel_generic_format}}

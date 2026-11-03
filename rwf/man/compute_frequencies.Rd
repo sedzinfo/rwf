@@ -32,9 +32,11 @@ Computes frequency counts, proportions, and percentages for
   exported to an Excel file.
 }
 \examples{
-df = generate_missing(generate_factor(nrows = 10, ncols = 10), missing = 5)
+file = file.path(tempdir(), "descriptives")
+set.seed(123)
+df <- generate_missing(generate_factor(nrows = 10, ncols = 10), missing = 5)
 compute_frequencies(df = df)
 compute_frequencies(df = generate_factor())
-compute_frequencies(df = generate_factor(), file = file.path(tempdir(), "descriptives"))
+compute_frequencies(df = generate_factor(), file = file)
 }
 \keyword{descriptives}

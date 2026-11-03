@@ -16,10 +16,11 @@ A named list of length \code{max(key)}, where element \code{i} contains
   the integer indices of all questions assigned to dimension \code{i}.
 }
 \description{
-Takes a scoring key that maps each question to a dimension and returns a list
-where each element contains the indices of questions belonging to that dimension.
+Takes a scoring key that maps each question to a dimension and
+returns a list where each element contains the indices of questions
+belonging to that dimension.
 }
 \examples{
-key<-c(1,2,3,4,5,1,2,3,4,5)
+key <- c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5)
 questions_by_keys(key)
 }

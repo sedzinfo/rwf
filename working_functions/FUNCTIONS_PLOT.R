@@ -1,12 +1,10 @@
 ##########################################################################################
 # MULTIPLOT
 ##########################################################################################
-#' Arrange multiple ggplot objects in a grid layout
-#'
-#' Combines multiple ggplot objects into a single paged display using a grid
-#' layout. Plots are arranged by column across one or more pages, with each
-#' page recorded and returned as a list.
-#'
+#' @title Arrange multiple ggplot objects in a grid layout
+#' @description Combines multiple ggplot objects into a single paged display
+#' using a grid layout. Plots are arranged by column across one or more pages,
+#' with each page recorded and returned as a list.
 #' @param ... ggplot objects passed directly.
 #' @param plotlist A list of ggplot objects. Combined with any plots passed via
 #'   \code{...}.
@@ -15,13 +13,10 @@
 #' @param layout A matrix specifying plot positions. Each cell contains the index
 #'   of the plot to display at that position. If \code{NULL}, a layout is
 #'   generated automatically from \code{cols}. Default is \code{NULL}.
-#'
 #' @return If a single plot is provided, returns it directly. Otherwise returns
 #'   a list of plots recorded with \code{grDevices::recordPlot()}, one per page.
-#'
 #' @importFrom grid grid.newpage pushViewport viewport grid.layout
 #' @importFrom grDevices recordPlot
-#'
 #' @export
 #' @examples
 #' p1 <- ggplot(ChickWeight, aes(x = Time, y = weight, colour = Diet, group = Chick)) +
@@ -42,12 +37,12 @@
 #'   facet_grid(Diet ~ .) +
 #'   ggtitle("Final weight, by diet") +
 #'   theme_bw()
-#' cars_plot <- plot_histogram(mtcars[1:4])
+#' cars_plot <- plot_histogram(mtcars[1:2])
 #' plot_multiplot(p1, p2, p3, p4, cols = 2)
-#' plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
-#' plot_multiplot(plotlist = plot_histogram(mtcars),
+#' plot_multiplot(plotlist = plot_histogram(mtcars[, 1:2]), cols = 2)
+#' plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]),
 #'                layout = matrix(1:4, ncol = 2, byrow = TRUE))
-#' plot_multiplot(plotlist = cars_plot, layout = matrix(1:4, ncol = 2, byrow = TRUE))
+#' plot_multiplot(plotlist = cars_plot, layout = matrix(1:2, ncol = 2, byrow = TRUE))
 #' plot_multiplot(plotlist = cars_plot, cols = 3)
 plot_multiplot <- function(..., plotlist = NULL, cols = 2, layout = NULL) {
   p <- list()
@@ -159,12 +154,9 @@ plot_duplicate_y_axis <- function(p1, p2) {
 ##########################################################################################
 # REPORT PDF
 ##########################################################################################
-#' Save or display a list of plots as a multi-page PDF
-#'
-#' Writes one or more plot objects to a multi-page PDF file using
-#' \code{cairo_pdf}, optionally also printing them to the
-#' active graphics device.
-#'
+#' @title Save or display a list of plots as a multi-page PDF
+#' @description Writes one or more plot objects to a multi-page PDF file using
+#' \code{cairo_pdf}, optionally also printing them to the active graphics device.
 #' @param ... Plot objects passed directly (ggplot or recorded plots).
 #' @param plotlist A list of plot objects. Combined with any plots passed via
 #'   \code{...}.
@@ -177,14 +169,12 @@ plot_duplicate_y_axis <- function(p1, p2) {
 #' @param h Numeric. Height of the PDF in inches. Default is \code{10}.
 #' @param print_plot Logical. If \code{TRUE}, plots are also printed to the active
 #'   graphics device. Default is \code{TRUE}.
-#'
 #' @return Called for its side effects. Returns \code{NULL} invisibly.
-#'
 #' @importFrom grDevices cairo_pdf dev.off
 #' @importFrom purrr walk
-#'
 #' @export
 #' @examples
+#' file = file.path(tempdir(), "report")
 #' p1 <- ggplot(ChickWeight, aes(x = Time, y = weight, colour = Diet, group = Chick)) +
 #'   geom_line() +
 #'   ggtitle("Growth curve for individual chicks") +
@@ -194,15 +184,15 @@ plot_duplicate_y_axis <- function(p1, p2) {
 #'   geom_smooth(alpha = .2, size = 1, method = "loess", formula = "y~x") +
 #'   ggtitle("Fitted growth curve per diet") +
 #'   theme_bw()
-#' cars_plot_multiplot <- plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
-#' cars_plot_base <- plot_normality_diagnostics(mtcars)
+#' cars_plot_multiplot <- plot_multiplot(plotlist = plot_histogram(mtcars[, 1:2]), cols = 2)
+#' cars_plot_base <- plot_normality_diagnostics(mtcars[, 1:2])
 #' report_pdf(p1, p2, print_plot = TRUE)
-#' report_pdf(p1, p2, file = file.path(tempdir(), "report"), print_plot = FALSE)
+#' report_pdf(p1, p2, file = file, print_plot = FALSE)
 #' report_pdf(plotlist = cars_plot_multiplot, print_plot = TRUE)
-#' report_pdf(plotlist = cars_plot_multiplot, file = file.path(tempdir(), "report"),
+#' report_pdf(plotlist = cars_plot_multiplot, file = file, title = "report",
 #'            print_plot = FALSE)
 #' report_pdf(plotlist = cars_plot_base, print_plot = TRUE)
-#' report_pdf(plotlist = cars_plot_base, file = file.path(tempdir(), "report"), print_plot = FALSE)
+#' report_pdf(plotlist = cars_plot_base, file = file, print_plot = FALSE)
 report_pdf <- function(..., plotlist = NULL, file = NULL, title = NULL, w = 10, h = 10, print_plot = TRUE) {
   plotlist <- c(list(...), plotlist)
   if (!is.null(title)) {

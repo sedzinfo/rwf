@@ -56,6 +56,6 @@ df <- generate_missing(mtcars[, 1:2], missing = 10)
 plot_histogram(df = vector)
 plot_histogram(df = df, xlims = c(0, 50))
 plot_histogram(df = df)
-plot_multiplot(plotlist = plot_histogram(df = mtcars[,1:4]), cols = 2)
+plot_multiplot(plotlist = plot_histogram(df = mtcars[,1:2]), cols = 2)
 }
 \keyword{assumptions}

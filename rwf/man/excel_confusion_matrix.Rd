@@ -21,14 +21,14 @@ excel_confusion_matrix(
 Useful for correlation matrices since it uses conditional formatting for matrices
 }
 \examples{
-filename <- file.path(tempdir(), "excel_confusion_matrix.xlsx")
-if (file.exists(filename)) file.remove(filename)
+file <- file.path(tempdir(), "excel_confusion_matrix.xlsx")
+if (file.exists(file)) file.remove(file)
 observed <- factor(round(rnorm(10000, m = 10, sd = 1)))
 predicted <- factor(round(rnorm(10000, m = 10, sd = 1)))
 confusion(observed, predicted)
 cm <- confusion_matrix_percent(observed, predicted)
 wb <- openxlsx::createWorkbook()
 excel_confusion_matrix(cm, wb)
-openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
+openxlsx::saveWorkbook(wb, file, TRUE)
 }
 \keyword{functions}

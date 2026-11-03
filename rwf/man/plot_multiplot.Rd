@@ -24,9 +24,9 @@ If a single plot is provided, returns it directly. Otherwise returns
   a list of plots recorded with \code{grDevices::recordPlot()}, one per page.
 }
 \description{
-Combines multiple ggplot objects into a single paged display using a grid
-layout. Plots are arranged by column across one or more pages, with each
-page recorded and returned as a list.
+Combines multiple ggplot objects into a single paged display
+using a grid layout. Plots are arranged by column across one or more pages,
+with each page recorded and returned as a list.
 }
 \examples{
 p1 <- ggplot(ChickWeight, aes(x = Time, y = weight, colour = Diet, group = Chick)) +
@@ -47,11 +47,11 @@ p4 <- ggplot(subset(ChickWeight, Time == 21), aes(x = weight, fill = Diet)) +
   facet_grid(Diet ~ .) +
   ggtitle("Final weight, by diet") +
   theme_bw()
-cars_plot <- plot_histogram(mtcars[1:4])
+cars_plot <- plot_histogram(mtcars[1:2])
 plot_multiplot(p1, p2, p3, p4, cols = 2)
-plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
-plot_multiplot(plotlist = plot_histogram(mtcars),
+plot_multiplot(plotlist = plot_histogram(mtcars[, 1:2]), cols = 2)
+plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]),
                layout = matrix(1:4, ncol = 2, byrow = TRUE))
-plot_multiplot(plotlist = cars_plot, layout = matrix(1:4, ncol = 2, byrow = TRUE))
+plot_multiplot(plotlist = cars_plot, layout = matrix(1:2, ncol = 2, byrow = TRUE))
 plot_multiplot(plotlist = cars_plot, cols = 3)
 }

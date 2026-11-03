@@ -110,65 +110,6 @@ detach_package <- function(package) {
   }
 }
 ##########################################################################################
-# GET WORKING FILE PATH
-##########################################################################################
-#' @title Get the file path of the currently running script
-#' @description Returns the normalised absolute path of the R script that is
-#'   currently executing. The function tries the following methods in order:
-#'   \enumerate{
-#'     \item The \code{--file=} command-line argument (set when running via
-#'       \code{Rscript script.R}).
-#'     \item The \code{fileName} variable in the first call-stack frame (set
-#'       by some IDEs).
-#'     \item The \code{ofile} variable in the first call-stack frame (set when
-#'       the script is loaded with \code{source()}).
-#'     \item The active document path from \code{rstudioapi} (RStudio only).
-#'     \item The source editor path from \code{rstudioapi} as a fallback.
-#'   }
-#' @return A character string containing the normalised absolute path of the
-#'   current script, or an empty string (\code{""}) if the path cannot be
-#'   determined.
-#' @keywords functions
-#' @export
-#' @examples
-#' # getfwp()
-getfwp <- function() {
-  # https://stackoverflow.com/a/36777602/6247402
-  # http://stackoverflow.com/a/35842176/2292993
-  # http://stackoverflow.com/a/32016824/2292993
-  command_arguments <- commandArgs(trailingOnly = FALSE)
-  needle <- "--file="
-  match <- grep(needle, command_arguments)
-  if (length(match) > 0) {
-    # on Linux and macOS, Rscript passes the spaces of the file name as "~+~"
-    return(normalizePath(gsub("~+~", " ", sub(needle, "", command_arguments[match]), fixed = TRUE)))
-  } else {
-    ls_vars <- ls(sys.frames()[[1]])
-    if ("fileName" %in% ls_vars) {
-      return(normalizePath(sys.frames()[[1]]$fileName))
-    } else {
-      if (!is.null(sys.frames()[[1]]$ofile)) {
-        return(normalizePath(sys.frames()[[1]]$ofile))
-      } else {
-        # rstudioapi errors outside RStudio and may return NULL when no editor is open,
-        # so every failure becomes "" instead of an error
-        rstudio_path <- function(context) {
-          path <- tryCatch(context()$path, error = function(e) "")
-          if (length(path) == 1 && !is.na(path)) path else ""
-        }
-        path <- rstudio_path(rstudioapi::getActiveDocumentContext)
-        if (path == "") {
-          path <- rstudio_path(rstudioapi::getSourceEditorContext)
-        }
-        if (path == "") {
-          return("")
-        }
-        return(normalizePath(path))
-      }
-    }
-  }
-}
-##########################################################################################
 # LOG FILE
 ##########################################################################################
 #' @title Print an object and optionally save output to a log file
@@ -254,3 +195,97 @@ combine_files<-function(input_dir="working_functions",
   cat("Combined",length(files),"files into",output_file,"\n")
   invisible(files)
 }
+##########################################################################################
+# GET WORKING FILE PATH
+##########################################################################################
+#' @title Get the file path of the currently running script
+#' @description Returns the normalised absolute path of the R script that is
+#'   currently executing. The function tries the following methods in order:
+#'   \enumerate{
+#'     \item The \code{--file=} command-line argument (set when running via
+#'       \code{Rscript script.R}).
+#'     \item The \code{fileName} variable in the first call-stack frame (set
+#'       by some IDEs).
+#'     \item The \code{ofile} variable in the first call-stack frame (set when
+#'       the script is loaded with \code{source()}).
+#'     \item The active document path from \code{rstudioapi} (RStudio only).
+#'     \item The source editor path from \code{rstudioapi} as a fallback.
+#'   }
+#' @return A character string containing the normalised absolute path of the
+#'   current script, or an empty string (\code{""}) if the path cannot be
+#'   determined.
+#' @keywords functions
+#' @export
+#' @examples
+#' filename<-get_fwd()
+#' filename
+get_fwd <- function() {
+  # https://stackoverflow.com/a/36777602/6247402
+  # http://stackoverflow.com/a/35842176/2292993
+  # http://stackoverflow.com/a/32016824/2292993
+  command_arguments <- commandArgs(trailingOnly = FALSE)
+  needle <- "--file="
+  match <- grep(needle, command_arguments)
+  if (length(match) > 0) {
+    # on Linux and macOS, Rscript passes the spaces of the file name as "~+~"
+    return(normalizePath(gsub("~+~", " ", sub(needle, "", command_arguments[match]), fixed = TRUE)))
+  } else {
+    ls_vars <- ls(sys.frames()[[1]])
+    if ("fileName" %in% ls_vars) {
+      return(normalizePath(sys.frames()[[1]]$fileName))
+    } else {
+      if (!is.null(sys.frames()[[1]]$ofile)) {
+        return(normalizePath(sys.frames()[[1]]$ofile))
+      } else {
+        # rstudioapi errors outside RStudio and may return NULL when no editor is open,
+        # so every failure becomes "" instead of an error
+        rstudio_path <- function(context) {
+          path <- tryCatch(context()$path, error = function(e) "")
+          if (length(path) == 1 && !is.na(path)) path else ""
+        }
+        path <- rstudio_path(rstudioapi::getActiveDocumentContext)
+        if (path == "") {
+          path <- rstudio_path(rstudioapi::getSourceEditorContext)
+        }
+        if (path == "") {
+          return("")
+        }
+        return(normalizePath(path))
+      }
+    }
+  }
+}
+##########################################################################################
+# GET SCRIPT DIRECTORY
+##########################################################################################
+#' @title Get script directory
+#' @description Returns the directory of the currently active script as a string
+#'              with a trailing slash. Works across multiple environments: RStudio,
+#'              command line execution, and generic R sessions.
+#' @details The function tries three approaches in order: \cr
+#'          1. If RStudio is available, uses \code{rstudioapi} to get the active document path \cr
+#'          2. If running from the command line via \code{Rscript --file=}, parses the file argument \cr
+#'          3. Falls back to \code{getwd()} as a last resort
+#' @return A character string with the directory path, always ending with "/"
+#' @note The fallback to \code{getwd()} may not reflect the script's actual location
+#'       if the working directory has been changed during the session.
+#' @keywords functions
+#' @export
+#' @examples
+#' # Returns the directory of the active script in RStudio
+#' directory <- get_script_directory()
+#' directory
+get_script_directory <- function() {
+  if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
+    return(paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/"))
+  }
+  # fallback for command line
+  args <- commandArgs(trailingOnly = FALSE)
+  file_arg <- grep("--file=", args, value = TRUE)
+  if (length(file_arg) > 0) {
+    return(paste0(dirname(normalizePath(sub("--file=", "", file_arg))), "/"))
+  }
+  # last resort
+  return(paste0(getwd(), "/"))
+}
+

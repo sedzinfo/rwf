@@ -57,8 +57,8 @@ Creates a bubble (point) plot for each pair of categorical
   during computation.
 }
 \examples{
-combinations <- data.frame(index1 = c("vs", "am", "gear"),
-                           index2 = c("cyl", "cyl", "cyl"))
+combinations <- data.frame(index1 = c("vs", "am"),
+                           index2 = c("cyl", "cyl"))
 plot_crosstable(df = mtcars, factor_index = 8:9)
 plot_crosstable(df = mtcars, combinations = combinations)
 plot_crosstable(df = mtcars, combinations = combinations, pb = TRUE)

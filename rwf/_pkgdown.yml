@@ -206,7 +206,7 @@ reference:
       - fixed
       - flatten_list
       - get_script_directory
-      - getfwp
+      - get_fwd
       - icc_cfa
       - increase_index
       - install_all_packages

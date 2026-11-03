@@ -7,7 +7,9 @@
 #' @export
 #' @examples
 #' rad2deg(pi)
-rad2deg<-function(radians){(radians*180)/(pi)}
+rad2deg <- function(radians) {
+  (radians * 180) / (pi)
+}
 ##########################################################################################
 # ANGLE DEGREES TO RADIANS
 ##########################################################################################
@@ -17,4 +19,6 @@ rad2deg<-function(radians){(radians*180)/(pi)}
 #' @export
 #' @examples
 #' deg2rad(180)
-deg2rad<-function(degrees){(degrees*pi)/(180)}
+deg2rad <- function(degrees) {
+  (degrees * pi) / (180)
+}

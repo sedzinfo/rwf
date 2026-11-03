@@ -2,19 +2,13 @@
 # FLATTEN LIST
 ##########################################################################################
 #' @title Flatten a two-dimensional list into a data frame
-#'
 #' @description Converts a two-dimensional list to a data frame by applying
 #' \code{ldply} across the top-level elements.
-#'
 #' @param mydata A list where each element can be coerced to a data frame.
-#'
 #' @return A data frame combining all list elements row-wise, with an
 #'   additional \code{.id} column containing the top-level list names.
-#'   
 #' @keywords recode
-#' 
 #' @importFrom plyr ldply
-#'
 #' @export
 flatten_list <- function(mydata) {
   result <- plyr::ldply(lapply(mydata, function(x) {
@@ -26,18 +20,13 @@ flatten_list <- function(mydata) {
 # SWAP
 ##########################################################################################
 #' @title Reverse-score a numeric vector
-#'
 #' @description Reverses the order of values in a vector by mapping each value
 #' to its mirror equivalent based on the observed levels. Useful for
 #' reverse-scoring Likert scale items.
-#'
 #' @param vector Numeric vector to reverse-score.
-#'
 #' @return A numeric vector of the same length with values reverse-mapped
 #'   across the observed range.
-#'   
 #' @keywords recode
-#'
 #' @export
 #' @examples
 #' swap(c(1:10, 1, 2, 3))
@@ -51,26 +40,19 @@ swap <- function(vector) {
 # DUMMY ARRANGE
 ##########################################################################################
 #' @title Dummy-code a multiple response vector into a binary data frame
-#'
 #' @description Splits a vector of comma-separated multiple response values and
 #' returns a binary data frame where each unique response becomes a column, with
 #' \code{1} indicating the response was selected and \code{0} indicating it was
 #' not.
-#'
 #' @param vector A character or numeric vector where each element contains one
 #'   or more comma-separated response values (e.g. from a multiple choice question).
 #'   Single-value responses are also accepted.
-#'
 #' @return A binary data frame with one row per element of \code{vector} and one
 #'   column per unique response value, sorted alphabetically by column name.
 #'   Values are \code{1} (selected) or \code{0} (not selected).
-#'
 #' @importFrom stringr str_split_fixed
-#' 
 #' @keywords recode
-#'
 #' @seealso \code{\link{generate_multiple_response_vector}}
-#'
 #' @export
 #' @examples
 #' vector1 <- gsub(" ", "",
@@ -112,23 +94,18 @@ dummy_arrange <- function(vector) {
 # DROP LEVELS
 ##########################################################################################
 #' @title Drop unused factor levels and collapse rare levels into "Other"
-#'
 #' @description Removes unused factor levels from a data frame and renames any
 #' level whose frequency is at or below a threshold to \code{"Other"}, then
 #' drops all unused levels.
-#'
 #' @param df A data frame containing one or more factor columns.
 #' @param factor_index Integer vector or \code{NULL}. Column indices of the
 #'   factors to process. If \code{NULL}, all columns identified by \code{is.factor()}
 #'   are processed. Default is \code{NULL}.
 #' @param minimum_frequency Integer. Levels with a frequency less than or equal
 #'   to this value are collapsed into \code{"Other"}. Default is \code{5}.
-#'
 #' @return A data frame with the same structure as \code{df}, with rare factor
 #'   levels renamed to \code{"Other"} and all unused levels dropped.
-#'
 #' @keywords recode
-#' 
 #' @export
 #' @examples
 #' factor1 <- factor(c(rep("A", 10), rep("B", 10)), levels = c("A", "B", "C", "D"))

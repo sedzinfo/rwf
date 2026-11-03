@@ -57,6 +57,7 @@ Tabulates how often each response category was chosen for one
   function returns \code{NULL}.
 }
 \examples{
+file = file.path(tempdir(), "descriptives")
 df_ocean_N<-df_ocean[,grep("N",names(df_ocean))]
 response_frequency(df_ocean_N)
 response_frequency(df_ocean_N,
@@ -73,6 +74,6 @@ response_frequency(df_ocean_N,
 response_frequency(df_ocean_N,
                    uniqueitems = 1:5,
                    type = "all",
-  file = file.path(tempdir(), "descriptives"))
+  file = file)
 }
 \keyword{descriptives}

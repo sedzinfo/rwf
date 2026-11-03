@@ -31,13 +31,14 @@
 #' @keywords assumptions
 #' @export
 #' @examples
+#' file = file.path(tempdir(), "rnorm")
 #' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
-#' plot_normality_diagnostics(df = vector, file = file.path(tempdir(), "rnorm"), breaks = 30)
+#' plot_normality_diagnostics(df = vector, file = file, breaks = 30)
 #' plot_normality_diagnostics(df = vector)
 #' plot_normality_diagnostics(df = df, title = "mtcars")
 #' plot_normality_diagnostics(df = df, title = "mtcars", pb = TRUE)
-#' plot_normality_diagnostics(df = df, title = "mtcars", file = file.path(tempdir(), "rnorm"))
+#' plot_normality_diagnostics(df = df, title = "mtcars")
 plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NULL, w = 10, h = 10, pb = FALSE) {
   # default_par<-par(no.readonly=TRUE)
   par(mfrow = c(2, 2), adj = .01)
@@ -132,7 +133,7 @@ plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NUL
 #' plot_outlier(df = df, method = "mean", title = "random vector")
 #' plot_outlier(df = df, method = "median")
 #' plot_outlier(df = df, method = "boxplot")
-#' plot_multiplot(plotlist = plot_outlier(df = mtcars[1:5, 2:5], method = "mean"), cols = 2)
+#' plot_multiplot(plotlist = plot_outlier(df = mtcars[1:5, 2:3], method = "mean"), cols = 2)
 plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = FALSE) {
   obs <- Outlier <- NULL
   plot <- list()
@@ -239,7 +240,7 @@ plot_outlier <- function(df, method = "mean", title = "", base_size = 10, pb = F
 #' plot_histogram(df = vector)
 #' plot_histogram(df = df, xlims = c(0, 50))
 #' plot_histogram(df = df)
-#' plot_multiplot(plotlist = plot_histogram(df = mtcars[,1:4]), cols = 2)
+#' plot_multiplot(plotlist = plot_histogram(df = mtcars[,1:2]), cols = 2)
 plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NULL, fill = "gray25", color = "gray50", ylab = "Count", pb = FALSE) {
   data <- NULL
   plot <- list()
@@ -301,7 +302,7 @@ plot_histogram <- function(df, bins = 30, title = "", base_size = 10, xlims = NU
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' plot_qq(df = vector)
 #' plot_qq(df = df)
-#' plot_multiplot(plotlist = plot_qq(df = mtcars[,1:4]), cols = 2)
+#' plot_multiplot(plotlist = plot_qq(df = mtcars[,1:2]), cols = 2)
 plot_qq <- function(df, title = "", base_size = 10, pb = FALSE) {
   resids <- NULL
   data_name <- deparse(substitute(df))
@@ -410,10 +411,11 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
 #' @keywords assumptions
 #' @export
 #' @examples
+#' file = file.path(tempdir(), "normality_tests")
 #' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' report_normality_tests(df = df)
-#' report_normality_tests(df = vector, file = file.path(tempdir(), "normality_tests"))
+#' report_normality_tests(df = vector, file = file)
 report_normality_tests <- function(df, file = NULL) {
   df <- data.frame(df)
   instruction_shapiro <- "Shapiro-Wilk Composite null hypothesis: any normal distribution"

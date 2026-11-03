@@ -1,12 +1,10 @@
 ##########################################################################################
 # DATAFRAME TO EXCEL GENERIC
 ##########################################################################################
-#' Format an Excel worksheet with styles, comments, and frozen panes
-#'
-#' Applies consistent formatting to an existing worksheet in an openxlsx workbook.
+#' @title Format an Excel worksheet with styles, comments, and frozen panes
+#' @description Applies consistent formatting to an existing worksheet in an openxlsx workbook.
 #' Handles header styling, cell borders, number formatting, column auto-widths,
 #' frozen panes, and optional comments on column headers.
-#'
 #' @param df A data frame or matrix whose structure determines column formatting.
 #'   Integer columns receive whole-number formatting; non-integer numeric columns
 #'   receive the format specified by \code{numFmt}.
@@ -20,16 +18,13 @@
 #'   Names not found in \code{df} are silently ignored. Default is \code{NULL}.
 #' @param numFmt Character. Excel number format string applied to non-integer numeric
 #'   columns. Default is \code{"#0.00"}.
-#'
 #' @return Called for its side effects. Modifies \code{workbook} in place; returns
 #'   \code{NULL} invisibly.
-#'
 #' @details
 #' The function assumes that \code{openxlsx::writeData()} has already been used
 #' to write the data to the worksheet, with both \code{colNames = TRUE} and
 #' \code{rowNames = TRUE}, as it offsets column indices by 1 to account for the
 #' row name column.
-#'
 #' Formatting applied:
 #' \itemize{
 #'   \item Thin gray borders on all data cells
@@ -38,9 +33,7 @@
 #'   \item First row and first column frozen
 #'   \item Base font set to Liberation Sans 10pt
 #' }
-#'
 #' @importFrom openxlsx createComment writeComment freezePane modifyBaseFont createStyle addStyle removeColWidths setColWidths
-#'
 #' @export
 #' @examples
 #' comment <- list(
@@ -59,8 +52,8 @@
 #'   extra_comment2 = "test2"
 #' )
 #' mtcor <- data.frame(cor(mtcars))
-#' filename <- file.path(tempdir(), "excel_generic.xlsx")
-#' if (file.exists(filename)) file.remove(filename)
+#' file <- file.path(tempdir(), "excel_generic.xlsx")
+#' if (file.exists(file)) file.remove(file)
 #' wb <- openxlsx::createWorkbook()
 #' openxlsx::addWorksheet(wb, "sheet")
 #' openxlsx::addWorksheet(wb, "correlation")
@@ -74,7 +67,7 @@
 #'   df = mtcor, workbook = wb, sheet = "correlation", title = "correlation",
 #'   comment = comment, numFmt = "#0.00"
 #' )
-#' openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
+#' openxlsx::saveWorkbook(wb, file, TRUE)
 excel_generic_format <- function(df, workbook, sheet = "output", title = NULL, comment = NULL, numFmt = "#0.00") {
   comment <- comment[intersect(names(comment), names(df))]
   if (!is.null(title)) {
@@ -108,13 +101,11 @@ excel_generic_format <- function(df, workbook, sheet = "output", title = NULL, c
 ##########################################################################################
 # DATAFRAME TO EXCEL MATRIX
 ##########################################################################################
-#' Write a matrix or data frame to an Excel worksheet with optional conditional formatting
-#'
-#' Creates a new worksheet in an openxlsx workbook, writes the data, and applies
+#' @title Write a matrix or data frame to an Excel worksheet with optional conditional formatting
+#' @description Creates a new worksheet in an openxlsx workbook, writes the data, and applies
 #' formatting via \code{\link{excel_generic_format}}. Optionally adds a red-yellow-green
 #' colour scale for value ranges and highlights the diagonal cells in red, which is
 #' useful for correlation matrices.
-#'
 #' @inheritParams excel_generic_format
 #' @param conditional_formatting Logical. If \code{TRUE}, applies a red-yellow-green
 #'   colour scale to all data cells, where low values are red, mid values yellow,
@@ -124,21 +115,15 @@ excel_generic_format <- function(df, workbook, sheet = "output", title = NULL, c
 #'   Default is \code{FALSE}.
 #' @param diagonal_length Integer. Number of diagonal cells to highlight when
 #'   \code{diagonal = TRUE}. Defaults to \code{nrow(df)}.
-#'
 #' @return Called for its side effects. Adds a formatted worksheet to \code{workbook};
 #'   returns \code{NULL} invisibly.
-#'
 #' @details
 #' Unlike \code{\link{excel_generic_format}}, this function creates the worksheet
 #' and writes the data internally — do not call \code{addWorksheet()} or
 #' \code{writeData()} beforehand.
-#'
 #' The diagonal highlight is skipped silently for non-square data frames.
-#'
 #' @seealso \code{\link{excel_generic_format}}
-#'
 #' @importFrom openxlsx addWorksheet writeData conditionalFormatting createStyle addStyle
-#'
 #' @export
 #' @examples
 #' comment <- list(
@@ -157,8 +142,8 @@ excel_generic_format <- function(df, workbook, sheet = "output", title = NULL, c
 #'   extra_comment2 = "test2"
 #' )
 #' mtcor <- data.frame(cor(mtcars))
-#' filename <- file.path(tempdir(), "excel_matrix.xlsx")
-#' if (file.exists(filename)) file.remove(filename)
+#' file <- file.path(tempdir(), "excel_matrix.xlsx")
+#' if (file.exists(file)) file.remove(file)
 #' wb <- openxlsx::createWorkbook()
 #' excel_matrix(mtcars, wb,
 #'   sheet = "matrix", comment = comment,
@@ -188,7 +173,7 @@ excel_generic_format <- function(df, workbook, sheet = "output", title = NULL, c
 #'   sheet = "conditional_formatting_r", comment = comment,
 #'   conditional_formatting = TRUE, diagonal = TRUE
 #' )
-#' openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
+#' openxlsx::saveWorkbook(wb, file, TRUE)
 excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment = NULL, numFmt = "#0.00", conditional_formatting = FALSE, diagonal = FALSE, diagonal_length = nrow(df)) {
   df <- data.frame(df, stringsAsFactors = FALSE, check.names = FALSE)
   openxlsx::addWorksheet(workbook, sheet)
@@ -209,12 +194,10 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 ##########################################################################################
 # DATAFRAME TO EXCEL CRITICAL VALUE
 ##########################################################################################
-#' Write a data frame to Excel with per-column conditional formatting thresholds
-#'
-#' Creates a new worksheet, writes the data, and applies \code{\link{excel_generic_format}}.
+#' @title Write a data frame to Excel with per-column conditional formatting thresholds
+#' @description Creates a new worksheet, writes the data, and applies \code{\link{excel_generic_format}}.
 #' Additionally highlights cells in specified columns that meet one or two threshold
 #' conditions, making it easy to flag critical or out-of-range values.
-#'
 #' @inheritParams excel_generic_format
 #' @param critical A named list or \code{NULL}. Each name must match a column in
 #'   \code{df}. The value is either:
@@ -226,22 +209,16 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 #'       the second in purple.
 #'   }
 #'   \code{NA} cells in the target column are skipped. Default is \code{NULL}.
-#'
 #' @return Called for its side effects. Adds a formatted worksheet to \code{workbook};
 #'   returns \code{NULL} invisibly.
-#'
 #' @details
 #' Unlike \code{\link{excel_generic_format}}, this function creates the worksheet
 #' and writes the data internally — do not call \code{addWorksheet()} or
 #' \code{writeData()} beforehand.
-#'
 #' Threshold expressions follow Excel conditional formatting syntax and are applied
 #' row by row, skipping \code{NA} values.
-#'
 #' @seealso \code{\link{excel_generic_format}}, \code{\link{excel_matrix}}
-#'
 #' @importFrom openxlsx addWorksheet writeData createStyle conditionalFormatting
-#'
 #' @export
 #' @examples
 #' comment <- list(
@@ -259,8 +236,8 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 #'   extra_comment1 = "test1",
 #'   extra_comment2 = "test2"
 #' )
-#' filename <- file.path(tempdir(), "excel_critical_value.xlsx")
-#' if (file.exists(filename)) file.remove(filename)
+#' file <- file.path(tempdir(), "excel_critical_value.xlsx")
+#' if (file.exists(file)) file.remove(file)
 #' wb <- openxlsx::createWorkbook()
 #' df <- generate_missing(generate_correlation_matrix())
 #' critical <- list(X1 = "<0.05", X5 = "<0")
@@ -268,9 +245,9 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 #'   df = df, workbook = wb, sheet = "critical", comment = list(X1 = "test"),
 #'   numFmt = "#0.00", critical = critical
 #' )
-#' openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
-#' filename <- file.path(tempdir(), "excel_critical_value_comment.xlsx")
-#' if (file.exists(filename)) file.remove(filename)
+#' openxlsx::saveWorkbook(wb, file, TRUE)
+#' file <- file.path(tempdir(), "excel_critical_value_comment.xlsx")
+#' if (file.exists(file)) file.remove(file)
 #' wb <- openxlsx::createWorkbook()
 #' df <- generate_missing(mtcars)
 #' critical <- list(mpg = ">20", am = "=0")
@@ -278,9 +255,9 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 #'   df = df, workbook = wb, sheet = "critical", comment = comment,
 #'   numFmt = "#0.00", critical = critical
 #' )
-#' openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
-#' filename <- file.path(tempdir(), "excel_critical_value_comment_min_max.xlsx")
-#' if (file.exists(filename)) file.remove(filename)
+#' openxlsx::saveWorkbook(wb, file, TRUE)
+#' file <- file.path(tempdir(), "excel_critical_value_comment_min_max.xlsx")
+#' if (file.exists(file)) file.remove(file)
 #' wb <- openxlsx::createWorkbook()
 #' df <- generate_missing(mtcars)
 #' critical <- list(mpg = c(">20", "<11"), am = "=0")
@@ -288,7 +265,7 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 #'   df = df, workbook = wb, sheet = "critical", comment = comment,
 #'   numFmt = "#0.00", critical = critical
 #' )
-#' openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
+#' openxlsx::saveWorkbook(wb, file, TRUE)
 excel_critical_value <- function(df, workbook, sheet = "output", title = NULL, comment = NULL, numFmt = "#0.00", critical = NULL) {
   openxlsx::addWorksheet(workbook, sheet)
   openxlsx::writeData(workbook, sheet, df, rowNames = TRUE)
@@ -419,15 +396,15 @@ excel_critical_value <- function(df, workbook, sheet = "output", title = NULL, c
 #' @keywords functions
 #' @export
 #' @examples
-#' filename <- file.path(tempdir(), "excel_confusion_matrix.xlsx")
-#' if (file.exists(filename)) file.remove(filename)
+#' file <- file.path(tempdir(), "excel_confusion_matrix.xlsx")
+#' if (file.exists(file)) file.remove(file)
 #' observed <- factor(round(rnorm(10000, m = 10, sd = 1)))
 #' predicted <- factor(round(rnorm(10000, m = 10, sd = 1)))
 #' confusion(observed, predicted)
 #' cm <- confusion_matrix_percent(observed, predicted)
 #' wb <- openxlsx::createWorkbook()
 #' excel_confusion_matrix(cm, wb)
-#' openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
+#' openxlsx::saveWorkbook(wb, file, TRUE)
 excel_confusion_matrix <- function(df, workbook, title = "Rows: Expected Collumns: Observed") {
   numFmt <- "#0"
   sheet <- "Confusion Matrix"

@@ -23,16 +23,16 @@ A symmetric matrix with the same dimensions as \code{matrix}, whose
   row names are the column names of \code{matrix}.
 }
 \description{
-Copies the lower or upper triangle of a square matrix onto the opposite
-triangle, producing a symmetric matrix; optionally replaces the diagonal.
-The row names are set to the column names, so both sides carry the same
-labels.
+Copies the lower or upper triangle of a square matrix onto the
+opposite triangle, producing a symmetric matrix; optionally replaces the
+diagonal. The row names are set to the column names, so both sides carry
+the same labels.
 }
 \examples{
-m_lower<-matrix_triangle(matrix(1:9,nrow=3,ncol=3),type="lower",diagonal=NA)
-m_upper<-matrix_triangle(matrix(11:19,nrow=3,ncol=3),type="upper",diagonal=NA)
-symmetric_matrix(matrix=m_lower,duplicate="lower",diagonal=NA)
-symmetric_matrix(matrix=m_upper,duplicate="upper",diagonal=NA)
+m_lower <- matrix_triangle(matrix(1:9, nrow = 3, ncol = 3), type = "lower", diagonal = NA)
+m_upper <- matrix_triangle(matrix(11:19, nrow = 3, ncol = 3), type = "upper", diagonal = NA)
+symmetric_matrix(matrix = m_lower, duplicate = "lower", diagonal = NA)
+symmetric_matrix(matrix = m_upper, duplicate = "upper", diagonal = NA)
 }
 \seealso{
 \code{\link{matrix_triangle}},

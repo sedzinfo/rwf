@@ -23,14 +23,15 @@ A data frame (not a matrix) with \code{length} rows and four numeric
   }
 }
 \description{
-For each diagonal position \code{i} of a \code{length} x \code{length}
-matrix, returns the indices of the diagonal cell and of its two neighbours
-in the same row: the cell to the right (just above the diagonal, column
+For each diagonal position \code{i} of a \code{length} x
+\code{length} matrix, returns the indices of the diagonal cell and of its
+two neighbours in the same row: the cell to the right (just above the
+diagonal, column
 \code{i + 1}) and the cell to the left (just below the diagonal, column
 \code{i - 1}).
 }
 \examples{
-off_diagonal_index(length=6)
+off_diagonal_index(length = 6)
 }
 \seealso{
 \code{\link{matrix_triangle}}

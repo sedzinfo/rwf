@@ -2,19 +2,15 @@
 # ADJUST
 ##########################################################################################
 #' @title Compute multiple comparison alpha adjustments
-#'
 #' @description Calculates Bonferroni and Šidák corrected alpha thresholds for
 #' a given family-wise alpha level and number of tests.
-#'
 #' @param a Numeric. The desired family-wise alpha level (e.g. \code{0.05}).
 #' @param ntests Integer. The number of tests (comparisons) being performed.
-#'
 #' @return A named list with two elements:
 #'   \describe{
 #'     \item{sidak}{Šidák corrected alpha: \eqn{1 - (1 - \alpha)^{1/k}}.}
 #'     \item{bonferroni}{Bonferroni corrected alpha: \eqn{\alpha / k}.}
 #'   }
-#'
 #' @export
 #' @examples
 #' compute_adjustment(0.05, 100)
@@ -28,11 +24,9 @@ compute_adjustment <- function(a, ntests) {
 # STANDARDIZE
 ##########################################################################################
 #' @title Compute standard scores from a numeric vector
-#'
 #' @description Transforms a numeric vector into one of several standard score
 #' formats, including z-scores, T-scores, stens, stanines, percentiles, and
 #' others. Can operate on raw scores or pre-standardised z-scores.
-#'
 #' @param vector Numeric vector of raw scores or z-scores (see \code{input}).
 #' @param mean Numeric. Population mean used for \code{"uz"} and density types.
 #'   Default is \code{0}.
@@ -59,12 +53,9 @@ compute_adjustment <- function(a, ntests) {
 #' @param input Character. Whether \code{vector} contains raw scores
 #'   (\code{"non_standard"}) or already-standardised z-scores
 #'   (\code{"standard"}). Default is \code{"non_standard"}.
-#'
 #' @return A numeric vector of transformed scores, or a data frame when
 #'   \code{type = "all"}.
-#'
 #' @importFrom stats pnorm
-#'
 #' @export
 #' @examples
 #' vector <- c(rnorm(10), NA, rnorm(10))
@@ -152,21 +143,17 @@ compute_standard <- function(vector, mean = 0, sd = 1, type = "z", input = "non_
 # COMPUTE DISSATENUATION
 ##########################################################################################
 #' @title Compute the disattenuation correction for measurement error
-#'
 #' @description Estimates the true correlation between two variables by
 #' correcting the observed correlation for attenuation due to measurement error
 #' in both variables.
-#'
 #' @param variable1 Numeric vector. True scores for the first variable.
 #' @param error1 Numeric vector. Measurement error for \code{variable1}.
 #'   Must be the same length as \code{variable1}.
 #' @param variable2 Numeric vector. True scores for the second variable.
 #' @param error2 Numeric vector. Measurement error for \code{variable2}.
 #'   Must be the same length as \code{variable2}.
-#'
 #' @return A numeric scalar. The disattenuated (corrected) correlation
 #'   between \code{variable1} and \code{variable2}.
-#'
 #' @details
 #' The observed correlation is computed from the error-contaminated scores
 #' (\code{variable + error}). Reliability for each variable is estimated as
@@ -174,9 +161,7 @@ compute_standard <- function(vector, mean = 0, sd = 1, type = "z", input = "non_
 #' disattenuated correlation is then:
 #' \deqn{\rho = \frac{r_{obs}}{\sqrt{R_1 \cdot R_2}}}
 #' where \eqn{R_1} and \eqn{R_2} are the reliability estimates.
-#'
 #' @importFrom stats var cov
-#'
 #' @export
 #' @examples
 #' set.seed(1)
@@ -192,21 +177,15 @@ compute_dissatenuation <- function(variable1, error1, variable2, error2) {
 # COMPUTE SKEWNESS
 ##########################################################################################
 #' @title Compute skewness of a numeric vector
-#'
 #' @description Calculates the skewness of a numeric vector using the \eqn{b_1}
 #' formula consistent with MINITAB and BMDP. Missing values are removed before
 #' computation.
-#'
 #' @param vector Numeric vector.
-#'
 #' @return A numeric scalar. Positive values indicate right skew, negative
 #'   values indicate left skew.
-#'
 #' @note Formula used: \eqn{b_1 = m_3 / s^3 = g_1 ((n-1)/n)^{3/2}}.
 #'   Used in MINITAB and BMDP.
 #'   Results match \code{e1071::skewness()} with \code{type = 2}.
-#'
-#'
 #' @export
 #' @examples
 #' set.seed(1)
@@ -225,21 +204,16 @@ compute_skewness <- function(vector) {
 # COMPUTE KURTOSIS
 ##########################################################################################
 #' @title Compute kurtosis of a numeric vector
-#'
 #' @description Calculates the excess kurtosis of a numeric vector using the
 #' \eqn{b_2} formula consistent with MINITAB and BMDP. Missing values are
 #' removed before computation.
-#'
 #' @param vector Numeric vector.
-#'
 #' @return A numeric scalar. A value of 0 indicates a normal distribution;
 #'   positive values indicate heavier tails (leptokurtic); negative values
 #'   indicate lighter tails (platykurtic).
-#'
 #' @note Formula used: \eqn{b_2 = m_4 / s^4 - 3 = (g_2 + 3)(1 - 1/n)^2 - 3}.
 #'   Used in MINITAB and BMDP.
 #'   Results match \code{e1071::kurtosis()} with \code{type = 2}.
-#'
 #' @export
 #' @examples
 #' set.seed(1)
@@ -258,11 +232,8 @@ compute_kurtosis <- function(vector) {
 # COMPUTE STANDARD ERROR
 ##########################################################################################
 #' @title Compute the standard error of the mean
-#'
 #' @param vector Numeric vector. Missing values are removed before computation.
-#'
 #' @return A numeric scalar. The standard error of the mean.
-#'
 #' @export
 #' @examples
 #' set.seed(1)

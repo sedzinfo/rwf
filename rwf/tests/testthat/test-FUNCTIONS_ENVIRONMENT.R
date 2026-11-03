@@ -121,20 +121,20 @@ test_that("detach_package removes every attached copy and is a no-op when not at
 })
 
 ##########################################################################################
-# getfwp
+# get_fwd
 ##########################################################################################
-test_that("getfwp returns the script path from the --file argument under Rscript", {
+test_that("get_fwd returns the script path from the --file argument under Rscript", {
   skip_on_cran()
   script <- file.path(withr::local_tempdir(), "my script.R")
-  writeLines(c(function_source("getfwp", getfwp), "cat(getfwp())"), script)
+  writeLines(c(function_source("get_fwd", get_fwd), "cat(get_fwd())"), script)
   expect_identical(run_rscript(shQuote(script)), normalizePath(script))
 })
 
-test_that("getfwp returns the sourced file path from the source() frame", {
+test_that("get_fwd returns the sourced file path from the source() frame", {
   skip_on_cran()
   directory <- withr::local_tempdir()
   script <- file.path(directory, "sourced.R")
-  writeLines(c(function_source("getfwp", getfwp), "cat(getfwp())"), script)
+  writeLines(c(function_source("get_fwd", get_fwd), "cat(get_fwd())"), script)
   expression <- sprintf("source(%s)", deparse(gsub("\\\\", "/", script)))
   expect_identical(run_rscript(c("-e", shQuote(expression))), normalizePath(script))
 })
@@ -145,7 +145,7 @@ can_reach_rstudio_branch <- function() {
   no_file && !"fileName" %in% ls(first_frame) && is.null(first_frame$ofile)
 }
 
-test_that("getfwp falls back to the RStudio active document and then the source editor", {
+test_that("get_fwd falls back to the RStudio active document and then the source editor", {
   skip_if_not(can_reach_rstudio_branch(), "the --file or source() branch applies in this session")
   active <- withr::local_tempfile(fileext = ".R")
   editor <- withr::local_tempfile(fileext = ".R")
@@ -156,20 +156,19 @@ test_that("getfwp falls back to the RStudio active document and then the source 
     getSourceEditorContext = function(...) list(path = editor),
     .package = "rstudioapi"
   )
-  expect_identical(getfwp(), normalizePath(active))
+  expect_identical(get_fwd(), normalizePath(active))
   local_mocked_bindings(getActiveDocumentContext = function(...) list(path = ""), .package = "rstudioapi")
-  expect_identical(getfwp(), normalizePath(editor))
+  expect_identical(get_fwd(), normalizePath(editor))
 })
 
-test_that("getfwp returns an empty string when the path cannot be determined", {
-  skip("rwf bug: getActiveDocumentContext() is called outside tryCatch, so getfwp errors when RStudio is not running")
+test_that("get_fwd returns an empty string when the path cannot be determined", {
   skip_if_not(can_reach_rstudio_branch(), "the --file or source() branch applies in this session")
   local_mocked_bindings(
     getActiveDocumentContext = function(...) stop("RStudio not running"),
     getSourceEditorContext = function(...) stop("RStudio not running"),
     .package = "rstudioapi"
   )
-  expect_identical(getfwp(), "")
+  expect_identical(get_fwd(), "")
 })
 
 ##########################################################################################

@@ -32,6 +32,6 @@ vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 plot_qq(df = vector)
 plot_qq(df = df)
-plot_multiplot(plotlist = plot_qq(df = mtcars[,1:4]), cols = 2)
+plot_multiplot(plotlist = plot_qq(df = mtcars[,1:2]), cols = 2)
 }
 \keyword{assumptions}

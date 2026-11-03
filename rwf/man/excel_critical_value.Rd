@@ -58,7 +58,6 @@ conditions, making it easy to flag critical or out-of-range values.
 Unlike \code{\link{excel_generic_format}}, this function creates the worksheet
 and writes the data internally — do not call \code{addWorksheet()} or
 \code{writeData()} beforehand.
-
 Threshold expressions follow Excel conditional formatting syntax and are applied
 row by row, skipping \code{NA} values.
 }
@@ -78,8 +77,8 @@ comment <- list(
   extra_comment1 = "test1",
   extra_comment2 = "test2"
 )
-filename <- file.path(tempdir(), "excel_critical_value.xlsx")
-if (file.exists(filename)) file.remove(filename)
+file <- file.path(tempdir(), "excel_critical_value.xlsx")
+if (file.exists(file)) file.remove(file)
 wb <- openxlsx::createWorkbook()
 df <- generate_missing(generate_correlation_matrix())
 critical <- list(X1 = "<0.05", X5 = "<0")
@@ -87,9 +86,9 @@ excel_critical_value(
   df = df, workbook = wb, sheet = "critical", comment = list(X1 = "test"),
   numFmt = "#0.00", critical = critical
 )
-openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
-filename <- file.path(tempdir(), "excel_critical_value_comment.xlsx")
-if (file.exists(filename)) file.remove(filename)
+openxlsx::saveWorkbook(wb, file, TRUE)
+file <- file.path(tempdir(), "excel_critical_value_comment.xlsx")
+if (file.exists(file)) file.remove(file)
 wb <- openxlsx::createWorkbook()
 df <- generate_missing(mtcars)
 critical <- list(mpg = ">20", am = "=0")
@@ -97,9 +96,9 @@ excel_critical_value(
   df = df, workbook = wb, sheet = "critical", comment = comment,
   numFmt = "#0.00", critical = critical
 )
-openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
-filename <- file.path(tempdir(), "excel_critical_value_comment_min_max.xlsx")
-if (file.exists(filename)) file.remove(filename)
+openxlsx::saveWorkbook(wb, file, TRUE)
+file <- file.path(tempdir(), "excel_critical_value_comment_min_max.xlsx")
+if (file.exists(file)) file.remove(file)
 wb <- openxlsx::createWorkbook()
 df <- generate_missing(mtcars)
 critical <- list(mpg = c(">20", "<11"), am = "=0")
@@ -107,7 +106,7 @@ excel_critical_value(
   df = df, workbook = wb, sheet = "critical", comment = comment,
   numFmt = "#0.00", critical = critical
 )
-openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
+openxlsx::saveWorkbook(wb, file, TRUE)
 }
 \seealso{
 \code{\link{excel_generic_format}}, \code{\link{excel_matrix}}

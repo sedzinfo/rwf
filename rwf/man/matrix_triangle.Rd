@@ -25,17 +25,18 @@ A numeric matrix with the same dimensions and row / column names as
   \code{m}.
 }
 \description{
-Keeps one triangle of a matrix, including the diagonal, and fills the other
-triangle with the value of \code{off_diagonal}; optionally replaces the diagonal. Useful
-for displaying correlation or covariance matrices without repeated values.
+Keeps one triangle of a matrix, including the diagonal, and
+fills the other triangle with the value of \code{off_diagonal}; optionally
+replaces the diagonal. Useful for displaying correlation or covariance
+matrices without repeated values.
 }
 \examples{
-m<-matrix(1:9,nrow=3,ncol=3)
-matrix_triangle(m=m)
-matrix_triangle(m=m,diagonal=NA,type="lower")
-matrix_triangle(m=m,diagonal=NULL,type="lower")
-matrix_triangle(m=m,diagonal=NA,type="upper")
-matrix_triangle(m=m,diagonal=NULL,type="upper")
+m <- matrix(1:9, nrow = 3, ncol = 3)
+matrix_triangle(m = m)
+matrix_triangle(m = m, diagonal = NA, type = "lower")
+matrix_triangle(m = m, diagonal = NULL, type = "lower")
+matrix_triangle(m = m, diagonal = NA, type = "upper")
+matrix_triangle(m = m, diagonal = NULL, type = "upper")
 }
 \seealso{
 \code{\link{display_upper_lower_triangle}},

@@ -50,10 +50,10 @@ Computes a comprehensive set of descriptive statistics for one
   independent variable levels. Results can be exported to an Excel file.
 }
 \examples{
+file = file.path(tempdir(), "descriptives_factor")
 compute_descriptives(df = mtcars, dv = 1:5)
 compute_descriptives(df = mtcars, dv = 1:2, iv = 9:10)
 compute_descriptives(df = mtcars, dv = 1:2)
-compute_descriptives(df = mtcars, dv = 1:2, iv = 9:10,
-                     file = file.path(tempdir(), "descriptives_factor"))
+compute_descriptives(df = mtcars, dv = 1:2, iv = 9:10, file = file)
 }
 \keyword{descriptives}

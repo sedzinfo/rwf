@@ -395,36 +395,3 @@ min_max_index <- function(vector) {
   result <- list(max_index = max_index, min_index = min_index)
   return(result)
 }
-##########################################################################################
-# GET SCRIPT DIRECTORY
-##########################################################################################
-#' @title Get script directory
-#' @description Returns the directory of the currently active script as a string
-#'              with a trailing slash. Works across multiple environments: RStudio,
-#'              command line execution, and generic R sessions.
-#' @details The function tries three approaches in order: \cr
-#'          1. If RStudio is available, uses \code{rstudioapi} to get the active document path \cr
-#'          2. If running from the command line via \code{Rscript --file=}, parses the file argument \cr
-#'          3. Falls back to \code{getwd()} as a last resort
-#' @return A character string with the directory path, always ending with "/"
-#' @note The fallback to \code{getwd()} may not reflect the script's actual location
-#'       if the working directory has been changed during the session.
-#' @keywords functions
-#' @export
-#' @examples
-#' # Returns the directory of the active script in RStudio
-#' directory <- get_script_directory()
-#' directory
-get_script_directory <- function() {
-  if (requireNamespace("rstudioapi", quietly = TRUE) && rstudioapi::isAvailable()) {
-    return(paste0(dirname(rstudioapi::getActiveDocumentContext()$path), "/"))
-  }
-  # fallback for command line
-  args <- commandArgs(trailingOnly = FALSE)
-  file_arg <- grep("--file=", args, value = TRUE)
-  if (length(file_arg) > 0) {
-    return(paste0(dirname(normalizePath(sub("--file=", "", file_arg))), "/"))
-  }
-  # last resort
-  return(paste0(getwd(), "/"))
-}
