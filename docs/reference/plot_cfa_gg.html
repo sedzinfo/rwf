@@ -118,19 +118,21 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">model</span><span class="op">=</span><span class="st">'LATENT1=~X1+X2+X3</span></span></span>
-<span class="r-in"><span><span class="st">       LATENT2=~X4+X5+X6'</span></span></span>
-<span class="r-in"><span><span class="va">df</span><span class="op">&lt;-</span><span class="fu">lavaan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/simulateData.html" class="external-link">simulateData</a></span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,model.type<span class="op">=</span><span class="st">"cfa"</span>,</span></span>
-<span class="r-in"><span>                             return.type<span class="op">=</span><span class="st">"data.frame"</span>,sample.nobs<span class="op">=</span><span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">df</span><span class="op">&lt;-</span><span class="fu"><a href="generate_missing.html">generate_missing</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">fit</span><span class="op">&lt;-</span><span class="fu">lavaan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/cfa.html" class="external-link">cfa</a></span><span class="op">(</span><span class="va">model</span>,data<span class="op">=</span><span class="va">df</span>,missing<span class="op">=</span><span class="st">"ML"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">plot_cfa_gg</span><span class="op">(</span><span class="va">fit</span>,what<span class="op">=</span><span class="st">"std"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="st">"LATENT1=~X1+X2+X3</span></span></span>
+<span class="r-in"><span><span class="st">       LATENT2=~X4+X5+X6"</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu">lavaan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/simulateData.html" class="external-link">simulateData</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="va">model</span>, model.type <span class="op">=</span> <span class="st">"cfa"</span>,</span></span>
+<span class="r-in"><span>  return.type <span class="op">=</span> <span class="st">"data.frame"</span>, sample.nobs <span class="op">=</span> <span class="fl">100</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_missing.html">generate_missing</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">lavaan</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lavaan/man/cfa.html" class="external-link">cfa</a></span><span class="op">(</span><span class="va">model</span>, data <span class="op">=</span> <span class="va">df</span>, missing <span class="op">=</span> <span class="st">"ML"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_cfa_gg</span><span class="op">(</span><span class="va">fit</span>, what <span class="op">=</span> <span class="st">"std"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_cfa_gg-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">plot_cfa_gg</span><span class="op">(</span><span class="va">fit</span>,what<span class="op">=</span><span class="st">"std"</span>,layout<span class="op">=</span><span class="st">"tree"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_cfa_gg</span><span class="op">(</span><span class="va">fit</span>, what <span class="op">=</span> <span class="st">"std"</span>, layout <span class="op">=</span> <span class="st">"tree"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_cfa_gg-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">plot_cfa_gg</span><span class="op">(</span><span class="va">fit</span>,what<span class="op">=</span><span class="st">"std"</span>,layout<span class="op">=</span><span class="st">"circle"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_cfa_gg</span><span class="op">(</span><span class="va">fit</span>, what <span class="op">=</span> <span class="st">"std"</span>, layout <span class="op">=</span> <span class="st">"circle"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_cfa_gg-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">plot_cfa_gg</span><span class="op">(</span><span class="va">fit</span>,what<span class="op">=</span><span class="st">"std"</span>,layout<span class="op">=</span><span class="st">"spring"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">plot_cfa_gg</span><span class="op">(</span><span class="va">fit</span>, what <span class="op">=</span> <span class="st">"std"</span>, layout <span class="op">=</span> <span class="st">"spring"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_cfa_gg-4.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
