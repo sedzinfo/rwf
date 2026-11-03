@@ -29,11 +29,14 @@ report_cfa(model, file = NULL, w = 10, h = 10)
 ## Examples
 
 ``` r
-model='LATENT=~ITEM1+ITEM2+ITEM3+ITEM4+ITEM5'
-df<-lavaan::simulateData(model=model,model.type="cfa",
-                             return.type="data.frame",sample.nobs=100)
-df<-generate_missing(df)
-fit<-lavaan::cfa(model,data=df,missing="ML")
+file = file.path(tempdir(), "cfa")
+model <- "LATENT=~ITEM1+ITEM2+ITEM3+ITEM4+ITEM5"
+df <- lavaan::simulateData(
+  model = model, model.type = "cfa",
+  return.type = "data.frame", sample.nobs = 100
+)
+df <- generate_missing(df)
+fit <- lavaan::cfa(model, data = df, missing = "ML")
 report_cfa(fit)
 #> Warning: lavaan->inspect.lavaan():  
 #>    Unknown argument ‘add.labels’ for ‘inspect’
@@ -691,7 +694,7 @@ report_cfa(fit)
 #> 3            auto.fix.single=TRUE,auto.var=TRUE,auto.cov.lv.x=TRUE,
 #> 4       auto.cov.y=TRUE,auto.th=TRUE,auto.delta=TRUE,auto.efa=TRUE)
 #> 
-report_cfa(fit,file=file.path(tempdir(),"cfa"))
+report_cfa(fit, file = file)
 #> Warning: lavaan->inspect.lavaan():  
 #>    Unknown argument ‘add.labels’ for ‘inspect’
 #> Warning: lavaan->inspect.lavaan():  

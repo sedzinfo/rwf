@@ -4,7 +4,6 @@ For every combination of independent variable (IV) and dependent
 variable (DV) supplied, produces a horizontal dot plot of group means
 with optional error bars (standard error, confidence interval, or
 standard deviation). Sample size per group is annotated on each panel.
-
 When the number of IV-DV combinations exceeds four times the available
 CPU cores the plots are produced in parallel via `future.apply`,
 otherwise sequentially.
@@ -87,63 +86,6 @@ All list elements are named `"iv_dv"`.
 ## Examples
 
 ``` r
-nrows <- 1000
-df <- data.frame(
-  generate_factor(vector = LETTERS[1:5], nrows = nrows, ncols = 10, type = "random"),
-  generate_data(nrows = nrows, ncols = 5, type = "normal")
-)
-result <- plot_oneway(df = df, dv = 11:15, iv = 1:10)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Single IV, single DV
 plot_oneway(df = mtcars, dv = 2, iv = 9)
 

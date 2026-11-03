@@ -88,12 +88,13 @@ A list of two elements:
 ## Examples
 
 ``` r
-model_sim <- 'LATENT =~ 1*X1 + 0.5*X2 + 1.5*X3 + 1.5*X4 + X5'
-model     <- 'LATENT =~ X1 + X2 + X3 + X4 + X5'
-
+file = file.path(tempdir(), "report")
+model_sim <- "LATENT =~ 1*X1 + 0.5*X2 + 1.5*X3 + 1.5*X4 + X5"
+model <- "LATENT =~ X1 + X2 + X3 + X4 + X5"
 # Coefficient-based: generate data from known population parameters
-result<-simulate_cfa_fit(model_sim=model_sim, model=model,
-                         minnobs=50, maxnobs=1000, stepping=100, file=file.path(tempdir(),"report"))
+result <- simulate_cfa_fit(
+  model_sim = model_sim, model = model,
+  minnobs = 50, maxnobs = 1000, stepping = 100, file = file)
 
 
 
@@ -137,56 +138,11 @@ result<-simulate_cfa_fit(model_sim=model_sim, model=model,
 
 
 
-plot_multiplot(plotlist=result[[2]], cols=4)
+plot_multiplot(plotlist = result[[2]][1:2], cols = 2)
 
 # Correlation-based: resample from observed data
-df <- lavaan::simulateData(model=model_sim, model.type="cfa",
-                           return.type="data.frame", sample.nobs=1000)
-result<-simulate_cfa_fit(model=model, df=df,
-                         minnobs=50, maxnobs=10000, stepping=100,
-                         file=file.path(tempdir(),"report"))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-plot_multiplot(plotlist=result[[2]], cols=4)
+df <- lavaan::simulateData(
+  model = model_sim, model.type = "cfa",
+  return.type = "data.frame", sample.nobs = 1000
+)
 ```
