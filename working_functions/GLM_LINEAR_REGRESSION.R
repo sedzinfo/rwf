@@ -219,7 +219,6 @@ plot_scatterplot <- function(df, method = lm, formula = y ~ x, base_size = 10, c
 #' }
 #' @import ggfortify
 #' @importFrom stats confint deviance
-#' @importFrom QuantPsyc lm.beta
 #' @importFrom car vif
 #' @keywords regression
 #' @export
@@ -299,10 +298,16 @@ report_regression <- function(model, base_size = 10, title = "", file = NULL, w 
     effects = model$effects,
     check.names = FALSE
   )
+  # standardized coefficients: b * sd(x) / sd(y), with the sd of the coefficient's own column
+  # of the model matrix, so that factor levels and interaction terms are standardized too
+  b <- summary(model)$coefficients[, "Estimate"]
+  b <- b[names(b) != "(Intercept)"]
+  x <- stats::model.matrix(model)[, names(b), drop = FALSE]
+  standardized <- b * apply(x, 2, stats::sd) / stats::sd(stats::model.response(stats::model.frame(model)))
   model_coefficients <- Reduce(
     function(x, y) merge(x, y, all = TRUE, sort = FALSE, by = "row.names"),
     list(
-      data.frame(standardized = QuantPsyc::lm.beta(model), check.names = FALSE),
+      data.frame(standardized = standardized, check.names = FALSE),
       data.frame(summary(model)[[4]], stats::confint(model), check.names = FALSE)
     )
   )

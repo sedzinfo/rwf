@@ -199,7 +199,6 @@ test_that("report_regression writes pdf, log and xlsx output", {
 })
 
 test_that("report_regression handles factor predictors", {
-  skip("rwf bug: report_regression fails on any factor predictor because QuantPsyc::lm.beta calls sd() on the factor")
   local_null_device_regression()
   df <- mtcars
   df$am <- factor(df$am, labels = c("automatic", "manual"))
@@ -210,7 +209,6 @@ test_that("report_regression handles factor predictors", {
 })
 
 test_that("report_regression standardizes interaction terms with their own standard deviation", {
-  skip("rwf bug: report_regression standardized coefficients for interaction terms reuse the sd of another predictor (QuantPsyc::lm.beta recycling)")
   local_null_device_regression()
   model <- stats::lm(mpg ~ hp * wt, data = mtcars)
   rwf <- quietly(report_regression(model = model, plot_diagnostics = FALSE))

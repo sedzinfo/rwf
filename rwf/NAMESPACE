@@ -200,7 +200,6 @@ importFrom(NLP,
   Annotation,
   as.String
 )
-importFrom(QuantPsyc,lm.beta)
 importFrom(Rmisc,
   CI,
   summarySE
