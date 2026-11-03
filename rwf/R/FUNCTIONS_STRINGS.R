@@ -2,16 +2,13 @@
 # MULTIPLE GSUB
 ##########################################################################################
 #' @title Apply gsub for multiple patterns with a single replacement
-#'
 #' @description Iterates over a vector of patterns, applying
 #' \code{base::gsub()} sequentially with the same replacement string for
 #' each.
-#'
 #' @param mydata Character vector to search within.
 #' @param pattern Character vector of patterns to search for.
 #' @param replacement Character. The replacement string applied for all patterns.
 #' @param ... Additional arguments passed to \code{base::gsub()},
-#'
 #' @return A character vector with all pattern matches replaced.
 #' @keywords strings
 #' @export
@@ -27,15 +24,12 @@ str_mgsub <- function(mydata, pattern, replacement, ...) {
 # SPLIT STRING
 ##########################################################################################
 #' @title Split a string vector into a data frame of parts
-#'
 #' @description Splits each element of a character vector by a separator and
 #' returns theparts as columns of a data frame, one row per input element.
-#'
 #' @param vector Character vector to split.
 #' @param split Character. The separator to split on. Default is \code{"/"}.
 #' @param include_original Logical. If \code{TRUE}, appends the original input
 #'   as a final column. Default is \code{FALSE}.
-#'
 #' @return A data frame with one row per element of \code{vector} and one column
 #'   per split part. Assumes all elements produce the same number of parts.
 #' @keywords strings
@@ -60,10 +54,8 @@ str_split <- function(vector, split = "/", include_original = FALSE) {
 # SPLIT STRING IN DATAFRAME
 ##########################################################################################
 #' @title Split a string column or row names in a data frame into separate columns
-#'
 #' @description Splits a delimited string — either from row names or a specified
 #' column — and prepends the resulting parts as new columns to the data frame.
-#'
 #' @param df A data frame.
 #' @param split Character. The separator to split on. Default is \code{"/"}.
 #' @param type Character. Where to read the string from. One of:
@@ -74,10 +66,8 @@ str_split <- function(vector, split = "/", include_original = FALSE) {
 #'   Default is \code{"row"}.
 #' @param index Integer. Column index to split when \code{type = "collumn"}.
 #' @param ... Additional arguments passed to \code{\link{str_split}}.
-#'
 #' @return A data frame with the split parts prepended as new columns,
 #'   followed by the original columns of \code{df}.
-#'
 #' @seealso \code{\link{str_split}}
 #' @keywords strings
 #' @export
@@ -108,11 +98,9 @@ str_split_df <- function(df, split = "/", type = "row", index, ...) {
 # RETURN RIGHT LEFT CHARACTERS
 ##########################################################################################
 #' @title Extract n characters from the left or right of a string
-#'
 #' @param x Character vector.
 #' @param n Integer. Number of characters to extract. Default is \code{2}.
 #' @param type Character. One of \code{"left"} or \code{"right"}.
-#'
 #' @return A character vector of the same length as \code{x}.
 #' @keywords strings
 #' @export
@@ -132,12 +120,9 @@ str_sub <- function(x, n = 2, type) {
 # PROPER
 ##########################################################################################
 #' @title Convert a string to proper case
-#'
 #' @description Capitalises the first character and lowercases the rest of each
 #' element.
-#'
 #' @param x Character vector.
-#'
 #' @return A character vector of the same length as \code{x}.
 #' @keywords strings
 #' @export
@@ -149,12 +134,9 @@ str_proper <- function(x) paste0(toupper(substr(x, 1, 1)), tolower(substring(x, 
 # TRIM DATAFRAME
 ##########################################################################################
 #' @title Trim whitespace from all character cells in a data frame
-#'
 #' @description Applies \code{base::strwrap()} to every character cell in
 #' a data frame, removing leading and trailing whitespace.
-#'
 #' @param df A data frame containing one or more character columns.
-#'
 #' @return A data frame of the same dimensions with whitespace trimmed from
 #'   all character cells. Non-character cells are unchanged.
 #' @keywords strings
@@ -179,12 +161,10 @@ str_trim_df <- function(df) {
 # ADJUST STRING AESTHETICS
 ##########################################################################################
 #' @title Clean and format string aesthetics
-#'
 #' @description Replaces a list of separator characters 
 #' (e.g. \code{"."}, \code{"_"}, HTML tags) with spaces, trims leading and
 #' trailing whitespace, collapses internal whitespace, and optionally applies
 #' proper case.
-#'
 #' @param vector Character vector to clean.
 #' @param characterlist Character vector of strings to treat as separators,
 #'   each replaced by a single space. Defaults to common punctuation and
@@ -192,10 +172,8 @@ str_trim_df <- function(df) {
 #'   \code{"<br>"}, \code{"&nbsp"}, and others.
 #' @param proper Logical. If \code{TRUE}, capitalises the first letter and
 #'   lowercases the rest of each string. Default is \code{TRUE}.
-#'
 #' @return A character vector of the same length as \code{vector} with
 #'   separators replaced, whitespace normalised, and optional proper casing.
-#'
 #' @keywords strings
 #' @export
 #' @examples
@@ -218,14 +196,11 @@ str_aes <- function(vector, characterlist = c(".", "_", "-", ",", "$", "<p>", "<
 # MODEL CALL TO STRING
 ##########################################################################################
 #' @title Convert a model call to a compact string
-#'
 #' @description Extracts the call from a model object and returns it as a single
 #' whitespace-free string. Tries \code{model$call} first, falling back
 #' to \code{model$Call} if the first is \code{NULL}.
-#'
 #' @param model A model object with a \code{call} or \code{Call} element
 #'   (e.g. from \code{lm}, \code{glm}, \code{coxph}).
-#'
 #' @return A character scalar with the model call, whitespace removed.
 #' @keywords strings
 #' @export
@@ -245,10 +220,8 @@ call_to_string <- function(model) {
 # OUTPUT SEPARATOR
 ##########################################################################################
 #' @title Print a formatted console output block with separators
-#'
 #' @description Prints a heading, optional instructions, and optional output to
 #' the console, surrounded by \code{#} separator lines for visual clarity.
-#'
 #' @param string Character. The title displayed between the main separators.
 #' @param output Object or \code{NULL}. The main content to print below the
 #'   heading. If \code{NULL}, nothing is printed in its place. Default is
@@ -258,7 +231,6 @@ call_to_string <- function(model) {
 #'   \code{NULL}.
 #' @param length Numeric. Width of the main separator in characters. Default is
 #'   one quarter of the current console width (\code{getOption("width") / 4}).
-#'
 #' @return Called for its side effects. Returns \code{NULL} invisibly.
 #' @keywords strings
 #' @export

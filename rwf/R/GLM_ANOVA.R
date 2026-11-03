@@ -8,17 +8,14 @@
 #'   \item \code{etasq}: eta-squared for Kruskal-Wallis (\eqn{\eta_H^2})
 #'   \item \code{epsilonsq}: epsilon-squared (\eqn{\epsilon^2})
 #' }
-#'
 #' In simple terms, this tests whether groups differ in their distributions,
 #' and quantifies how large that group effect is.
-#'
 #' @param formula A one-way formula in the form \code{y ~ group}.
 #' @param df A data frame containing the variables in \code{formula}.
 #' @param ci If TRUE, adds percentile bootstrap confidence intervals for both
 #' \code{etasq} and \code{epsilonsq}.
 #' @param conf.level Confidence level of the intervals.
 #' @param nboot Number of bootstrap resamples.
-#'
 #' @return A one-row data frame with:
 #' \itemize{
 #'   \item \code{formula}: model formula used
@@ -31,13 +28,11 @@
 #'   \item \code{df}: degrees of freedom (\eqn{k-1})
 #'   \item \code{p}: p-value
 #' }
-#'
 #' @details
 #' \code{epsilonsq} is in [0, 1]. \code{etasq} is at most 1 and is negative
 #' when \eqn{H < k-1}, that is when the groups differ less than expected by chance.
 #' Multiplying by 100 gives an approximate percentage-style interpretation
 #' of explained rank variance.
-#'
 #' Rules of thumb for \code{etasq} and \code{epsilonsq}. Small, medium and large
 #' are the \eqn{\eta^2} benchmarks of Cohen (1988); tiny, very large and huge
 #' convert the Cohen's d benchmarks of Sawilowsky (2009) with \eqn{\eta^2=d^2/(d^2+4)}:
@@ -51,37 +46,27 @@
 #' }
 #' These are rough guides; what counts as a meaningful effect depends on the field.
 #' \code{epsilonsq} is biased upwards by about \eqn{(k-1)/(n-1)} in small samples.
-#'
 #' Rows with a missing value in the outcome or the grouping variable are
 #' removed before the test, as in \code{stats::kruskal.test}.
-#'
 #' The confidence intervals resample rows with replacement \code{nboot} times,
 #' recompute both effect sizes in each resample and take the
 #' \eqn{(1-conf.level)/2} and \eqn{1-(1-conf.level)/2} quantiles. Use
 #' \code{set.seed} for reproducible intervals.
-#'
 #' @source The computation of \code{H}, including the correction for ties, is
 #' adapted from \code{stats::kruskal.test} (R Core Team, R package \code{stats},
 #' licensed GPL-2 | GPL-3). \code{etasq} and \code{epsilonsq} use the same
 #' formulas as \code{rstatix::kruskal_effsize} and
 #' \code{effectsize::rank_epsilon_squared}.
-#'
 #' @importFrom stats pchisq quantile na.omit
 #' @references
-#' Ben-Shachar, M. S., \enc{Lüdecke}{Ludecke}, D., & Makowski, D. (2020). effectsize: Estimation of effect size indices and standardized parameters. Journal of Open Source Software, 5(56), 2815. \doi{10.21105/joss.02815}
-#'
-#' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
-#'
-#' Kassambara, A. (2026). rstatix: Pipe-friendly framework for basic statistical tests (R package version 1.1.0). \doi{10.32614/CRAN.package.rstatix}
-#'
-#' R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}
-#'
-#' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
-#'
-#' Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19-25.
+#' Ben-Shachar, M. S., \enc{Lüdecke}{Ludecke}, D., & Makowski, D. (2020). effectsize: Estimation of effect size indices and standardized parameters. Journal of Open Source Software, 5(56), 2815. \doi{10.21105/joss.02815}  
+#' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.  
+#' Kassambara, A. (2026). rstatix: Pipe-friendly framework for basic statistical tests (R package version 1.1.0). \doi{10.32614/CRAN.package.rstatix}  
+#' R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}  
+#' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}  
+#' Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19-25.  
 #' @keywords ANOVA nonparametric kruskal
 #' @export
-#'
 #' @examples
 #' form <- formula(bp_before ~ agegrp)
 #' kruskal.test(formula = form, data = df_blood_pressure)
@@ -158,7 +143,6 @@ compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.
 #' @param ci If TRUE, adds a percentile bootstrap confidence interval for \code{kendall_w}.
 #' @param conf.level Confidence level of the interval.
 #' @param nboot Number of bootstrap resamples.
-#'
 #' @return A one-row data frame with:
 #' \itemize{
 #'   \item \code{formula}: model formula used
@@ -170,7 +154,6 @@ compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.
 #'   \item \code{n}: number of complete blocks used
 #'   \item \code{p}: p-value
 #' }
-#'
 #' @details
 #' The observations are ranked within each block. With \eqn{n} blocks, \eqn{k}
 #' groups, \eqn{R_j} the rank sum of group \eqn{j} and \eqn{t} the sizes of the
@@ -208,16 +191,12 @@ compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.
 #'
 #' @importFrom stats pchisq quantile complete.cases
 #' @references
-#' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
-#'
-#' Friedman, M. (1937). The use of ranks to avoid the assumption of normality implicit in the analysis of variance. Journal of the American Statistical Association, 32(200), 675-701. \doi{10.1080/01621459.1937.10503522}
-#'
-#' Kendall, M. G., & Babington Smith, B. (1939). The problem of m rankings. The Annals of Mathematical Statistics, 10(3), 275-287. \doi{10.1214/aoms/1177732186}
-#'
-#' R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}
+#' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.  
+#' Friedman, M. (1937). The use of ranks to avoid the assumption of normality implicit in the analysis of variance. Journal of the American Statistical Association, 32(200), 675-701. \doi{10.1080/01621459.1937.10503522}  
+#' Kendall, M. G., & Babington Smith, B. (1939). The problem of m rankings. The Annals of Mathematical Statistics, 10(3), 275-287. \doi{10.1214/aoms/1177732186}  
+#' R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}  
 #' @keywords ANOVA nonparametric friedman
 #' @export
-#'
 #' @examples
 #' form <- formula(uptake ~ conc | Plant)
 #' friedman.test(formula = form, data = df_co2)
@@ -283,12 +262,10 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 #'
 #' In simple terms, this tests whether the group means differ, and quantifies
 #' how much of the variance in the outcome the groups explain.
-#'
 #' @param formula A one-way formula in the form \code{y ~ group}.
 #' @param df A data frame containing the variables in \code{formula}.
 #' @param var.equal If TRUE, assumes equal variances (Fisher's F test). If FALSE,
 #' uses Welch's F test.
-#'
 #' @return A one-row data frame with:
 #' \itemize{
 #'   \item \code{formula}: model formula used
@@ -306,7 +283,6 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 #'   \item \code{df_error}: degrees of freedom of the error (\eqn{N-k}, or the Welch degrees of freedom)
 #'   \item \code{p}: p-value
 #' }
-#'
 #' @details
 #' In a one-way design \code{partial.etasq} equals \code{etasq} and
 #' \code{partial.omegasq} equals \code{omegasq}. \code{etasq} and

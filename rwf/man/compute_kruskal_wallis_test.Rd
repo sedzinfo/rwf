@@ -52,7 +52,6 @@ statistic, p-value, and two effect sizes:
   \item \code{etasq}: eta-squared for Kruskal-Wallis (\eqn{\eta_H^2})
   \item \code{epsilonsq}: epsilon-squared (\eqn{\epsilon^2})
 }
-
 In simple terms, this tests whether groups differ in their distributions,
 and quantifies how large that group effect is.
 }
@@ -61,7 +60,6 @@ and quantifies how large that group effect is.
 when \eqn{H < k-1}, that is when the groups differ less than expected by chance.
 Multiplying by 100 gives an approximate percentage-style interpretation
 of explained rank variance.
-
 Rules of thumb for \code{etasq} and \code{epsilonsq}. Small, medium and large
 are the \eqn{\eta^2} benchmarks of Cohen (1988); tiny, very large and huge
 convert the Cohen's d benchmarks of Sawilowsky (2009) with \eqn{\eta^2=d^2/(d^2+4)}:
@@ -75,10 +73,8 @@ convert the Cohen's d benchmarks of Sawilowsky (2009) with \eqn{\eta^2=d^2/(d^2+
 }
 These are rough guides; what counts as a meaningful effect depends on the field.
 \code{epsilonsq} is biased upwards by about \eqn{(k-1)/(n-1)} in small samples.
-
 Rows with a missing value in the outcome or the grouping variable are
 removed before the test, as in \code{stats::kruskal.test}.
-
 The confidence intervals resample rows with replacement \code{nboot} times,
 recompute both effect sizes in each resample and take the
 \eqn{(1-conf.level)/2} and \eqn{1-(1-conf.level)/2} quantiles. Use
@@ -104,16 +100,11 @@ set.seed(1)
 compute_kruskal_wallis_test(formula = form, df = df_blood_pressure, ci = TRUE)
 }
 \references{
-Ben-Shachar, M. S., \enc{Lüdecke}{Ludecke}, D., & Makowski, D. (2020). effectsize: Estimation of effect size indices and standardized parameters. Journal of Open Source Software, 5(56), 2815. \doi{10.21105/joss.02815}
-
-Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.
-
-Kassambara, A. (2026). rstatix: Pipe-friendly framework for basic statistical tests (R package version 1.1.0). \doi{10.32614/CRAN.package.rstatix}
-
-R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}
-
-Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
-
+Ben-Shachar, M. S., \enc{Lüdecke}{Ludecke}, D., & Makowski, D. (2020). effectsize: Estimation of effect size indices and standardized parameters. Journal of Open Source Software, 5(56), 2815. \doi{10.21105/joss.02815}  
+Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Lawrence Erlbaum Associates.  
+Kassambara, A. (2026). rstatix: Pipe-friendly framework for basic statistical tests (R package version 1.1.0). \doi{10.32614/CRAN.package.rstatix}  
+R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}  
+Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}  
 Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19-25.
 }
 \keyword{ANOVA}

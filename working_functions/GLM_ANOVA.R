@@ -18,7 +18,6 @@
 #' \code{etasq} and \code{epsilonsq}.
 #' @param conf.level Confidence level of the intervals.
 #' @param nboot Number of bootstrap resamples.
-#'
 #' @return A one-row data frame with:
 #' \itemize{
 #'   \item \code{formula}: model formula used
@@ -31,7 +30,6 @@
 #'   \item \code{df}: degrees of freedom (\eqn{k-1})
 #'   \item \code{p}: p-value
 #' }
-#'
 #' @details
 #' \code{epsilonsq} is in [0, 1]. \code{etasq} is at most 1 and is negative
 #' when \eqn{H < k-1}, that is when the groups differ less than expected by chance.
@@ -65,7 +63,7 @@
 #' licensed GPL-2 | GPL-3). \code{etasq} and \code{epsilonsq} use the same
 #' formulas as \code{rstatix::kruskal_effsize} and
 #' \code{effectsize::rank_epsilon_squared}.
-#'
+#' 
 #' @importFrom stats pchisq quantile na.omit
 #' @references
 #' Ben-Shachar, M. S., \enc{Lüdecke}{Ludecke}, D., & Makowski, D. (2020). effectsize: Estimation of effect size indices and standardized parameters. Journal of Open Source Software, 5(56), 2815. \doi{10.21105/joss.02815}
@@ -79,6 +77,7 @@
 #' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
 #'
 #' Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19-25.
+#' 
 #' @keywords ANOVA nonparametric kruskal
 #' @export
 #'
@@ -215,6 +214,7 @@ compute_kruskal_wallis_test <- function(formula, df, ci = FALSE, conf.level = 0.
 #' Kendall, M. G., & Babington Smith, B. (1939). The problem of m rankings. The Annals of Mathematical Statistics, 10(3), 275-287. \doi{10.1214/aoms/1177732186}
 #'
 #' R Core Team (2026). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. \doi{10.32614/R.manuals}
+#' 
 #' @keywords ANOVA nonparametric friedman
 #' @export
 #'
@@ -365,6 +365,7 @@ compute_friedman_test <- function(formula, df, ci = FALSE, conf.level = 0.95, nb
 #' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
 #'
 #' Welch, B. L. (1951). On the comparison of several mean values: An alternative approach. Biometrika, 38(3/4), 330-336. \doi{10.2307/2332579}
+#' 
 #' @keywords ANOVA
 #' @export
 #'
@@ -531,6 +532,7 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #' Levene, H. (1960). Robust tests for equality of variances. In I. Olkin (Ed.), Contributions to probability and statistics: Essays in honor of Harold Hotelling (pp. 278-292). Stanford University Press.
 #'
 #' Welch, B. L. (1951). On the comparison of several mean values: An alternative approach. Biometrika, 38(3/4), 330-336. \doi{10.2307/2332579}
+#' 
 #' @importFrom car leveneTest
 #' @importFrom stats bartlett.test
 #' @importFrom utils txtProgressBar setTxtProgressBar
@@ -842,6 +844,7 @@ report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 1
 #' \enc{Lüdecke}{Ludecke}, D. (2025). sjstats: Statistical functions for regression models (R package version 0.19.1). \doi{10.5281/zenodo.1284472}
 #'
 #' Mauchly, J. W. (1940). Significance test for sphericity of a normal n-variate distribution. The Annals of Mathematical Statistics, 11(2), 204-209. \doi{10.1214/aoms/1177731915}
+#' 
 #' @importFrom ez ezANOVA
 #' @keywords ANOVA
 #' @export
@@ -1112,6 +1115,7 @@ report_factorial_anova <- function(df, dv, wid, within = NULL, within_full = NUL
 #' Roy, S. N. (1953). On a heuristic method of test construction and its use in multivariate analysis. The Annals of Mathematical Statistics, 24(2), 220-238. \doi{10.1214/aoms/1177729029}
 #'
 #' Wilks, S. S. (1932). Certain generalizations in the analysis of variance. Biometrika, 24(3/4), 471-494. \doi{10.2307/2331979}
+#' 
 #' @keywords ANOVA
 #' @importFrom car Anova
 #' @importFrom openxlsx createWorkbook saveWorkbook
@@ -1268,6 +1272,7 @@ report_manova <- function(model, file = NULL) {
 #' Olejnik, S., & Algina, J. (2003). Generalized eta and omega squared statistics: Measures of effect size for some common research designs. Psychological Methods, 8(4), 434-447. \doi{10.1037/1082-989X.8.4.434}
 #'
 #' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
+#' 
 #' @keywords ANOVA
 #' @export
 #' @examples
@@ -1424,6 +1429,7 @@ compute_aov_es <- function(model, ss = "I") {
 #' Peters, G.-J. Y. userfriendlyscience: Quantitative analysis made accessible (R package version 0.7.2). \url{https://github.com/Matherion/userfriendlyscience}
 #'
 #' Tukey, J. W. (1953). The problem of multiple comparisons. Unpublished manuscript, Princeton University.
+#' 
 #' @importFrom utils combn
 #' @importFrom stats ptukey complete.cases
 #' @keywords ANOVA
