@@ -308,6 +308,9 @@ compute_mean_sd_alpha <- function(df, divisor = NULL) {
 #' @keywords reliability
 #' @export
 #' @examples
+#' # psych::alpha bootstraps (n.iter) with parallel::mclapply, which set.seed() alone
+#' # cannot make reproducible; on a single core the results depend only on the seed
+#' op <- options(mc.cores = 1)
 #' set.seed(12345)
 #' df <- data.frame(matrix(.5, ncol = 6, nrow = 6))
 #' correlation_martix <- as.matrix(df)
@@ -325,6 +328,7 @@ compute_mean_sd_alpha <- function(df, divisor = NULL) {
 #' report_alpha(df = df, key = key, reverse = reverse, check.keys = FALSE, n.iter = 2)
 #' report_alpha(df = df, key = key, check.keys = FALSE, n.iter = 2,
 #'              file = file.path(tempdir(), "alpha"))
+#' options(op)
 report_alpha <- function(df, key = NULL, questions = NULL, reverse = NULL, mini = NULL, maxi = NULL, file = NULL, ...) {
   comment <- list(
     raw_alpha = toString(c(

@@ -74,6 +74,9 @@ Computes Cronbach's alpha and a comprehensive set of
   Acceptable 0.70–0.80, Good 0.80–0.90, Excellent > 0.90).
 }
 \examples{
+# psych::alpha bootstraps (n.iter) with parallel::mclapply, which set.seed() alone
+# cannot make reproducible; on a single core the results depend only on the seed
+op <- options(mc.cores = 1)
 set.seed(12345)
 df <- data.frame(matrix(.5, ncol = 6, nrow = 6))
 correlation_martix <- as.matrix(df)
@@ -91,5 +94,6 @@ report_alpha(df = df, key = key, cumulative = TRUE, n.iter = 1)
 report_alpha(df = df, key = key, reverse = reverse, check.keys = FALSE, n.iter = 2)
 report_alpha(df = df, key = key, check.keys = FALSE, n.iter = 2,
              file = file.path(tempdir(), "alpha"))
+options(op)
 }
 \keyword{reliability}
