@@ -463,4 +463,4 @@ improper solutions before they’re scored.
 
 ------------------------------------------------------------------------
 
-*Rendered with R 4.6.1 · thurstonianIRT 0.12.5 · lavaan 0.7.3*
+*Rendered with R 4.6.2 · thurstonianIRT 0.12.5 · lavaan 0.7.3*

@@ -613,4 +613,4 @@ likelihood factor analysis. *Psychometrika, 38*(1), 1–10.
 
 ------------------------------------------------------------------------
 
-*Rendered with R 4.6.1 · lavaan 0.7.3*
+*Rendered with R 4.6.2 · lavaan 0.7.3*

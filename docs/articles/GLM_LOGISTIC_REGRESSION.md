@@ -298,4 +298,4 @@ report suitable for a full model write-up.
 
 ------------------------------------------------------------------------
 
-*Rendered with R 4.6.1*
+*Rendered with R 4.6.2*
