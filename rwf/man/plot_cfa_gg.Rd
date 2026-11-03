@@ -39,14 +39,16 @@ A named list of ggplot objects
 Plot CFA model (semPlot-free)
 }
 \examples{
-model='LATENT1=~X1+X2+X3
-       LATENT2=~X4+X5+X6'
-df<-lavaan::simulateData(model=model,model.type="cfa",
-                             return.type="data.frame",sample.nobs=100)
-df<-generate_missing(df)
-fit<-lavaan::cfa(model,data=df,missing="ML")
-plot_cfa_gg(fit,what="std")
-plot_cfa_gg(fit,what="std",layout="tree")
-plot_cfa_gg(fit,what="std",layout="circle")
-plot_cfa_gg(fit,what="std",layout="spring")
+model <- "LATENT1=~X1+X2+X3
+       LATENT2=~X4+X5+X6"
+df <- lavaan::simulateData(
+  model = model, model.type = "cfa",
+  return.type = "data.frame", sample.nobs = 100
+)
+df <- generate_missing(df)
+fit <- lavaan::cfa(model, data = df, missing = "ML")
+plot_cfa_gg(fit, what = "std")
+plot_cfa_gg(fit, what = "std", layout = "tree")
+plot_cfa_gg(fit, what = "std", layout = "circle")
+plot_cfa_gg(fit, what = "std", layout = "spring")
 }

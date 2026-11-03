@@ -6,11 +6,9 @@
 #'   variable (DV) supplied, produces a horizontal dot plot of group means with
 #'   optional error bars (standard error, confidence interval, or standard
 #'   deviation). Sample size per group is annotated on each panel.
-#'
 #'   When the number of IV-DV combinations exceeds four times the available CPU
 #'   cores the plots are produced in parallel via \code{future.apply}, otherwise
 #'   sequentially.
-#'
 #' @param df A data frame containing both the independent and dependent
 #'   variables.
 #' @param dv Integer vector of column indices for the continuous dependent
@@ -29,7 +27,6 @@
 #'   \code{""}.
 #' @param width Integer. Character width at which long axis labels are wrapped.
 #'   Default \code{60}.
-#'
 #' @return A named list with three elements:
 #'   \itemize{
 #'     \item \code{plot_data} — named list of summary data frames as returned
@@ -39,7 +36,6 @@
 #'     \item \code{plots} — named list of ggplot objects (one per IV-DV pair).
 #'   }
 #'   All list elements are named \code{"iv_dv"}.
-#'
 #' @import ggplot2
 #' @importFrom future plan multisession sequential
 #' @importFrom future.apply future_lapply
@@ -52,13 +48,6 @@
 #' @keywords ANOVA
 #' @export
 #' @examples
-#' nrows <- 1000
-#' df <- data.frame(
-#'   generate_factor(vector = LETTERS[1:5], nrows = nrows, ncols = 10, type = "random"),
-#'   generate_data(nrows = nrows, ncols = 5, type = "normal")
-#' )
-#' result <- plot_oneway(df = df, dv = 11:15, iv = 1:10)
-#'
 #' # Single IV, single DV
 #' plot_oneway(df = mtcars, dv = 2, iv = 9)
 #'
@@ -168,13 +157,10 @@ plot_oneway <- function(df, dv, iv, base_size = 20, type = "se", order_factor = 
 #'   with group means on the y-axis. IV1 levels appear on the x-axis (flipped)
 #'   and IV2 levels are represented by colour and line group. Optional error
 #'   bars and per-group sample size annotations are included.
-#'
 #'   When the number of combinations exceeds four times the available CPU cores
 #'   the plots are produced in parallel via \code{future.apply}, otherwise
 #'   sequentially.
-#'
 #' @inheritParams plot_oneway
-#'
 #' @return A named list with three elements:
 #'   \itemize{
 #'     \item \code{plot_data} — named list of summary data frames (one per
@@ -184,7 +170,6 @@ plot_oneway <- function(df, dv, iv, base_size = 20, type = "se", order_factor = 
 #'     \item \code{plots} — named list of ggplot objects (one per combination).
 #'   }
 #'   All list elements are named \code{"iv1_iv2_dv"}.
-#'
 #' @import ggplot2
 #' @importFrom future plan multisession sequential
 #' @importFrom future.apply future_lapply
@@ -202,8 +187,6 @@ plot_oneway <- function(df, dv, iv, base_size = 20, type = "se", order_factor = 
 #'
 #' # Multiple DVs, two IVs
 #' plot_interaction(df = mtcars, dv = 2:3, iv = 8:9, base_size = 20, type = "se")
-#' plot_interaction(df = mtcars, dv = 2:3, iv = 8:9, base_size = 20, type = "ci")
-#' plot_interaction(df = mtcars, dv = 2:3, iv = 9:10, base_size = 20, type = "sd")
 #'
 #' # No error bars, unordered factor axis
 #' plot_interaction(df = mtcars, dv = 2, iv = 9:10, base_size = 20, type = "",
@@ -322,7 +305,6 @@ plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_fact
 #'   variable (DV), fits a linear model and produces a 6-panel diagnostic plot
 #'   via \code{ggfortify::autoplot}: Residuals vs Fitted, Normal Q-Q, Scale-Location,
 #'   Cook's Distance, Residuals vs Leverage, and Cook's Distance vs Leverage.
-#'
 #'   \strong{Interpretation:}
 #'   \itemize{
 #'     \item \emph{Residuals vs Fitted} — points should be randomly scattered
@@ -330,11 +312,9 @@ plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_fact
 #'     \item \emph{Normal Q-Q} — points should follow the diagonal; large
 #'       deviations indicate non-normality.
 #'   }
-#'
 #'   When the number of IV-DV combinations exceeds four times the available CPU
 #'   cores the plots are produced in parallel via \code{future.apply}, otherwise
 #'   sequentially.
-#'
 #' @param df A data frame containing both the independent and dependent
 #'   variables.
 #' @param dv Integer vector of column indices for the continuous dependent
@@ -343,10 +323,8 @@ plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_fact
 #'   variables.
 #' @param base_size Base font size in pt passed to \code{theme_bw}. Default
 #'   \code{10}.
-#'
 #' @return A named list of ggplot objects (one 6-panel plot per IV-DV pair),
 #'   named \code{"iv_dv"}.
-#'
 #' @import ggplot2 ggfortify
 #' @importFrom future plan multisession sequential
 #' @importFrom future.apply future_lapply
@@ -355,16 +333,8 @@ plot_interaction <- function(df, dv, iv, base_size = 20, type = "se", order_fact
 #' @keywords ANOVA
 #' @export
 #' @examples
-#' nrows <- 1000
-#' df <- data.frame(
-#'   generate_factor(vector = LETTERS[1:5], nrows = nrows, ncols = 10, type = "random"),
-#'   generate_data(nrows = nrows, ncols = 5, type = "normal")
-#' )
-#' result <- plot_oneway_diagnostics(df = df, dv = 11:15, iv = 1:10)
-#'
 #' # Single DV, multiple IVs
 #' plot_oneway_diagnostics(df = mtcars, dv = 1, iv = 9:10)
-#'
 #' # Multiple DVs and IVs
 #' plot_oneway_diagnostics(df = mtcars, dv = 1:2, iv = 9:10)
 plot_oneway_diagnostics <- function(df, dv, iv, base_size = 10) {

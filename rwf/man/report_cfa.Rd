@@ -19,12 +19,15 @@ report_cfa(model, file = NULL, w = 10, h = 10)
 Report
 }
 \examples{
-model='LATENT=~ITEM1+ITEM2+ITEM3+ITEM4+ITEM5'
-df<-lavaan::simulateData(model=model,model.type="cfa",
-                             return.type="data.frame",sample.nobs=100)
-df<-generate_missing(df)
-fit<-lavaan::cfa(model,data=df,missing="ML")
+file = file.path(tempdir(), "cfa")
+model <- "LATENT=~ITEM1+ITEM2+ITEM3+ITEM4+ITEM5"
+df <- lavaan::simulateData(
+  model = model, model.type = "cfa",
+  return.type = "data.frame", sample.nobs = 100
+)
+df <- generate_missing(df)
+fit <- lavaan::cfa(model, data = df, missing = "ML")
 report_cfa(fit)
-report_cfa(fit,file=file.path(tempdir(),"cfa"))
+report_cfa(fit, file = file)
 }
 \keyword{SEM}

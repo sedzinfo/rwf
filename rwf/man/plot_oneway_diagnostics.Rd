@@ -28,7 +28,6 @@ For every combination of independent variable (IV) and dependent
   variable (DV), fits a linear model and produces a 6-panel diagnostic plot
   via \code{ggfortify::autoplot}: Residuals vs Fitted, Normal Q-Q, Scale-Location,
   Cook's Distance, Residuals vs Leverage, and Cook's Distance vs Leverage.
-
   \strong{Interpretation:}
   \itemize{
     \item \emph{Residuals vs Fitted} — points should be randomly scattered
@@ -36,22 +35,13 @@ For every combination of independent variable (IV) and dependent
     \item \emph{Normal Q-Q} — points should follow the diagonal; large
       deviations indicate non-normality.
   }
-
   When the number of IV-DV combinations exceeds four times the available CPU
   cores the plots are produced in parallel via \code{future.apply}, otherwise
   sequentially.
 }
 \examples{
-nrows <- 1000
-df <- data.frame(
-  generate_factor(vector = LETTERS[1:5], nrows = nrows, ncols = 10, type = "random"),
-  generate_data(nrows = nrows, ncols = 5, type = "normal")
-)
-result <- plot_oneway_diagnostics(df = df, dv = 11:15, iv = 1:10)
-
 # Single DV, multiple IVs
 plot_oneway_diagnostics(df = mtcars, dv = 1, iv = 9:10)
-
 # Multiple DVs and IVs
 plot_oneway_diagnostics(df = mtcars, dv = 1:2, iv = 9:10)
 }

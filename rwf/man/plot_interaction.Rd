@@ -57,7 +57,6 @@ For every unique pair of independent variables (IV1 x IV2) and
   with group means on the y-axis. IV1 levels appear on the x-axis (flipped)
   and IV2 levels are represented by colour and line group. Optional error
   bars and per-group sample size annotations are included.
-
   When the number of combinations exceeds four times the available CPU cores
   the plots are produced in parallel via \code{future.apply}, otherwise
   sequentially.
@@ -68,8 +67,6 @@ plot_interaction(df = mtcars, dv = 2, iv = 8:9, base_size = 20, type = "se")
 
 # Multiple DVs, two IVs
 plot_interaction(df = mtcars, dv = 2:3, iv = 8:9, base_size = 20, type = "se")
-plot_interaction(df = mtcars, dv = 2:3, iv = 8:9, base_size = 20, type = "ci")
-plot_interaction(df = mtcars, dv = 2:3, iv = 9:10, base_size = 20, type = "sd")
 
 # No error bars, unordered factor axis
 plot_interaction(df = mtcars, dv = 2, iv = 9:10, base_size = 20, type = "",
