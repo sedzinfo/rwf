@@ -15,17 +15,23 @@ output_compare_model_logistic(model1, model2)
 Compare logistic regression models models
 }
 \examples{
-modelcategoricalpredictor<-glm(case~education,data=infert,family=binomial)
-modelcontinuouspredictor<-glm(case~age,data=infert,family=binomial)
-modeltwopredictors<-glm(case~education*age,data=infert,family=binomial)
-modelmultiple<-glm(case~education*age*parity,data=infert,family=binomial)
-anova(modelcategoricalpredictor,modelcontinuouspredictor)
-output_compare_model_logistic(model1=modelcategoricalpredictor,
-                              model2=modeltwopredictors)
-output_compare_model_logistic(model1=modelcontinuouspredictor,
-                              model2=modeltwopredictors)
-output_compare_model_logistic(model1=modelcontinuouspredictor,
-                              model2=modelcategoricalpredictor)
+modelcategoricalpredictor <- glm(case ~ education, data = infert, family = binomial)
+modelcontinuouspredictor <- glm(case ~ age, data = infert, family = binomial)
+modeltwopredictors <- glm(case ~ education * age, data = infert, family = binomial)
+modelmultiple <- glm(case ~ education * age * parity, data = infert, family = binomial)
+anova(modelcategoricalpredictor, modelcontinuouspredictor)
+output_compare_model_logistic(
+  model1 = modelcategoricalpredictor,
+  model2 = modeltwopredictors
+)
+output_compare_model_logistic(
+  model1 = modelcontinuouspredictor,
+  model2 = modeltwopredictors
+)
+output_compare_model_logistic(
+  model1 = modelcontinuouspredictor,
+  model2 = modelcategoricalpredictor
+)
 }
 \keyword{logistic}
 \keyword{regression}

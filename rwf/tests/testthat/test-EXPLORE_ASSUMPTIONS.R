@@ -187,7 +187,7 @@ test_that("plot_boxplot accepts a single vector", {
 ##########################################################################################
 # report_normality_tests
 ##########################################################################################
-test_that("report_normality_tests statistics match stats and DescTools", {
+test_that("report_normality_tests statistics match stats", {
   dir <- withr::local_tempdir()
   withr::local_seed(4)
   df <- data.frame(a = c(stats::rnorm(40), NA), b = c(stats::rexp(41)))
@@ -209,22 +209,39 @@ test_that("report_normality_tests statistics match stats and DescTools", {
     ks <- stats::ks.test(z, "pnorm", mean = mean(z), sd = stats::sd(z))
     expect_equal(r$statistic[7], unname(ks$statistic))
     expect_equal(r$p[7], ks$p.value)
+  }
+})
+
+test_that("report_normality_tests Jarque-Bera matches the robust test of DescTools", {
+  skip_if_not_installed("DescTools")
+  dir <- withr::local_tempdir()
+  withr::local_seed(4)
+  df <- data.frame(a = c(stats::rnorm(40), NA), b = c(stats::rexp(41)))
+  quietly(report_normality_tests(df = df, file = file.path(dir, "normality")))
+  result <- openxlsx::read.xlsx(file.path(dir, "normality.xlsx"))
+  for (v in c("a", "b")) {
+    x <- stats::na.omit(df[[v]])
+    z <- (x - mean(x)) / stats::sd(x)
+    r <- result[result$variable == v, ]
     jb <- DescTools::JarqueBeraTest(z)
     expect_equal(r$statistic[5], unname(jb$statistic))
-    expect_equal(r$p[5], jb$p.value)
+    # DescTools computes 1 - pchisq(), which loses digits far in the tail
+    expect_equal(r$p[5], jb$p.value, tolerance = 1e-6)
+    expect_equal(r$method[5], jb$method)
   }
 })
 
 test_that("report_normality_tests composite tests match nortest", {
-  skip_if_not_installed("nortest")
   dir <- withr::local_tempdir()
   withr::local_seed(5)
   x <- stats::rgamma(60, shape = 3)
   quietly(report_normality_tests(df = data.frame(x = x), file = file.path(dir, "nt")))
   r <- openxlsx::read.xlsx(file.path(dir, "nt.xlsx"))
   z <- (x - mean(x)) / stats::sd(x)
-  # Anderson-Darling against N(0, 1) on standardised data has the same statistic as the composite test
-  expect_equal(r$statistic[2], unname(nortest::ad.test(x)$statistic))
+  # the composite Anderson-Darling test: its p value allows for the mean and sd being estimated
+  ad <- nortest::ad.test(z)
+  expect_equal(r$statistic[2], unname(ad$statistic))
+  expect_equal(r$p[2], ad$p.value)
   cvm <- nortest::cvm.test(z)
   expect_equal(r$statistic[3], unname(cvm$statistic))
   expect_equal(r$p[3], cvm$p.value)

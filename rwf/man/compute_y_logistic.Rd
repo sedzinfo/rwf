@@ -17,10 +17,12 @@ compute_y_logistic(intercept, coefficient, x)
 This function requires x range to produce a vector with y values
 }
 \examples{
-x<--10:10
-compute_y_logistic(0,1,x)
-compute_y_logistic(0,1,1)
-plot(x,compute_y_logistic(0,1,x),type="l");grid();abline(b=0,a=.5)
+x <- -10:10
+compute_y_logistic(0, 1, x)
+compute_y_logistic(0, 1, 1)
+plot(x, compute_y_logistic(0, 1, x), type = "l")
+grid()
+abline(b = 0, a = .5)
 }
 \keyword{logistic}
 \keyword{regression}

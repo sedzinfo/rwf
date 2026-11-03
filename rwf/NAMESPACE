@@ -195,14 +195,6 @@ import(ggplot2)
 import(grid)
 import(gtable)
 import(openxlsx)
-importFrom(DescTools,
-  AndersonDarlingTest,
-  CramerVonMisesTest,
-  JarqueBeraTest,
-  LillieTest,
-  PearsonTest,
-  ShapiroFranciaTest
-)
 importFrom(MASS,mvrnorm)
 importFrom(NLP,
   Annotation,
@@ -311,6 +303,13 @@ importFrom(mirt,
 importFrom(nlme,
   gls,
   lme
+)
+importFrom(nortest,
+  ad.test,
+  cvm.test,
+  lillie.test,
+  pearson.test,
+  sf.test
 )
 importFrom(openNLP,Maxent_Word_Token_Annotator)
 importFrom(openxlsx,

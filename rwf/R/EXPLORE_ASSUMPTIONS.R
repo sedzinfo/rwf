@@ -392,7 +392,8 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
 #' @title Battery of normality tests
 #' @description Runs eight normality tests on each numeric column of \code{df}.
 #'   The tests are Shapiro-Wilk, Anderson-Darling, \enc{Cramér}{Cramer}-von Mises, Shapiro-Francia,
-#'   Jarque-Bera, Kolmogorov-Smirnov, Lilliefors, and Pearson chi-squared.
+#'   Jarque-Bera (the robust version of Gel and Gastwirth, 2008), Kolmogorov-Smirnov,
+#'   Lilliefors, and Pearson chi-squared.
 #'   Each column is z-standardised before testing. Columns with fewer than 8 or
 #'   more than 4999 non-missing observations are skipped with a console message.
 #'   Results are printed to the console; when \code{file} is supplied they are
@@ -405,7 +406,7 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
 #' @return Invisibly returns \code{NULL}. Called for its side effects of
 #'   printing results and optionally writing output files.
 #' @importFrom plyr rbind.fill
-#' @importFrom DescTools AndersonDarlingTest CramerVonMisesTest ShapiroFranciaTest JarqueBeraTest LillieTest PearsonTest
+#' @importFrom nortest ad.test cvm.test lillie.test pearson.test sf.test
 #' @importFrom stats ks.test na.omit shapiro.test
 #' @importFrom openxlsx createWorkbook saveWorkbook
 #' @keywords assumptions
@@ -441,6 +442,20 @@ report_normality_tests <- function(df, file = NULL) {
       instruction = instruction
     )
   }
+  # the robust Jarque-Bera test (Gel and Gastwirth, 2008): skewness and kurtosis scaled by the
+  # mean absolute deviation from the median; the same result as DescTools::JarqueBeraTest()
+  jarque_bera_test <- function(x) {
+    n <- length(x)
+    deviation <- x - mean(x)
+    j <- sqrt(pi / 2) * mean(abs(x - stats::median(x)))
+    statistic <- n / 6 * (mean(deviation^3) / j^3)^2 + n / 64 * (mean(deviation^4) / j^4 - 3)^2
+    structure(list(
+      statistic = c("X-squared" = statistic),
+      parameter = c(df = 2),
+      p.value = stats::pchisq(statistic, df = 2, lower.tail = FALSE),
+      method = "Robust Jarque Bera Test"
+    ), class = "htest")
+  }
   for (i in names(df)) {
     # check the variance on the raw values: a constant column z-standardises to NaN
     vector <- stats::na.omit(df[, i])
@@ -459,13 +474,13 @@ report_normality_tests <- function(df, file = NULL) {
       )
       result <- rbind(
         test_row(shapiro.test(vector), i, N, instruction_shapiro),
-        test_row(DescTools::AndersonDarlingTest(vector, null = "pnorm"), i, N, instruction_anderson),
-        test_row(DescTools::CramerVonMisesTest(vector), i, N, instruction_crammer),
-        test_row(DescTools::ShapiroFranciaTest(vector), i, N, instruction_shapiro_francia),
-        test_row(DescTools::JarqueBeraTest(vector), i, N, instruction_jarque),
-        test_row(DescTools::LillieTest(vector), i, N, instruction_lilliefors),
+        test_row(nortest::ad.test(vector), i, N, instruction_anderson),
+        test_row(nortest::cvm.test(vector), i, N, instruction_crammer),
+        test_row(nortest::sf.test(vector), i, N, instruction_shapiro_francia),
+        test_row(jarque_bera_test(vector), i, N, instruction_jarque),
+        test_row(nortest::lillie.test(vector), i, N, instruction_lilliefors),
         test_row(result_kolmogorov, i, N, instruction_kolmogorov_i),
-        test_row(DescTools::PearsonTest(vector, n.classes = ceiling(2 * (N^(2 / 5))), adjust = TRUE), i, N, instruction_pearson)
+        test_row(nortest::pearson.test(vector, n.classes = ceiling(2 * (N^(2 / 5))), adjust = TRUE), i, N, instruction_pearson)
       )
       result_df <- rbind(result_df, result)
     } else {

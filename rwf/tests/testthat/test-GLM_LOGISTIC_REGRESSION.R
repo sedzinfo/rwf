@@ -132,11 +132,13 @@ test_that("report_logistic xlsx output matches summary.glm, odds ratios, AIC, VI
   expect_equal(chi$df, lrt$Df[2])
   expect_equal(chi$p, lrt[["Pr(>Chi)"]][2])
 
-  pseudo <- read_sheet(xlsx, "pseudo R^2")
-  # DescTools refits the null model from the call, which needs an unqualified glm()
-  model_unqualified <- glm(case ~ spontaneous + induced + age, data = infert, family = binomial)
-  reference <- DescTools::PseudoR2(model_unqualified, which = c("McFadden", "CoxSnell", "Nagelkerke"))
-  expect_equal(pseudo$Statistic, unname(reference))
+  if (requireNamespace("DescTools", quietly = TRUE)) {
+    pseudo <- read_sheet(xlsx, "pseudo R^2")
+    # DescTools refits the null model from the call, which needs an unqualified glm()
+    model_unqualified <- glm(case ~ spontaneous + induced + age, data = infert, family = binomial)
+    reference <- DescTools::PseudoR2(model_unqualified, which = c("McFadden", "CoxSnell", "Nagelkerke"))
+    expect_equal(pseudo$Statistic, unname(reference))
+  }
 
   vif <- read_sheet(xlsx, "VIF")
   expect_equal(vif[[1]], unname(car::vif(model)))

@@ -20,7 +20,8 @@ Invisibly returns \code{NULL}. Called for its side effects of
 \description{
 Runs eight normality tests on each numeric column of \code{df}.
   The tests are Shapiro-Wilk, Anderson-Darling, \enc{Cramér}{Cramer}-von Mises, Shapiro-Francia,
-  Jarque-Bera, Kolmogorov-Smirnov, Lilliefors, and Pearson chi-squared.
+  Jarque-Bera (the robust version of Gel and Gastwirth, 2008), Kolmogorov-Smirnov,
+  Lilliefors, and Pearson chi-squared.
   Each column is z-standardised before testing. Columns with fewer than 8 or
   more than 4999 non-missing observations are skipped with a console message.
   Results are printed to the console; when \code{file} is supplied they are

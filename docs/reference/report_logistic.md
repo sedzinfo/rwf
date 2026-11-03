@@ -83,24 +83,24 @@ significant)\
 ## Examples
 
 ``` r
-modelcategoricalpredictor0<-glm(case~education,data=infert,family=binomial)
-modelcategoricalpredictor1<-glm(case~education,data=infert,family=gaussian)
-#modelcategoricalpredictor2<-glm(case~education,data=infert,family=Gamma)
-#modelcategoricalpredictor3<-glm(case~education,data=infert,family=inverse.gaussian)
-modelcategoricalpredictor4<-glm(case~education,data=infert,family=poisson)
-modelcategoricalpredictor5<-glm(case~education,data=infert,family=quasi)
-modelcategoricalpredictor6<-glm(case~education,data=infert,family=quasibinomial)
-modelcategoricalpredictor7<-glm(case~education,data=infert,family=quasipoisson)
-modelcontinuouspredictor0<-glm(case~stratum,data=infert,family=binomial)
-modeltwopredictors0<-glm(case~education+stratum,data=infert,family=binomial)
-modeltwopredictors1<-glm(case~education+stratum,data=infert,family=gaussian)
-#modeltwopredictors2<-glm(case~education+stratum,data=infert,family=Gamma)
-#modeltwopredictors3<-glm(case~education+stratum,data=infert,family=inverse.gaussian)
-modeltwopredictors4<-glm(case~education+stratum,data=infert,family=poisson)
-modeltwopredictors5<-glm(case~education+stratum,data=infert,family=quasi)
-modeltwopredictors6<-glm(case~education+stratum,data=infert,family=quasibinomial)
-modeltwopredictors7<-glm(case~education+stratum,data=infert,family=quasipoisson)
-report_logistic(model=modelcategoricalpredictor0)
+modelcategoricalpredictor0 <- glm(case ~ education, data = infert, family = binomial)
+modelcategoricalpredictor1 <- glm(case ~ education, data = infert, family = gaussian)
+# modelcategoricalpredictor2<-glm(case ~ education, data = infert, family = Gamma)
+# modelcategoricalpredictor3<-glm(case ~ education, data = infert, family = inverse.gaussian)
+modelcategoricalpredictor4 <- glm(case ~ education, data = infert, family = poisson)
+modelcategoricalpredictor5 <- glm(case ~ education, data = infert, family = quasi)
+modelcategoricalpredictor6 <- glm(case ~ education, data = infert, family = quasibinomial)
+modelcategoricalpredictor7 <- glm(case ~ education, data = infert, family = quasipoisson)
+modelcontinuouspredictor0 <- glm(case ~ stratum, data = infert, family = binomial)
+modeltwopredictors0 <- glm(case ~ education + stratum, data = infert, family = binomial)
+modeltwopredictors1 <- glm(case ~ education + stratum, data = infert, family = gaussian)
+# modeltwopredictors2<-glm(case ~ education + stratum, data = infert, family = Gamma)
+# modeltwopredictors3<-glm(case ~ education + stratum, data = infert, family = inverse.gaussian)
+modeltwopredictors4 <- glm(case ~ education + stratum, data = infert, family = poisson)
+modeltwopredictors5 <- glm(case ~ education + stratum, data = infert, family = quasi)
+modeltwopredictors6 <- glm(case ~ education + stratum, data = infert, family = quasibinomial)
+modeltwopredictors7 <- glm(case ~ education + stratum, data = infert, family = quasipoisson)
+report_logistic(model = modelcategoricalpredictor0)
 
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
@@ -168,7 +168,7 @@ report_logistic(model=modelcategoricalpredictor0)
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"
@@ -208,7 +208,7 @@ report_logistic(model=modelcategoricalpredictor0)
 #>                                                      call
 #> 1 glm(formula=case~education,family=binomial,data=infert)
 #> NULL
-report_logistic(model=modelcategoricalpredictor1)
+report_logistic(model = modelcategoricalpredictor1)
 
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
@@ -278,7 +278,7 @@ report_logistic(model=modelcategoricalpredictor1)
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"
@@ -318,9 +318,9 @@ report_logistic(model=modelcategoricalpredictor1)
 #>                                                      call
 #> 1 glm(formula=case~education,family=gaussian,data=infert)
 #> NULL
-#report_logistic(model=modelcategoricalpredictor2)
-#report_logistic(model=modelcategoricalpredictor3)
-report_logistic(model=modelcategoricalpredictor4)
+# report_logistic(model=modelcategoricalpredictor2)
+# report_logistic(model=modelcategoricalpredictor3)
+report_logistic(model = modelcategoricalpredictor4)
 
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
@@ -390,7 +390,7 @@ report_logistic(model=modelcategoricalpredictor4)
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"
@@ -430,7 +430,7 @@ report_logistic(model=modelcategoricalpredictor4)
 #>                                                     call
 #> 1 glm(formula=case~education,family=poisson,data=infert)
 #> NULL
-report_logistic(model=modelcategoricalpredictor5)
+report_logistic(model = modelcategoricalpredictor5)
 
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
@@ -500,7 +500,7 @@ report_logistic(model=modelcategoricalpredictor5)
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"
@@ -540,7 +540,7 @@ report_logistic(model=modelcategoricalpredictor5)
 #>                                                   call
 #> 1 glm(formula=case~education,family=quasi,data=infert)
 #> NULL
-report_logistic(model=modelcategoricalpredictor6)
+report_logistic(model = modelcategoricalpredictor6)
 
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
@@ -608,7 +608,7 @@ report_logistic(model=modelcategoricalpredictor6)
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"
@@ -648,7 +648,7 @@ report_logistic(model=modelcategoricalpredictor6)
 #>                                                           call
 #> 1 glm(formula=case~education,family=quasibinomial,data=infert)
 #> NULL
-report_logistic(model=modelcategoricalpredictor7)
+report_logistic(model = modelcategoricalpredictor7)
 
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
@@ -718,7 +718,7 @@ report_logistic(model=modelcategoricalpredictor7)
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"
@@ -758,7 +758,7 @@ report_logistic(model=modelcategoricalpredictor7)
 #>                                                          call
 #> 1 glm(formula=case~education,family=quasipoisson,data=infert)
 #> NULL
-report_logistic(model=modelcontinuouspredictor0)
+report_logistic(model = modelcontinuouspredictor0)
 
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
@@ -827,7 +827,7 @@ report_logistic(model=modelcontinuouspredictor0)
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"
@@ -867,7 +867,7 @@ report_logistic(model=modelcontinuouspredictor0)
 #>                                                    call
 #> 1 glm(formula=case~stratum,family=binomial,data=infert)
 #> NULL
-report_logistic(model=modeltwopredictors0)
+report_logistic(model = modeltwopredictors0)
 
 #> `geom_line()`: Each group consists of only one observation.
 #> ℹ Do you need to adjust the group aesthetic?
@@ -939,7 +939,7 @@ report_logistic(model=modeltwopredictors0)
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"
@@ -983,9 +983,11 @@ report_logistic(model=modeltwopredictors0)
 #>                                                               call
 #> 1 glm(formula=case~education+stratum,family=binomial,,data=infert)
 #> NULL
-report_logistic(model=modelcategoricalpredictor0,
-                file=file.path(tempdir(),"logistic_categorical_predictor"),
-                validation_data=infert)
+report_logistic(
+  model = modelcategoricalpredictor0,
+  file = file.path(tempdir(), "logistic_categorical_predictor"),
+  validation_data = infert
+)
 
 
 
@@ -1052,7 +1054,7 @@ report_logistic(model=modelcategoricalpredictor0,
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"
@@ -1092,9 +1094,11 @@ report_logistic(model=modelcategoricalpredictor0,
 #>                                                      call
 #> 1 glm(formula=case~education,family=binomial,data=infert)
 #> NULL
-report_logistic(model=modelcontinuouspredictor0,
-                file=file.path(tempdir(),"logistic_continuous_predictor"),
-                validation_data=infert)
+report_logistic(
+  model = modelcontinuouspredictor0,
+  file = file.path(tempdir(), "logistic_continuous_predictor"),
+  validation_data = infert
+)
 
 
 
@@ -1163,7 +1167,7 @@ report_logistic(model=modelcontinuouspredictor0,
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"
@@ -1203,9 +1207,11 @@ report_logistic(model=modelcontinuouspredictor0,
 #>                                                    call
 #> 1 glm(formula=case~stratum,family=binomial,data=infert)
 #> NULL
-report_logistic(model=modeltwopredictors0,
-                file=file.path(tempdir(),"logistic_two_predictors"),
-                validation_data=infert[1:10,])
+report_logistic(
+  model = modeltwopredictors0,
+  file = file.path(tempdir(), "logistic_two_predictors"),
+  validation_data = infert[1:10, ]
+)
 
 
 
@@ -1276,7 +1282,7 @@ report_logistic(model=modeltwopredictors0,
 #> [1] "##################################################"
 #> [1] "Outlier Descriptives"
 #> [1] "##################################################"
-#> [1] "Problematic values for standardized residuals > +-1.96"                                                                             
+#> [1] "Problematic values for standardized residuals > +- 1.96"                                                                            
 #> [2] "Problematic values for dfbeta >= 1"                                                                                                 
 #> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"
 #> [1] "#########################"

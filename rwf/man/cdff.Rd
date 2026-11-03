@@ -70,7 +70,7 @@ MIN and MAX are only reported where the values have a natural order:
   time), leaving out \code{NA} and \code{NaN}; RANGE still counts them.
 }
 \examples{
-cdff(df = mtcars, parralel = TRUE)
+# cdff(df = mtcars, parralel = TRUE)
 cdff(df = change_data_type(mtcars, "factor"), nuniques = 3)
 cdff(df = data.frame(t(mtcars)), file = file.path(tempdir(), "mtcars"), nuniques = 10)
 cdff(df = mtcars)

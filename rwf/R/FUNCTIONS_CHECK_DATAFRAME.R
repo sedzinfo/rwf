@@ -67,7 +67,7 @@
 #' @keywords dataframe diagnostics summary missing-values
 #' @export
 #' @examples
-#' cdf(df = mtcars, parralel = TRUE)
+#' # cdf(df = mtcars, parralel = TRUE)
 #' cdf(df = change_data_type(mtcars, "factor"), nuniques = 3)
 #' cdf(df = data.frame(t(mtcars)), file = file.path(tempdir(), "mtcars"), nuniques = 10)
 #' cdf(df = mtcars)
@@ -196,7 +196,7 @@ cdf <- function(df, name_length = (getOption("width") / 3), digits = 2, nuniques
 #' @keywords dataframe diagnostics summary missing-values
 #' @export
 #' @examples
-#' cdff(df = mtcars, parralel = TRUE)
+#' # cdff(df = mtcars, parralel = TRUE)
 #' cdff(df = change_data_type(mtcars, "factor"), nuniques = 3)
 #' cdff(df = data.frame(t(mtcars)), file = file.path(tempdir(), "mtcars"), nuniques = 10)
 #' cdff(df = mtcars)

@@ -116,7 +116,7 @@
     <p>(1) Problematic values for standardized residuals &gt; +-1.96 <br>
 Standardized residuals are residuals divided by an estimated standard deviation and they can be interpreted as z scores in that: <br>
 95<!-- % of z-scores should lie between -1.96 and +1.96 \cr -->
-99<!-- % of z-scores should lie between -2.58 and +2.58 \cr  -->
+99<!-- % of z-scores should lie between -2.58 and +2.58 \cr -->
 99.99<!-- % of z-scores should lie between -3.29 and +3.29 \cr -->
 (2) Problematic values for dfBeta &gt;=1 <br>
 dfBeta estimates coefficients if the respective case is removed from the dataset <br>
@@ -135,24 +135,24 @@ ASSUMPTIONS  <br>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">modelcategoricalpredictor0</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">binomial</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modelcategoricalpredictor1</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">gaussian</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#modelcategoricalpredictor2&lt;-glm(case~education,data=infert,family=Gamma)</span></span></span>
-<span class="r-in"><span><span class="co">#modelcategoricalpredictor3&lt;-glm(case~education,data=infert,family=inverse.gaussian)</span></span></span>
-<span class="r-in"><span><span class="va">modelcategoricalpredictor4</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">poisson</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modelcategoricalpredictor5</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">quasi</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modelcategoricalpredictor6</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">quasibinomial</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modelcategoricalpredictor7</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">quasipoisson</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modelcontinuouspredictor0</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">stratum</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">binomial</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modeltwopredictors0</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span><span class="op">+</span><span class="va">stratum</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">binomial</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modeltwopredictors1</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span><span class="op">+</span><span class="va">stratum</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">gaussian</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co">#modeltwopredictors2&lt;-glm(case~education+stratum,data=infert,family=Gamma)</span></span></span>
-<span class="r-in"><span><span class="co">#modeltwopredictors3&lt;-glm(case~education+stratum,data=infert,family=inverse.gaussian)</span></span></span>
-<span class="r-in"><span><span class="va">modeltwopredictors4</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span><span class="op">+</span><span class="va">stratum</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">poisson</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modeltwopredictors5</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span><span class="op">+</span><span class="va">stratum</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">quasi</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modeltwopredictors6</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span><span class="op">+</span><span class="va">stratum</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">quasibinomial</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">modeltwopredictors7</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span><span class="op">~</span><span class="va">education</span><span class="op">+</span><span class="va">stratum</span>,data<span class="op">=</span><span class="va">infert</span>,family<span class="op">=</span><span class="va">quasipoisson</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcategoricalpredictor0</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">modelcategoricalpredictor0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">binomial</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modelcategoricalpredictor1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">gaussian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># modelcategoricalpredictor2&lt;-glm(case ~ education, data = infert, family = Gamma)</span></span></span>
+<span class="r-in"><span><span class="co"># modelcategoricalpredictor3&lt;-glm(case ~ education, data = infert, family = inverse.gaussian)</span></span></span>
+<span class="r-in"><span><span class="va">modelcategoricalpredictor4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">poisson</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modelcategoricalpredictor5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">quasi</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modelcategoricalpredictor6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">quasibinomial</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modelcategoricalpredictor7</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">quasipoisson</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modelcontinuouspredictor0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">stratum</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">binomial</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modeltwopredictors0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span> <span class="op">+</span> <span class="va">stratum</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">binomial</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modeltwopredictors1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span> <span class="op">+</span> <span class="va">stratum</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">gaussian</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># modeltwopredictors2&lt;-glm(case ~ education + stratum, data = infert, family = Gamma)</span></span></span>
+<span class="r-in"><span><span class="co"># modeltwopredictors3&lt;-glm(case ~ education + stratum, data = infert, family = inverse.gaussian)</span></span></span>
+<span class="r-in"><span><span class="va">modeltwopredictors4</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span> <span class="op">+</span> <span class="va">stratum</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">poisson</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modeltwopredictors5</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span> <span class="op">+</span> <span class="va">stratum</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">quasi</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modeltwopredictors6</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span> <span class="op">+</span> <span class="va">stratum</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">quasibinomial</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">modeltwopredictors7</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html" class="external-link">glm</a></span><span class="op">(</span><span class="va">case</span> <span class="op">~</span> <span class="va">education</span> <span class="op">+</span> <span class="va">stratum</span>, data <span class="op">=</span> <span class="va">infert</span>, family <span class="op">=</span> <span class="va">quasipoisson</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model <span class="op">=</span> <span class="va">modelcategoricalpredictor0</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-1.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_line()`: Each group consists of only one observation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you need to adjust the <span style="color: #00BB00;">group</span> aesthetic?</span>
@@ -220,7 +220,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
@@ -260,7 +260,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                      call</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~education,family=binomial,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcategoricalpredictor1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model <span class="op">=</span> <span class="va">modelcategoricalpredictor1</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-4.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_line()`: Each group consists of only one observation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you need to adjust the <span style="color: #00BB00;">group</span> aesthetic?</span>
@@ -330,7 +330,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
@@ -370,9 +370,9 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                      call</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~education,family=gaussian,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span><span class="co">#report_logistic(model=modelcategoricalpredictor2)</span></span></span>
-<span class="r-in"><span><span class="co">#report_logistic(model=modelcategoricalpredictor3)</span></span></span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcategoricalpredictor4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># report_logistic(model=modelcategoricalpredictor2)</span></span></span>
+<span class="r-in"><span><span class="co"># report_logistic(model=modelcategoricalpredictor3)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model <span class="op">=</span> <span class="va">modelcategoricalpredictor4</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-7.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_line()`: Each group consists of only one observation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you need to adjust the <span style="color: #00BB00;">group</span> aesthetic?</span>
@@ -442,7 +442,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
@@ -482,7 +482,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                     call</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~education,family=poisson,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcategoricalpredictor5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model <span class="op">=</span> <span class="va">modelcategoricalpredictor5</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-10.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_line()`: Each group consists of only one observation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you need to adjust the <span style="color: #00BB00;">group</span> aesthetic?</span>
@@ -552,7 +552,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
@@ -592,7 +592,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                   call</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~education,family=quasi,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcategoricalpredictor6</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model <span class="op">=</span> <span class="va">modelcategoricalpredictor6</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-13.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_line()`: Each group consists of only one observation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you need to adjust the <span style="color: #00BB00;">group</span> aesthetic?</span>
@@ -660,7 +660,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
@@ -700,7 +700,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                           call</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~education,family=quasibinomial,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcategoricalpredictor7</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model <span class="op">=</span> <span class="va">modelcategoricalpredictor7</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-16.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_line()`: Each group consists of only one observation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you need to adjust the <span style="color: #00BB00;">group</span> aesthetic?</span>
@@ -770,7 +770,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
@@ -810,7 +810,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                          call</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~education,family=quasipoisson,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcontinuouspredictor0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model <span class="op">=</span> <span class="va">modelcontinuouspredictor0</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-19.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_line()`: Each group consists of only one observation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you need to adjust the <span style="color: #00BB00;">group</span> aesthetic?</span>
@@ -879,7 +879,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
@@ -919,7 +919,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                    call</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~stratum,family=binomial,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modeltwopredictors0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model <span class="op">=</span> <span class="va">modeltwopredictors0</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-22.png" alt="" width="700" height="433"></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> `geom_line()`: Each group consists of only one observation.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Do you need to adjust the <span style="color: #00BB00;">group</span> aesthetic?</span>
@@ -991,7 +991,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
@@ -1035,9 +1035,11 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                               call</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~education+stratum,family=binomial,,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcategoricalpredictor0</span>,</span></span>
-<span class="r-in"><span>                file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"logistic_categorical_predictor"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                validation_data<span class="op">=</span><span class="va">infert</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="va">modelcategoricalpredictor0</span>,</span></span>
+<span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"logistic_categorical_predictor"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  validation_data <span class="op">=</span> <span class="va">infert</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-25.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_logistic-26.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_logistic-27.png" alt="" width="700" height="433"></span>
@@ -1104,7 +1106,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
@@ -1144,9 +1146,11 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                      call</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~education,family=binomial,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcontinuouspredictor0</span>,</span></span>
-<span class="r-in"><span>                file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"logistic_continuous_predictor"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                validation_data<span class="op">=</span><span class="va">infert</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="va">modelcontinuouspredictor0</span>,</span></span>
+<span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"logistic_continuous_predictor"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  validation_data <span class="op">=</span> <span class="va">infert</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-28.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_logistic-29.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_logistic-30.png" alt="" width="700" height="433"></span>
@@ -1215,7 +1219,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
@@ -1255,9 +1259,11 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                                                    call</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~stratum,family=binomial,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modeltwopredictors0</span>,</span></span>
-<span class="r-in"><span>                file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"logistic_two_predictors"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>                validation_data<span class="op">=</span><span class="va">infert</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  model <span class="op">=</span> <span class="va">modeltwopredictors0</span>,</span></span>
+<span class="r-in"><span>  file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"logistic_two_predictors"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  validation_data <span class="op">=</span> <span class="va">infert</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-31.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_logistic-32.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_logistic-33.png" alt="" width="700" height="433"></span>
@@ -1328,7 +1334,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Outlier Descriptives"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +-1.96"                                                                             </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Problematic values for standardized residuals &gt; +- 1.96"                                                                            </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2] "Problematic values for dfbeta &gt;= 1"                                                                                                 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3] "Problematic values for Hat values (leverage) 2 or 3 times the average (k+1/n) where k=number of predictors n=number of participants"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>

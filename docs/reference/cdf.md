@@ -157,25 +157,7 @@ alphanumeric strings.
 ## Examples
 
 ``` r
-cdf(df = mtcars, parralel = TRUE)
-#> $summary
-#>   COLLUMNS ROWS TOTAL EMPTY null NAN na INF FIN FACTOR
-#> 1       11   32   352     0    0   0  0   0 352      0
-#> 
-#> $check
-#>    NAMES EMPTY null na NOT_NA NAN INF FIN RANGE   MEAN MEDIAN     SD   MIN   MAX    MODE   TYPE   CLASS FACTOR
-#> 1    mpg     0    0  0     32   0   0  32    25  20.09  19.20   6.03  10.4  33.9 numeric double numeric  FALSE
-#> 2    cyl     0    0  0     32   0   0  32     3   6.19   6.00   1.79     4     8 numeric double numeric  FALSE
-#> 3   disp     0    0  0     32   0   0  32    27 230.72 196.30 123.94  71.1   472 numeric double numeric  FALSE
-#> 4     hp     0    0  0     32   0   0  32    22 146.69 123.00  68.56    52   335 numeric double numeric  FALSE
-#> 5   drat     0    0  0     32   0   0  32    22   3.60   3.70   0.53  2.76  4.93 numeric double numeric  FALSE
-#> 6     wt     0    0  0     32   0   0  32    29   3.22   3.33   0.98 1.513 5.424 numeric double numeric  FALSE
-#> 7   qsec     0    0  0     32   0   0  32    30  17.85  17.71   1.79  14.5  22.9 numeric double numeric  FALSE
-#> 8     vs     0    0  0     32   0   0  32     2   0.44   0.00   0.50     0     1 numeric double numeric  FALSE
-#> 9     am     0    0  0     32   0   0  32     2   0.41   0.00   0.50     0     1 numeric double numeric  FALSE
-#> 10  gear     0    0  0     32   0   0  32     3   3.69   4.00   0.74     3     5 numeric double numeric  FALSE
-#> 11  carb     0    0  0     32   0   0  32     6   2.81   2.00   1.62     1     8 numeric double numeric  FALSE
-#> 
+# cdf(df = mtcars, parralel = TRUE)
 cdf(df = change_data_type(mtcars, "factor"), nuniques = 3)
 #> $summary
 #>   COLLUMNS ROWS TOTAL EMPTY null NAN na INF FIN FACTOR

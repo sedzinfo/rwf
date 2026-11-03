@@ -39,7 +39,7 @@ Report logistic regression
 (1) Problematic values for standardized residuals > +-1.96 \cr
 Standardized residuals are residuals divided by an estimated standard deviation and they can be interpreted as z scores in that: \cr
 95% of z-scores should lie between -1.96 and +1.96 \cr
-99% of z-scores should lie between -2.58 and +2.58 \cr 
+99% of z-scores should lie between -2.58 and +2.58 \cr
 99.99% of z-scores should lie between -3.29 and +3.29 \cr
 (2) Problematic values for dfBeta >=1 \cr
 dfBeta estimates coefficients if the respective case is removed from the dataset \cr
@@ -56,42 +56,48 @@ ASSUMPTIONS  \cr
 (3) No multicolinearity \cr
 }
 \examples{
-modelcategoricalpredictor0<-glm(case~education,data=infert,family=binomial)
-modelcategoricalpredictor1<-glm(case~education,data=infert,family=gaussian)
-#modelcategoricalpredictor2<-glm(case~education,data=infert,family=Gamma)
-#modelcategoricalpredictor3<-glm(case~education,data=infert,family=inverse.gaussian)
-modelcategoricalpredictor4<-glm(case~education,data=infert,family=poisson)
-modelcategoricalpredictor5<-glm(case~education,data=infert,family=quasi)
-modelcategoricalpredictor6<-glm(case~education,data=infert,family=quasibinomial)
-modelcategoricalpredictor7<-glm(case~education,data=infert,family=quasipoisson)
-modelcontinuouspredictor0<-glm(case~stratum,data=infert,family=binomial)
-modeltwopredictors0<-glm(case~education+stratum,data=infert,family=binomial)
-modeltwopredictors1<-glm(case~education+stratum,data=infert,family=gaussian)
-#modeltwopredictors2<-glm(case~education+stratum,data=infert,family=Gamma)
-#modeltwopredictors3<-glm(case~education+stratum,data=infert,family=inverse.gaussian)
-modeltwopredictors4<-glm(case~education+stratum,data=infert,family=poisson)
-modeltwopredictors5<-glm(case~education+stratum,data=infert,family=quasi)
-modeltwopredictors6<-glm(case~education+stratum,data=infert,family=quasibinomial)
-modeltwopredictors7<-glm(case~education+stratum,data=infert,family=quasipoisson)
-report_logistic(model=modelcategoricalpredictor0)
-report_logistic(model=modelcategoricalpredictor1)
-#report_logistic(model=modelcategoricalpredictor2)
-#report_logistic(model=modelcategoricalpredictor3)
-report_logistic(model=modelcategoricalpredictor4)
-report_logistic(model=modelcategoricalpredictor5)
-report_logistic(model=modelcategoricalpredictor6)
-report_logistic(model=modelcategoricalpredictor7)
-report_logistic(model=modelcontinuouspredictor0)
-report_logistic(model=modeltwopredictors0)
-report_logistic(model=modelcategoricalpredictor0,
-                file=file.path(tempdir(),"logistic_categorical_predictor"),
-                validation_data=infert)
-report_logistic(model=modelcontinuouspredictor0,
-                file=file.path(tempdir(),"logistic_continuous_predictor"),
-                validation_data=infert)
-report_logistic(model=modeltwopredictors0,
-                file=file.path(tempdir(),"logistic_two_predictors"),
-                validation_data=infert[1:10,])
+modelcategoricalpredictor0 <- glm(case ~ education, data = infert, family = binomial)
+modelcategoricalpredictor1 <- glm(case ~ education, data = infert, family = gaussian)
+# modelcategoricalpredictor2<-glm(case ~ education, data = infert, family = Gamma)
+# modelcategoricalpredictor3<-glm(case ~ education, data = infert, family = inverse.gaussian)
+modelcategoricalpredictor4 <- glm(case ~ education, data = infert, family = poisson)
+modelcategoricalpredictor5 <- glm(case ~ education, data = infert, family = quasi)
+modelcategoricalpredictor6 <- glm(case ~ education, data = infert, family = quasibinomial)
+modelcategoricalpredictor7 <- glm(case ~ education, data = infert, family = quasipoisson)
+modelcontinuouspredictor0 <- glm(case ~ stratum, data = infert, family = binomial)
+modeltwopredictors0 <- glm(case ~ education + stratum, data = infert, family = binomial)
+modeltwopredictors1 <- glm(case ~ education + stratum, data = infert, family = gaussian)
+# modeltwopredictors2<-glm(case ~ education + stratum, data = infert, family = Gamma)
+# modeltwopredictors3<-glm(case ~ education + stratum, data = infert, family = inverse.gaussian)
+modeltwopredictors4 <- glm(case ~ education + stratum, data = infert, family = poisson)
+modeltwopredictors5 <- glm(case ~ education + stratum, data = infert, family = quasi)
+modeltwopredictors6 <- glm(case ~ education + stratum, data = infert, family = quasibinomial)
+modeltwopredictors7 <- glm(case ~ education + stratum, data = infert, family = quasipoisson)
+report_logistic(model = modelcategoricalpredictor0)
+report_logistic(model = modelcategoricalpredictor1)
+# report_logistic(model=modelcategoricalpredictor2)
+# report_logistic(model=modelcategoricalpredictor3)
+report_logistic(model = modelcategoricalpredictor4)
+report_logistic(model = modelcategoricalpredictor5)
+report_logistic(model = modelcategoricalpredictor6)
+report_logistic(model = modelcategoricalpredictor7)
+report_logistic(model = modelcontinuouspredictor0)
+report_logistic(model = modeltwopredictors0)
+report_logistic(
+  model = modelcategoricalpredictor0,
+  file = file.path(tempdir(), "logistic_categorical_predictor"),
+  validation_data = infert
+)
+report_logistic(
+  model = modelcontinuouspredictor0,
+  file = file.path(tempdir(), "logistic_continuous_predictor"),
+  validation_data = infert
+)
+report_logistic(
+  model = modeltwopredictors0,
+  file = file.path(tempdir(), "logistic_two_predictors"),
+  validation_data = infert[1:10, ]
+)
 }
 \keyword{logistic}
 \keyword{regression}
