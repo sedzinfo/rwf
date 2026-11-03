@@ -196,7 +196,7 @@ report_wtests(
   dv = which("bp_before" == names(df_blood_pressure)),
   iv = 2:3,
   var.equal = TRUE,
-  file = "wilcoxontest"
+  file = file.path(tempdir(), "wilcoxontest")
 )
 #>          DV     IV level1 level2 n1 n2      W           p CI_l CI_u alternative                                            method mean1 mean2    sd1   sd2 sd_pooled      d      r k_squared[bartlett]
 #> 1 bp_before    sex Female   Male 60 60 1261.5 0.004720545  -10   -2   two.sided Wilcoxon rank sum test with continuity correction 153.6 159.3 10.736 11.41     11.08 0.5084 0.2579              0.2192

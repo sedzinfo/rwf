@@ -66,9 +66,10 @@ returned invisibly. Each element is a plot recorded with
 ## Examples
 
 ``` r
+file = file.path(tempdir(), "rnorm")
 vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
-plot_normality_diagnostics(df = vector, file = "rnorm", breaks = 30)
+plot_normality_diagnostics(df = vector, file = file, breaks = 30)
 
 plot_normality_diagnostics(df = vector)
 
@@ -81,6 +82,6 @@ plot_normality_diagnostics(df = df, title = "mtcars", pb = TRUE)
 #>   |                                                                                                                                                                                                      |==============================================================================================================================================================================================| 100%
 
 #> 
-plot_normality_diagnostics(df = df, title = "mtcars", file = "rnorm")
+plot_normality_diagnostics(df = df, title = "mtcars")
 
 ```

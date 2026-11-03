@@ -1,7 +1,7 @@
 # Build a question-to-dimension mapping table
 
 Returns a data frame that maps each question to its dimension, including
-question order, short dimension name, and full dimension description.
+questionrder, short dimension name, and full dimension description.
 Useful for documenting scoring keys and validating test structure.
 
 ## Usage
@@ -65,11 +65,11 @@ A data frame with one row per question and four columns:
 ## Examples
 
 ``` r
-key<-c(1,2,3,4,5,1,2,3,4,5)
-dimensions<-paste0("Dimension",1:10)
-elaborate_dimensions<-paste0("Elaborated_Dimension",1:10)
-questions<-paste0("Question",1:65)
-questions_dimensions_dataframe(key,dimensions,elaborate_dimensions,questions)
+key <- c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5)
+dimensions <- paste0("Dimension", 1:10)
+elaborate_dimensions <- paste0("Elaborated_Dimension", 1:10)
+questions <- paste0("Question", 1:65)
+questions_dimensions_dataframe(key, dimensions, elaborate_dimensions, questions)
 #>    ORDER  DIMENSION   ELABORATE DIMENSION   QUESTION
 #> 1      1 Dimension1 Elaborated_Dimension1  Question1
 #> 2      6 Dimension1 Elaborated_Dimension1  Question6

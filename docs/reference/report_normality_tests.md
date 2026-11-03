@@ -35,6 +35,7 @@ results and optionally writing output files.
 ## Examples
 
 ``` r
+file = file.path(tempdir(), "normality_tests")
 vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 report_normality_tests(df = df)
@@ -78,7 +79,7 @@ report_normality_tests(df = df)
 #> 15 Kolmogorov-Smirnov Exact null hypothesis: fully specified normal distribution (ties present, p value is approximate)
 #> 16  Pearson X2 Tests weaker null hypothesis: any distribution with the same probabilities for the given class intervals
 #> NULL
-report_normality_tests(df = vector, file = "normality_tests")
+report_normality_tests(df = vector, file = file)
 #> [1] "##################################################"
 #> [1] "NORMALITY TESTS"
 #> [1] "##################################################"

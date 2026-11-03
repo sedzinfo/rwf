@@ -150,7 +150,8 @@ extension). When <code>NULL</code> (default) no file is written.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">df_ocean_N</span><span class="op">&lt;-</span><span class="va">df_ocean</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"N"</span>,<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df_ocean</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">file</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"descriptives"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">df_ocean_N</span><span class="op">&lt;-</span><span class="va">df_ocean</span><span class="op">[</span>,<span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"N"</span>,<span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">df_ocean</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="fu">response_frequency</span><span class="op">(</span><span class="va">df_ocean_N</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       type variable        0      1     2     3     4     5 miss responses</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1  Percent       N1 0.005071 11.446 19.68 21.93 25.10 21.85    0     19719</span>
@@ -241,7 +242,7 @@ extension). When <code>NULL</code> (default) no file is written.</p></dd>
 <span class="r-in"><span><span class="fu">response_frequency</span><span class="op">(</span><span class="va">df_ocean_N</span>,</span></span>
 <span class="r-in"><span>                   uniqueitems <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,</span></span>
 <span class="r-in"><span>                   type <span class="op">=</span> <span class="st">"all"</span>,</span></span>
-<span class="r-in"><span>  file <span class="op">=</span> <span class="st">"descriptives"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  file <span class="op">=</span> <span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          type variable          1         2         3         4         5       miss responses</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1   Frequency       N1 2257.00000 3880.0000 4324.0000 4949.0000 4308.0000 1.00000000     19718</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2   Frequency       N2 1606.00000 3958.0000 5461.0000 5587.0000 3106.0000 1.00000000     19718</span>

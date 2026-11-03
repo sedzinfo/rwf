@@ -59,36 +59,23 @@ p4 <- ggplot(subset(ChickWeight, Time == 21), aes(x = weight, fill = Diet)) +
   facet_grid(Diet ~ .) +
   ggtitle("Final weight, by diet") +
   theme_bw()
-cars_plot <- plot_histogram(mtcars[1:4])
-
-
+cars_plot <- plot_histogram(mtcars[1:2])
 
 
 plot_multiplot(p1, p2, p3, p4, cols = 2)
 
-plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
+plot_multiplot(plotlist = plot_histogram(mtcars[, 1:2]), cols = 2)
 
 
 
-
-
-plot_multiplot(plotlist = plot_histogram(mtcars),
+plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]),
                layout = matrix(1:4, ncol = 2, byrow = TRUE))
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-plot_multiplot(plotlist = cars_plot, layout = matrix(1:4, ncol = 2, byrow = TRUE))
+plot_multiplot(plotlist = cars_plot, layout = matrix(1:2, ncol = 2, byrow = TRUE))
 
 plot_multiplot(plotlist = cars_plot, cols = 3)
 ```

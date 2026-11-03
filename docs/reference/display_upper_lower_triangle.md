@@ -43,39 +43,39 @@ becomes character.
 ## Examples
 
 ``` r
-m1<-matrix(1:9,nrow=3,ncol=3)
-m2<-matrix(11:19,nrow=3,ncol=3)
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal="upper")
+m1 <- matrix(1:9, nrow = 3, ncol = 3)
+m2 <- matrix(11:19, nrow = 3, ncol = 3)
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = "upper")
 #>      [,1] [,2] [,3]
 #> [1,]    1    4    7
 #> [2,]   12    5    8
 #> [3,]   13   16    9
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal="lower")
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = "lower")
 #>      [,1] [,2] [,3]
 #> [1,]   11    4    7
 #> [2,]   12   15    8
 #> [3,]   13   16   19
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=NA)
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = NA)
 #>      [,1] [,2] [,3]
 #> [1,]   NA    4    7
 #> [2,]   12   NA    8
 #> [3,]   13   16   NA
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=1)
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = 1)
 #>      [,1] [,2] [,3]
 #> [1,]    1    4    7
 #> [2,]   12    1    8
 #> [3,]   13   16    1
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=c("X1","X2","X3"))
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = c("X1", "X2", "X3"))
 #>      [,1] [,2] [,3]
 #> [1,] "X1" "4"  "7" 
 #> [2,] "12" "X2" "8" 
 #> [3,] "13" "16" "X3"
-display_upper_lower_triangle(m_upper=m1,m_lower=m2,diagonal=c(1,2,3))
+display_upper_lower_triangle(m_upper = m1, m_lower = m2, diagonal = c(1, 2, 3))
 #>      [,1] [,2] [,3]
 #> [1,]    1    4    7
 #> [2,]   12    2    8
 #> [3,]   13   16    3
-display_upper_lower_triangle(m_upper=m1,m2)
+display_upper_lower_triangle(m_upper = m1, m2)
 #>      [,1] [,2] [,3]
 #> [1,]   NA    4    7
 #> [2,]   12   NA    8

@@ -66,7 +66,7 @@ write_txt(mtcars)
 #> Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6
 #> Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
 #> Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
-write_txt(mtcars, file = "mtcars")
+write_txt(mtcars, file = file.path(tempdir(), "mtcars"))
 #>                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
 #> Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
 #> Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4

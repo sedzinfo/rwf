@@ -1036,7 +1036,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~education+stratum,family=binomial,,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcategoricalpredictor0</span>,</span></span>
-<span class="r-in"><span>                file<span class="op">=</span><span class="st">"logistic_categorical_predictor"</span>,</span></span>
+<span class="r-in"><span>                file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"logistic_categorical_predictor"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                validation_data<span class="op">=</span><span class="va">infert</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-25.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_logistic-26.png" alt="" width="700" height="433"></span>
@@ -1145,7 +1145,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~education,family=binomial,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modelcontinuouspredictor0</span>,</span></span>
-<span class="r-in"><span>                file<span class="op">=</span><span class="st">"logistic_continuous_predictor"</span>,</span></span>
+<span class="r-in"><span>                file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"logistic_continuous_predictor"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                validation_data<span class="op">=</span><span class="va">infert</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-28.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_logistic-29.png" alt="" width="700" height="433"></span>
@@ -1256,7 +1256,7 @@ ASSUMPTIONS  <br>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 glm(formula=case~stratum,family=binomial,data=infert)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">report_logistic</span><span class="op">(</span>model<span class="op">=</span><span class="va">modeltwopredictors0</span>,</span></span>
-<span class="r-in"><span>                file<span class="op">=</span><span class="st">"logistic_two_predictors"</span>,</span></span>
+<span class="r-in"><span>                file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"logistic_two_predictors"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>                validation_data<span class="op">=</span><span class="va">infert</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_logistic-31.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_logistic-32.png" alt="" width="700" height="433"></span>

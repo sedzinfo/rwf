@@ -263,12 +263,12 @@ res <- report_regression(model = multipleregressionmodel)
 #>                                          call
 #> 1 lm(mpg ~ qsec * hp * wt * drat,data=mtcars)
 #> NULL
-res <- report_regression(model = regressionmodel, file = "regression")
+res <- report_regression(model = regressionmodel, file = file.path(tempdir(), "regression"))
 
 #> Error in eval(model$call$formula): object 'form' not found
 res <- report_regression(
   model = multipleregressionmodel,
-  file = "regression",
+  file = file.path(tempdir(), "regression"),
   plot_diagnostics = TRUE
 )
 

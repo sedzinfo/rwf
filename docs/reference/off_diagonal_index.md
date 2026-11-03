@@ -46,7 +46,7 @@ A data frame (not a matrix) with `length` rows and four numeric columns:
 ## Examples
 
 ``` r
-off_diagonal_index(length=6)
+off_diagonal_index(length = 6)
 #>   x1 x2 x3 x4
 #> 1  1  1  2  0
 #> 2  2  2  3  1

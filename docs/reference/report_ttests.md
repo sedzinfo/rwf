@@ -231,7 +231,7 @@ report_ttests(
   dv = which("bp_before" == names(df_blood_pressure)),
   iv = 2:3,
   var.equal = TRUE,
-  file = "ttest"
+  file = file.path(tempdir(), "ttest")
 )
 #>          DV     IV level1 level2 n1 n2      t  df           p    CI_l   CI_u alternative             method mean1 mean2    sd1   sd2 sd_pooled      d      r k_squared[bartlett] df[bartlett]
 #> 1 bp_before    sex Female   Male 60 60 -2.785 118 0.006240699  -9.639 -1.628   two.sided  Two Sample t-test 153.6 159.3 10.736 11.41     11.08 0.5084 0.2483              0.2192            1

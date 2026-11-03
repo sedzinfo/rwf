@@ -131,7 +131,7 @@ A <code>.log</code> extension is appended automatically. When <code>NULL</code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Ferrari Dino        19.7   6 145.0 175 3.62 2.770 15.50  0  1    5    6</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2</span>
-<span class="r-in"><span><span class="fu">write_txt</span><span class="op">(</span><span class="va">mtcars</span>, file <span class="op">=</span> <span class="st">"mtcars"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">write_txt</span><span class="op">(</span><span class="va">mtcars</span>, file <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"mtcars"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Mazda RX4 Wag       21.0   6 160.0 110 3.90 2.875 17.02  0  1    4    4</span>

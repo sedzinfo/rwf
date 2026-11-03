@@ -78,10 +78,9 @@ returns `NULL` invisibly.
 Unlike
 [`excel_generic_format`](https://sedzinfo.github.io/rwf/reference/excel_generic_format.md),
 this function creates the worksheet and writes the data internally — do
-not call `addWorksheet()` or `writeData()` beforehand.
-
-Threshold expressions follow Excel conditional formatting syntax and are
-applied row by row, skipping `NA` values.
+not call `addWorksheet()` or `writeData()` beforehand. Threshold
+expressions follow Excel conditional formatting syntax and are applied
+row by row, skipping `NA` values.
 
 ## See also
 
@@ -106,9 +105,8 @@ comment <- list(
   extra_comment1 = "test1",
   extra_comment2 = "test2"
 )
-filename <- "excel_critical_value.xlsx"
-if (file.exists(filename)) file.remove(filename)
-#> [1] TRUE
+file <- file.path(tempdir(), "excel_critical_value.xlsx")
+if (file.exists(file)) file.remove(file)
 wb <- openxlsx::createWorkbook()
 df <- generate_missing(generate_correlation_matrix())
 critical <- list(X1 = "<0.05", X5 = "<0")
@@ -116,10 +114,9 @@ excel_critical_value(
   df = df, workbook = wb, sheet = "critical", comment = list(X1 = "test"),
   numFmt = "#0.00", critical = critical
 )
-openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
-filename <- "excel_critical_value_comment.xlsx"
-if (file.exists(filename)) file.remove(filename)
-#> [1] TRUE
+openxlsx::saveWorkbook(wb, file, TRUE)
+file <- file.path(tempdir(), "excel_critical_value_comment.xlsx")
+if (file.exists(file)) file.remove(file)
 wb <- openxlsx::createWorkbook()
 df <- generate_missing(mtcars)
 critical <- list(mpg = ">20", am = "=0")
@@ -127,10 +124,9 @@ excel_critical_value(
   df = df, workbook = wb, sheet = "critical", comment = comment,
   numFmt = "#0.00", critical = critical
 )
-openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
-filename <- "excel_critical_value_comment_min_max.xlsx"
-if (file.exists(filename)) file.remove(filename)
-#> [1] TRUE
+openxlsx::saveWorkbook(wb, file, TRUE)
+file <- file.path(tempdir(), "excel_critical_value_comment_min_max.xlsx")
+if (file.exists(file)) file.remove(file)
 wb <- openxlsx::createWorkbook()
 df <- generate_missing(mtcars)
 critical <- list(mpg = c(">20", "<11"), am = "=0")
@@ -138,5 +134,5 @@ excel_critical_value(
   df = df, workbook = wb, sheet = "critical", comment = comment,
   numFmt = "#0.00", critical = critical
 )
-openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
+openxlsx::saveWorkbook(wb, file, TRUE)
 ```

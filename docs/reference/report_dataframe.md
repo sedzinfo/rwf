@@ -44,7 +44,7 @@ comment <- list(
   carb = "Number of carburetors"
 )
 report_dataframe(mtcars,
-  sheet = "report", file = "mtcars", comment = comment, numFmt = "#0.00",
+  sheet = "report", file = file.path(tempdir(), "mtcars"), comment = comment, numFmt = "#0.00",
   critical = list(am = "<0.05")
 )
 report_dataframe(mtcars,

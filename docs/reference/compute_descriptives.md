@@ -110,6 +110,7 @@ supplied) containing the following columns:
 ## Examples
 
 ``` r
+file = file.path(tempdir(), "descriptives_factor")
 compute_descriptives(df = mtcars, dv = 1:5)
 #>   variable  n       mean          sd  median    trimmed        mad   min    max  range       skew   kurtosis          se     IQR   Q0.1   Q0.25    Q0.5  Q0.75    Q0.9
 #> 1      mpg 32  20.090625   6.0269481  19.200  19.696154   5.411490 10.40  33.90  23.50  0.6106550 -0.3727660  1.06542396   7.375 14.340  15.425  19.200  22.80  30.090
@@ -133,8 +134,7 @@ compute_descriptives(df = mtcars, dv = 1:2)
 #>   variable  n     mean       sd median   trimmed     mad  min  max range       skew  kurtosis        se   IQR  Q0.1  Q0.25 Q0.5 Q0.75  Q0.9
 #> 1      mpg 32 20.09062 6.026948   19.2 19.696154 5.41149 10.4 33.9  23.5  0.6106550 -0.372766 1.0654240 7.375 14.34 15.425 19.2  22.8 30.09
 #> 2      cyl 32  6.18750 1.785922    6.0  6.230769 2.96520  4.0  8.0   4.0 -0.1746119 -1.762120 0.3157093 4.000  4.00  4.000  6.0   8.0  8.00
-compute_descriptives(df = mtcars, dv = 1:2, iv = 9:10,
-                     file = "descriptives_factor")
+compute_descriptives(df = mtcars, dv = 1:2, iv = 9:10, file = file)
 #>    factor variable levels  n      mean        sd median   trimmed     mad  min  max range        skew   kurtosis        se    IQR  Q0.1 Q0.25 Q0.5  Q0.75  Q0.9
 #> 1      am      mpg      0 19 17.147368 3.8339664   17.3 17.117647 3.11346 10.4 24.4  14.0  0.01395038 -0.8031783 0.8795722  4.250 12.72 14.95 17.3 19.200 21.76
 #> 2      am      mpg      1 13 24.392308 6.1665038   22.8 24.381818 6.67170 15.0 33.9  18.9  0.05256118 -1.4553520 1.7102804  9.400 16.58 21.00 22.8 30.400 32.00

@@ -119,7 +119,7 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"minres"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span>,file<span class="op">=</span><span class="st">"efa"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">report_efa</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,df<span class="op">=</span><span class="va">mtcars</span>,file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"efa"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="report_efa-1.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-2.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="report_efa-3.png" alt="" width="700" height="433"></span>
@@ -278,12 +278,12 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> cyl   0.44703 -0.08595</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.23041 -0.46242</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> hp    0.39184  0.29700</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.10510  0.15093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.10511  0.15092</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wt    0.22363  0.11141</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> qsec -0.24689 -0.27788</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> vs   -0.10199 -0.08729</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> vs   -0.10199 -0.08728</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> am    0.21179  0.28057</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> gear  0.29636  0.32215</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> gear  0.29637  0.32215</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> carb -0.06294 -0.05850</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"uls"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -434,7 +434,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>          ULS2     ULS1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mpg  -0.12826  0.12270</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cyl   0.44703 -0.08595</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.23041 -0.46242</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.23041 -0.46243</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> hp    0.39184  0.29700</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.10510  0.15093</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wt    0.22363  0.11141</span>
@@ -591,15 +591,15 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> $weights</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          [,1]     [,2]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mpg  -0.12826  0.12270</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cyl   0.44703 -0.08594</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl   0.44703 -0.08595</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.23041 -0.46243</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hp    0.39184  0.29700</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.10510  0.15093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp    0.39185  0.29700</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.10510  0.15092</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wt    0.22363  0.11142</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> qsec -0.24689 -0.27789</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> vs   -0.10199 -0.08729</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> am    0.21178  0.28057</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> gear  0.29636  0.32216</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> qsec -0.24689 -0.27788</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> vs   -0.10199 -0.08728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> am    0.21179  0.28057</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> gear  0.29636  0.32215</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> carb -0.06294 -0.05850</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/fa.html" class="external-link">fa</a></span><span class="op">(</span><span class="va">mtcars</span>,nfactors<span class="op">=</span><span class="fl">2</span>,rotate<span class="op">=</span><span class="st">"oblimin"</span>,fm<span class="op">=</span><span class="st">"wls"</span>,oblique.scores<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
@@ -704,7 +704,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> carb      0.8266 0.6211          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $loadings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Matrix variable    WLS2    WLS1               type row.names.model.Vaccounted.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Matrix variable    WLS1    WLS2               type row.names.model.Vaccounted.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    Pattern     qsec -0.9000 -0.3500               &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    Pattern       hp  0.8900 -0.1100               &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    Pattern     carb  0.8400  0.2500               &lt;NA&gt;                        &lt;NA&gt;</span>
@@ -747,10 +747,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10    350             0.30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          WLS2     WLS1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          WLS1     WLS2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mpg  -0.16930  0.10619</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cyl   0.44769 -0.01193</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.18245 -0.39136</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.18246 -0.39136</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> hp    0.36842  0.25800</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.11254  0.21029</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wt    0.14174  0.10278</span>
@@ -1020,7 +1020,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> carb      0.8266 0.6211          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $loadings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Matrix variable     PA2     PA1               type row.names.model.Vaccounted.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Matrix variable     PA1     PA2               type row.names.model.Vaccounted.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    Pattern     qsec -0.9200 -0.3500               &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    Pattern       hp  0.8900 -0.1200               &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    Pattern     carb  0.8500  0.2400               &lt;NA&gt;                        &lt;NA&gt;</span>
@@ -1043,9 +1043,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 20 Structure     drat -0.3900  0.8300               &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 21 Structure       wt  0.6100 -0.8100               &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 22 Structure     disp  0.7500 -0.7700               &lt;NA&gt;                        &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23      &lt;NA&gt;     &lt;NA&gt;  4.7009  4.1570 variance accounted                 SS loadings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24      &lt;NA&gt;     &lt;NA&gt;  0.4274  0.3779 variance accounted              Proportion Var</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25      &lt;NA&gt;     &lt;NA&gt;  0.4274  0.8053 variance accounted              Cumulative Var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23      &lt;NA&gt;     &lt;NA&gt;  4.7008  4.1570 variance accounted                 SS loadings</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24      &lt;NA&gt;     &lt;NA&gt;  0.4273  0.3779 variance accounted              Proportion Var</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25      &lt;NA&gt;     &lt;NA&gt;  0.4273  0.8053 variance accounted              Cumulative Var</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 26      &lt;NA&gt;     &lt;NA&gt;  0.5307  0.4693 variance accounted        Proportion Explained</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 27      &lt;NA&gt;     &lt;NA&gt;  0.5307  1.0000 variance accounted       Cumulative Proportion</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1063,11 +1063,11 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10    350             0.30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           PA2      PA1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           PA1      PA2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mpg  -0.12719  0.12383</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> cyl   0.44305 -0.08941</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.22260 -0.45697</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hp    0.38630  0.29347</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> cyl   0.44305 -0.08942</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.22261 -0.45697</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp    0.38630  0.29346</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.10438  0.15061</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wt    0.21774  0.10593</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> qsec -0.24784 -0.27803</span>
@@ -1386,9 +1386,9 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> hp    0.28482  0.12510</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.05601  0.12733</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wt   -0.02271 -0.15460</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> qsec -0.27060 -0.21888</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> qsec -0.27061 -0.21888</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> vs   -0.12571 -0.05534</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> am    0.19853  0.30023</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> am    0.19854  0.30023</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> gear  0.18521  0.26599</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> carb  0.13757  0.10421</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -1495,7 +1495,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> carb      0.8266 0.6211          NA</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $loadings</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       Matrix variable   MRFA1   MRFA2               type row.names.model.Vaccounted.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       Matrix variable   MRFA2   MRFA1               type row.names.model.Vaccounted.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1    Pattern       am  0.9400  0.2200               &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2    Pattern     gear  0.9300  0.3000               &lt;NA&gt;                        &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3    Pattern     drat  0.8100 -0.0900               &lt;NA&gt;                        &lt;NA&gt;</span>
@@ -1538,7 +1538,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> 10    350             0.30</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $weights</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         MRFA1    MRFA2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         MRFA2    MRFA1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> mpg   0.12574 -0.03050</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cyl  -0.31638  0.06544</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.02264  0.26953</span>
@@ -1700,10 +1700,10 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> mpg  -0.09760  0.11552</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> cyl   0.38551 -0.11616</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> disp -0.24251 -0.45299</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> hp    0.39092  0.27782</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> hp    0.39093  0.27781</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drat  0.09590  0.13713</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> wt    0.25525  0.09710</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> qsec -0.30210 -0.29923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> qsec -0.30211 -0.29923</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> vs   -0.10511 -0.07628</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> am    0.19842  0.28468</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> gear  0.27461  0.29736</span>

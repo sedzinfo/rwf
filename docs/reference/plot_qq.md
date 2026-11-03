@@ -46,9 +46,7 @@ plot_qq(df = vector)
 plot_qq(df = df)
 
 
-plot_multiplot(plotlist = plot_qq(df = mtcars[,1:4]), cols = 2)
-
-
+plot_multiplot(plotlist = plot_qq(df = mtcars[,1:2]), cols = 2)
 
 
 ```

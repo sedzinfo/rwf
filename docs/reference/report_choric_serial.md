@@ -64,7 +64,7 @@ report_choric_serial(
 
 ``` r
 report_choric_serial(generate_data(min=0,max=1,type="uniform"),
-              type="tetrachoric",file="tetrachoric")
+              type="tetrachoric",file=file.path(tempdir(),"tetrachoric"))
 #> Warning: Matrix was not positive definite, smoothing was done
 #> 
 
@@ -72,35 +72,22 @@ report_choric_serial(generate_data(min=0,max=1,type="uniform"),
 #> tetrachoric correlation 
 #>    X1    X2    X3    X4    X5   
 #> X1  1.00                        
-#> X2 -0.45  1.00                  
-#> X3  0.16 -0.53  1.00            
-#> X4 -0.15 -0.15  0.40  1.00      
-#> X5  0.53 -0.16  0.74  0.26  1.00
+#> X2  0.71  1.00                  
+#> X3  0.03  0.55  1.00            
+#> X4  0.00  0.59  0.76  1.00      
+#> X5  0.31 -0.31 -0.17 -0.54  1.00
 #> 
 #>  with tau of 
 #>    X1    X2    X3    X4    X5 
-#> -0.52 -0.52  0.25 -0.25 -0.25 
+#>  0.00  0.00 -0.25  0.25 -0.52 
 report_choric_serial(generate_data(min=1,max=5,type="uniform"),
               type="polychoric")
-
-#> Call: psych::polychoric(x = x)
-#> Polychoric correlations 
-#>    X1    X2    X3    X4    X5   
-#> X1  1.00                        
-#> X2  0.27  1.00                  
-#> X3 -0.33 -0.10  1.00            
-#> X4  0.27  0.14  0.23  1.00      
-#> X5 -0.71 -0.19 -0.27 -0.41  1.00
-#> 
-#>  with tau of 
-#>        1     2     3    4
-#> X1 -0.52  0.25  0.84 1.28
-#> X2 -0.84  0.25  0.52 0.84
-#> X3 -0.52 -0.25 -0.25 0.52
-#> X4 -0.52 -0.25  0.00 0.25
-#> X5 -0.25  0.00  0.52 0.84
+#> Warning: The items do not have an equal number of response alternatives, global set to FALSE.
+#> Warning: all scheduled cores encountered errors in user code
+#> Warning: Something is wrong in polycor  -- Try setting correct=0 
+#> Error in cor(x, use = "pairwise"): supply both 'x' and 'y' or a matrix-like 'x'
 report_choric_serial(x=psych::lsat6,y=psych::lsat6,
-                     type="polyserial",file="polyserial")
+                     type="polyserial",file=file.path(tempdir(),"polyserial"))
 #>         Q1     Q2      Q3      Q4      Q5
 #> Q1 1.00000 0.1368 0.18325 0.08203 0.04409
 #> Q2 0.09778 1.0000 0.15207 0.08253 0.11422
@@ -108,7 +95,7 @@ report_choric_serial(x=psych::lsat6,y=psych::lsat6,
 #> Q4 0.06097 0.0858 0.15023 1.00000 0.13667
 #> Q5 0.03782 0.1371 0.08452 0.15774 1.00000
 report_choric_serial(x=psych::lsat6,y=psych::lsat6,
-                     type="biserial",file="biserial")
+                     type="biserial",file=file.path(tempdir(),"biserial"))
 #> Warning: For x = 1 y = 1 x seems to be dichotomous, not continuous
 #> Warning: For x = 2 y = 2 x seems to be dichotomous, not continuous
 #> Warning: For x = 3 y = 3 x seems to be dichotomous, not continuous

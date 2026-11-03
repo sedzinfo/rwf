@@ -125,8 +125,8 @@ xgb_regression<-xgboost::xgb.train(
 # xgboost::xgb.plot.multi.trees(model=xgb_classification,features_keep=2)
 # plot_trees_xgboost(model=xgb_classification,
 #                    train=train_test_classification$xgb$f1,
-#                    file="Classification")
+#                    file=file.path(tempdir(),"Classification"))
 # plot_trees_xgboost(model=xgb_regression,
 #                    train=train_test_regression$xbg$f1,
-#                    file="Regression")
+#                    file=file.path(tempdir(),"Regression"))
 ```

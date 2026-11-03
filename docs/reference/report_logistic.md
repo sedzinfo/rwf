@@ -984,7 +984,7 @@ report_logistic(model=modeltwopredictors0)
 #> 1 glm(formula=case~education+stratum,family=binomial,,data=infert)
 #> NULL
 report_logistic(model=modelcategoricalpredictor0,
-                file="logistic_categorical_predictor",
+                file=file.path(tempdir(),"logistic_categorical_predictor"),
                 validation_data=infert)
 
 
@@ -1093,7 +1093,7 @@ report_logistic(model=modelcategoricalpredictor0,
 #> 1 glm(formula=case~education,family=binomial,data=infert)
 #> NULL
 report_logistic(model=modelcontinuouspredictor0,
-                file="logistic_continuous_predictor",
+                file=file.path(tempdir(),"logistic_continuous_predictor"),
                 validation_data=infert)
 
 
@@ -1204,7 +1204,7 @@ report_logistic(model=modelcontinuouspredictor0,
 #> 1 glm(formula=case~stratum,family=binomial,data=infert)
 #> NULL
 report_logistic(model=modeltwopredictors0,
-                file="logistic_two_predictors",
+                file=file.path(tempdir(),"logistic_two_predictors"),
                 validation_data=infert[1:10,])
 
 

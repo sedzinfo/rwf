@@ -146,8 +146,8 @@ Default is <code>FALSE</code>.</p></dd>
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>Unlike <code><a href="excel_generic_format.html">excel_generic_format</a></code>, this function creates the worksheet
 and writes the data internally — do not call <code>addWorksheet()</code> or
-<code>writeData()</code> beforehand.</p>
-<p>The diagonal highlight is skipped silently for non-square data frames.</p>
+<code>writeData()</code> beforehand.
+The diagonal highlight is skipped silently for non-square data frames.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -172,9 +172,8 @@ and writes the data internally — do not call <code>addWorksheet()</code> or
 <span class="r-in"><span>  extra_comment2 <span class="op">=</span> <span class="st">"test2"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">mtcor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">filename</span> <span class="op">&lt;-</span> <span class="st">"excel_matrix.xlsx"</span></span></span>
-<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"excel_matrix.xlsx"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.exists</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/files.html" class="external-link">file.remove</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">wb</span> <span class="op">&lt;-</span> <span class="fu">openxlsx</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/openxlsx/man/createWorkbook.html" class="external-link">createWorkbook</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">excel_matrix</span><span class="op">(</span><span class="va">mtcars</span>, <span class="va">wb</span>,</span></span>
 <span class="r-in"><span>  sheet <span class="op">=</span> <span class="st">"matrix"</span>, comment <span class="op">=</span> <span class="va">comment</span>,</span></span>
@@ -204,7 +203,7 @@ and writes the data internally — do not call <code>addWorksheet()</code> or
 <span class="r-in"><span>  sheet <span class="op">=</span> <span class="st">"conditional_formatting_r"</span>, comment <span class="op">=</span> <span class="va">comment</span>,</span></span>
 <span class="r-in"><span>  conditional_formatting <span class="op">=</span> <span class="cn">TRUE</span>, diagonal <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">openxlsx</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/openxlsx/man/saveWorkbook.html" class="external-link">saveWorkbook</a></span><span class="op">(</span><span class="va">wb</span>, <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">filename</span><span class="op">)</span><span class="op">)</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">openxlsx</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/openxlsx/man/saveWorkbook.html" class="external-link">saveWorkbook</a></span><span class="op">(</span><span class="va">wb</span>, <span class="va">file</span>, <span class="cn">TRUE</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

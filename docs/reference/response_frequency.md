@@ -83,6 +83,7 @@ Returns `NULL` if the number of unique values exceeds `max`.
 ## Examples
 
 ``` r
+file = file.path(tempdir(), "descriptives")
 df_ocean_N<-df_ocean[,grep("N",names(df_ocean))]
 response_frequency(df_ocean_N)
 #>       type variable        0      1     2     3     4     5 miss responses
@@ -174,7 +175,7 @@ response_frequency(df_ocean_N,
 response_frequency(df_ocean_N,
                    uniqueitems = 1:5,
                    type = "all",
-  file = "descriptives")
+  file = file)
 #>          type variable          1         2         3         4         5       miss responses
 #> 1   Frequency       N1 2257.00000 3880.0000 4324.0000 4949.0000 4308.0000 1.00000000     19718
 #> 2   Frequency       N2 1606.00000 3958.0000 5461.0000 5587.0000 3106.0000 1.00000000     19718

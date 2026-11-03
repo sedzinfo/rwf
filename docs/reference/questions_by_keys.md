@@ -26,7 +26,7 @@ integer indices of all questions assigned to dimension `i`.
 ## Examples
 
 ``` r
-key<-c(1,2,3,4,5,1,2,3,4,5)
+key <- c(1, 2, 3, 4, 5, 1, 2, 3, 4, 5)
 questions_by_keys(key)
 #> [[1]]
 #> [1] 1 6

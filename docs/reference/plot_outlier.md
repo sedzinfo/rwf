@@ -81,9 +81,7 @@ plot_outlier(df = df, method = "median")
 plot_outlier(df = df, method = "boxplot")
 
 
-plot_multiplot(plotlist = plot_outlier(df = mtcars[1:5, 2:5], method = "mean"), cols = 2)
-
-
+plot_multiplot(plotlist = plot_outlier(df = mtcars[1:5, 2:3], method = "mean"), cols = 2)
 
 
 ```

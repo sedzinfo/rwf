@@ -176,7 +176,7 @@ xgb_regression<-xgboost::xgb.train(
 report_xgboost(model=xgb_classification,
                validation_data=train_test_classification$f$test$f1,
                label=train_test_classification$outcome,
-               file="Classification")
+               file=file.path(tempdir(),"Classification"))
 #> $observed_predicted
 #> 
 #> $plot_performance
@@ -231,7 +231,7 @@ report_xgboost(model=xgb_classification,
 report_xgboost(model=xgb_regression,
                validation_data=train_test_regression$f$test$f1,
                label=train_test_regression$outcome,
-               file="Regression")
+               file=file.path(tempdir(),"Regression"))
 #> $observed_predicted
 #> 
 #> $observed_predicted

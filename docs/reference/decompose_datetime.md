@@ -51,22 +51,24 @@ decompose_datetime(
 ## Examples
 
 ``` r
-timestamp1 <- as.numeric(as.POSIXct(Sys.Date()))
-timestamp2 <- as.numeric(as.POSIXct(Sys.time()))
-d1 <- Sys.Date()
-d2 <- Sys.time()
+# a fixed date and time, so that the output is the same on every run
+# (Sys.Date() and Sys.time() work as well)
+d1 <- as.Date("2026-01-15")
+d2 <- as.POSIXct("2026-01-15 14:30:00", tz = "GMT")
+timestamp1 <- as.numeric(as.POSIXct(d1))
+timestamp2 <- as.numeric(as.POSIXct(d2))
 decompose_datetime(x = d1)
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1 2026            11          03 2026-11-03
+#> 1 2026            01          15 2026-01-15
 decompose_datetime(x = d2)
-#>   YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME
-#> 1 2026            11          03   08     26     30      909173 2026-11-03     08:26
+#>   YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND  FULL_DATE FULL_TIME
+#> 1 2026            01          15   14     30     00 2026-01-15     14:30
 decompose_datetime(x = d1, extended = TRUE)
-#>   QUARTER    MONTH     JULIAN WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1      Q4 November 20760 days Tuesday       <NA> 2026            11          03 2026-11-03
+#>   QUARTER   MONTH     JULIAN  WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
+#> 1      Q1 January 20468 days Thursday       <NA> 2026            01          15 2026-01-15
 decompose_datetime(x = d2, extended = TRUE)
-#>   QUARTER    MONTH        JULIAN WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND MILLISECOND  FULL_DATE FULL_TIME
-#> 1      Q4 November 20760.35 days Tuesday    Morning 2026            11          03   08     26     30      909173 2026-11-03     08:26
+#>   QUARTER   MONTH       JULIAN  WEEKDAY DAY_PERIOD YEAR MONTH_NUMERIC DAY_NUMERIC HOUR MINUTE SECOND  FULL_DATE FULL_TIME
+#> 1      Q1 January 20468.6 days Thursday       Noon 2026            01          15   14     30     00 2026-01-15     14:30
 decompose_datetime(x = "01/15/1900", format = "%m/%e/%Y")
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
 #> 1 1900            01          15 1900-01-15
@@ -81,11 +83,11 @@ decompose_datetime(
   format = "%m/%e/%Y"
 )
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1 2026            11          03 2026-11-03
+#> 1 2026            01          15 2026-01-15
 decompose_datetime(
   x = as.Date(as.POSIXct(timestamp2, origin = "1970-01-01")),
   format = "%m/%e/%Y"
 )
 #>   YEAR MONTH_NUMERIC DAY_NUMERIC  FULL_DATE
-#> 1 2026            11          03 2026-11-03
+#> 1 2026            01          15 2026-01-15
 ```

@@ -213,7 +213,7 @@ report_oneway(
     which("sex" == names(df_blood_pressure)),
     which("agegrp" == names(df_blood_pressure))
   ),
-  file = "anova",
+  file = file.path(tempdir(), "anova"),
   plot_diagnostics = FALSE,
   plot_means = FALSE
 )
@@ -301,7 +301,8 @@ report_oneway(
 #> 7 Bartlett  bp_after    sex    3.9380    1   NA 0.04721       0.0125       FALSE
 #> 8 Bartlett  bp_after agegrp    1.8026    2   NA 0.40603       0.0125       FALSE
 #> 
-report_oneway(df = mtcars, dv = 2:4, iv = 9:10, file = "anova_oneway_two_factor")
+report_oneway(df = mtcars, dv = 2:4, iv = 9:10,
+              file = file.path(tempdir(), "anova_oneway_two_factor"))
 #> $instructions
 #> $instructions$fisher
 #> [1] "Fisher assumes homoscedasticity (equal variances)"
@@ -408,7 +409,7 @@ report_oneway(df = mtcars, dv = 2:4, iv = 9:10, file = "anova_oneway_two_factor"
 #> 11 Bartlett   hp   am  2.8208425    1   NA 0.0930476     0.008333       FALSE
 #> 12 Bartlett   hp gear 12.6358064    2   NA 0.0018037     0.008333        TRUE
 #> 
-report_oneway(df = mtcars, dv = 2:4, iv = 9, file = "anova_oneway_one_factor")
+report_oneway(df = mtcars, dv = 2:4, iv = 9, file = file.path(tempdir(), "anova_oneway_one_factor"))
 #> $instructions
 #> $instructions$fisher
 #> [1] "Fisher assumes homoscedasticity (equal variances)"
@@ -477,7 +478,7 @@ report_oneway(df = mtcars, dv = 2:4, iv = 9, file = "anova_oneway_one_factor")
 #> 6 Bartlett   hp am 2.8208425    1   NA 0.09305      0.01667       FALSE
 #> 
 report_oneway(
-  df = mtcars, dv = 2:4, iv = 9, file = "anova_oneway_one_factor",
+  df = mtcars, dv = 2:4, iv = 9, file = file.path(tempdir(), "anova_oneway_one_factor"),
   plot_means = TRUE, plot_diagnostics = TRUE
 )
 

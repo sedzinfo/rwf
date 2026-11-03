@@ -32,7 +32,7 @@ irt_threefactor<-mirt::mirt(cormatrix,3,empiricalhist=TRUE,calcNull=TRUE)
 #> Warning: Observed log-likelihood may still be increasing.
 #>   Final log-likelihood values were: 
 #>   -89235.596, -89235.595, -89235.592
-report_irt(model=irt_onefactor,file="one_factor")
+report_irt(model=irt_onefactor,file=file.path(tempdir(),"one_factor"))
 #> Q3 summary statistics:
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 #>  -0.133  -0.055  -0.042  -0.052  -0.026  -0.003 
@@ -181,7 +181,7 @@ report_irt(model=irt_onefactor,file="one_factor")
 #>         M2 df     p RMSEA RMSEA_5 RMSEA_95 SRMSR   TLI   CFI
 #> stats 9.61  5 0.087 0.004       0    0.008 0.003 0.997 0.998
 #> 
-report_irt(model=irt_twofactor,file="two_factors")
+report_irt(model=irt_twofactor,file=file.path(tempdir(),"two_factors"))
 #> Q3 summary statistics:
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 #>   0.049   0.099   0.125   0.163   0.211   0.335 
@@ -332,7 +332,7 @@ report_irt(model=irt_twofactor,file="two_factors")
 #>          M2 df    p RMSEA RMSEA_5 RMSEA_95 SRMSR   TLI CFI
 #> stats 0.031  1 0.86     0       0    0.006 0.001 1.003   1
 #> 
-report_irt(model=irt_threefactor,file="three_factors")
+report_irt(model=irt_threefactor,file=file.path(tempdir(),"three_factors"))
 #> Q3 summary statistics:
 #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
 #>   0.050   0.106   0.126   0.164   0.214   0.339 

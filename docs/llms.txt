@@ -488,8 +488,8 @@ Status](https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/main.
   : Flatten a two-dimensional list into a data frame
 - [`get_script_directory()`](https://sedzinfo.github.io/rwf/reference/get_script_directory.md)
   : Get script directory
-- [`getfwp()`](https://sedzinfo.github.io/rwf/reference/getfwp.md) : Get
-  the file path of the currently running script
+- [`get_fwd()`](https://sedzinfo.github.io/rwf/reference/get_fwd.md) :
+  Get the file path of the currently running script
 - [`icc_cfa()`](https://sedzinfo.github.io/rwf/reference/icc_cfa.md) :
   Select responses for each dimension
 - [`increase_index()`](https://sedzinfo.github.io/rwf/reference/increase_index.md)

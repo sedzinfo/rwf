@@ -84,9 +84,8 @@ returns `NULL` invisibly.
 Unlike
 [`excel_generic_format`](https://sedzinfo.github.io/rwf/reference/excel_generic_format.md),
 this function creates the worksheet and writes the data internally — do
-not call `addWorksheet()` or `writeData()` beforehand.
-
-The diagonal highlight is skipped silently for non-square data frames.
+not call `addWorksheet()` or `writeData()` beforehand. The diagonal
+highlight is skipped silently for non-square data frames.
 
 ## See also
 
@@ -111,9 +110,8 @@ comment <- list(
   extra_comment2 = "test2"
 )
 mtcor <- data.frame(cor(mtcars))
-filename <- "excel_matrix.xlsx"
-if (file.exists(filename)) file.remove(filename)
-#> [1] TRUE
+file <- file.path(tempdir(), "excel_matrix.xlsx")
+if (file.exists(file)) file.remove(file)
 wb <- openxlsx::createWorkbook()
 excel_matrix(mtcars, wb,
   sheet = "matrix", comment = comment,
@@ -143,5 +141,5 @@ excel_matrix(mtcor, wb,
   sheet = "conditional_formatting_r", comment = comment,
   conditional_formatting = TRUE, diagonal = TRUE
 )
-openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
+openxlsx::saveWorkbook(wb, file, TRUE)
 ```

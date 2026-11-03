@@ -63,9 +63,7 @@ The function assumes that
 [`openxlsx::writeData()`](https://rdrr.io/pkg/openxlsx/man/writeData.html)
 has already been used to write the data to the worksheet, with both
 `colNames = TRUE` and `rowNames = TRUE`, as it offsets column indices by
-1 to account for the row name column.
-
-Formatting applied:
+1 to account for the row name column. Formatting applied:
 
 - Thin gray borders on all data cells
 
@@ -96,9 +94,8 @@ comment <- list(
   extra_comment2 = "test2"
 )
 mtcor <- data.frame(cor(mtcars))
-filename <- "excel_generic.xlsx"
-if (file.exists(filename)) file.remove(filename)
-#> [1] TRUE
+file <- file.path(tempdir(), "excel_generic.xlsx")
+if (file.exists(file)) file.remove(file)
 wb <- openxlsx::createWorkbook()
 openxlsx::addWorksheet(wb, "sheet")
 openxlsx::addWorksheet(wb, "correlation")
@@ -112,5 +109,5 @@ excel_generic_format(
   df = mtcor, workbook = wb, sheet = "correlation", title = "correlation",
   comment = comment, numFmt = "#0.00"
 )
-openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
+openxlsx::saveWorkbook(wb, file, TRUE)
 ```

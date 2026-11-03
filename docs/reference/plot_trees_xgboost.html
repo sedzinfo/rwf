@@ -187,10 +187,10 @@ and the number of columns matches the number of model features.</p></dd>
 <span class="r-in"><span><span class="co"># xgboost::xgb.plot.multi.trees(model=xgb_classification,features_keep=2)</span></span></span>
 <span class="r-in"><span><span class="co"># plot_trees_xgboost(model=xgb_classification,</span></span></span>
 <span class="r-in"><span><span class="co">#                    train=train_test_classification$xgb$f1,</span></span></span>
-<span class="r-in"><span><span class="co">#                    file="Classification")</span></span></span>
+<span class="r-in"><span><span class="co">#                    file=file.path(tempdir(),"Classification"))</span></span></span>
 <span class="r-in"><span><span class="co"># plot_trees_xgboost(model=xgb_regression,</span></span></span>
 <span class="r-in"><span><span class="co">#                    train=train_test_regression$xbg$f1,</span></span></span>
-<span class="r-in"><span><span class="co">#                    file="Regression")</span></span></span>
+<span class="r-in"><span><span class="co">#                    file=file.path(tempdir(),"Regression"))</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

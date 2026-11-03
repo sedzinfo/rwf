@@ -94,6 +94,7 @@ in `df`. The `statistic` column takes the following values:
 ## Examples
 
 ``` r
+file = file.path(tempdir(), "descriptives")
 compute_aggregate(df = mtcars, iv = 9)
 #>       statistic am         mpg        cyl         disp           hp        drat         wt       qsec         vs        gear       carb
 #> 1          mean  0 17.14736842  6.9473684 290.37894737 160.26315789  3.28631579  3.7688947 18.1831579  0.3684211  3.21052632  2.7368421
@@ -256,7 +257,7 @@ compute_aggregate(df = mtcars, iv = 11)
 #> 76           SE    4  1.236792446  0.3265986  41.76210350  19.90644787  0.1446774  0.3331776  0.4411179  0.1333333  0.1527525  0.2211083
 #> 77           SE    6           NA         NA           NA           NA         NA         NA         NA         NA         NA         NA
 #> 78           SE    8           NA         NA           NA           NA         NA         NA         NA         NA         NA         NA
-compute_aggregate(df = mtcars, iv = 11, file = "descriptives")
+compute_aggregate(df = mtcars, iv = 11, file = file)
 #>       statistic carb          mpg        cyl         disp           hp       drat         wt       qsec         vs         am       gear
 #> 1          mean    1 25.342857143  4.5714286 134.27142857  86.00000000  3.6814286  2.4900000 19.5071429  1.0000000  0.5714286  3.5714286
 #> 2          mean    2 22.400000000  5.6000000 208.16000000 117.20000000  3.6990000  2.8628000 18.1860000  0.5000000  0.4000000  3.8000000

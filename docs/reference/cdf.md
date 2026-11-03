@@ -195,7 +195,7 @@ cdf(df = change_data_type(mtcars, "factor"), nuniques = 3)
 #> 10  gear     0    0  0     32   0   0  32     3   NA     NA NA     3     5 numeric integer factor   TRUE    3, 4, 5   3, 4, 5
 #> 11  carb     0    0  0     32   0   0  32     6   NA     NA NA     1     8 numeric integer factor   TRUE  6 Uniques  6 Levels
 #> 
-cdf(df = data.frame(t(mtcars)), file = "mtcars", nuniques = 10)
+cdf(df = data.frame(t(mtcars)), file = file.path(tempdir(), "mtcars"), nuniques = 10)
 #> $summary
 #>   COLLUMNS ROWS TOTAL EMPTY null NAN na INF FIN FACTOR
 #> 1       32   11   352     0    0   0  0   0 352      0
