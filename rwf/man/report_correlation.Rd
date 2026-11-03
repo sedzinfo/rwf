@@ -50,7 +50,7 @@ Report correlation matrix
 \examples{
 report_correlation(x=generate_missing(mtcars[,1:3],10))
 report_correlation(x=generate_missing(mtcars[,1:3],10),
-                   file="correlation",scatterplot=TRUE)
-report_correlation(x=mtcars[,1:3],file="correlation")
+                   file=file.path(tempdir(),"correlation"),scatterplot=TRUE)
+report_correlation(x=mtcars[,1:3],file=file.path(tempdir(),"correlation"))
 }
 \keyword{correlation}

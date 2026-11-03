@@ -31,6 +31,6 @@ Runs eight normality tests on each numeric column of \code{df}.
 vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
 report_normality_tests(df = df)
-report_normality_tests(df = vector, file = "normality_tests")
+report_normality_tests(df = vector, file = file.path(tempdir(), "normality_tests"))
 }
 \keyword{assumptions}

@@ -33,11 +33,11 @@
 #' @examples
 #' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
-#' plot_normality_diagnostics(df = vector, file = "rnorm", breaks = 30)
+#' plot_normality_diagnostics(df = vector, file = file.path(tempdir(), "rnorm"), breaks = 30)
 #' plot_normality_diagnostics(df = vector)
 #' plot_normality_diagnostics(df = df, title = "mtcars")
 #' plot_normality_diagnostics(df = df, title = "mtcars", pb = TRUE)
-#' plot_normality_diagnostics(df = df, title = "mtcars", file = "rnorm")
+#' plot_normality_diagnostics(df = df, title = "mtcars", file = file.path(tempdir(), "rnorm"))
 plot_normality_diagnostics <- function(df, breaks = NULL, title = "", file = NULL, w = 10, h = 10, pb = FALSE) {
   # default_par<-par(no.readonly=TRUE)
   par(mfrow = c(2, 2), adj = .01)
@@ -413,7 +413,7 @@ plot_boxplot <- function(df, title = "", base_size = 10) {
 #' vector <- generate_missing(rnorm(50), missing = 10)
 #' df <- generate_missing(mtcars[, 1:2], missing = 10)
 #' report_normality_tests(df = df)
-#' report_normality_tests(df = vector, file = "normality_tests")
+#' report_normality_tests(df = vector, file = file.path(tempdir(), "normality_tests"))
 report_normality_tests <- function(df, file = NULL) {
   df <- data.frame(df)
   instruction_shapiro <- "Shapiro-Wilk Composite null hypothesis: any normal distribution"

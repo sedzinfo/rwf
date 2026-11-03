@@ -308,7 +308,7 @@ plot_cfa <- function(model, ...) {
 #' df<-generate_missing(df)
 #' fit<-lavaan::cfa(model,data=df,missing="ML")
 #' report_cfa(fit)
-#' report_cfa(fit,file="cfa")
+#' report_cfa(fit,file=file.path(tempdir(),"cfa"))
 report_cfa<-function(model,file=NULL,w=10,h=10) {
   pt<-options(fit=c("GFI","AGFI","RMSEA","NFI","NNFI","CFI","RNI","IFI","SRMR","AIC","AICc","BIC","CAIC"))
   r_squared<-data.frame(r_squared=lavaan::inspect(model,"rsquare",add.labels=TRUE,add.class=TRUE,list.by.group=TRUE,drop.list.single.group=TRUE))
@@ -419,13 +419,14 @@ report_cfa<-function(model,file=NULL,w=10,h=10) {
 #'
 #' # Coefficient-based: generate data from known population parameters
 #' result<-simulate_cfa_fit(model_sim=model_sim, model=model,
-#'                          minnobs=50, maxnobs=1000, stepping=100, file="report")
+#'                          minnobs=50, maxnobs=1000, stepping=100, file=file.path(tempdir(),"report"))
 #' plot_multiplot(plotlist=result[[2]], cols=4)
 #' # Correlation-based: resample from observed data
 #' df <- lavaan::simulateData(model=model_sim, model.type="cfa",
 #'                            return.type="data.frame", sample.nobs=1000)
 #' result<-simulate_cfa_fit(model=model, df=df,
-#'                          minnobs=50, maxnobs=10000, stepping=100, file="report")
+#'                          minnobs=50, maxnobs=10000, stepping=100,
+#'                          file=file.path(tempdir(),"report"))
 #' plot_multiplot(plotlist=result[[2]], cols=4)
 simulate_cfa_fit<-function(model_sim=NULL,model=NULL,df=NULL,minnobs=50,maxnobs=1000,stepping=10,file=NULL,w=10,h=10) {
   sequence<-seq(from=minnobs,to=maxnobs,by=stepping)

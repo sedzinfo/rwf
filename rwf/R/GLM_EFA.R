@@ -238,7 +238,7 @@ compute_residual_stats<-function(model,data=NULL) {
 #' @export
 #' @examples
 #' model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="minres",oblique.scores=TRUE)
-#' report_efa(model=model,df=mtcars,file="efa")
+#' report_efa(model=model,df=mtcars,file=file.path(tempdir(),"efa"))
 #' model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="uls",oblique.scores=TRUE)
 #' report_efa(model=model,df=mtcars)
 #' model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="ols",oblique.scores=TRUE)

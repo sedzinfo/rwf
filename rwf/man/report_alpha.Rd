@@ -89,6 +89,7 @@ reverse <- list(
 )
 report_alpha(df = df, key = key, cumulative = TRUE, n.iter = 1)
 report_alpha(df = df, key = key, reverse = reverse, check.keys = FALSE, n.iter = 2)
-report_alpha(df = df, key = key, check.keys = FALSE, n.iter = 2, file = "alpha")
+report_alpha(df = df, key = key, check.keys = FALSE, n.iter = 2,
+             file = file.path(tempdir(), "alpha"))
 }
 \keyword{reliability}

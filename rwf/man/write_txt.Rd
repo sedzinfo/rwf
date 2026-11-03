@@ -25,6 +25,6 @@ Prints \code{input} to the console. When \code{file} is
 }
 \examples{
 write_txt(mtcars)
-write_txt(mtcars, file = "mtcars")
+write_txt(mtcars, file = file.path(tempdir(), "mtcars"))
 }
 \keyword{functions}

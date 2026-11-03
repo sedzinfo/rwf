@@ -51,10 +51,10 @@ For each numeric column of \code{df}, produces a 2×2 panel of
 \examples{
 vector <- generate_missing(rnorm(50), missing = 10)
 df <- generate_missing(mtcars[, 1:2], missing = 10)
-plot_normality_diagnostics(df = vector, file = "rnorm", breaks = 30)
+plot_normality_diagnostics(df = vector, file = file.path(tempdir(), "rnorm"), breaks = 30)
 plot_normality_diagnostics(df = vector)
 plot_normality_diagnostics(df = df, title = "mtcars")
 plot_normality_diagnostics(df = df, title = "mtcars", pb = TRUE)
-plot_normality_diagnostics(df = df, title = "mtcars", file = "rnorm")
+plot_normality_diagnostics(df = df, title = "mtcars", file = file.path(tempdir(), "rnorm"))
 }
 \keyword{assumptions}

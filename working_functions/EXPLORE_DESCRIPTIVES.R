@@ -45,7 +45,7 @@
 #' compute_descriptives(df = mtcars, dv = 1:2, iv = 9:10)
 #' compute_descriptives(df = mtcars, dv = 1:2)
 #' compute_descriptives(df = mtcars, dv = 1:2, iv = 9:10,
-#'                      file = "descriptives_factor")
+#'                      file = file.path(tempdir(), "descriptives_factor"))
 compute_descriptives <- function(df, dv, iv = NULL, file = NULL) {
   comment <- list(
     factor = "independent variable",
@@ -141,7 +141,7 @@ compute_descriptives <- function(df, dv, iv = NULL, file = NULL) {
 #' compute_aggregate(df = mtcars, iv = 9)
 #' compute_aggregate(df = mtcars, iv = 9:10)
 #' compute_aggregate(df = mtcars, iv = 11)
-#' compute_aggregate(df = mtcars, iv = 11, file = "descriptives")
+#' compute_aggregate(df = mtcars, iv = 11, file = file.path(tempdir(), "descriptives"))
 compute_aggregate <- function(df, iv, file = NULL) {
   result_df_mean <- result_df_sd <- result_df_obs <- list()
   factornames <- names(df)[iv]
@@ -195,7 +195,7 @@ compute_aggregate <- function(df, iv, file = NULL) {
 #' df = generate_missing(generate_factor(nrows = 10, ncols = 10), missing = 5)
 #' compute_frequencies(df = df)
 #' compute_frequencies(df = generate_factor())
-#' compute_frequencies(df = generate_factor(), file = "descriptives")
+#' compute_frequencies(df = generate_factor(), file = file.path(tempdir(), "descriptives"))
 compute_frequencies <- function(df, file = NULL) {
   frequency <- data.frame()
   for (i in names(df)) {
@@ -272,7 +272,7 @@ compute_frequencies <- function(df, file = NULL) {
 #' response_frequency(df_ocean_N,
 #'                    uniqueitems = 1:5,
 #'                    type = "all",
-#'   file = "descriptives")
+#'   file = file.path(tempdir(), "descriptives"))
 response_frequency <- function(df, max = 10, uniqueitems = NULL, type = "percent", file = NULL) {
   df <- data.frame(df)
   min.item <- min(df, na.rm = TRUE)

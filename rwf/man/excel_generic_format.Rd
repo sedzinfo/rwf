@@ -74,7 +74,7 @@ comment <- list(
   extra_comment2 = "test2"
 )
 mtcor <- data.frame(cor(mtcars))
-filename <- "excel_generic.xlsx"
+filename <- file.path(tempdir(), "excel_generic.xlsx")
 if (file.exists(filename)) file.remove(filename)
 wb <- openxlsx::createWorkbook()
 openxlsx::addWorksheet(wb, "sheet")

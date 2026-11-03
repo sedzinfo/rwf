@@ -78,7 +78,7 @@ comment <- list(
   extra_comment1 = "test1",
   extra_comment2 = "test2"
 )
-filename <- "excel_critical_value.xlsx"
+filename <- file.path(tempdir(), "excel_critical_value.xlsx")
 if (file.exists(filename)) file.remove(filename)
 wb <- openxlsx::createWorkbook()
 df <- generate_missing(generate_correlation_matrix())
@@ -88,7 +88,7 @@ excel_critical_value(
   numFmt = "#0.00", critical = critical
 )
 openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
-filename <- "excel_critical_value_comment.xlsx"
+filename <- file.path(tempdir(), "excel_critical_value_comment.xlsx")
 if (file.exists(filename)) file.remove(filename)
 wb <- openxlsx::createWorkbook()
 df <- generate_missing(mtcars)
@@ -98,7 +98,7 @@ excel_critical_value(
   numFmt = "#0.00", critical = critical
 )
 openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
-filename <- "excel_critical_value_comment_min_max.xlsx"
+filename <- file.path(tempdir(), "excel_critical_value_comment_min_max.xlsx")
 if (file.exists(filename)) file.remove(filename)
 wb <- openxlsx::createWorkbook()
 df <- generate_missing(mtcars)

@@ -197,11 +197,12 @@ plot_duplicate_y_axis <- function(p1, p2) {
 #' cars_plot_multiplot <- plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
 #' cars_plot_base <- plot_normality_diagnostics(mtcars)
 #' report_pdf(p1, p2, print_plot = TRUE)
-#' report_pdf(p1, p2, file = "report", print_plot = FALSE)
+#' report_pdf(p1, p2, file = file.path(tempdir(), "report"), print_plot = FALSE)
 #' report_pdf(plotlist = cars_plot_multiplot, print_plot = TRUE)
-#' report_pdf(plotlist = cars_plot_multiplot, file = "report", print_plot = FALSE)
+#' report_pdf(plotlist = cars_plot_multiplot, file = file.path(tempdir(), "report"),
+#'            print_plot = FALSE)
 #' report_pdf(plotlist = cars_plot_base, print_plot = TRUE)
-#' report_pdf(plotlist = cars_plot_base, file = "report", print_plot = FALSE)
+#' report_pdf(plotlist = cars_plot_base, file = file.path(tempdir(), "report"), print_plot = FALSE)
 report_pdf <- function(..., plotlist = NULL, file = NULL, title = NULL, w = 10, h = 10, print_plot = TRUE) {
   plotlist <- c(list(...), plotlist)
   if (!is.null(title)) {

@@ -38,10 +38,10 @@
 #' # xgboost::xgb.plot.multi.trees(model=xgb_classification,features_keep=2)
 #' # plot_trees_xgboost(model=xgb_classification,
 #' #                    train=train_test_classification$xgb$f1,
-#' #                    file="Classification")
+#' #                    file=file.path(tempdir(),"Classification"))
 #' # plot_trees_xgboost(model=xgb_regression,
 #' #                    train=train_test_regression$xbg$f1,
-#' #                    file="Regression")
+#' #                    file=file.path(tempdir(),"Regression"))
 plot_trees_xgboost<-function(model,train,file="xgboost") {
   if ("feature_names" %in% names(formals(xgboost::xgb.plot.multi.trees))) {
     # xgboost < 3: labels, fill and names are arguments of xgb.plot.multi.trees
@@ -122,11 +122,11 @@ plot_trees_xgboost<-function(model,train,file="xgboost") {
 #' report_xgboost(model=xgb_classification,
 #'                validation_data=train_test_classification$f$test$f1,
 #'                label=train_test_classification$outcome,
-#'                file="Classification")
+#'                file=file.path(tempdir(),"Classification"))
 #' report_xgboost(model=xgb_regression,
 #'                validation_data=train_test_regression$f$test$f1,
 #'                label=train_test_regression$outcome,
-#'                file="Regression")
+#'                file=file.path(tempdir(),"Regression"))
 report_xgboost <- function(model,
                            validation_data = NULL,
                            label = NULL,

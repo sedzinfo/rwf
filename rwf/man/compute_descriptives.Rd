@@ -54,6 +54,6 @@ compute_descriptives(df = mtcars, dv = 1:5)
 compute_descriptives(df = mtcars, dv = 1:2, iv = 9:10)
 compute_descriptives(df = mtcars, dv = 1:2)
 compute_descriptives(df = mtcars, dv = 1:2, iv = 9:10,
-                     file = "descriptives_factor")
+                     file = file.path(tempdir(), "descriptives_factor"))
 }
 \keyword{descriptives}

@@ -152,13 +152,13 @@ output_compare_model_logistic<-function(model1,model2) {
 #' report_logistic(model=modelcontinuouspredictor0)
 #' report_logistic(model=modeltwopredictors0)
 #' report_logistic(model=modelcategoricalpredictor0,
-#'                 file="logistic_categorical_predictor",
+#'                 file=file.path(tempdir(),"logistic_categorical_predictor"),
 #'                 validation_data=infert)
 #' report_logistic(model=modelcontinuouspredictor0,
-#'                 file="logistic_continuous_predictor",
+#'                 file=file.path(tempdir(),"logistic_continuous_predictor"),
 #'                 validation_data=infert)
 #' report_logistic(model=modeltwopredictors0,
-#'                 file="logistic_two_predictors",
+#'                 file=file.path(tempdir(),"logistic_two_predictors"),
 #'                 validation_data=infert[1:10,])
 report_logistic<-function(model,validation_data=NULL,file=NULL,title="",w=10,h=10,base_size=10,fast=FALSE) {
   rstandard<-rstudent<-dfbeta<-dffits<-hatvalues<-NULL

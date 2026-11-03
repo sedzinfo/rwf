@@ -229,10 +229,10 @@ plot_scatterplot <- function(df, method = lm, formula = y ~ x, base_size = 10, c
 #' multipleregressionmodel <- lm(mpg ~ qsec * hp * wt * drat, data = mtcars)
 #' res <- report_regression(model = regressionmodel, plot_diagnostics = TRUE)
 #' res <- report_regression(model = multipleregressionmodel)
-#' res <- report_regression(model = regressionmodel, file = "regression")
+#' res <- report_regression(model = regressionmodel, file = file.path(tempdir(), "regression"))
 #' res <- report_regression(
 #'   model = multipleregressionmodel,
-#'   file = "regression",
+#'   file = file.path(tempdir(), "regression"),
 #'   plot_diagnostics = TRUE
 #' )
 report_regression <- function(model, base_size = 10, title = "", file = NULL, w = 10, h = 10, plot_diagnostics = TRUE) {
