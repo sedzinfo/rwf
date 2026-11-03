@@ -31,10 +31,12 @@ convert_excel_unix_timestamp <- function(timestamp) {
 #' @keywords timestamp
 #' @export
 #' @examples
-#' timestamp1 <- as.numeric(as.POSIXct(Sys.Date()))
-#' timestamp2 <- as.numeric(as.POSIXct(Sys.time()))
-#' d1 <- Sys.Date()
-#' d2 <- Sys.time()
+#' # a fixed date and time, so that the output is the same on every run
+#' # (Sys.Date() and Sys.time() work as well)
+#' d1 <- as.Date("2026-01-15")
+#' d2 <- as.POSIXct("2026-01-15 14:30:00", tz = "GMT")
+#' timestamp1 <- as.numeric(as.POSIXct(d1))
+#' timestamp2 <- as.numeric(as.POSIXct(d2))
 #' decompose_datetime(x = d1)
 #' decompose_datetime(x = d2)
 #' decompose_datetime(x = d1, extended = TRUE)
