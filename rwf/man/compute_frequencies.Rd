@@ -35,6 +35,6 @@ Computes frequency counts, proportions, and percentages for
 df = generate_missing(generate_factor(nrows = 10, ncols = 10), missing = 5)
 compute_frequencies(df = df)
 compute_frequencies(df = generate_factor())
-compute_frequencies(df = generate_factor(), file = "descriptives")
+compute_frequencies(df = generate_factor(), file = file.path(tempdir(), "descriptives"))
 }
 \keyword{descriptives}

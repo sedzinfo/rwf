@@ -81,7 +81,7 @@ comment <- list(
   extra_comment2 = "test2"
 )
 mtcor <- data.frame(cor(mtcars))
-filename <- "excel_matrix.xlsx"
+filename <- file.path(tempdir(), "excel_matrix.xlsx")
 if (file.exists(filename)) file.remove(filename)
 wb <- openxlsx::createWorkbook()
 excel_matrix(mtcars, wb,

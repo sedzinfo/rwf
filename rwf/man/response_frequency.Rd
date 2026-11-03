@@ -73,6 +73,6 @@ response_frequency(df_ocean_N,
 response_frequency(df_ocean_N,
                    uniqueitems = 1:5,
                    type = "all",
-  file = "descriptives")
+  file = file.path(tempdir(), "descriptives"))
 }
 \keyword{descriptives}

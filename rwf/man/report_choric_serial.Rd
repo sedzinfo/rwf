@@ -38,12 +38,12 @@ Report polychoric tetrachoric polyserial biserial correlation
 }
 \examples{
 report_choric_serial(generate_data(min=0,max=1,type="uniform"),
-              type="tetrachoric",file="tetrachoric")
+              type="tetrachoric",file=file.path(tempdir(),"tetrachoric"))
 report_choric_serial(generate_data(min=1,max=5,type="uniform"),
               type="polychoric")
 report_choric_serial(x=psych::lsat6,y=psych::lsat6,
-                     type="polyserial",file="polyserial")
+                     type="polyserial",file=file.path(tempdir(),"polyserial"))
 report_choric_serial(x=psych::lsat6,y=psych::lsat6,
-                     type="biserial",file="biserial")
+                     type="biserial",file=file.path(tempdir(),"biserial"))
 }
 \keyword{correlation}

@@ -163,7 +163,7 @@ compute_cohens_d <- function(formula, data) {
 #'   dv = which("bp_before" == names(df_blood_pressure)),
 #'   iv = 2:3,
 #'   var.equal = TRUE,
-#'   file = "ttest"
+#'   file = file.path(tempdir(), "ttest")
 #' )
 #' effectsize::cohens_d(bp_before ~ sex, data = df_blood_pressure, pooled_sd = TRUE)
 #' effectsize::cohens_d(bp_after ~ sex, data = df_blood_pressure, pooled_sd = TRUE)
@@ -442,7 +442,7 @@ compute_wilcoxon_effect_size <- function(formula, data,
 #'   dv = which("bp_before" == names(df_blood_pressure)),
 #'   iv = 2:3,
 #'   var.equal = TRUE,
-#'   file = "wilcoxontest"
+#'   file = file.path(tempdir(), "wilcoxontest")
 #' )
 report_wtests <- function(df, dv, iv, file = NULL, ...) {
   comment <- list(

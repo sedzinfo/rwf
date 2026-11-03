@@ -124,8 +124,8 @@ compute_power_r_matrix<-function(m,...) {
 #' @examples
 #' report_correlation(x=generate_missing(mtcars[,1:3],10))
 #' report_correlation(x=generate_missing(mtcars[,1:3],10),
-#'                    file="correlation",scatterplot=TRUE)
-#' report_correlation(x=mtcars[,1:3],file="correlation")
+#'                    file=file.path(tempdir(),"correlation"),scatterplot=TRUE)
+#' report_correlation(x=mtcars[,1:3],file=file.path(tempdir(),"correlation"))
 report_correlation<-function(x,y=NULL,use="pairwise",method="pearson",adjust="holm",alpha=.05,ci=TRUE,file=NULL,w=10,h=10,base_size=20,scatterplot=TRUE) {
   function_arguments<-c("Use","Method","Adjustment for Probability values","Alpha","Confidence Interval")
   function_values<-c(use,method,adjust,alpha,ci)
@@ -198,13 +198,13 @@ report_correlation<-function(x,y=NULL,use="pairwise",method="pearson",adjust="ho
 #' @export
 #' @examples
 #' report_choric_serial(generate_data(min=0,max=1,type="uniform"),
-#'               type="tetrachoric",file="tetrachoric")
+#'               type="tetrachoric",file=file.path(tempdir(),"tetrachoric"))
 #' report_choric_serial(generate_data(min=1,max=5,type="uniform"),
 #'               type="polychoric")
 #' report_choric_serial(x=psych::lsat6,y=psych::lsat6,
-#'                      type="polyserial",file="polyserial")
+#'                      type="polyserial",file=file.path(tempdir(),"polyserial"))
 #' report_choric_serial(x=psych::lsat6,y=psych::lsat6,
-#'                      type="biserial",file="biserial")
+#'                      type="biserial",file=file.path(tempdir(),"biserial"))
 report_choric_serial<-function(x,y=NULL,file=NULL,w=10,h=10,type="tetrachoric",...) {
   if(type=="tetrachoric")
     result<-psych::tetrachoric(x,...)

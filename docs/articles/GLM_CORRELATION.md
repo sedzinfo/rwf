@@ -317,4 +317,4 @@ ordinal variables via their appropriate latent-variable estimators.
 
 ------------------------------------------------------------------------
 
-*Rendered with R 4.6.1*
+*Rendered with R 4.6.2*

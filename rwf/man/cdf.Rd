@@ -87,7 +87,7 @@ MEAN, MEDIAN, and SD are \code{NA} for non-numeric columns. MIN and
 \examples{
 cdf(df = mtcars, parralel = TRUE)
 cdf(df = change_data_type(mtcars, "factor"), nuniques = 3)
-cdf(df = data.frame(t(mtcars)), file = "mtcars", nuniques = 10)
+cdf(df = data.frame(t(mtcars)), file = file.path(tempdir(), "mtcars"), nuniques = 10)
 cdf(df = mtcars)
 cdf(df = generate_missing(mtcars))
 cdf(df = infert, nuniques = 10)

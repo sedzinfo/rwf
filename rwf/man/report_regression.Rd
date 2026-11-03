@@ -90,10 +90,10 @@ regressionmodel <- lm(form, data = mtcars)
 multipleregressionmodel <- lm(mpg ~ qsec * hp * wt * drat, data = mtcars)
 res <- report_regression(model = regressionmodel, plot_diagnostics = TRUE)
 res <- report_regression(model = multipleregressionmodel)
-res <- report_regression(model = regressionmodel, file = "regression")
+res <- report_regression(model = regressionmodel, file = file.path(tempdir(), "regression"))
 res <- report_regression(
   model = multipleregressionmodel,
-  file = "regression",
+  file = file.path(tempdir(), "regression"),
   plot_diagnostics = TRUE
 )
 }

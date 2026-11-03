@@ -549,14 +549,15 @@ compute_one_way_test <- function(formula, df, var.equal = TRUE) {
 #'     which("sex" == names(df_blood_pressure)),
 #'     which("agegrp" == names(df_blood_pressure))
 #'   ),
-#'   file = "anova",
+#'   file = file.path(tempdir(), "anova"),
 #'   plot_diagnostics = FALSE,
 #'   plot_means = FALSE
 #' )
-#' report_oneway(df = mtcars, dv = 2:4, iv = 9:10, file = "anova_oneway_two_factor")
-#' report_oneway(df = mtcars, dv = 2:4, iv = 9, file = "anova_oneway_one_factor")
+#' report_oneway(df = mtcars, dv = 2:4, iv = 9:10,
+#'               file = file.path(tempdir(), "anova_oneway_two_factor"))
+#' report_oneway(df = mtcars, dv = 2:4, iv = 9, file = file.path(tempdir(), "anova_oneway_one_factor"))
 #' report_oneway(
-#'   df = mtcars, dv = 2:4, iv = 9, file = "anova_oneway_one_factor",
+#'   df = mtcars, dv = 2:4, iv = 9, file = file.path(tempdir(), "anova_oneway_one_factor"),
 #'   plot_means = TRUE, plot_diagnostics = TRUE
 #' )
 report_oneway <- function(df, dv, iv, file = NULL, w = 10, h = 10, base_size = 10, note = "", title = "", type = "ci", plot_means = FALSE, plot_diagnostics = FALSE, pb = FALSE) {

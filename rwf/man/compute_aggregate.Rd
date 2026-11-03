@@ -50,6 +50,6 @@ Computes a comprehensive set of descriptive statistics for all
 compute_aggregate(df = mtcars, iv = 9)
 compute_aggregate(df = mtcars, iv = 9:10)
 compute_aggregate(df = mtcars, iv = 11)
-compute_aggregate(df = mtcars, iv = 11, file = "descriptives")
+compute_aggregate(df = mtcars, iv = 11, file = file.path(tempdir(), "descriptives"))
 }
 \keyword{descriptives}

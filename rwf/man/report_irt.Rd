@@ -20,8 +20,8 @@ cormatrix<-psych::sim.rasch(nvar=5,n=50000,low=-4,high=4,d=NULL,a=1,mu=0,sd=1)$i
 irt_onefactor<-mirt::mirt(cormatrix,1,empiricalhist=TRUE,calcNull=TRUE)
 irt_twofactor<-mirt::mirt(cormatrix,2,empiricalhist=TRUE,calcNull=TRUE)
 irt_threefactor<-mirt::mirt(cormatrix,3,empiricalhist=TRUE,calcNull=TRUE)
-report_irt(model=irt_onefactor,file="one_factor")
-report_irt(model=irt_twofactor,file="two_factors")
-report_irt(model=irt_threefactor,file="three_factors")
+report_irt(model=irt_onefactor,file=file.path(tempdir(),"one_factor"))
+report_irt(model=irt_twofactor,file=file.path(tempdir(),"two_factors"))
+report_irt(model=irt_threefactor,file=file.path(tempdir(),"three_factors"))
 }
 \keyword{IRT}

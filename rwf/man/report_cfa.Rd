@@ -25,6 +25,6 @@ df<-lavaan::simulateData(model=model,model.type="cfa",
 df<-generate_missing(df)
 fit<-lavaan::cfa(model,data=df,missing="ML")
 report_cfa(fit)
-report_cfa(fit,file="cfa")
+report_cfa(fit,file=file.path(tempdir(),"cfa"))
 }
 \keyword{SEM}

@@ -72,7 +72,7 @@ MIN and MAX are only reported where the values have a natural order:
 \examples{
 cdff(df = mtcars, parralel = TRUE)
 cdff(df = change_data_type(mtcars, "factor"), nuniques = 3)
-cdff(df = data.frame(t(mtcars)), file = "mtcars", nuniques = 10)
+cdff(df = data.frame(t(mtcars)), file = file.path(tempdir(), "mtcars"), nuniques = 10)
 cdff(df = mtcars)
 cdff(df = generate_missing(mtcars))
 cdff(df = infert, nuniques = 10)

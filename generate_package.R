@@ -21,17 +21,21 @@ setwd(working_directory)
 setwd("rwf")
 dir.create(file.path("data"), showWarnings = FALSE)
 filestocopy <- setdiff(
-  list.files(paste0(working_directory, "/working_functions"), full.names = TRUE),
-  list.dirs(paste0(working_directory, "/working_functions"), recursive = FALSE)
+  list.files(file.path(working_directory, "working_functions"), full.names = TRUE),
+  list.dirs(file.path(working_directory, "working_functions"), recursive = FALSE)
 )
-file.copy(from = filestocopy, to = paste0(working_directory, "/rwf/R"), recursive = TRUE, copy.mode = TRUE)
+file.copy(from = filestocopy, to = file.path(working_directory, "rwf/R"), recursive = TRUE, copy.mode = TRUE)
 document()
 setwd("..")
 remove.packages("rwf")
 install("rwf")
 library(rwf)
 
-pkgdown::build_site(paste0(getwd(), "/rwf"))
+pkgdown::build_site(file.path(getwd(), "/rwf"))
 system("R CMD Rd2pdf rwf --force")
 system("evince rwf.pdf")
 system("R CMD build rwf --resave-data")
+
+
+
+

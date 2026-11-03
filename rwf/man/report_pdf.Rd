@@ -55,9 +55,10 @@ p2 <- ggplot(ChickWeight, aes(x = Time, y = weight, colour = Diet)) +
 cars_plot_multiplot <- plot_multiplot(plotlist = plot_histogram(mtcars[, 1:4]), cols = 2)
 cars_plot_base <- plot_normality_diagnostics(mtcars)
 report_pdf(p1, p2, print_plot = TRUE)
-report_pdf(p1, p2, file = "report", print_plot = FALSE)
+report_pdf(p1, p2, file = file.path(tempdir(), "report"), print_plot = FALSE)
 report_pdf(plotlist = cars_plot_multiplot, print_plot = TRUE)
-report_pdf(plotlist = cars_plot_multiplot, file = "report", print_plot = FALSE)
+report_pdf(plotlist = cars_plot_multiplot, file = file.path(tempdir(), "report"),
+           print_plot = FALSE)
 report_pdf(plotlist = cars_plot_base, print_plot = TRUE)
-report_pdf(plotlist = cars_plot_base, file = "report", print_plot = FALSE)
+report_pdf(plotlist = cars_plot_base, file = file.path(tempdir(), "report"), print_plot = FALSE)
 }

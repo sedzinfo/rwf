@@ -118,7 +118,7 @@ report_wtests(
   dv = which("bp_before" == names(df_blood_pressure)),
   iv = 2:3,
   var.equal = TRUE,
-  file = "wilcoxontest"
+  file = file.path(tempdir(), "wilcoxontest")
 )
 }
 \keyword{effect-size}

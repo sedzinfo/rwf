@@ -59,7 +59,7 @@
 #'   extra_comment2 = "test2"
 #' )
 #' mtcor <- data.frame(cor(mtcars))
-#' filename <- "excel_generic.xlsx"
+#' filename <- file.path(tempdir(), "excel_generic.xlsx")
 #' if (file.exists(filename)) file.remove(filename)
 #' wb <- openxlsx::createWorkbook()
 #' openxlsx::addWorksheet(wb, "sheet")
@@ -157,7 +157,7 @@ excel_generic_format <- function(df, workbook, sheet = "output", title = NULL, c
 #'   extra_comment2 = "test2"
 #' )
 #' mtcor <- data.frame(cor(mtcars))
-#' filename <- "excel_matrix.xlsx"
+#' filename <- file.path(tempdir(), "excel_matrix.xlsx")
 #' if (file.exists(filename)) file.remove(filename)
 #' wb <- openxlsx::createWorkbook()
 #' excel_matrix(mtcars, wb,
@@ -259,7 +259,7 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 #'   extra_comment1 = "test1",
 #'   extra_comment2 = "test2"
 #' )
-#' filename <- "excel_critical_value.xlsx"
+#' filename <- file.path(tempdir(), "excel_critical_value.xlsx")
 #' if (file.exists(filename)) file.remove(filename)
 #' wb <- openxlsx::createWorkbook()
 #' df <- generate_missing(generate_correlation_matrix())
@@ -269,7 +269,7 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 #'   numFmt = "#0.00", critical = critical
 #' )
 #' openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
-#' filename <- "excel_critical_value_comment.xlsx"
+#' filename <- file.path(tempdir(), "excel_critical_value_comment.xlsx")
 #' if (file.exists(filename)) file.remove(filename)
 #' wb <- openxlsx::createWorkbook()
 #' df <- generate_missing(mtcars)
@@ -279,7 +279,7 @@ excel_matrix <- function(df, workbook, sheet = "output", title = NULL, comment =
 #'   numFmt = "#0.00", critical = critical
 #' )
 #' openxlsx::saveWorkbook(wb, invisible(paste(filename)), TRUE)
-#' filename <- "excel_critical_value_comment_min_max.xlsx"
+#' filename <- file.path(tempdir(), "excel_critical_value_comment_min_max.xlsx")
 #' if (file.exists(filename)) file.remove(filename)
 #' wb <- openxlsx::createWorkbook()
 #' df <- generate_missing(mtcars)
@@ -419,7 +419,7 @@ excel_critical_value <- function(df, workbook, sheet = "output", title = NULL, c
 #' @keywords functions
 #' @export
 #' @examples
-#' filename <- "excel_confusion_matrix.xlsx"
+#' filename <- file.path(tempdir(), "excel_confusion_matrix.xlsx")
 #' if (file.exists(filename)) file.remove(filename)
 #' observed <- factor(round(rnorm(10000, m = 10, sd = 1)))
 #' predicted <- factor(round(rnorm(10000, m = 10, sd = 1)))
@@ -473,7 +473,7 @@ excel_confusion_matrix <- function(df, workbook, title = "Rows: Expected Collumn
 #'   carb = "Number of carburetors"
 #' )
 #' report_dataframe(mtcars,
-#'   sheet = "report", file = "mtcars", comment = comment, numFmt = "#0.00",
+#'   sheet = "report", file = file.path(tempdir(), "mtcars"), comment = comment, numFmt = "#0.00",
 #'   critical = list(am = "<0.05")
 #' )
 #' report_dataframe(mtcars,

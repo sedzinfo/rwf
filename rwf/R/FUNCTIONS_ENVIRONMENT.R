@@ -186,7 +186,7 @@ getfwp <- function() {
 #' @export
 #' @examples
 #' write_txt(mtcars)
-#' write_txt(mtcars, file = "mtcars")
+#' write_txt(mtcars, file = file.path(tempdir(), "mtcars"))
 write_txt <- function(input, file = NULL) {
   if (!is.null(file)) {
     results <- file(invisible(paste0(file, ".log")))

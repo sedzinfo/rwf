@@ -323,7 +323,8 @@ compute_mean_sd_alpha <- function(df, divisor = NULL) {
 #' )
 #' report_alpha(df = df, key = key, cumulative = TRUE, n.iter = 1)
 #' report_alpha(df = df, key = key, reverse = reverse, check.keys = FALSE, n.iter = 2)
-#' report_alpha(df = df, key = key, check.keys = FALSE, n.iter = 2, file = "alpha")
+#' report_alpha(df = df, key = key, check.keys = FALSE, n.iter = 2,
+#'              file = file.path(tempdir(), "alpha"))
 report_alpha <- function(df, key = NULL, questions = NULL, reverse = NULL, mini = NULL, maxi = NULL, file = NULL, ...) {
   comment <- list(
     raw_alpha = toString(c(

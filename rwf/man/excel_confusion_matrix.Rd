@@ -21,7 +21,7 @@ excel_confusion_matrix(
 Useful for correlation matrices since it uses conditional formatting for matrices
 }
 \examples{
-filename <- "excel_confusion_matrix.xlsx"
+filename <- file.path(tempdir(), "excel_confusion_matrix.xlsx")
 if (file.exists(filename)) file.remove(filename)
 observed <- factor(round(rnorm(10000, m = 10, sd = 1)))
 predicted <- factor(round(rnorm(10000, m = 10, sd = 1)))
