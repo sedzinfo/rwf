@@ -3,26 +3,22 @@
   variable (DV), fits a linear model and produces a 6-panel diagnostic plot
   via ggfortify::autoplot: Residuals vs Fitted, Normal Q-Q, Scale-Location,
   Cook's Distance, Residuals vs Leverage, and Cook's Distance vs Leverage.
-Interpretation:
+  Interpretation:
 Residuals vs Fitted — points should be randomly scattered
       with no pattern; a funnel shape indicates heteroscedasticity.
 Normal Q-Q — points should follow the diagonal; large
       deviations indicate non-normality.
-
-
 When the number of IV-DV combinations exceeds four times the available CPU
   cores the plots are produced in parallel via future.apply, otherwise
   sequentially."><meta property="og:description" content="For every combination of independent variable (IV) and dependent
   variable (DV), fits a linear model and produces a 6-panel diagnostic plot
   via ggfortify::autoplot: Residuals vs Fitted, Normal Q-Q, Scale-Location,
   Cook's Distance, Residuals vs Leverage, and Cook's Distance vs Leverage.
-Interpretation:
+  Interpretation:
 Residuals vs Fitted — points should be randomly scattered
       with no pattern; a funnel shape indicates heteroscedasticity.
 Normal Q-Q — points should follow the diagonal; large
       deviations indicate non-normality.
-
-
 When the number of IV-DV combinations exceeds four times the available CPU
   cores the plots are produced in parallel via future.apply, otherwise
   sequentially."></head><body>
@@ -87,8 +83,8 @@ When the number of IV-DV combinations exceeds four times the available CPU
     <p>For every combination of independent variable (IV) and dependent
   variable (DV), fits a linear model and produces a 6-panel diagnostic plot
   via <code>ggfortify::autoplot</code>: Residuals vs Fitted, Normal Q-Q, Scale-Location,
-  Cook's Distance, Residuals vs Leverage, and Cook's Distance vs Leverage.</p>
-<p><strong>Interpretation:</strong></p><ul><li><p><em>Residuals vs Fitted</em> — points should be randomly scattered
+  Cook's Distance, Residuals vs Leverage, and Cook's Distance vs Leverage.
+  <strong>Interpretation:</strong></p><ul><li><p><em>Residuals vs Fitted</em> — points should be randomly scattered
       with no pattern; a funnel shape indicates heteroscedasticity.</p></li>
 <li><p><em>Normal Q-Q</em> — points should follow the diagonal; large
       deviations indicate non-normality.</p></li>
@@ -134,78 +130,20 @@ variables.</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">nrows</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span></span>
-<span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="generate_factor.html">generate_factor</a></span><span class="op">(</span>vector <span class="op">=</span> <span class="va">LETTERS</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span>, nrows <span class="op">=</span> <span class="va">nrows</span>, ncols <span class="op">=</span> <span class="fl">10</span>, type <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  <span class="fu"><a href="generate_data.html">generate_data</a></span><span class="op">(</span>nrows <span class="op">=</span> <span class="va">nrows</span>, ncols <span class="op">=</span> <span class="fl">5</span>, type <span class="op">=</span> <span class="st">"normal"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">plot_oneway_diagnostics</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span>, dv <span class="op">=</span> <span class="fl">11</span><span class="op">:</span><span class="fl">15</span>, iv <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Single DV, multiple IVs</span></span></span>
+<span class="r-in"><span><span class="fu">plot_oneway_diagnostics</span><span class="op">(</span>df <span class="op">=</span> <span class="va">mtcars</span>, dv <span class="op">=</span> <span class="fl">1</span>, iv <span class="op">=</span> <span class="fl">9</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`fortify(&lt;lm&gt;)` was deprecated in ggplot2 4.0.0.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please use `broom::augment(&lt;lm&gt;)` instead.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> The deprecated feature was likely used in the <span style="color: #0000BB;">ggfortify</span> package.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   Please report the issue at <span style="color: #0000BB; font-style: italic;">&lt;</span><a href="https://github.com/sinhrks/ggfortify/issues" class="external-link"><span style="color: #0000BB; font-style: italic;">https://github.com/sinhrks/ggfortify/issues</span></a><span style="color: #0000BB; font-style: italic;">&gt;</span>.</span>
 <span class="r-plt img"><img src="plot_oneway_diagnostics-1.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="plot_oneway_diagnostics-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="co"># Multiple DVs and IVs</span></span></span>
+<span class="r-in"><span><span class="fu">plot_oneway_diagnostics</span><span class="op">(</span>df <span class="op">=</span> <span class="va">mtcars</span>, dv <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, iv <span class="op">=</span> <span class="fl">9</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_oneway_diagnostics-3.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="plot_oneway_diagnostics-4.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="plot_oneway_diagnostics-5.png" alt="" width="700" height="433"></span>
 <span class="r-plt img"><img src="plot_oneway_diagnostics-6.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-7.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-8.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-9.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-10.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-11.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-12.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-13.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-14.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-15.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-16.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-17.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-18.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-19.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-20.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-21.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-22.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-23.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-24.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-25.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-26.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-27.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-28.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-29.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-30.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-31.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-32.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-33.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-34.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-35.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-36.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-37.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-38.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-39.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-40.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-41.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-42.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-43.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-44.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-45.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-46.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-47.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-48.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-49.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-50.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Single DV, multiple IVs</span></span></span>
-<span class="r-in"><span><span class="fu">plot_oneway_diagnostics</span><span class="op">(</span>df <span class="op">=</span> <span class="va">mtcars</span>, dv <span class="op">=</span> <span class="fl">1</span>, iv <span class="op">=</span> <span class="fl">9</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-51.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-52.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Multiple DVs and IVs</span></span></span>
-<span class="r-in"><span><span class="fu">plot_oneway_diagnostics</span><span class="op">(</span>df <span class="op">=</span> <span class="va">mtcars</span>, dv <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">2</span>, iv <span class="op">=</span> <span class="fl">9</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-53.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-54.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-55.png" alt="" width="700" height="433"></span>
-<span class="r-plt img"><img src="plot_oneway_diagnostics-56.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
