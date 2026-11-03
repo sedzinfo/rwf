@@ -31,11 +31,7 @@ remove.packages("rwf")
 install("rwf")
 library(rwf)
 
-pkgdown::build_site(file.path(getwd(), "/rwf"))
+pkgdown::build_site(file.path(getwd(), "/rwf"), lazy = TRUE)
 system("R CMD Rd2pdf rwf --force")
 system("evince rwf.pdf")
 system("R CMD build rwf --resave-data")
-
-
-
-

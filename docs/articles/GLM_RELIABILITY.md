@@ -22,14 +22,17 @@ Cronbach’s alpha estimates **internal consistency** — how much the items
 of a scale covary, as a proxy for how much they all measure the same
 underlying construct:
 
-\alpha = \frac{k}{k-1}\left(1-\frac{\sum \text{diag}(\Sigma)}{\sum
-\Sigma}\right)
+\alpha =
+\frac{k}{k-1}\left(1-\frac{\sum\_{i=1}^{k}\sigma^2\_{i}}{\sigma^2_X}\right)
 
-where k is the number of items and \Sigma is their covariance matrix.
-Conventionally, \alpha \geq 0.70 is considered acceptable for research
-purposes and \geq 0.80 for applied/clinical decisions — though alpha can
-be inflated merely by adding more items, regardless of whether they add
-real construct coverage (Cortina, 1993).
+where k is the number of items, \sigma^2_i is the variance of item i,
+and \sigma^2_X is the variance of the total score X, which equals the
+sum of all the entries of the items’ covariance matrix (every item
+variance plus every covariance). Conventionally, \alpha \geq 0.70 is
+considered acceptable for research purposes and \geq 0.80 for
+applied/clinical decisions — though alpha can be inflated merely by
+adding more items, regardless of whether they add real construct
+coverage (Cortina, 1993).
 
 **Item-total correlation** (`r`) is each item’s correlation with the
 total scale score (which includes that item); **corrected item-total

@@ -106,12 +106,15 @@ discriminant validity, and variance-components-based reliability
 <p>Cronbach’s alpha estimates <strong>internal consistency</strong> —
 how much the items of a scale covary, as a proxy for how much they all
 measure the same underlying construct:</p>
-<p><span class="math display">\alpha = \frac{k}{k-1}\left(1-\frac{\sum
-\text{diag}(\Sigma)}{\sum \Sigma}\right)</span></p>
-<p>where <span class="math inline">k</span> is the number of items and
-<span class="math inline">\Sigma</span> is their covariance matrix.
-Conventionally, <span class="math inline">\alpha \geq 0.70</span> is
-considered acceptable for research purposes and <span class="math inline">\geq 0.80</span> for applied/clinical decisions —
+<p><span class="math display">\alpha =
+\frac{k}{k-1}\left(1-\frac{\sum_{i=1}^{k}\sigma^2_{i}}{\sigma^2_X}\right)</span></p>
+<p>where <span class="math inline">k</span> is the number of items,
+<span class="math inline">\sigma^2_i</span> is the variance of item
+<span class="math inline">i</span>, and <span class="math inline">\sigma^2_X</span> is the variance of the total score
+<span class="math inline">X</span>, which equals the sum of all the
+entries of the items’ covariance matrix (every item variance plus every
+covariance). Conventionally, <span class="math inline">\alpha \geq
+0.70</span> is considered acceptable for research purposes and <span class="math inline">\geq 0.80</span> for applied/clinical decisions —
 though alpha can be inflated merely by adding more items, regardless of
 whether they add real construct coverage (Cortina, 1993).</p>
 <p><strong>Item-total correlation</strong> (<code>r</code>) is each

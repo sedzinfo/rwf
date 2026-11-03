@@ -2,12 +2,13 @@
 
 Runs eight normality tests on each numeric column of `df`. The tests are
 Shapiro-Wilk, Anderson-Darling, Cramér-von Mises, Shapiro-Francia,
-Jarque-Bera, Kolmogorov-Smirnov, Lilliefors, and Pearson chi-squared.
-Each column is z-standardised before testing. Columns with fewer than 8
-or more than 4999 non-missing observations are skipped with a console
-message. Results are printed to the console; when `file` is supplied
-they are also written to a `.log` file and a colour-coded `.xlsx` file
-with significant p-values (\\p \le 0.05\\) highlighted.
+Jarque-Bera (the robust version of Gel and Gastwirth, 2008),
+Kolmogorov-Smirnov, Lilliefors, and Pearson chi-squared. Each column is
+z-standardised before testing. Columns with fewer than 8 or more than
+4999 non-missing observations are skipped with a console message.
+Results are printed to the console; when `file` is supplied they are
+also written to a `.log` file and a colour-coded `.xlsx` file with
+significant p-values (\\p \le 0.05\\) highlighted.
 
 ## Usage
 
@@ -46,7 +47,7 @@ report_normality_tests(df = df)
 #> [1] "#########################"
 #>    variable  n statistic df            p                                         method alternative n.classes
 #> 1       mpg 22   0.94351 NA 0.2336273805                    Shapiro-Wilk normality test        <NA>        NA
-#> 2       mpg 22   0.44630 NA 0.8001836686       Anderson-Darling test of goodness-of-fit        <NA>        NA
+#> 2       mpg 22   0.44630 NA 0.2559992288                Anderson-Darling normality test        <NA>        NA
 #> 3       mpg 22   0.07085 NA 0.2597518367                Cramer-von Mises normality test        <NA>        NA
 #> 4       mpg 22   0.95197 NA 0.2938563796                 Shapiro-Francia normality test        <NA>        NA
 #> 5       mpg 22   1.17648  2 0.5553028005                        Robust Jarque Bera Test        <NA>        NA
@@ -54,7 +55,7 @@ report_normality_tests(df = df)
 #> 7       mpg 22   0.14383 NA 0.7529607263  Asymptotic one-sample Kolmogorov-Smirnov test   two-sided        NA
 #> 8       mpg 22   5.36364  4 0.2519785081              Pearson chi-square normality test        <NA>         7
 #> 9       cyl 22   0.73970 NA 0.0000654667                    Shapiro-Wilk normality test        <NA>        NA
-#> 10      cyl 22   2.37833 NA 0.0579950719       Anderson-Darling test of goodness-of-fit        <NA>        NA
+#> 10      cyl 22   2.37833 NA 0.0000030613                Anderson-Darling normality test        <NA>        NA
 #> 11      cyl 22   0.34675 NA 0.0000812074                Cramer-von Mises normality test        <NA>        NA
 #> 12      cyl 22   0.76570 NA 0.0003442400                 Shapiro-Francia normality test        <NA>        NA
 #> 13      cyl 22   1.79943  2 0.4066847330                        Robust Jarque Bera Test        <NA>        NA
@@ -87,7 +88,7 @@ report_normality_tests(df = vector, file = file)
 #> [1] "#########################"
 #>   variable  n statistic df      p                                         method alternative n.classes
 #> 1       df 40   0.97618 NA 0.5503                    Shapiro-Wilk normality test        <NA>        NA
-#> 2       df 40   0.37883 NA 0.8687       Anderson-Darling test of goodness-of-fit        <NA>        NA
+#> 2       df 40   0.37883 NA 0.3898                Anderson-Darling normality test        <NA>        NA
 #> 3       df 40   0.06275 NA 0.3399                Cramer-von Mises normality test        <NA>        NA
 #> 4       df 40   0.97759 NA 0.5134                 Shapiro-Francia normality test        <NA>        NA
 #> 5       df 40   1.00849  2 0.6040                        Robust Jarque Bera Test        <NA>        NA
