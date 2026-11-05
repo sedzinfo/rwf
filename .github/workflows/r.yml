@@ -28,7 +28,7 @@ jobs:
         r-version: ['release', 'oldrel-1']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       # the package data is stored in Git LFS; fetch only that, not the docs/PDFs
       - name: Fetch package data from LFS
