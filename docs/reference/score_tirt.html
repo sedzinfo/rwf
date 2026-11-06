@@ -39,9 +39,9 @@ In simple terms:
     <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
-    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -131,255 +131,53 @@ is assumed and a warning is issued.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/thurstonianIRT" class="external-link">thurstonianIRT</a></span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in library(thurstonianIRT):</span> there is no package called 'thurstonianIRT'</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"triplets"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>data set 'triplets' not found</span>
 <span class="r-in"><span><span class="co"># define the blocks of items</span></span></span>
 <span class="r-in"><span><span class="va">blocks</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/thurstonianIRT/man/set_block.html" class="external-link">set_block</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"i1"</span>, <span class="st">"i2"</span>, <span class="st">"i3"</span><span class="op">)</span>, traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">set_block</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"i1"</span>, <span class="st">"i2"</span>, <span class="st">"i3"</span><span class="op">)</span>, traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            signs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/thurstonianIRT/man/set_block.html" class="external-link">set_block</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"i4"</span>, <span class="st">"i5"</span>, <span class="st">"i6"</span><span class="op">)</span>, traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">set_block</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"i4"</span>, <span class="st">"i5"</span>, <span class="st">"i6"</span><span class="op">)</span>, traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            signs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/thurstonianIRT/man/set_block.html" class="external-link">set_block</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"i7"</span>, <span class="st">"i8"</span>, <span class="st">"i9"</span><span class="op">)</span>, traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">set_block</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"i7"</span>, <span class="st">"i8"</span>, <span class="st">"i9"</span><span class="op">)</span>, traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            signs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/thurstonianIRT/man/set_block.html" class="external-link">set_block</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"i10"</span>, <span class="st">"i11"</span>, <span class="st">"i12"</span><span class="op">)</span>, traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">set_block</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"i10"</span>, <span class="st">"i11"</span>, <span class="st">"i12"</span><span class="op">)</span>, traits <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t1"</span>, <span class="st">"t2"</span>, <span class="st">"t3"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>            signs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in set_block(c("i1", "i2", "i3"), traits = c("t1", "t2", "t3"),     signs = c(1, 1, 1)):</span> could not find function "set_block"</span>
 <span class="r-in"><span><span class="co"># generate the data to be understood by 'thurstonianIRT'</span></span></span>
-<span class="r-in"><span><span class="va">triplets_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/thurstonianIRT/man/make_TIRT_data.html" class="external-link">make_TIRT_data</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">triplets_long</span> <span class="op">&lt;-</span> <span class="fu">make_TIRT_data</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">triplets</span>, blocks <span class="op">=</span> <span class="va">blocks</span>, direction <span class="op">=</span> <span class="st">"larger"</span>,</span></span>
 <span class="r-in"><span>  format <span class="op">=</span> <span class="st">"pairwise"</span>, family <span class="op">=</span> <span class="st">"bernoulli"</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in make_TIRT_data(data = triplets, blocks = blocks, direction = "larger",     format = "pairwise", family = "bernoulli", range = c(0, 1)):</span> could not find function "make_TIRT_data"</span>
 <span class="r-in"><span><span class="co"># fit the data using lavaan</span></span></span>
-<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/thurstonianIRT/man/fit_TIRT_lavaan.html" class="external-link">fit_TIRT_lavaan</a></span><span class="op">(</span><span class="va">triplets_long</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit</span> <span class="op">&lt;-</span> <span class="fu">fit_TIRT_lavaan</span><span class="op">(</span><span class="va">triplets_long</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in fit_TIRT_lavaan(triplets_long):</span> could not find function "fit_TIRT_lavaan"</span>
 <span class="r-in"><span><span class="va">pars</span> <span class="op">&lt;-</span> <span class="fu"><a href="extract_tirt_params.html">extract_tirt_params</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'fit' not found</span>
 <span class="r-in"><span><span class="va">patterns</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">as.matrix</a></span><span class="op">(</span><span class="va">triplets</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'triplets' not found</span>
 <span class="r-in"><span><span class="fu">score_tirt</span><span class="op">(</span><span class="va">patterns</span>,lambda<span class="op">=</span><span class="va">pars</span><span class="op">$</span><span class="va">lambda</span>,theta_diag<span class="op">=</span><span class="va">pars</span><span class="op">$</span><span class="va">theta_diag</span>,</span></span>
 <span class="r-in"><span>           tau<span class="op">=</span><span class="va">pars</span><span class="op">$</span><span class="va">tau</span>,Psi<span class="op">=</span><span class="va">pars</span><span class="op">$</span><span class="va">Psi</span>,nu<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        trait1    trait2    trait3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    0.299584 -1.207679  0.142628</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   -0.915490  0.857886  0.640157</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   -0.630524  1.344044  0.876887</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   -0.952308 -0.400254  0.062053</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    0.910671 -0.013031 -0.103811</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    0.534702 -0.657240 -1.496231</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7    0.500861  0.417293 -0.100791</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8    0.642759  0.509066  0.600512</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   -0.147997 -0.201002  0.452788</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  -1.673023 -0.067635 -0.090041</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11   0.191321 -0.531539 -1.166400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12   1.225771 -0.312791  1.046537</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 13   1.068179  0.055166  0.653773</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 14  -0.633225 -0.092301  0.042130</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 15  -0.923229  0.508130  0.957096</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 16  -1.368762 -0.349545 -0.985873</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 17   0.336108 -1.317170  0.289523</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 18  -0.258124 -0.918406 -0.372316</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 19  -0.676044  0.272419 -0.186268</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 20   1.022448 -0.418967  0.167891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 21  -0.188234 -0.086501  0.396841</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 22   1.465963 -0.090623  0.214585</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 23   0.525822  0.215122  0.232383</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 24  -1.232942 -0.478590  0.423087</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 25  -0.188234 -0.086501  0.396841</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 26   1.422811 -0.928103 -0.796576</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 27   0.622486  0.530456  0.678341</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 28  -1.461796  0.919056  0.361938</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 29   0.151835  1.359843  0.461502</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 30  -0.215902 -1.289406 -0.080471</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 31   0.895685  0.754321 -0.077896</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 32  -0.461511  0.594858  1.523781</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 33   0.735954 -1.306342 -0.108313</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 34  -0.131839  1.167958  1.267026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 35  -0.303512  0.094676  0.078603</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 36  -0.381914  1.323560 -0.001166</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 37  -0.234215 -1.255578 -0.863948</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 38  -0.768957  1.549136  0.515953</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 39   1.195335 -0.818765  0.536250</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 40   0.552003 -0.889552 -0.753535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 41  -0.164235  0.185322  0.076991</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 42  -0.451112 -0.372365  0.275609</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 43   1.004998 -1.312297 -0.919935</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 44   0.199561  1.075842  0.909804</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 45  -0.182257 -0.128730  0.389039</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 46  -0.601785 -0.046262 -1.301456</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 47  -0.931572 -0.754926  0.369512</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 48   0.191387 -0.902913 -0.808788</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 49   0.164798 -0.877443 -0.897284</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 50  -0.225497  1.586101  1.009028</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 51   0.478586 -0.030020 -0.523112</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 52   0.382179 -0.342971  1.322792</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 53  -0.495058 -0.048776  0.104577</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 54  -1.016889  0.788141 -0.926204</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 55   0.280777  0.699173  1.174863</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 56   0.534371 -0.408769 -0.294129</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 57  -0.243730  1.114821  0.342852</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 58   0.838918 -0.114656  1.522447</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 59  -1.310740 -0.006271 -0.731031</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 60   1.068179  0.055166  0.653773</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 61   0.610524 -0.161365  0.500117</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 62  -0.174634  0.720618  0.589522</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 63  -1.049688  1.125806 -0.412370</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 64  -0.174634  0.720618  0.589522</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 65   0.325032  0.372179 -0.150519</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 66   0.550764  0.909481  0.411284</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 67   0.622486  0.530456  0.678341</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 68  -0.530896 -1.712997 -0.913628</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 69  -1.122689  1.339618  0.463371</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 70  -0.131839  1.167958  1.267026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 71   0.567382  0.050232  0.159715</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 72  -0.239326  0.712978 -0.280436</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 73  -0.023242  0.846726 -0.079400</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 74   0.610524 -0.161365  0.500117</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 75  -0.867621  0.177340  1.325927</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 76   1.034332 -0.378986  0.254047</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 77   0.972227  0.446584  0.377126</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 78  -0.131839  1.167958  1.267026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 79  -0.207125  0.828507  0.751953</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80  -1.842287  0.924733 -0.031368</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 81   0.222295 -0.937166 -0.033838</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 82  -0.926190 -0.503583 -0.643351</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 83   0.201970  0.299775  0.534617</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 84   1.465963 -0.090623  0.214585</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 85   0.735954 -1.306342 -0.108313</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 86  -1.467760  1.340232  0.065165</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 87  -0.281152  0.423650 -0.794148</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 88  -0.569520 -0.121138 -1.309271</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 89   0.222327  0.956786  0.723904</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 90   0.382179 -0.342971  1.322792</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 91   0.622486  0.530456  0.678341</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 92  -0.923229  0.508130  0.957096</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 93   0.741811 -0.515489  0.870822</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 94   1.068179  0.055166  0.653773</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 95   0.222327  0.956786  0.723904</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 96   0.897053 -0.529374 -0.693273</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 97  -0.527337  0.054858  0.843033</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 98  -0.945908 -0.880802 -1.169507</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 99   0.134870  0.669615  0.280039</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 100 -0.952308 -0.400254  0.062053</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 101 -0.832236  0.461778 -0.339639</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 102 -0.110437 -0.221052  0.465419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 103 -1.158258 -0.327577  0.280137</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 104  0.054195 -0.483781 -1.012557</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 105  1.662968 -0.510788  0.599569</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 106 -0.270470 -0.785767 -0.380625</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 107  0.054195 -0.483781 -1.012557</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 108  0.158807  0.087422  0.477564</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 109 -1.394130 -0.024408 -1.392539</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 110  0.164798 -0.877443 -0.897284</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 111  0.991076 -1.083986 -0.872468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 112 -0.596569 -0.954209 -1.623896</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 113  0.084688 -0.687205 -1.180527</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 114 -0.243730  1.114821  0.342852</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 115 -0.926190 -0.503583 -0.643351</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 116 -0.464141 -0.262557  1.201191</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 117  1.022448 -0.418967  0.167891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 118 -1.016889  0.788141 -0.926204</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 119  0.713213 -1.503322 -0.936687</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 120  0.117203 -0.477823 -0.529375</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 121  0.037842 -0.142224 -1.384232</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 122  0.485560 -0.105623 -0.313262</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 123  0.318902  0.743274 -0.535569</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 124 -0.557612  0.103198 -1.098873</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 125  0.290079  0.909933  0.572237</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 126  0.222295 -0.937166 -0.033838</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 127  0.622486  0.530456  0.678341</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 128  1.422811 -0.928103 -0.796576</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 129  0.200511 -0.532825  0.359081</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 130 -0.291789 -0.518056 -1.452566</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 131 -1.707496  0.084598 -0.361408</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 132 -0.210206  0.500319  0.526967</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 133  1.433434 -0.559781 -0.228962</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 134 -0.243730  1.114821  0.342852</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 135 -0.002978  1.173395 -0.509449</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 136  0.816956  0.051638 -1.011027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 137  1.291100 -0.471597 -1.061313</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 138  1.349386  0.328558 -0.059944</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 139 -0.207125  0.828507  0.751953</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 140 -1.767559  0.404620 -0.487424</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 141 -1.741455  0.469251  0.212294</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 142  0.222295 -0.937166 -0.033838</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 143 -0.131839  1.167958  1.267026</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 144 -0.595420  1.082928 -0.070731</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 145 -0.923229  0.508130  0.957096</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 146  0.109760 -0.654788 -1.844788</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 147  1.627338 -1.397597 -0.424087</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 148 -0.471613 -0.036820 -0.703055</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 149  0.991076 -1.083986 -0.872468</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 150 -0.139550 -0.935132 -0.387984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 151 -0.130223 -0.432719  0.733106</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 152 -0.552681  0.726195 -0.600266</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 153  0.234680 -1.264860 -0.530476</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 154 -0.923229  0.508130  0.957096</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 155 -0.278640 -0.849318 -1.086673</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 156 -1.014124  0.919485 -0.437706</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 157 -1.806492  0.529045 -0.617256</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 158 -0.046471  0.142137  1.396226</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 159 -1.685538 -0.021859 -0.234617</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 160 -1.047139  0.711246 -0.124976</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 161 -0.630524  1.344044  0.876887</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 162  0.550764  0.909481  0.411284</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 163 -0.519872 -0.684060 -0.092381</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 164 -0.977804  0.376495 -1.288609</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 165  0.607582 -0.541679  0.142233</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 166 -0.251921 -0.893528 -1.228891</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 167  0.416734 -0.855954 -0.747486</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 168  1.225771 -0.312791  1.046537</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 169  0.199362 -0.580007 -0.331184</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 170  1.068179  0.055166  0.653773</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 171  0.134870  0.669615  0.280039</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 172  0.307477  0.742294  1.322602</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 173 -0.948277 -0.833686 -1.160482</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 174 -0.992132 -0.445707 -1.403771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 175 -1.396157  0.415050 -0.991297</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 176 -0.084565 -1.093779  0.529419</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 177 -0.156872 -0.178991 -0.291482</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 178  0.642759  0.509066  0.600512</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 179  0.167159  0.590703  0.265677</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 180 -0.136020  0.457797  1.007904</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 181  1.225771 -0.312791  1.046537</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 182 -0.195992 -1.489235 -1.730002</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 183  0.816956  0.051638 -1.011027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 184 -0.497739  0.516957  0.180248</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 185 -1.122689  1.339618  0.463371</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 186  0.628619 -1.463992 -0.982336</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 187  1.381754 -0.438013 -0.356014</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 188  1.004998 -1.312297 -0.919935</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 189  0.912122 -0.810814 -0.469254</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 190 -0.179701 -0.058660 -0.972140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 191  0.111765  0.319578 -0.297899</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 192  0.461050  0.330186 -0.890316</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 193  0.382179 -0.342971  1.322792</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 194  0.150633 -0.158890 -1.402063</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 195  0.912122 -0.810814 -0.469254</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 196 -0.110676 -1.276512 -0.880491</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 197 -0.630524  1.344044  0.876887</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 198 -1.461796  0.919056  0.361938</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 199  0.610524 -0.161365  0.500117</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 200  0.344034 -1.670651 -0.223795</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'patterns' not found</span>
 <span class="r-in"><span><span class="co"># Check same scores from thurstonianIRT package</span></span></span>
-<span class="r-in"><span><span class="va">triplets_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/thurstonianIRT/man/make_TIRT_data.html" class="external-link">make_TIRT_data</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">triplets</span>,</span></span>
+<span class="r-in"><span><span class="va">triplets_long</span> <span class="op">&lt;-</span> <span class="fu">make_TIRT_data</span><span class="op">(</span>data <span class="op">=</span> <span class="va">triplets</span>,</span></span>
 <span class="r-in"><span>                                blocks <span class="op">=</span> <span class="va">blocks</span>, </span></span>
 <span class="r-in"><span>                                direction <span class="op">=</span> <span class="st">"larger"</span>,</span></span>
 <span class="r-in"><span>                                format <span class="op">=</span> <span class="st">"pairwise"</span>, </span></span>
 <span class="r-in"><span>                                family <span class="op">=</span> <span class="st">"bernoulli"</span>, </span></span>
 <span class="r-in"><span>                                range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in make_TIRT_data(data = triplets, blocks = blocks, direction = "larger",     format = "pairwise", family = "bernoulli", range = c(0, 1)):</span> could not find function "make_TIRT_data"</span>
 <span class="r-in"><span><span class="va">scores_thurstonianIRT</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">fit</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in h(simpleError(msg, call)):</span> error in evaluating the argument 'object' in selecting a method for function 'predict': object 'fit' not found</span>
 <span class="r-in"><span><span class="va">scores</span><span class="op">&lt;-</span><span class="fu">score_tirt</span><span class="op">(</span><span class="va">patterns</span>,lambda<span class="op">=</span><span class="va">pars</span><span class="op">$</span><span class="va">lambda</span>,theta_diag<span class="op">=</span><span class="va">pars</span><span class="op">$</span><span class="va">theta_diag</span>,</span></span>
 <span class="r-in"><span>        tau<span class="op">=</span><span class="va">pars</span><span class="op">$</span><span class="va">tau</span>,Psi<span class="op">=</span><span class="va">pars</span><span class="op">$</span><span class="va">Psi</span>,nu<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'patterns' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">reshape2</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/reshape2/man/recast.html" class="external-link">recast</a></span><span class="op">(</span><span class="va">scores_thurstonianIRT</span>,formula<span class="op">=</span><span class="va">id</span><span class="op">~</span><span class="va">trait</span>,id.var<span class="op">=</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   id  trait1   trait2   trait3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1  0.2996 -1.20767  0.14264</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2 -0.9155  0.85794  0.64017</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  3 -0.6305  1.34407  0.87695</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  4 -0.9523 -0.40027  0.06206</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  5  0.9106 -0.01306 -0.10390</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  6  0.5347 -0.65726 -1.49623</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'scores_thurstonianIRT' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">scores</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    trait1   trait2   trait3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.2996 -1.20768  0.14263</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 -0.9155  0.85789  0.64016</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 -0.6305  1.34404  0.87689</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 -0.9523 -0.40025  0.06205</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.9107 -0.01303 -0.10381</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.5347 -0.65724 -1.49623</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'scores' not found</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
