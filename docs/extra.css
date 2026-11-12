@@ -55,3 +55,27 @@ footer a {
     justify-self: center;
   }
 }
+
+/* phones and small tablets (below Bootstrap's lg breakpoint, where the navbar collapses) */
+@media (max-width: 991.98px) {
+  /* wide display maths scrolls sideways in its own box instead of widening the page
+     (the 1px padding keeps the anti-aliased edges of tall symbols from being clipped) */
+  .katex-display {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 1px 0;
+  }
+  /* inline svgs without a viewBox cannot shrink: their section scrolls sideways instead */
+  .section:has(> svg) {
+    overflow-x: auto;
+  }
+  /* bigger tap targets: ~43px menu items; the footer links get vertical padding,
+     which on inline links enlarges the tap area without moving the text */
+  .navbar-collapse .nav-link {
+    padding-top: .75rem;
+    padding-bottom: .75rem;
+  }
+  footer a {
+    padding: .5rem 0;
+  }
+}
