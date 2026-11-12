@@ -46,9 +46,9 @@
     <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
-    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -232,7 +232,7 @@ values.</p>
 <span><span class="co">## [1] "#########################"</span></span>
 <span><span class="co">##       variable   n    statistic df            p                                         method alternative n.classes</span></span>
 <span><span class="co">## 1       normal 295 9.972825e-01 NA 9.060430e-01                    Shapiro-Wilk normality test        &lt;NA&gt;        NA</span></span>
-<span><span class="co">## 2       normal 295 2.718761e-01 NA 6.691560e-01                Anderson-Darling normality test        &lt;NA&gt;        NA</span></span>
+<span><span class="co">## 2       normal 295 2.718761e-01 NA 9.576420e-01       Anderson-Darling test of goodness-of-fit        &lt;NA&gt;        NA</span></span>
 <span><span class="co">## 3       normal 295 5.050757e-02 NA 5.023404e-01                Cramer-von Mises normality test        &lt;NA&gt;        NA</span></span>
 <span><span class="co">## 4       normal 295 9.976499e-01 NA 9.079017e-01                 Shapiro-Francia normality test        &lt;NA&gt;        NA</span></span>
 <span><span class="co">## 5       normal 295 1.472553e-01  2 9.290176e-01                        Robust Jarque Bera Test        &lt;NA&gt;        NA</span></span>
@@ -240,7 +240,7 @@ values.</p>
 <span><span class="co">## 7       normal 295 4.067779e-02 NA 7.134580e-01  Asymptotic one-sample Kolmogorov-Smirnov test   two-sided        NA</span></span>
 <span><span class="co">## 8       normal 295 1.530508e+01 17 5.735170e-01              Pearson chi-square normality test        &lt;NA&gt;        20</span></span>
 <span><span class="co">## 9       skewed 300 7.899850e-01 NA 2.287367e-19                    Shapiro-Wilk normality test        &lt;NA&gt;        NA</span></span>
-<span><span class="co">## 10      skewed 300 1.589933e+01 NA 3.700000e-24                Anderson-Darling normality test        &lt;NA&gt;        NA</span></span>
+<span><span class="co">## 10      skewed 300 1.589933e+01 NA 2.000000e-06       Anderson-Darling test of goodness-of-fit        &lt;NA&gt;        NA</span></span>
 <span><span class="co">## 11      skewed 300 2.660485e+00 NA 7.370000e-10                Cramer-von Mises normality test        &lt;NA&gt;        NA</span></span>
 <span><span class="co">## 12      skewed 300 7.886278e-01 NA 7.775158e-17                 Shapiro-Francia normality test        &lt;NA&gt;        NA</span></span>
 <span><span class="co">## 13      skewed 300 1.530339e+03  2 0.000000e+00                        Robust Jarque Bera Test        &lt;NA&gt;        NA</span></span>
@@ -248,10 +248,10 @@ values.</p>
 <span><span class="co">## 15      skewed 300 1.749833e-01 NA 2.100843e-08  Asymptotic one-sample Kolmogorov-Smirnov test   two-sided        NA</span></span>
 <span><span class="co">## 16      skewed 300 1.869333e+02 17 1.192809e-30              Pearson chi-square normality test        &lt;NA&gt;        20</span></span>
 <span><span class="co">## 17 heavy_tails 300 9.740061e-01 NA 2.937593e-05                    Shapiro-Wilk normality test        &lt;NA&gt;        NA</span></span>
-<span><span class="co">## 18 heavy_tails 300 1.994873e+00 NA 4.321204e-05                Anderson-Darling normality test        &lt;NA&gt;        NA</span></span>
+<span><span class="co">## 18 heavy_tails 300 1.994873e+00 NA 9.247587e-02       Anderson-Darling test of goodness-of-fit        &lt;NA&gt;        NA</span></span>
 <span><span class="co">## 19 heavy_tails 300 3.432478e-01 NA 1.067328e-04                Cramer-von Mises normality test        &lt;NA&gt;        NA</span></span>
 <span><span class="co">## 20 heavy_tails 300 9.711620e-01 NA 2.863242e-05                 Shapiro-Francia normality test        &lt;NA&gt;        NA</span></span>
-<span><span class="co">## 21 heavy_tails 300 8.216889e+01  2 1.436324e-18                        Robust Jarque Bera Test        &lt;NA&gt;        NA</span></span>
+<span><span class="co">## 21 heavy_tails 300 8.216889e+01  2 0.000000e+00                        Robust Jarque Bera Test        &lt;NA&gt;        NA</span></span>
 <span><span class="co">## 22 heavy_tails 300 7.338292e-02 NA 5.103346e-04 Lilliefors (Kolmogorov-Smirnov) normality test        &lt;NA&gt;        NA</span></span>
 <span><span class="co">## 23 heavy_tails 300 7.338292e-02 NA 7.902856e-02  Asymptotic one-sample Kolmogorov-Smirnov test   two-sided        NA</span></span>
 <span><span class="co">## 24 heavy_tails 300 3.453333e+01 17 7.160032e-03              Pearson chi-square normality test        &lt;NA&gt;        20</span></span>

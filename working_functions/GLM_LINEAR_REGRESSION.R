@@ -331,7 +331,9 @@ report_regression <- function(model, base_size = 10, title = "", file = NULL, w 
       dw$alternative
     ),
     vif = vif,
-    call = data.frame(call = paste0("lm(", deparse(eval(model$call$formula)), ",data=", model$call$data, ")")),
+    # formula(model), not eval(model$call$formula): a formula kept in a variable (lm(form, ...))
+    # is then found wherever the model was made, not only in the global environment
+    call = data.frame(call = paste0("lm(", deparse(formula(model)), ",data=", model$call$data, ")")),
     diagnostics = diagnostics
   )
 

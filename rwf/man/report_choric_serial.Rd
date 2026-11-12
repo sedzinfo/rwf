@@ -39,7 +39,7 @@ Report polychoric tetrachoric polyserial biserial correlation
 \examples{
 report_choric_serial(generate_data(min=0,max=1,type="uniform"),
               type="tetrachoric",file=file.path(tempdir(),"tetrachoric"))
-report_choric_serial(generate_data(min=1,max=5,type="uniform"),
+report_choric_serial(generate_data(nrows=100,min=1,max=5,type="uniform"),
               type="polychoric")
 report_choric_serial(x=psych::lsat6,y=psych::lsat6,
                      type="polyserial",file=file.path(tempdir(),"polyserial"))

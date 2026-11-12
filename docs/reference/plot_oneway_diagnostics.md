@@ -52,10 +52,6 @@ A named list of ggplot objects (one 6-panel plot per IV-DV pair), named
 ``` r
 # Single DV, multiple IVs
 plot_oneway_diagnostics(df = mtcars, dv = 1, iv = 9:10)
-#> Warning: `fortify(<lm>)` was deprecated in ggplot2 4.0.0.
-#> ℹ Please use `broom::augment(<lm>)` instead.
-#> ℹ The deprecated feature was likely used in the ggfortify package.
-#>   Please report the issue at <https://github.com/sinhrks/ggfortify/issues>.
 
 
 # Multiple DVs and IVs

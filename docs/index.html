@@ -48,9 +48,9 @@
     <li><a class="dropdown-item" href="articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="articles/GLM_HLR.html">Hierarchical linear regression</a></li>
-    <li><a class="dropdown-item" href="articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
+    <li><a class="dropdown-item" href="articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -98,7 +98,7 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <blockquote>
-<p><strong>Note on Git LFS:</strong> <code>remotes::install_github()</code> downloads a ZIP archive which does <strong>not</strong> include Git LFS files — large assets will appear as broken pointer files. If the package functions that depend on those files are critical to you, use the <strong>Clone &amp; Install</strong> path below. If you only need the R code (functions, no bundled datasets), the standard <code>remotes</code> install is sufficient.</p>
+<p><strong>Note on Git LFS:</strong> <code><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">remotes::install_github()</a></code> downloads a ZIP archive which does <strong>not</strong> include Git LFS files — large assets will appear as broken pointer files. If the package functions that depend on those files are critical to you, use the <strong>Clone &amp; Install</strong> path below. If you only need the R code (functions, no bundled datasets), the standard <code>remotes</code> install is sufficient.</p>
 </blockquote>
 <div class="section level3">
 <h3 id="option-a--standard-install">Option A — Standard install<a class="anchor" aria-label="anchor" href="#option-a--standard-install"></a>
@@ -112,7 +112,7 @@
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sedzinfo/rwf/rwf"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"sedzinfo/rwf/rwf"</span><span class="op">)</span></span></code></pre></div>
 <p>For a private repository:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"devtools"</span>, <span class="st">"usethis"</span>, <span class="st">"credentials"</span>, <span class="st">"remotes"</span><span class="op">)</span><span class="op">)</span></span>
@@ -121,7 +121,7 @@
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/github-token.html" class="external-link">create_github_token</a></span><span class="op">(</span><span class="op">)</span>   <span class="co"># opens GitHub — generate a PAT there</span></span>
 <span><span class="fu">credentials</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/credentials/reference/set_github_pat.html" class="external-link">set_github_pat</a></span><span class="op">(</span><span class="op">)</span>    <span class="co"># paste your PAT into the prompt</span></span>
 <span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"sedzinfo/rwf/rwf"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"sedzinfo/rwf/rwf"</span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">

@@ -33,9 +33,9 @@ correlation structure."></head><body>
     <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
-    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -118,17 +118,17 @@ Accuracy of the reproduced correlations improves with larger <code>nrows</code>.
 <span class="r-out co"><span class="r-pr">#&gt;</span> X9  -0.35707  0.01034  0.5703  0.50559  0.2825  0.11160  0.03057  0.34725  1.00000 -0.13824</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> X10 -0.06984  0.33806  0.1792 -0.02670  0.4857  0.58795  0.00252 -0.32021 -0.13824  1.00000</span>
 <span class="r-in"><span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="fu">simulate_correlation_from_sample</span><span class="op">(</span><span class="va">correlation_matrix</span>, nrows <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           X1       X2      X3       X4      X5       X6        X7       X8       X9       X10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X1   1.00000  0.36551 -0.1903 -0.12759 -0.1709  0.09182  0.577645 -0.06907 -0.33211 -0.096863</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2   0.36551  1.00000  0.5236  0.14503  0.2068  0.33619  0.655685 -0.45439  0.04868  0.321727</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.19027  0.52363  1.0000  0.64149  0.6296  0.44439  0.252590  0.29696  0.57837  0.157454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.12759  0.14503  0.6415  1.00000  0.4387 -0.08653  0.207818  0.26357  0.48562 -0.062635</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X5  -0.17094  0.20677  0.6296  0.43871  1.0000  0.43306  0.339248  0.44374  0.26100  0.498014</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X6   0.09182  0.33619  0.4444 -0.08653  0.4331  1.00000  0.103220  0.04901  0.09876  0.596333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X7   0.57764  0.65568  0.2526  0.20782  0.3392  0.10322  1.000000 -0.11827  0.03347  0.002458</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X8  -0.06907 -0.45439  0.2970  0.26357  0.4437  0.04901 -0.118265  1.00000  0.34895 -0.330694</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X9  -0.33211  0.04868  0.5784  0.48562  0.2610  0.09876  0.033465  0.34895  1.00000 -0.156581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X10 -0.09686  0.32173  0.1575 -0.06263  0.4980  0.59633  0.002458 -0.33069 -0.15658  1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           X1       X2      X3       X4      X5       X6       X7       X8       X9      X10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1   1.00000  0.39782 -0.1709 -0.11915 -0.1867  0.10048  0.55773 -0.09285 -0.36245 -0.09602</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2   0.39782  1.00000  0.5220  0.14942  0.1725  0.30966  0.65804 -0.45161  0.02904  0.27895</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.17093  0.52196  1.0000  0.63452  0.6286  0.43799  0.29756  0.30324  0.58891  0.14558</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.11915  0.14942  0.6345  1.00000  0.4445 -0.09614  0.26431  0.25314  0.50291 -0.06854</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X5  -0.18672  0.17254  0.6286  0.44451  1.0000  0.42116  0.34064  0.47365  0.29590  0.48927</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X6   0.10048  0.30966  0.4380 -0.09614  0.4212  1.00000  0.07981  0.07451  0.09245  0.59201</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X7   0.55773  0.65804  0.2976  0.26431  0.3406  0.07981  1.00000 -0.09482  0.05921 -0.04091</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X8  -0.09285 -0.45161  0.3032  0.25314  0.4736  0.07451 -0.09482  1.00000  0.36473 -0.29388</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X9  -0.36245  0.02904  0.5889  0.50291  0.2959  0.09245  0.05921  0.36473  1.00000 -0.15024</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X10 -0.09602  0.27895  0.1456 -0.06854  0.4893  0.59201 -0.04091 -0.29388 -0.15024  1.00000</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

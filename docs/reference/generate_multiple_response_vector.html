@@ -31,9 +31,9 @@ string of randomly sampled categories, simulating multiple response survey data.
     <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
-    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -106,7 +106,7 @@ exceed the number of categories in <code>responses</code>. Default is <code>1:4<
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">generate_multiple_response_vector</span><span class="op">(</span>responses <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, responded <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, length <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "1"          "2, 4, 1, 3" "1, 2"       "4, 2, 3, 1" "4, 3, 2, 1" "3, 1, 2"    "4, 1, 3, 2" "2, 3, 1, 4" "2, 4, 1"    "2, 3"      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "3"          "3, 4, 2, 1" "1, 2"       "1"          "3, 2, 4, 1" "2"          "1, 4"       "2, 4, 1"    "3, 4, 2, 1" "2, 1"      </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
