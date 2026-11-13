@@ -22,8 +22,13 @@
 
 ### Option A — Standard install
 
+The source tarball of the [latest release](https://github.com/sedzinfo/rwf/releases/tag/latest), rebuilt from `main` on every change, together with the PDF manual:
+
 ```r
-install.packages("https://github.com/sedzinfo/rwf/raw/refs/heads/main/rwf_0.1.0.tar.gz")
+install.packages(
+  "https://github.com/sedzinfo/rwf/releases/download/latest/rwf_0.1.0.tar.gz",
+  repos = NULL, type = "source"
+)
 ```
 
 ---

@@ -9,7 +9,7 @@ on:
   workflow_dispatch:                              # also allows a manual run from the Actions tab
 
 permissions:
-  contents: write                                 # needed to commit the tarball back
+  contents: write                                 # needed to publish the release
 
 concurrency:
   group: build-tarball
@@ -44,12 +44,13 @@ jobs:
       - name: Build PDF manual
         run: R CMD Rd2pdf rwf --force --no-preview --output=rwf.pdf
 
-      - name: Commit tarball and manual
+      # the tarball and the manual are not committed: they replace the files of the release
+      # "latest", whose tag moves to the commit they were built from
+      - name: Publish tarball and manual to the "latest" release
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A -- "rwf_*.tar.gz" rwf.pdf
-          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
-          git commit -m "Rebuild package tarball and manual [skip ci]"
-          git pull --rebase
-          git push
+          gh release delete latest --cleanup-tag --yes || true
+          gh release create latest rwf_*.tar.gz rwf.pdf \
+            --target "$GITHUB_SHA" --title "Latest build" \
+            --notes "Built automatically from main: the source tarball and the PDF manual."

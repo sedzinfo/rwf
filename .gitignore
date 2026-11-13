@@ -3,7 +3,6 @@
 .RData
 .Ruserdata
 rwf/rwf.Rproj
-rwf_0.1.tar.gz
 /rwf.Rcheck/
 vignettes/rsconnect/
 vignettes/*_cache/
@@ -14,3 +13,8 @@ vignettes/*.jpg
 vignettes/*.png
 rwf/vignettes/articles/*_cache/
 rwf/vignettes/articles/*_files/
+
+# the package tarball and the PDF manual: the Build package tarball workflow publishes them
+# on the "latest" release, so they are not committed
+/*.tar.gz
+/rwf.pdf
