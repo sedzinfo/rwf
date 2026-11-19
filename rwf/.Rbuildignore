@@ -2,3 +2,5 @@
 ^\.Rproj\.user$
 ^\.gitignore$
 ^vignettes/articles$
+^_pkgdown\.yml$
+^pkgdown$

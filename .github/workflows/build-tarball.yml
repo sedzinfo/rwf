@@ -45,12 +45,23 @@ jobs:
         run: R CMD Rd2pdf rwf --force --no-preview --output=rwf.pdf
 
       # the tarball and the manual are not committed: they replace the files of the release
-      # "latest", whose tag moves to the commit they were built from
+      # "latest", whose tag moves to the commit they were built from. The release is kept, not
+      # deleted and created again: Zenodo archives every newly published release, so a new one on
+      # each push would mint a DOI each time. Versioned releases (v0.1.0) are the ones for Zenodo.
       - name: Publish tarball and manual to the "latest" release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release delete latest --cleanup-tag --yes || true
-          gh release create latest rwf_*.tar.gz rwf.pdf \
-            --target "$GITHUB_SHA" --title "Latest build" \
-            --notes "Built automatically from main: the source tarball and the PDF manual."
+          files=(rwf_*.tar.gz rwf.pdf)
+          if gh release view latest > /dev/null 2>&1; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/latest" -f sha="$GITHUB_SHA" -F force=true > /dev/null
+            gh release upload latest "${files[@]}" --clobber
+            # drop files of earlier builds, such as a tarball with an older version number
+            gh release view latest --json assets -q '.assets[].name' | while read -r asset; do
+              [[ " ${files[*]} " == *" $asset "* ]] || gh release delete-asset latest "$asset" --yes
+            done
+          else                                  # first build, or the release was deleted
+            gh release create latest "${files[@]}" \
+              --target "$GITHUB_SHA" --title "Latest build" \
+              --notes "Built automatically from main: the source tarball and the PDF manual."
+          fi
