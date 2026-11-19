@@ -18,7 +18,7 @@
 
 ## Installation
 
-> **Note on Git LFS:** `remotes::install_github()` downloads a ZIP archive which does **not** include Git LFS files — large assets will appear as broken pointer files. If the package functions that depend on those files are critical to you, use the **Clone & Install** path below. If you only need the R code (functions, no bundled datasets), the standard `remotes` install is sufficient.
+> **Note on Git LFS:** the package and its datasets install completely with any of the options below. Git LFS is only used for files the package does not need, such as the raw data in `data/` and the archived packages in `working_functions/PACKAGES/`, so you only need it when you clone the repository (Option C).
 
 ### Option A — Standard install
 
@@ -33,7 +33,7 @@ install.packages(
 
 ---
 
-### Option B — Standard install (R code only, no LFS assets)
+### Option B — Install from GitHub
 
 ```r
 install.packages("remotes")
@@ -56,7 +56,7 @@ remotes::install_github("sedzinfo/rwf/rwf")
 
 ### Option C — Clone & install (includes Git LFS assets)
 
-Use this path when you need bundled datasets or any other large files tracked by LFS.
+Use this path when you want the whole repository, including the files outside the package that are tracked by Git LFS (such as the raw data in `data/`).
 
 #### 1. Install Git LFS (one-time)
 
@@ -116,7 +116,7 @@ devtools::install("path/to/rwf/rwf")
 
 ---
 
-### Keeping up to date (Option B)
+### Keeping up to date (Option C)
 
 ```bash
 git pull
