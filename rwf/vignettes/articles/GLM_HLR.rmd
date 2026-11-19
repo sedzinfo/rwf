@@ -1,5 +1,6 @@
 ---
 title: "Hierarchical linear regression"
+description: "Hierarchical linear regression with rwf's report_hlr: add predictors in blocks and see how much more variance each block explains, as the change in R²."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

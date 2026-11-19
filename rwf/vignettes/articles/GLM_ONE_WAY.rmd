@@ -1,5 +1,6 @@
 ---
 title: "One-way ANOVA"
+description: "The one-way ANOVA with Fisher's or Welch's F test, five effect sizes and the observed power, with rwf's compute_one_way_test."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

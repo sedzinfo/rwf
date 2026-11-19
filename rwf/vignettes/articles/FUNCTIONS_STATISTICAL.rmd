@@ -1,5 +1,6 @@
 ---
 title: "Basic statistical functions"
+description: "Basic statistics with rwf: Bonferroni and Šidák adjustments, standard scores, skewness, kurtosis, standard errors and confidence intervals, with their formulas."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

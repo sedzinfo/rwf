@@ -1,5 +1,6 @@
 ---
 title: "Post hoc comparisons"
+description: "Compare every pair of group means after a one-way ANOVA with the Tukey-Kramer and Games-Howell tests, with rwf's compute_posthoc."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

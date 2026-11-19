@@ -1,5 +1,6 @@
 ---
 title: "Thurstonian item response theory"
+description: "Thurstonian IRT for forced-choice and ranking questionnaires with rwf: the comparison design, encoding rank data, ability estimation and MAP scoring from a lavaan model."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

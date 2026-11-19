@@ -80,12 +80,25 @@ report_choric_serial(generate_data(min=0,max=1,type="uniform"),
 #>  with tau of 
 #>    X1    X2    X3    X4    X5 
 #>  0.00  0.00 -0.25  0.25 -0.52 
-report_choric_serial(generate_data(min=1,max=5,type="uniform"),
+report_choric_serial(generate_data(nrows=100,min=1,max=5,type="uniform"),
               type="polychoric")
-#> Warning: The items do not have an equal number of response alternatives, global set to FALSE.
-#> Warning: all scheduled cores encountered errors in user code
-#> Warning: Something is wrong in polycor  -- Try setting correct=0 
-#> Error in cor(x, use = "pairwise"): supply both 'x' and 'y' or a matrix-like 'x'
+
+#> Call: psych::polychoric(x = x)
+#> Polychoric correlations 
+#>    X1    X2    X3    X4    X5   
+#> X1  1.00                        
+#> X2  0.14  1.00                  
+#> X3  0.06 -0.20  1.00            
+#> X4 -0.17  0.02 -0.25  1.00      
+#> X5  0.04 -0.02  0.14 -0.02  1.00
+#> 
+#>  with tau of 
+#>        1      2    3    4
+#> X1 -0.95 -0.332 0.20 0.71
+#> X2 -0.92 -0.440 0.18 0.88
+#> X3 -0.71 -0.025 0.52 0.99
+#> X4 -0.92 -0.228 0.31 0.95
+#> X5 -0.95 -0.228 0.28 0.92
 report_choric_serial(x=psych::lsat6,y=psych::lsat6,
                      type="polyserial",file=file.path(tempdir(),"polyserial"))
 #>         Q1     Q2      Q3      Q4      Q5

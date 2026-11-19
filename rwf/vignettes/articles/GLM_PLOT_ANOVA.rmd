@@ -1,5 +1,6 @@
 ---
 title: "Plotting means, interactions and ANOVA diagnostics"
+description: "Plot group means, interactions and ANOVA diagnostics with rwf, to see what the model found and whether its assumptions hold."
 ---
   
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

@@ -1,5 +1,6 @@
 ---
 title: "Friedman test"
+description: "The Friedman test, the non-parametric repeated measures ANOVA, with Kendall's W as its effect size and a bootstrap confidence interval, with rwf's compute_friedman_test."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

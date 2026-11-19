@@ -1,5 +1,6 @@
 ---
 title: "Reliability and validity"
+description: "Reliability and validity with rwf: Cronbach's alpha and its item diagnostics, the multitrait-multimethod (MTMM) matrix and Shrout-Fleiss reliability."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

@@ -1,5 +1,6 @@
 ---
 title: "t tests and Wilcoxon tests"
+description: "Pairwise t tests and Wilcoxon tests with rwf's report_ttests and report_wtests, with effect sizes, confidence intervals and Bonferroni-adjusted significance."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

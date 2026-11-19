@@ -1,5 +1,6 @@
 ---
 title: "Recoding and stacking data"
+description: "Recode data with rwf: stack a list of data frames, reverse-score items, turn multiple-response answers into dummy columns and collapse rare factor levels."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

@@ -1,5 +1,6 @@
 ---
 title: "Kruskal–Wallis test"
+description: "The Kruskal-Wallis test, the non-parametric one-way ANOVA, with two rank effect sizes and bootstrap confidence intervals, with rwf's compute_kruskal_wallis_test."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

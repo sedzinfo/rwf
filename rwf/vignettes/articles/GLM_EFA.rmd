@@ -1,5 +1,6 @@
 ---
 title: "Exploratory factor analysis"
+description: "Exploratory factor analysis with rwf: loadings and scree plots, model loadings, residual statistics and a full EFA report."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

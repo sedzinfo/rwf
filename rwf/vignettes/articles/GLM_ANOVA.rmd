@@ -1,5 +1,6 @@
 ---
 title: "ANOVA"
+description: "ANOVA with rwf: Kruskal-Wallis, one-way and factorial ANOVA, MANOVA, effect sizes and post hoc comparisons, next to the results of established packages."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

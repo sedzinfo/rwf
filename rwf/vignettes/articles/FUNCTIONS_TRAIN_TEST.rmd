@@ -1,5 +1,6 @@
 ---
 title: "Training and testing models"
+description: "Evaluate classification models with rwf: ROC curves, confusion matrices, separability plots, performance at different cut-offs, and k-fold and k-sample cross-validation."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

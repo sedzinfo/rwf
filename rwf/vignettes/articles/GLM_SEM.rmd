@@ -1,5 +1,6 @@
 ---
 title: "Structural equation modeling and CFA"
+description: "Structural equation modeling and CFA with rwf: path diagrams without semPlot, a full CFA report and a simulation of how model fit changes with sample size."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

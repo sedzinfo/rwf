@@ -1,5 +1,6 @@
 ---
 title: "Natural language processing"
+description: "Natural language processing with rwf: clean text, remove stopwords, tag parts of speech, compare documents and count words and characters."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

@@ -144,7 +144,80 @@ regressionmodel <- lm(form, data = mtcars)
 multipleregressionmodel <- lm(mpg ~ qsec * hp * wt * drat, data = mtcars)
 res <- report_regression(model = regressionmodel, plot_diagnostics = TRUE)
 
-#> Error in eval(model$call$formula): object 'form' not found
+#> [1] "##################################################"
+#> [1] "Summary"
+#> [1] "##################################################"
+#> 
+#> Call:
+#> lm(formula = form, data = mtcars)
+#> 
+#> Residuals:
+#>    Min     1Q Median     3Q    Max 
+#>  -9.88  -3.45  -0.72   2.28  11.65 
+#> 
+#> Coefficients:
+#>             Estimate Std. Error t value Pr(>|t|)  
+#> (Intercept)   -5.114     10.030   -0.51    0.614  
+#> qsec           1.412      0.559    2.53    0.017 *
+#> ---
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#> 
+#> Residual standard error: 5.56 on 30 degrees of freedom
+#> Multiple R-squared:  0.175,  Adjusted R-squared:  0.148 
+#> F-statistic: 6.38 on 1 and 30 DF,  p-value: 0.0171
+#> 
+#> [1] "##################################################"
+#> [1] "Coefficients"
+#> [1] "##################################################"
+#> [1] "Unstandardized coefficients (b's) indicate the change in the outcome resulting from a unit change in the predictor"                                            
+#> [2] "Standardized coefficients (for more than one predictors), indicate the change in outcome as a result of a unit change by a standard deviation of the predictor"
+#> [3] "t-test checks if coefficients are significantly different from 0. Coefficients of 0 indicate no predictor effects"                                             
+#> [4] "Significance value for t-test"                                                                                                                                 
+#> [1] "#########################"
+#>     Row.names standardized Estimate Std. Error t value Pr(>|t|)    2.5 % 97.5 %
+#> 1        qsec       0.4187    1.412     0.5592  2.5252  0.01708   0.2701  2.554
+#> 2 (Intercept)           NA   -5.114    10.0295 -0.5099  0.61385 -25.5971 15.369
+#> [1] "##################################################"
+#> [1] "ANOVA"
+#> [1] "##################################################"
+#> [1] "ANOVA tests for differences between the baseline model (model with no coefficient) and the predictive model (model with coefficient). A significant F shows that the predictor(s) significantly changes model predictability"
+#> [2] "Significance value for ANOVA"                                                                                                                                                                                                
+#> [3] "Null hypothesis: no variance explained by the predictor"                                                                                                                                                                     
+#> [1] "#########################"
+#> Analysis of Variance Table
+#> 
+#> Response: mpg
+#>           Df Sum Sq Mean Sq F value Pr(>F)  
+#> qsec       1    197     197    6.38  0.017 *
+#> Residuals 30    929      31                 
+#> ---
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#> [1] "##################################################"
+#> [1] "Deviance"
+#> [1] "##################################################"
+#>   deviance
+#> 1    928.7
+#> [1] "##################################################"
+#> [1] "Outliers"
+#> [1] "##################################################"
+#>              rstudent       p bonf.p signif cutoff
+#> Lotus Europa    2.282 0.02999 0.9597  FALSE   0.05
+#> [1] "##################################################"
+#> [1] "Durbin Watson"
+#> [1] "##################################################"
+#> [1] "Test the assumption of independent errors.\nTest values may vary between 0 and 4.\nValues above 3 and bellow 1 are problematic.\nValues of 2 are ideal indicating uncorrelated residuals.\n                        \nA value greater than 2 indicates a negative correlation between adjacent residuals.\nA value less than 2 indicates a positive correlation between adjacent residuals."
+#> [2] "Autocorrelation"                                                                                                                                                                                                                                                                                                                                                                           
+#> [3] "Durbin-Watson Statistic"                                                                                                                                                                                                                                                                                                                                                                   
+#> [4] "Significance value for Durbin-Watson Statistic"                                                                                                                                                                                                                                                                                                                                            
+#> [1] "#########################"
+#>     dw.r  dw.dw dw.p dw.alternative
+#> 1 0.5923 0.8065    0      two.sided
+#> [1] "##################################################"
+#> [1] "CALL"
+#> [1] "##################################################"
+#>                         call
+#> 1 lm(mpg ~ qsec,data=mtcars)
+#> NULL
 res <- report_regression(model = multipleregressionmodel)
 
 #> GVIFs computed for predictors
@@ -264,7 +337,80 @@ res <- report_regression(model = multipleregressionmodel)
 #> NULL
 res <- report_regression(model = regressionmodel, file = file.path(tempdir(), "regression"))
 
-#> Error in eval(model$call$formula): object 'form' not found
+#> [1] "##################################################"
+#> [1] "Summary"
+#> [1] "##################################################"
+#> 
+#> Call:
+#> lm(formula = form, data = mtcars)
+#> 
+#> Residuals:
+#>    Min     1Q Median     3Q    Max 
+#>  -9.88  -3.45  -0.72   2.28  11.65 
+#> 
+#> Coefficients:
+#>             Estimate Std. Error t value Pr(>|t|)  
+#> (Intercept)   -5.114     10.030   -0.51    0.614  
+#> qsec           1.412      0.559    2.53    0.017 *
+#> ---
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#> 
+#> Residual standard error: 5.56 on 30 degrees of freedom
+#> Multiple R-squared:  0.175,  Adjusted R-squared:  0.148 
+#> F-statistic: 6.38 on 1 and 30 DF,  p-value: 0.0171
+#> 
+#> [1] "##################################################"
+#> [1] "Coefficients"
+#> [1] "##################################################"
+#> [1] "Unstandardized coefficients (b's) indicate the change in the outcome resulting from a unit change in the predictor"                                            
+#> [2] "Standardized coefficients (for more than one predictors), indicate the change in outcome as a result of a unit change by a standard deviation of the predictor"
+#> [3] "t-test checks if coefficients are significantly different from 0. Coefficients of 0 indicate no predictor effects"                                             
+#> [4] "Significance value for t-test"                                                                                                                                 
+#> [1] "#########################"
+#>     Row.names standardized Estimate Std. Error t value Pr(>|t|)    2.5 % 97.5 %
+#> 1        qsec       0.4187    1.412     0.5592  2.5252  0.01708   0.2701  2.554
+#> 2 (Intercept)           NA   -5.114    10.0295 -0.5099  0.61385 -25.5971 15.369
+#> [1] "##################################################"
+#> [1] "ANOVA"
+#> [1] "##################################################"
+#> [1] "ANOVA tests for differences between the baseline model (model with no coefficient) and the predictive model (model with coefficient). A significant F shows that the predictor(s) significantly changes model predictability"
+#> [2] "Significance value for ANOVA"                                                                                                                                                                                                
+#> [3] "Null hypothesis: no variance explained by the predictor"                                                                                                                                                                     
+#> [1] "#########################"
+#> Analysis of Variance Table
+#> 
+#> Response: mpg
+#>           Df Sum Sq Mean Sq F value Pr(>F)  
+#> qsec       1    197     197    6.38  0.017 *
+#> Residuals 30    929      31                 
+#> ---
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#> [1] "##################################################"
+#> [1] "Deviance"
+#> [1] "##################################################"
+#>   deviance
+#> 1    928.7
+#> [1] "##################################################"
+#> [1] "Outliers"
+#> [1] "##################################################"
+#>              rstudent       p bonf.p signif cutoff
+#> Lotus Europa    2.282 0.02999 0.9597  FALSE   0.05
+#> [1] "##################################################"
+#> [1] "Durbin Watson"
+#> [1] "##################################################"
+#> [1] "Test the assumption of independent errors.\nTest values may vary between 0 and 4.\nValues above 3 and bellow 1 are problematic.\nValues of 2 are ideal indicating uncorrelated residuals.\n                        \nA value greater than 2 indicates a negative correlation between adjacent residuals.\nA value less than 2 indicates a positive correlation between adjacent residuals."
+#> [2] "Autocorrelation"                                                                                                                                                                                                                                                                                                                                                                           
+#> [3] "Durbin-Watson Statistic"                                                                                                                                                                                                                                                                                                                                                                   
+#> [4] "Significance value for Durbin-Watson Statistic"                                                                                                                                                                                                                                                                                                                                            
+#> [1] "#########################"
+#>     dw.r  dw.dw dw.p dw.alternative
+#> 1 0.5923 0.8065    0      two.sided
+#> [1] "##################################################"
+#> [1] "CALL"
+#> [1] "##################################################"
+#>                         call
+#> 1 lm(mpg ~ qsec,data=mtcars)
+#> NULL
 res <- report_regression(
   model = multipleregressionmodel,
   file = file.path(tempdir(), "regression"),

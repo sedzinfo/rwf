@@ -15,6 +15,8 @@
 <meta property="og:title" content="Statistical reporting and visualization for common methods">
 <meta name="description" content="Utilities for psychological data analysis, including automated statistical reporting and visualization for common inferential and modeling workflows. Helps users run analyses faster with less repetitive code and more standardized output.">
 <meta property="og:description" content="Utilities for psychological data analysis, including automated statistical reporting and visualization for common inferential and modeling workflows. Helps users run analyses faster with less repetitive code and more standardized output.">
+<meta property="og:image" content="https://sedzinfo.github.io/rwf/card.png">
+<meta property="og:image:alt" content="rwf: Statistical reporting and visualization for common methods, with the expected score and item information curves of a graded response model">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -98,17 +100,21 @@
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <blockquote>
-<p><strong>Note on Git LFS:</strong> <code><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">remotes::install_github()</a></code> downloads a ZIP archive which does <strong>not</strong> include Git LFS files — large assets will appear as broken pointer files. If the package functions that depend on those files are critical to you, use the <strong>Clone &amp; Install</strong> path below. If you only need the R code (functions, no bundled datasets), the standard <code>remotes</code> install is sufficient.</p>
+<p><strong>Note on Git LFS:</strong> the package and its datasets install completely with any of the options below. Git LFS is only used for files the package does not need, such as the raw data in <code>data/</code> and the archived packages in <code>working_functions/PACKAGES/</code>, so you only need it when you clone the repository (Option C).</p>
 </blockquote>
 <div class="section level3">
 <h3 id="option-a--standard-install">Option A — Standard install<a class="anchor" aria-label="anchor" href="#option-a--standard-install"></a>
 </h3>
+<p>The source tarball of the <a href="https://github.com/sedzinfo/rwf/releases/tag/latest" class="external-link">latest release</a>, rebuilt from <code>main</code> on every change, together with the PDF manual:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"https://github.com/sedzinfo/rwf/raw/refs/heads/main/rwf_0.1.0.tar.gz"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span></span>
+<span>  <span class="st">"https://github.com/sedzinfo/rwf/releases/download/latest/rwf_0.1.0.tar.gz"</span>,</span>
+<span>  repos <span class="op">=</span> <span class="cn">NULL</span>, type <span class="op">=</span> <span class="st">"source"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <hr>
 </div>
 <div class="section level3">
-<h3 id="option-b--standard-install-r-code-only-no-lfs-assets">Option B — Standard install (R code only, no LFS assets)<a class="anchor" aria-label="anchor" href="#option-b--standard-install-r-code-only-no-lfs-assets"></a>
+<h3 id="option-b--install-from-github">Option B — Install from GitHub<a class="anchor" aria-label="anchor" href="#option-b--install-from-github"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
@@ -127,7 +133,7 @@
 <div class="section level3">
 <h3 id="option-c--clone--install-includes-git-lfs-assets">Option C — Clone &amp; install (includes Git LFS assets)<a class="anchor" aria-label="anchor" href="#option-c--clone--install-includes-git-lfs-assets"></a>
 </h3>
-<p>Use this path when you need bundled datasets or any other large files tracked by LFS.</p>
+<p>Use this path when you want the whole repository, including the files outside the package that are tracked by Git LFS (such as the raw data in <code>data/</code>).</p>
 <div class="section level4">
 <h4 id="id_1-install-git-lfs-one-time">1. Install Git LFS (one-time)<a class="anchor" aria-label="anchor" href="#id_1-install-git-lfs-one-time"></a>
 </h4>
@@ -171,7 +177,7 @@
 </div>
 </div>
 <div class="section level3">
-<h3 id="keeping-up-to-date-option-b">Keeping up to date (Option B)<a class="anchor" aria-label="anchor" href="#keeping-up-to-date-option-b"></a>
+<h3 id="keeping-up-to-date-option-c">Keeping up to date (Option C)<a class="anchor" aria-label="anchor" href="#keeping-up-to-date-option-c"></a>
 </h3>
 <div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">git</span> pull</span>
 <span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">git</span> lfs pull</span></code></pre></div>

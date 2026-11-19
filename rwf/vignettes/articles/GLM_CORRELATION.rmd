@@ -1,5 +1,6 @@
 ---
 title: "Correlation"
+description: "Correlation with rwf: heatmaps, power analysis, a full report of r, p, confidence intervals and adjusted p, and tetrachoric, polychoric, biserial and polyserial correlations."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

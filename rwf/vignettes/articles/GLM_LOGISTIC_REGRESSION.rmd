@@ -1,5 +1,6 @@
 ---
 title: "Logistic regression"
+description: "Logistic regression with rwf: the logistic function, plots of a fitted model, likelihood-ratio tests of nested models and a full diagnostic report."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

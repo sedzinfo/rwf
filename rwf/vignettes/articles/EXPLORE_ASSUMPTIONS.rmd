@@ -1,5 +1,6 @@
 ---
 title: "Checking normality and outliers"
+description: "Check normality and find outliers with rwf: diagnostic plots, eight normality tests, three outlier detection rules, and the formulas behind them."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

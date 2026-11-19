@@ -1,5 +1,6 @@
 ---
 title: "Item response theory reports"
+description: "Item response theory reports with rwf: test information and expected score curves, and a full report of a mirt model with its coefficients, local independence and fit."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

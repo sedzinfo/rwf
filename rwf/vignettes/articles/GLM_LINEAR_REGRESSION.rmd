@@ -1,5 +1,6 @@
 ---
 title: "Linear regression"
+description: "Linear regression with rwf: scatterplots and full reports of simple and multiple regression models."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}

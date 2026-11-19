@@ -1,5 +1,6 @@
 ---
 title: "ANOVA effect sizes"
+description: "An ANOVA table with Type I, II or III sums of squares and six effect sizes for every factor, from eta-squared to Cohen's f, with rwf's compute_aov_es."
 ---
 
 ```{r options,echo=FALSE,warning=FALSE,message=FALSE}
