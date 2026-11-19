@@ -4,3 +4,8 @@
 *.xlsx filter=lfs diff=lfs merge=lfs -text
 *.pdf filter=lfs diff=lfs merge=lfs -text
 *.gz filter=lfs diff=lfs merge=lfs -text
+
+# Exception: the package data (rwf/data) stays a normal git file, not LFS.
+# r-universe clones without LFS, so it would get pointer files and R CMD build fails
+# ("Error in if (any(update))"). The files are small (~475 KB in total).
+rwf/data/*.rda !filter !diff !merge -text
