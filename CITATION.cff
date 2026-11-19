@@ -1,0 +1,21 @@
+# How to cite this package. GitHub shows it as "Cite this repository"; Zenodo uses it for the DOI of each release.
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "rwf: Statistical reporting and visualization for common methods"
+abstract: "Utilities for psychological data analysis, including automated statistical reporting and visualization for common inferential and modeling workflows. Helps users run analyses faster with less repetitive code and more standardized output."
+authors:
+  - family-names: "Zacharatos"
+    given-names: "Dimitrios"
+    orcid: "https://orcid.org/0000-0003-1789-8294"
+license: GPL-3.0-or-later
+repository-code: "https://github.com/sedzinfo/rwf"
+url: "https://sedzinfo.github.io/rwf/"
+keywords:
+  - "r-package"
+  - "statistical-reporting"
+  - "statistics"
+  - "statistical-methods"
+  - "statistical-modeling"
+  - "statistical-testing"
+  - "statistics-toolbox"
