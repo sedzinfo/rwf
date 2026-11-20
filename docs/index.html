@@ -78,7 +78,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="rwf">rwf<a class="anchor" aria-label="anchor" href="#rwf"></a>
 </h1></div>
-<p><strong>Version 0.1</strong></p>
+<p><a href="https://sedzinfo.github.io/rwf/">Website</a></p>
 <hr>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
@@ -99,41 +99,45 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<blockquote>
-<p><strong>Note on Git LFS:</strong> the package and its datasets install completely with any of the options below. Git LFS is only used for files the package does not need, such as the raw data in <code>data/</code> and the archived packages in <code>working_functions/PACKAGES/</code>, so you only need it when you clone the repository (Option C).</p>
-</blockquote>
 <div class="section level3">
-<h3 id="option-a--standard-install">Option A — Standard install<a class="anchor" aria-label="anchor" href="#option-a--standard-install"></a>
+<h3 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
 </h3>
-<p>The source tarball of the <a href="https://github.com/sedzinfo/rwf/releases/tag/latest" class="external-link">latest release</a>, rebuilt from <code>main</code> on every change, together with the PDF manual:</p>
+<ol style="list-style-type: decimal">
+<li>
+<strong>Install R</strong> (version 3.5 or higher): <a href="https://cran.r-project.org/" class="external-link uri">https://cran.r-project.org/</a>
+</li>
+<li>
+<strong>Install RStudio</strong> (optional but recommended): <a href="https://posit.co/downloads/" class="external-link uri">https://posit.co/downloads/</a>
+</li>
+</ol>
+</div>
+<div class="section level3">
+<h3 id="package-installation">Package Installation<a class="anchor" aria-label="anchor" href="#package-installation"></a>
+</h3>
+<p>Open RStudio (or an R console) and run:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span></span>
+<span>  <span class="st">"rwf"</span>,</span>
+<span>  repos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"https://sedzinfo.r-universe.dev"</span>, <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><a href="https://sedzinfo.r-universe.dev/rwf" class="external-link">R-universe</a> builds rwf from this repository, and CRAN provides the packages it needs.</p>
+<p>To install from GitHub instead:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install devtools if you haven't already</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
+<span><span class="co"># Install rwf from GitHub</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"sedzinfo/rwf/rwf"</span><span class="op">)</span></span></code></pre></div>
+<p>Or install the source tarball of the <a href="https://github.com/sedzinfo/rwf/releases/tag/latest" class="external-link">latest release</a>, which is rebuilt from <code>main</code> on every change, together with the PDF manual:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span></span>
 <span>  <span class="st">"https://github.com/sedzinfo/rwf/releases/download/latest/rwf_0.1.0.tar.gz"</span>,</span>
 <span>  repos <span class="op">=</span> <span class="cn">NULL</span>, type <span class="op">=</span> <span class="st">"source"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<hr>
 </div>
 <div class="section level3">
-<h3 id="option-b--install-from-github">Option B — Install from GitHub<a class="anchor" aria-label="anchor" href="#option-b--install-from-github"></a>
+<h3 id="from-a-clone-of-the-repository">From a clone of the repository<a class="anchor" aria-label="anchor" href="#from-a-clone-of-the-repository"></a>
 </h3>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"remotes"</span><span class="op">)</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"sedzinfo/rwf/rwf"</span><span class="op">)</span></span></code></pre></div>
-<p>For a private repository:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"devtools"</span>, <span class="st">"usethis"</span>, <span class="st">"credentials"</span>, <span class="st">"remotes"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_git_config.html" class="external-link">use_git_config</a></span><span class="op">(</span>user.name <span class="op">=</span> <span class="st">"YourName"</span>, user.email <span class="op">=</span> <span class="st">"your@mail.com"</span><span class="op">)</span></span>
-<span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/github-token.html" class="external-link">create_github_token</a></span><span class="op">(</span><span class="op">)</span>   <span class="co"># opens GitHub — generate a PAT there</span></span>
-<span><span class="fu">credentials</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/credentials/reference/set_github_pat.html" class="external-link">set_github_pat</a></span><span class="op">(</span><span class="op">)</span>    <span class="co"># paste your PAT into the prompt</span></span>
-<span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"sedzinfo/rwf/rwf"</span><span class="op">)</span></span></code></pre></div>
-<hr>
-</div>
-<div class="section level3">
-<h3 id="option-c--clone--install-includes-git-lfs-assets">Option C — Clone &amp; install (includes Git LFS assets)<a class="anchor" aria-label="anchor" href="#option-c--clone--install-includes-git-lfs-assets"></a>
-</h3>
-<p>Use this path when you want the whole repository, including the files outside the package that are tracked by Git LFS (such as the raw data in <code>data/</code>).</p>
+<p>Use this path when you want the whole repository, including the files outside the package that are tracked by Git LFS, such as the raw data in <code>data/</code> and the archived packages in <code>working_functions/PACKAGES/</code>. The package and its datasets install completely with the commands above, without Git LFS.</p>
 <div class="section level4">
 <h4 id="id_1-install-git-lfs-one-time">1. Install Git LFS (one-time)<a class="anchor" aria-label="anchor" href="#id_1-install-git-lfs-one-time"></a>
 </h4>
@@ -149,20 +153,15 @@
 <div class="section level4">
 <h4 id="id_2-clone-the-repository">2. Clone the repository<a class="anchor" aria-label="anchor" href="#id_2-clone-the-repository"></a>
 </h4>
-<p><strong>Public:</strong></p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/sedzinfo/rwf.git</span>
 <span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="bu">cd</span> rwf</span></code></pre></div>
-<p><strong>Private (token auth):</strong></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">git</span> clone https://YOUR_PAT@github.com/sedzinfo/rwf.git</span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="bu">cd</span> rwf</span></code></pre></div>
-<p>Replace <code>YOUR_PAT</code> with a Personal Access Token generated at <strong>GitHub → Settings → Developer settings → Personal access tokens</strong>. The token needs at minimum <code>repo</code> scope.</p>
 </div>
 <div class="section level4">
 <h4 id="id_3-pull-lfs-files">3. Pull LFS files<a class="anchor" aria-label="anchor" href="#id_3-pull-lfs-files"></a>
 </h4>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">git</span> lfs pull</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">git</span> lfs pull</span></code></pre></div>
 <p>To verify LFS files downloaded correctly (you should see real file sizes, not 130-byte pointers):</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">git</span> lfs ls-files</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">git</span> lfs ls-files</span></code></pre></div>
 <blockquote>
 <p>If you cloned <em>before</em> installing Git LFS and files appear as small pointer files, run <code>git lfs install</code> then <code>git lfs pull</code> to hydrate them.</p>
 </blockquote>
@@ -170,22 +169,21 @@
 <div class="section level4">
 <h4 id="id_4-install-the-package-from-the-local-clone">4. Install the package from the local clone<a class="anchor" aria-label="anchor" href="#id_4-install-the-package-from-the-local-clone"></a>
 </h4>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"path/to/rwf/rwf"</span><span class="op">)</span></span></code></pre></div>
-<hr>
 </div>
-</div>
-<div class="section level3">
-<h3 id="keeping-up-to-date-option-c">Keeping up to date (Option C)<a class="anchor" aria-label="anchor" href="#keeping-up-to-date-option-c"></a>
-</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">git</span> pull</span>
-<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="fu">git</span> lfs pull</span></code></pre></div>
+<div class="section level4">
+<h4 id="keeping-up-to-date">Keeping up to date<a class="anchor" aria-label="anchor" href="#keeping-up-to-date"></a>
+</h4>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">git</span> pull</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">git</span> lfs pull</span></code></pre></div>
 <p>Then reinstall in R:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"path/to/rwf/rwf"</span><span class="op">)</span></span></code></pre></div>
 <hr>
-<p><img src="https://img.shields.io/github/stars/sedzinfo/rwf" alt="Stars"><img src="https://img.shields.io/github/watchers/sedzinfo/rwf" alt="Watchers"><img src="https://img.shields.io/github/repo-size/sedzinfo/rwf" alt="Repo Size"><img src="https://img.shields.io/github/issues/sedzinfo/rwf" alt="Open Issues"><img src="https://img.shields.io/github/forks/sedzinfo/rwf" alt="Forks"><img src="https://img.shields.io/github/last-commit/sedzinfo/rwf" alt="Last Commit"><img src="https://img.shields.io/github/contributors/sedzinfo/rwf" alt="Contributors"><img src="https://img.shields.io/github/license/sedzinfo/rwf" alt="License"><img src="https://img.shields.io/github/v/release/sedzinfo/rwf" alt="Release"><img src="https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/main.yml" alt="Workflow Status"></p>
+<p><a href="https://sedzinfo.r-universe.dev/rwf" class="external-link"><img src="https://sedzinfo.r-universe.dev/rwf/badges/version" alt="R-universe"></a> <img src="https://img.shields.io/github/stars/sedzinfo/rwf" alt="Stars"><img src="https://img.shields.io/github/watchers/sedzinfo/rwf" alt="Watchers"><img src="https://img.shields.io/github/repo-size/sedzinfo/rwf" alt="Repo Size"><img src="https://img.shields.io/github/issues/sedzinfo/rwf" alt="Open Issues"><img src="https://img.shields.io/github/forks/sedzinfo/rwf" alt="Forks"><img src="https://img.shields.io/github/last-commit/sedzinfo/rwf" alt="Last Commit"><img src="https://img.shields.io/github/contributors/sedzinfo/rwf" alt="Contributors"><img src="https://img.shields.io/github/license/sedzinfo/rwf" alt="License"><img src="https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/build-tarball.yml" alt="Workflow Status"><img src="https://github.com/sedzinfo/rwf/actions/workflows/r.yml/badge.svg" alt="R-CMD-check"></p>
+</div>
 </div>
 </div>
 </div>

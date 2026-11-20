@@ -1,5 +1,6 @@
 # rwf
-**Version 0.1**
+
+[Website](https://sedzinfo.github.io/rwf/)
 
 ---
 
@@ -18,11 +19,34 @@
 
 ## Installation
 
-> **Note on Git LFS:** the package and its datasets install completely with any of the options below. Git LFS is only used for files the package does not need, such as the raw data in `data/` and the archived packages in `working_functions/PACKAGES/`, so you only need it when you clone the repository (Option C).
+### Prerequisites
 
-### Option A — Standard install
+1. **Install R** (version 3.5 or higher): https://cran.r-project.org/
+2. **Install RStudio** (optional but recommended): https://posit.co/downloads/
 
-The source tarball of the [latest release](https://github.com/sedzinfo/rwf/releases/tag/latest), rebuilt from `main` on every change, together with the PDF manual:
+### Package Installation
+
+Open RStudio (or an R console) and run:
+
+```r
+install.packages(
+  "rwf",
+  repos = c("https://sedzinfo.r-universe.dev", "https://cloud.r-project.org")
+)
+```
+
+[R-universe](https://sedzinfo.r-universe.dev/rwf) builds rwf from this repository, and CRAN provides the packages it needs.
+
+To install from GitHub instead:
+
+```r
+# Install devtools if you haven't already
+install.packages("devtools")
+# Install rwf from GitHub
+devtools::install_github("sedzinfo/rwf/rwf")
+```
+
+Or install the source tarball of the [latest release](https://github.com/sedzinfo/rwf/releases/tag/latest), which is rebuilt from `main` on every change, together with the PDF manual:
 
 ```r
 install.packages(
@@ -31,32 +55,9 @@ install.packages(
 )
 ```
 
----
+### From a clone of the repository
 
-### Option B — Install from GitHub
-
-```r
-install.packages("remotes")
-remotes::install_github("sedzinfo/rwf/rwf")
-```
-
-For a private repository:
-
-```r
-install.packages(c("devtools", "usethis", "credentials", "remotes"))
-
-usethis::use_git_config(user.name = "YourName", user.email = "your@mail.com")
-usethis::create_github_token()   # opens GitHub — generate a PAT there
-credentials::set_github_pat()    # paste your PAT into the prompt
-
-remotes::install_github("sedzinfo/rwf/rwf")
-```
-
----
-
-### Option C — Clone & install (includes Git LFS assets)
-
-Use this path when you want the whole repository, including the files outside the package that are tracked by Git LFS (such as the raw data in `data/`).
+Use this path when you want the whole repository, including the files outside the package that are tracked by Git LFS, such as the raw data in `data/` and the archived packages in `working_functions/PACKAGES/`. The package and its datasets install completely with the commands above, without Git LFS.
 
 #### 1. Install Git LFS (one-time)
 
@@ -80,19 +81,10 @@ git lfs install
 
 #### 2. Clone the repository
 
-**Public:**
 ```bash
 git clone https://github.com/sedzinfo/rwf.git
 cd rwf
 ```
-
-**Private (token auth):**
-```bash
-git clone https://YOUR_PAT@github.com/sedzinfo/rwf.git
-cd rwf
-```
-
-Replace `YOUR_PAT` with a Personal Access Token generated at **GitHub → Settings → Developer settings → Personal access tokens**. The token needs at minimum `repo` scope.
 
 #### 3. Pull LFS files
 
@@ -114,9 +106,7 @@ install.packages("devtools")
 devtools::install("path/to/rwf/rwf")
 ```
 
----
-
-### Keeping up to date (Option C)
+#### Keeping up to date
 
 ```bash
 git pull
@@ -130,6 +120,7 @@ devtools::install("path/to/rwf/rwf")
 
 ---
 
+[![R-universe](https://sedzinfo.r-universe.dev/rwf/badges/version)](https://sedzinfo.r-universe.dev/rwf)
 ![Stars](https://img.shields.io/github/stars/sedzinfo/rwf)
 ![Watchers](https://img.shields.io/github/watchers/sedzinfo/rwf)
 ![Repo Size](https://img.shields.io/github/repo-size/sedzinfo/rwf)
@@ -138,6 +129,5 @@ devtools::install("path/to/rwf/rwf")
 ![Last Commit](https://img.shields.io/github/last-commit/sedzinfo/rwf)
 ![Contributors](https://img.shields.io/github/contributors/sedzinfo/rwf)
 ![License](https://img.shields.io/github/license/sedzinfo/rwf)
-![Release](https://img.shields.io/github/v/release/sedzinfo/rwf)
-![Workflow Status](https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/r.yml)
-
+![Workflow Status](https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/build-tarball.yml)
+![R-CMD-check](https://github.com/sedzinfo/rwf/actions/workflows/r.yml/badge.svg)
