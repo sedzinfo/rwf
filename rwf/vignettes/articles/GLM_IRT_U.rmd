@@ -39,7 +39,7 @@ where $L'$ and $L''$ are the first and second derivatives of the log-likelihood,
 
 $$L'(\theta)=\sum_i \frac{Da_i(u_i-P_i)(P_i-g_i)}{P_i(1-g_i)} \qquad L''(\theta)=\sum_i \left(\frac{Da_i}{1-g_i}\right)^2\frac{(P_i-g_i)(1-P_i)(u_ig_i-P_i^2)}{P_i^2}$$
 
-Iteration continues until the update is smaller than a tolerance (or a maximum iteration count is hit), and the final estimate is clamped to `lim_theta` to avoid runaway estimates for all-correct/all-incorrect patterns (a known weakness of ML estimation, discussed further in the [EAP vignette](EXAMPLE_EAP.rmd), which uses a Bayesian prior instead to avoid this failure mode entirely).
+Iteration continues until the update is smaller than a tolerance (or a maximum iteration count is hit), and the final estimate is clamped to `lim_theta` to avoid runaway estimates for all-correct/all-incorrect patterns (a known weakness of ML estimation, discussed further in the [EAP vignette](https://sedzinfo.github.io/vignettes/cat_irt_eap/eap_dichotomous.html), which uses a Bayesian prior instead to avoid this failure mode entirely).
 
 ### Item and test information
 
