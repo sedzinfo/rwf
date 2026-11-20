@@ -1,10 +1,8 @@
 # rwf
 
-**Version 0.1**
+[Help pages](https://sedzinfo.github.io/rwf/reference/)
 
-------------------------------------------------------------------------
-
-## Overview
+## What it does
 
 `rwf` is an R package designed to streamline **statistical reporting**
 and enhance **visualizations** for commonly used methodologies in
@@ -12,7 +10,7 @@ psychology. By automating code-heavy tasks using well-known R packages,
 `rwf` helps researchers and data scientists save time and reduce coding
 complexity.
 
-## Key Features
+## Features
 
 - Statistical reporting for ANOVA, regression, t-tests, and more.
 - Intuitive visualizations: ROC curves, histograms, scatterplots, and
@@ -20,149 +18,99 @@ complexity.
 - Support for advanced modeling: CFA, IRT models, Thurstonian scales.
 - Simulated datasets for practice and demonstration.
 
-------------------------------------------------------------------------
-
 ## Installation
 
-> **Note on Git LFS:** the package and its datasets install completely
-> with any of the options below. Git LFS is only used for files the
-> package does not need, such as the raw data in `data/` and the
-> archived packages in `working_functions/PACKAGES/`, so you only need
-> it when you clone the repository (Option C).
+### 1. Install R
 
-### Option A — Standard install
+Download R 3.5 or newer from [CRAN](https://cran.r-project.org/), for
+Windows, macOS or Linux, and run the installer.
 
-The source tarball of the [latest
-release](https://github.com/sedzinfo/rwf/releases/tag/latest), rebuilt
-from `main` on every change, together with the PDF manual:
+### 2. Install RStudio or Positron
 
-``` r
+An editor makes R easier to use. It is optional, and both are free, from
+Posit:
 
-install.packages(
-  "https://github.com/sedzinfo/rwf/releases/download/latest/rwf_0.1.0.tar.gz",
-  repos = NULL, type = "source"
-)
-```
+- [RStudio Desktop](https://posit.co/download/rstudio-desktop/)
+- [Positron](https://positron.posit.co/download.html), which also runs
+  Python
 
-------------------------------------------------------------------------
+### 3. Install rwf
 
-### Option B — Install from GitHub
+Run one of these in RStudio, Positron or the R console. Each one also
+installs the packages rwf needs.
 
-``` r
+#### From R-universe (recommended)
 
-install.packages("remotes")
-remotes::install_github("sedzinfo/rwf/rwf")
-```
+[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(`` `` ``"rwf"``,`` `` repos ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"https://sedzinfo.r-universe.dev"``, ``"https://cloud.r-project.org"``)`` ``)`
 
-For a private repository:
+[R-universe](https://sedzinfo.r-universe.dev/rwf) builds rwf from this
+repository after every change, ready to install on Windows, macOS and
+Linux, and CRAN provides the packages it needs.
 
-``` r
+#### From GitHub
 
-install.packages(c("devtools", "usethis", "credentials", "remotes"))
+[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"pak"``)`` ``# once`` ``pak``::`[`pak`](https://pak.r-lib.org/reference/pak.html)`(``"sedzinfo/rwf/rwf"``)`
 
-usethis::use_git_config(user.name = "YourName", user.email = "your@mail.com")
-usethis::create_github_token()   # opens GitHub — generate a PAT there
-credentials::set_github_pat()    # paste your PAT into the prompt
+#### From the release tarball
 
-remotes::install_github("sedzinfo/rwf/rwf")
-```
+The [latest
+release](https://github.com/sedzinfo/rwf/releases/tag/latest) has the
+source tarball and the PDF manual, rebuilt from `main` on every change:
 
-------------------------------------------------------------------------
+[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"pak"``)`` ``# once`` ``pak``::`[`pak`](https://pak.r-lib.org/reference/pak.html)`(``"url::https://github.com/sedzinfo/rwf/releases/download/latest/rwf_0.1.0.tar.gz"``)`
 
-### Option C — Clone & install (includes Git LFS assets)
+#### From a clone of the repository, with Git LFS
 
 Use this path when you want the whole repository, including the files
-outside the package that are tracked by Git LFS (such as the raw data in
-`data/`).
+outside the package that are tracked by [Git LFS](https://git-lfs.com),
+such as the raw data in `data/` and the archived packages in
+`working_functions/PACKAGES/`. The package and its datasets install
+completely with the commands above, without Git LFS.
 
-#### 1. Install Git LFS (one-time)
-
-**Ubuntu/Debian:**
-
-``` bash
-sudo apt install git-lfs
-git lfs install
-```
-
-**macOS:**
-
-``` bash
-brew install git-lfs
-git lfs install
-```
-
-**Windows:** Download and run the installer from <https://git-lfs.com>,
-then:
+**1. Install [Git](https://git-scm.com/downloads) and Git LFS**, once
+per computer. Git for Windows includes Git LFS; on macOS run
+`brew install git-lfs`, on Ubuntu or Debian `sudo apt install git-lfs`,
+or use the installer from [git-lfs.com](https://git-lfs.com). Then turn
+it on:
 
 ``` bash
 git lfs install
 ```
 
-#### 2. Clone the repository
-
-**Public:**
+**2. Clone the repository and download the LFS files:**
 
 ``` bash
 git clone https://github.com/sedzinfo/rwf.git
 cd rwf
-```
-
-**Private (token auth):**
-
-``` bash
-git clone https://YOUR_PAT@github.com/sedzinfo/rwf.git
-cd rwf
-```
-
-Replace `YOUR_PAT` with a Personal Access Token generated at **GitHub →
-Settings → Developer settings → Personal access tokens**. The token
-needs at minimum `repo` scope.
-
-#### 3. Pull LFS files
-
-``` bash
 git lfs pull
 ```
 
-To verify LFS files downloaded correctly (you should see real file
-sizes, not 130-byte pointers):
+`git lfs ls-files` lists the files in Git LFS. If you cloned before
+installing Git LFS, they are small pointer files: run `git lfs install`
+and `git lfs pull` to download them.
 
-``` bash
-git lfs ls-files
-```
+**3. Install the package from the clone:**
 
-> If you cloned *before* installing Git LFS and files appear as small
-> pointer files, run `git lfs install` then `git lfs pull` to hydrate
-> them.
+[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"pak"``)`` ``# once`` ``pak``::`[`local_install`](https://pak.r-lib.org/reference/local_install.html)`(``"path/to/rwf/rwf"``)`
 
-#### 4. Install the package from the local clone
+To update it later, run `git pull` and `git lfs pull` in the clone, and
+install again.
 
-``` r
+## Usage
 
-install.packages("devtools")
-devtools::install("path/to/rwf/rwf")
-```
+[`library`](https://rdrr.io/r/base/library.html)`(`[`rwf`](https://sedzinfo.github.io/rwf/)`)`` ``x`` ``<-`` ``df_insurance``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"age"``, ``"bmi"``, ``"charges"``)``]`` ``correlations`` ``<-`` `[`report_correlation`](https://sedzinfo.github.io/rwf/reference/report_correlation.md)`(``x``, scatterplot ``=`` ``FALSE``)`` ``correlations``$``r_lower`` ``# also the p values, confidence intervals, sample sizes, ...`` `[`report_correlation`](https://sedzinfo.github.io/rwf/reference/report_correlation.md)`(``x``, scatterplot ``=`` ``FALSE``, file ``=`` ``"correlations"``)`` ``# saves the tables in correlations.xlsx and the plot in correlations_corrplot.pdf`
 
-------------------------------------------------------------------------
-
-### Keeping up to date (Option C)
-
-``` bash
-git pull
-git lfs pull
-```
-
-Then reinstall in R:
-
-``` r
-
-devtools::install("path/to/rwf/rwf")
-```
+Most `report_*` functions take a `file` argument in the same way. Every
+function has a [help page](https://sedzinfo.github.io/rwf/reference/)
+with examples, and the
+[articles](https://sedzinfo.github.io/rwf/articles/) work through each
+method with its output.
 
 ------------------------------------------------------------------------
 
+[![R-universe](https://sedzinfo.r-universe.dev/rwf/badges/version)](https://sedzinfo.r-universe.dev/rwf)
 ![Stars](https://img.shields.io/github/stars/sedzinfo/rwf)![Watchers](https://img.shields.io/github/watchers/sedzinfo/rwf)![Repo
 Size](https://img.shields.io/github/repo-size/sedzinfo/rwf)![Open
 Issues](https://img.shields.io/github/issues/sedzinfo/rwf)![Forks](https://img.shields.io/github/forks/sedzinfo/rwf)![Last
-Commit](https://img.shields.io/github/last-commit/sedzinfo/rwf)![Contributors](https://img.shields.io/github/contributors/sedzinfo/rwf)![License](https://img.shields.io/github/license/sedzinfo/rwf)![Release](https://img.shields.io/github/v/release/sedzinfo/rwf)![Workflow
-Status](https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/main.yml)
+Commit](https://img.shields.io/github/last-commit/sedzinfo/rwf)![Contributors](https://img.shields.io/github/contributors/sedzinfo/rwf)![License](https://img.shields.io/github/license/sedzinfo/rwf)![Workflow
+Status](https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/build-tarball.yml)![R-CMD-check](https://github.com/sedzinfo/rwf/actions/workflows/r.yml/badge.svg)

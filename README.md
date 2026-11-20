@@ -1,32 +1,36 @@
 # rwf
 
-[Website](https://sedzinfo.github.io/rwf/)
+[Help pages](https://sedzinfo.github.io/rwf/reference/)
 
----
-
-## Overview
+## What it does
 
 `rwf` is an R package designed to streamline **statistical reporting** and enhance **visualizations** for commonly used methodologies in psychology. By automating code-heavy tasks using well-known R packages, `rwf` helps researchers and data scientists save time and reduce coding complexity.
 
-## Key Features
+## Features
 
 - Statistical reporting for ANOVA, regression, t-tests, and more.
 - Intuitive visualizations: ROC curves, histograms, scatterplots, and interaction plots.
 - Support for advanced modeling: CFA, IRT models, Thurstonian scales.
 - Simulated datasets for practice and demonstration.
 
----
-
 ## Installation
 
-### Prerequisites
+### 1. Install R
 
-1. **Install R** (version 3.5 or higher): https://cran.r-project.org/
-2. **Install RStudio** (optional but recommended): https://posit.co/downloads/
+Download R 3.5 or newer from [CRAN](https://cran.r-project.org/), for Windows, macOS or Linux, and run the installer.
 
-### Package Installation
+### 2. Install RStudio or Positron
 
-Open RStudio (or an R console) and run:
+An editor makes R easier to use. It is optional, and both are free, from Posit:
+
+- [RStudio Desktop](https://posit.co/download/rstudio-desktop/)
+- [Positron](https://positron.posit.co/download.html), which also runs Python
+
+### 3. Install rwf
+
+Run one of these in RStudio, Positron or the R console. Each one also installs the packages rwf needs.
+
+#### From R-universe (recommended)
 
 ```r
 install.packages(
@@ -35,88 +39,70 @@ install.packages(
 )
 ```
 
-[R-universe](https://sedzinfo.r-universe.dev/rwf) builds rwf from this repository, and CRAN provides the packages it needs.
+[R-universe](https://sedzinfo.r-universe.dev/rwf) builds rwf from this repository after every change, ready to install on Windows, macOS and Linux, and CRAN provides the packages it needs.
 
-To install from GitHub instead:
-
-```r
-# Install devtools if you haven't already
-install.packages("devtools")
-# Install rwf from GitHub
-devtools::install_github("sedzinfo/rwf/rwf")
-```
-
-Or install the source tarball of the [latest release](https://github.com/sedzinfo/rwf/releases/tag/latest), which is rebuilt from `main` on every change, together with the PDF manual:
+#### From GitHub
 
 ```r
-install.packages(
-  "https://github.com/sedzinfo/rwf/releases/download/latest/rwf_0.1.0.tar.gz",
-  repos = NULL, type = "source"
-)
+install.packages("pak")   # once
+pak::pak("sedzinfo/rwf/rwf")
 ```
 
-### From a clone of the repository
+#### From the release tarball
 
-Use this path when you want the whole repository, including the files outside the package that are tracked by Git LFS, such as the raw data in `data/` and the archived packages in `working_functions/PACKAGES/`. The package and its datasets install completely with the commands above, without Git LFS.
+The [latest release](https://github.com/sedzinfo/rwf/releases/tag/latest) has the source tarball and the PDF manual, rebuilt from `main` on every change:
 
-#### 1. Install Git LFS (one-time)
-
-**Ubuntu/Debian:**
-```bash
-sudo apt install git-lfs
-git lfs install
+```r
+install.packages("pak")   # once
+pak::pak("url::https://github.com/sedzinfo/rwf/releases/download/latest/rwf_0.1.0.tar.gz")
 ```
 
-**macOS:**
-```bash
-brew install git-lfs
-git lfs install
-```
+#### From a clone of the repository, with Git LFS
 
-**Windows:**
-Download and run the installer from https://git-lfs.com, then:
+Use this path when you want the whole repository, including the files outside the package
+that are tracked by [Git LFS](https://git-lfs.com), such as the raw data in `data/` and the
+archived packages in `working_functions/PACKAGES/`. The package and its datasets install
+completely with the commands above, without Git LFS.
+
+**1. Install [Git](https://git-scm.com/downloads) and Git LFS**, once per computer. Git for Windows includes Git LFS; on macOS run `brew install git-lfs`, on Ubuntu or Debian `sudo apt install git-lfs`, or use the installer from [git-lfs.com](https://git-lfs.com). Then turn it on:
+
 ```bash
 git lfs install
 ```
 
-#### 2. Clone the repository
+**2. Clone the repository and download the LFS files:**
 
 ```bash
 git clone https://github.com/sedzinfo/rwf.git
 cd rwf
-```
-
-#### 3. Pull LFS files
-
-```bash
 git lfs pull
 ```
 
-To verify LFS files downloaded correctly (you should see real file sizes, not 130-byte pointers):
-```bash
-git lfs ls-files
-```
+`git lfs ls-files` lists the files in Git LFS. If you cloned before installing Git LFS, they are small pointer files: run `git lfs install` and `git lfs pull` to download them.
 
-> If you cloned *before* installing Git LFS and files appear as small pointer files, run `git lfs install` then `git lfs pull` to hydrate them.
-
-#### 4. Install the package from the local clone
+**3. Install the package from the clone:**
 
 ```r
-install.packages("devtools")
-devtools::install("path/to/rwf/rwf")
+install.packages("pak")   # once
+pak::local_install("path/to/rwf/rwf")
 ```
 
-#### Keeping up to date
+To update it later, run `git pull` and `git lfs pull` in the clone, and install again.
 
-```bash
-git pull
-git lfs pull
-```
+## Usage
 
-Then reinstall in R:
 ```r
-devtools::install("path/to/rwf/rwf")
+library(rwf)
+x <- df_insurance[, c("age", "bmi", "charges")]
+correlations <- report_correlation(x, scatterplot = FALSE)
+correlations$r_lower   # also the p values, confidence intervals, sample sizes, ...
+report_correlation(x, scatterplot = FALSE, file = "correlations")
+# saves the tables in correlations.xlsx and the plot in correlations_corrplot.pdf
 ```
+
+Most `report_*` functions take a `file` argument in the same way. Every function has a
+[help page](https://sedzinfo.github.io/rwf/reference/) with examples, and the
+[articles](https://sedzinfo.github.io/rwf/articles/) work through each method with its output.
 
 ---
 
