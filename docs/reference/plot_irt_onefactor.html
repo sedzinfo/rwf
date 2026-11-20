@@ -29,9 +29,9 @@
     <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
-    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -106,15 +106,12 @@
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">mirt</span><span class="fu">::</span><span class="fu"><a href="https://philchalmers.github.io/mirt/reference/mirt.html" class="external-link">mirt</a></span><span class="op">(</span><span class="va">cormatrix</span>,<span class="fl">1</span>,empiricalhist<span class="op">=</span><span class="cn">TRUE</span>,calcNull<span class="op">=</span><span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Observed log-likelihood may still be increasing.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span>   Final log-likelihood values were: </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   -173244.375, -173244.375, -173244.373</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   -173243.101, -173243.101, -173243.099</span>
 <span class="r-in"><span><span class="fu">plot_irt_onefactor</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,base_size<span class="op">=</span><span class="fl">10</span>,title<span class="op">=</span><span class="st">"Low Discrimination"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_irt_onefactor-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="va">cormatrix</span><span class="op">&lt;-</span><span class="fu">psych</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/psych/man/sim.irt.html" class="external-link">sim.poly</a></span><span class="op">(</span>nvar<span class="op">=</span><span class="fl">5</span>,n<span class="op">=</span><span class="fl">50000</span>,low<span class="op">=</span><span class="op">-</span><span class="fl">4</span>,high<span class="op">=</span><span class="fl">4</span>,a<span class="op">=</span><span class="fl">1</span>,c<span class="op">=</span><span class="fl">0</span>,z<span class="op">=</span><span class="fl">1</span>,d<span class="op">=</span><span class="cn">NULL</span>, </span></span>
 <span class="r-in"><span>                           mu<span class="op">=</span><span class="fl">0</span>,sd<span class="op">=</span><span class="fl">1</span>,cat<span class="op">=</span><span class="fl">5</span>,mod<span class="op">=</span><span class="st">"logistic"</span>,theta<span class="op">=</span><span class="cn">NULL</span><span class="op">)</span><span class="op">$</span><span class="va">items</span></span></span>
 <span class="r-in"><span><span class="va">model</span><span class="op">&lt;-</span><span class="fu">mirt</span><span class="fu">::</span><span class="fu"><a href="https://philchalmers.github.io/mirt/reference/mirt.html" class="external-link">mirt</a></span><span class="op">(</span><span class="va">cormatrix</span>,<span class="fl">1</span>,itemtype<span class="op">=</span><span class="st">"graded"</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Observed log-likelihood may still be increasing.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   Final log-likelihood values were: </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span>   -210387.779, -210387.778, -210387.777</span>
 <span class="r-in"><span><span class="fu">plot_irt_onefactor</span><span class="op">(</span>model<span class="op">=</span><span class="va">model</span>,base_size<span class="op">=</span><span class="fl">10</span>,title<span class="op">=</span><span class="st">"graded response"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_irt_onefactor-5.png" alt="" width="700" height="433"></span>
 </code></pre></div>
