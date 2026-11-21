@@ -2,4 +2,4 @@
 {{! A copy of pkgdown's in-header.html, plus a meta description for the pages that pkgdown leaves
     without one (the reference, article and news indexes, authors, licence and 404 pages): the page
     title, the package and template.params.tagline of _pkgdown.yml. The other pages keep their own. }}
-{{#opengraph}}{{^description}}{{#yaml}}{{#tagline}}<meta name="description" content="{{pagetitle}} – {{#package}}{{name}}{{/package}}: {{tagline}}" />{{/tagline}}{{/yaml}}{{/description}}{{/opengraph}}
+{{^opengraph.description}}{{#yaml}}{{#tagline}}<meta name="description" content="{{pagetitle}} – {{#package}}{{name}}{{/package}}: {{tagline}}" />{{/tagline}}{{/yaml}}{{/opengraph.description}}
