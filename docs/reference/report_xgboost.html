@@ -185,61 +185,119 @@
 <span class="r-in"><span>                    data<span class="op">=</span><span class="va">train_test_classification</span><span class="op">$</span><span class="va">xgb</span><span class="op">$</span><span class="va">f1</span><span class="op">$</span><span class="va">train</span>,</span></span>
 <span class="r-in"><span>                    evals<span class="op">=</span><span class="va">train_test_classification</span><span class="op">$</span><span class="va">xgb</span><span class="op">$</span><span class="va">f1</span><span class="op">$</span><span class="va">watchlist</span>,</span></span>
 <span class="r-in"><span>                    nround<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]	train-logloss:0.591452	test-logloss:0.612299 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2]	train-logloss:0.567817	test-logloss:0.594450 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3]	train-logloss:0.551699	test-logloss:0.584122 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4]	train-logloss:0.541590	test-logloss:0.580610 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5]	train-logloss:0.534795	test-logloss:0.577169 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]	train-logloss:0.530139	test-logloss:0.576748 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [7]	train-logloss:0.527660	test-logloss:0.574108 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [8]	train-logloss:0.525916	test-logloss:0.571550 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [9]	train-logloss:0.524702	test-logloss:0.573293 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10]	train-logloss:0.523779	test-logloss:0.572424 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11]	train-logloss:0.523133	test-logloss:0.571744 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12]	train-logloss:0.522428	test-logloss:0.570725 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13]	train-logloss:0.521823	test-logloss:0.568952 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14]	train-logloss:0.521453	test-logloss:0.567706 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15]	train-logloss:0.521048	test-logloss:0.570858 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16]	train-logloss:0.520781	test-logloss:0.571206 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17]	train-logloss:0.520570	test-logloss:0.570251 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18]	train-logloss:0.520210	test-logloss:0.573325 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19]	train-logloss:0.520024	test-logloss:0.573604 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20]	train-logloss:0.519850	test-logloss:0.573921 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]	train-logloss:0.601567	test-logloss:0.535093 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2]	train-logloss:0.575618	test-logloss:0.521200 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3]	train-logloss:0.559581	test-logloss:0.515340 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4]	train-logloss:0.549645	test-logloss:0.511429 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5]	train-logloss:0.543232	test-logloss:0.510642 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]	train-logloss:0.539043	test-logloss:0.509685 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [7]	train-logloss:0.536289	test-logloss:0.509001 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [8]	train-logloss:0.534253	test-logloss:0.509510 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [9]	train-logloss:0.532991	test-logloss:0.508879 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10]	train-logloss:0.531934	test-logloss:0.509436 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11]	train-logloss:0.531048	test-logloss:0.513843 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12]	train-logloss:0.530487	test-logloss:0.518176 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13]	train-logloss:0.530105	test-logloss:0.521507 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14]	train-logloss:0.529684	test-logloss:0.517731 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15]	train-logloss:0.529402	test-logloss:0.520672 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16]	train-logloss:0.529249	test-logloss:0.522455 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17]	train-logloss:0.528879	test-logloss:0.518311 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18]	train-logloss:0.528678	test-logloss:0.520694 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19]	train-logloss:0.528140	test-logloss:0.515638 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20]	train-logloss:0.527980	test-logloss:0.518252 </span>
 <span class="r-in"><span><span class="va">xgb_regression</span><span class="op">&lt;-</span><span class="fu">xgboost</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/xgboost/man/xgb.train.html" class="external-link">xgb.train</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>                data<span class="op">=</span><span class="va">train_test_regression</span><span class="op">$</span><span class="va">xgb</span><span class="op">$</span><span class="va">f1</span><span class="op">$</span><span class="va">train</span>,</span></span>
 <span class="r-in"><span>                evals<span class="op">=</span><span class="va">train_test_regression</span><span class="op">$</span><span class="va">xgb</span><span class="op">$</span><span class="va">f1</span><span class="op">$</span><span class="va">watchlist</span>,</span></span>
 <span class="r-in"><span>                nround<span class="op">=</span><span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]	train-rmse:6.932495	test-rmse:6.170404 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2]	train-rmse:5.231546	test-rmse:5.448754 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3]	train-rmse:4.043074	test-rmse:5.077008 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4]	train-rmse:3.174738	test-rmse:4.642024 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5]	train-rmse:2.547561	test-rmse:4.538237 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6]	train-rmse:2.112099	test-rmse:4.426193 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [7]	train-rmse:1.797579	test-rmse:4.329764 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [8]	train-rmse:1.562939	test-rmse:4.386720 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [9]	train-rmse:1.383725	test-rmse:4.347521 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10]	train-rmse:1.254522	test-rmse:4.321362 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [11]	train-rmse:1.135862	test-rmse:4.312929 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [12]	train-rmse:1.054336	test-rmse:4.287460 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13]	train-rmse:0.951440	test-rmse:4.255665 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [14]	train-rmse:0.913182	test-rmse:4.248794 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [15]	train-rmse:0.855071	test-rmse:4.233847 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [16]	train-rmse:0.800970	test-rmse:4.249786 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17]	train-rmse:0.764507	test-rmse:4.240963 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [18]	train-rmse:0.735382	test-rmse:4.246517 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19]	train-rmse:0.677213	test-rmse:4.205235 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [20]	train-rmse:0.659834	test-rmse:4.204043 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]	train-rmse:6.877490	test-rmse:6.881132 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2]	train-rmse:5.207159	test-rmse:5.844378 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3]	train-rmse:4.026195	test-rmse:5.177089 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4]	train-rmse:3.169878	test-rmse:4.787926 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5]	train-rmse:2.581531	test-rmse:4.580796 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6]	train-rmse:2.100192	test-rmse:4.304045 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [7]	train-rmse:1.777937	test-rmse:4.165161 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [8]	train-rmse:1.534497	test-rmse:3.980251 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [9]	train-rmse:1.379046	test-rmse:3.961146 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [10]	train-rmse:1.247219	test-rmse:3.875961 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [11]	train-rmse:1.135899	test-rmse:3.798032 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [12]	train-rmse:1.050888	test-rmse:3.749944 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13]	train-rmse:0.959931	test-rmse:3.728645 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [14]	train-rmse:0.905722	test-rmse:3.721090 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [15]	train-rmse:0.853247	test-rmse:3.731942 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [16]	train-rmse:0.822476	test-rmse:3.729514 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17]	train-rmse:0.772964	test-rmse:3.678861 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [18]	train-rmse:0.731270	test-rmse:3.686072 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19]	train-rmse:0.691505	test-rmse:3.695998 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [20]	train-rmse:0.676991	test-rmse:3.684742 </span>
 <span class="r-in"><span><span class="fu">report_xgboost</span><span class="op">(</span>model<span class="op">=</span><span class="va">xgb_classification</span>,</span></span>
 <span class="r-in"><span>               validation_data<span class="op">=</span><span class="va">train_test_classification</span><span class="op">$</span><span class="va">f</span><span class="op">$</span><span class="va">test</span><span class="op">$</span><span class="va">f1</span>,</span></span>
 <span class="r-in"><span>               label<span class="op">=</span><span class="va">train_test_classification</span><span class="op">$</span><span class="va">outcome</span>,</span></span>
 <span class="r-in"><span>               file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"Classification"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $observed_predicted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_performance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cut_performance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.07838    0.40               1.00               0.25            0.25             1.0          0.6250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.17838    0.68               0.88               0.33            0.70             0.6          0.6275</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0.27838    0.68               0.83               0.29            0.75             0.4          0.5675</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0.37838    0.60               0.75               0.00            0.75             0.0          0.3750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0.47838    0.60               0.75               0.00            0.75             0.0          0.3750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cut</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1784</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $confusion_matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         0    1   sum    p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0   14.00 2.00 16.00 0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    6.00 3.00  9.00 0.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sum 20.00 5.00 25.00 1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p    0.70 0.60  1.00 0.68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $observed_predicted</span>
+<span class="r-plt img"><img src="report_xgboost-1.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $plot_performance</span>
+<span class="r-plt img"><img src="report_xgboost-2.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cut_performance</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.07838    0.40               1.00               0.25            0.25             1.0          0.6250</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.17838    0.68               0.88               0.33            0.70             0.6          0.6275</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0.27838    0.68               0.83               0.29            0.75             0.4          0.5675</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0.37838    0.60               0.75               0.00            0.75             0.0          0.3750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0.47838    0.60               0.75               0.00            0.75             0.0          0.3750</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $cut</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1784</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $confusion_matrix</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         0    1   sum    p</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0   14.00 2.00 16.00 0.88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    6.00 3.00  9.00 0.33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sum 20.00 5.00 25.00 1.00</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> p    0.70 0.60  1.00 0.68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-plt img"><img src="report_xgboost-3.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-5.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-6.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-7.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">report_xgboost</span><span class="op">(</span>model<span class="op">=</span><span class="va">xgb_regression</span>,</span></span>
 <span class="r-in"><span>               validation_data<span class="op">=</span><span class="va">train_test_regression</span><span class="op">$</span><span class="va">f</span><span class="op">$</span><span class="va">test</span><span class="op">$</span><span class="va">f1</span>,</span></span>
 <span class="r-in"><span>               label<span class="op">=</span><span class="va">train_test_regression</span><span class="op">$</span><span class="va">outcome</span>,</span></span>
 <span class="r-in"><span>               file<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,<span class="st">"Regression"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>restarting interrupted promise evaluation</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $observed_predicted</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $observed_predicted</span>
+<span class="r-plt img"><img src="report_xgboost-8.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-plt img"><img src="report_xgboost-9.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-10.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-11.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-12.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="report_xgboost-13.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
