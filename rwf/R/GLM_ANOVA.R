@@ -76,7 +76,7 @@
 #'
 #' Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
 #'
-#' Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19-25.
+#' Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 21(1), 19-25.
 #' 
 #' @keywords ANOVA nonparametric kruskal
 #' @export
@@ -1426,7 +1426,7 @@ compute_aov_es <- function(model, ss = "I") {
 #'
 #' Kramer, C. Y. (1956). Extension of multiple range tests to group means with unequal numbers of replications. Biometrics, 12(3), 307-310. \doi{10.2307/3001469}
 #'
-#' Peters, G.-J. Y. userfriendlyscience: Quantitative analysis made accessible (R package version 0.7.2). \url{https://github.com/Matherion/userfriendlyscience}
+#' Peters, G.-J. Y. (2018). userfriendlyscience: Quantitative analysis made accessible (R package version 0.7.2). \url{https://github.com/Matherion/userfriendlyscience}
 #'
 #' Tukey, J. W. (1953). The problem of multiple comparisons. Unpublished manuscript, Princeton University.
 #' 
