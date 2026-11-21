@@ -191,7 +191,9 @@ car::Anova(aov(form, data = df_blood_pressure), type = 2)
 #> ---
 #> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 lsr::etaSquared(aov(form, data = df_blood_pressure), type = 3, anova = TRUE)
-#> Error in loadNamespace(x): there is no package called 'lsr'
+#>              eta.sq eta.sq.part       SS  df        MS       F            p
+#> agegrp    0.1610052   0.1610052  2485.55   2 1242.7750 11.2263 3.466707e-05
+#> Residuals 0.8389948          NA 12952.15 117  110.7021      NA           NA
 effectsize::omega_squared(aov(form, data = df_blood_pressure), partial = FALSE)
 #> # Effect Size for ANOVA (Type I)
 #> 

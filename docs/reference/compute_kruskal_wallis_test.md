@@ -163,13 +163,14 @@ rcompanion::epsilonSquared(
   R = 1000,
   digits = 3
 )
-#> Error in loadNamespace(x): there is no package called 'rcompanion'
+#>   epsilon.squared lower.ci upper.ci
+#> 1           0.164   0.0668    0.304
 rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95,
                          ci.type = "perc", nboot = 100)
 #> # A tibble: 1 × 7
 #>   .y.           n effsize conf.low conf.high method  magnitude
 #> * <chr>     <int>   <dbl>    <dbl>     <dbl> <chr>   <ord>    
-#> 1 bp_before   120   0.150     0.07      0.28 eta2[H] large    
+#> 1 bp_before   120   0.150     0.04      0.33 eta2[H] large    
 compute_kruskal_wallis_test(formula = form, df = df_blood_pressure)
 #>              formula                       method     etasq epsilonsq        H df            p
 #> 1 bp_before ~ agegrp Kruskal-Wallis rank sum test 0.1501232 0.1644069 19.56442  2 5.644699e-05
