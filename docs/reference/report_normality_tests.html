@@ -116,10 +116,71 @@ When <code>NULL</code> (default) no files are written.</p></dd>
 <span class="r-in"><span><span class="va">vector</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_missing.html">generate_missing</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span>, missing <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_missing.html">generate_missing</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, missing <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">report_normality_tests</span><span class="op">(</span>df <span class="op">=</span> <span class="va">df</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NORMALITY TESTS"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    variable  n statistic df            p                                         method alternative n.classes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       mpg 22   0.94351 NA 0.2336273805                    Shapiro-Wilk normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       mpg 22   0.44630 NA 0.2559992288                Anderson-Darling normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       mpg 22   0.07085 NA 0.2597518367                Cramer-von Mises normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       mpg 22   0.95197 NA 0.2938563796                 Shapiro-Francia normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       mpg 22   1.17648  2 0.5553028005                        Robust Jarque Bera Test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       mpg 22   0.14383 NA 0.2776302746 Lilliefors (Kolmogorov-Smirnov) normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       mpg 22   0.14383 NA 0.7529607263  Asymptotic one-sample Kolmogorov-Smirnov test   two-sided        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       mpg 22   5.36364  4 0.2519785081              Pearson chi-square normality test        &lt;NA&gt;         7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9       cyl 22   0.73970 NA 0.0000654667                    Shapiro-Wilk normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10      cyl 22   2.37833 NA 0.0000030613                Anderson-Darling normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11      cyl 22   0.34675 NA 0.0000812074                Cramer-von Mises normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12      cyl 22   0.76570 NA 0.0003442400                 Shapiro-Francia normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13      cyl 22   1.79943  2 0.4066847330                        Robust Jarque Bera Test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14      cyl 22   0.29271 NA 0.0000316411 Lilliefors (Kolmogorov-Smirnov) normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15      cyl 22   0.29271 NA 0.0461132930  Asymptotic one-sample Kolmogorov-Smirnov test   two-sided        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16      cyl 22  35.27273  4 0.0000004083              Pearson chi-square normality test        &lt;NA&gt;         7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                             instruction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                       Shapiro-Wilk Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                                   Anderson-Darling Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                                                   Cramer-von-Mises Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                    Shapiro-Francia Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                                                        Jarque-Bera Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                                                         Lilliefors Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7  Kolmogorov-Smirnov Exact null hypothesis: fully specified normal distribution (ties present, p value is approximate)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8   Pearson X2 Tests weaker null hypothesis: any distribution with the same probabilities for the given class intervals</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                                                       Shapiro-Wilk Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10                                                  Anderson-Darling Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11                                                  Cramer-von-Mises Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12                                                   Shapiro-Francia Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13                                                       Jarque-Bera Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14                                                        Lilliefors Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15 Kolmogorov-Smirnov Exact null hypothesis: fully specified normal distribution (ties present, p value is approximate)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16  Pearson X2 Tests weaker null hypothesis: any distribution with the same probabilities for the given class intervals</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">report_normality_tests</span><span class="op">(</span>df <span class="op">=</span> <span class="va">vector</span>, file <span class="op">=</span> <span class="va">file</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>restarting interrupted promise evaluation</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NORMALITY TESTS"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "##################################################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] ""</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "#########################"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   variable  n statistic df      p                                         method alternative n.classes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1       df 40   0.97618 NA 0.5503                    Shapiro-Wilk normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2       df 40   0.37883 NA 0.3898                Anderson-Darling normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3       df 40   0.06275 NA 0.3399                Cramer-von Mises normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4       df 40   0.97759 NA 0.5134                 Shapiro-Francia normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5       df 40   1.00849  2 0.6040                        Robust Jarque Bera Test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6       df 40   0.11583 NA 0.1935 Lilliefors (Kolmogorov-Smirnov) normality test        &lt;NA&gt;        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7       df 40   0.11583 NA 0.6151       Exact one-sample Kolmogorov-Smirnov test   two-sided        NA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8       df 40   8.15000  6 0.2273              Pearson chi-square normality test        &lt;NA&gt;         9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                                                                                           instruction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                                                     Shapiro-Wilk Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2                                                 Anderson-Darling Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                                                 Cramer-von-Mises Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                                                  Shapiro-Francia Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                                                      Jarque-Bera Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6                                                       Lilliefors Composite null hypothesis: any normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                                       Kolmogorov-Smirnov Exact null hypothesis: fully specified normal distribution</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8 Pearson X2 Tests weaker null hypothesis: any distribution with the same probabilities for the given class intervals</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
