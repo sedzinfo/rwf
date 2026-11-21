@@ -67,7 +67,7 @@
     <p>Converts a <code>ts</code> object into a ggplot2 line chart with
   semi-transparent points and an overlaid linear trend line. The returned
   <code>ggplot</code> object can be extended with additional layers (e.g.
-  <code>geom_vline()</code> to mark events).</p>
+  <code><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline()</a></code> to mark events).</p>
     </div>
 
     <div class="section level2">
@@ -84,7 +84,7 @@
 
 
 <dt id="arg-base-size">base_size<a class="anchor" aria-label="anchor" href="#arg-base-size"></a></dt>
-<dd><p>Base font size passed to <code>theme_bw()</code>. Default is
+<dd><p>Base font size passed to <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw()</a></code>. Default is
 <code>10</code>.</p></dd>
 
 
@@ -109,16 +109,16 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">ts_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/ts.html" class="external-link">ts</a></span><span class="op">(</span><span class="va">UKDriverDeaths</span>, start <span class="op">=</span> <span class="fl">1969</span>, end <span class="op">=</span> <span class="fl">1984</span>, frequency <span class="op">=</span> <span class="fl">12</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu">plot_ts</span><span class="op">(</span><span class="va">ts_data</span>, title <span class="op">=</span> <span class="st">"UK driver deaths"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1969</span><span class="op">:</span><span class="fl">1984</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">result</span> <span class="op">+</span> <span class="fu">geom_vline</span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">i</span>, color <span class="op">=</span> <span class="st">"blue"</span>, size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="va">result</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html" class="external-link">geom_vline</a></span><span class="op">(</span>xintercept <span class="op">=</span> <span class="va">i</span>, color <span class="op">=</span> <span class="st">"blue"</span>, size <span class="op">=</span> <span class="fl">1</span>, alpha <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span><span class="va">result</span></span></span>
 <span class="r-plt img"><img src="plot_ts-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="fu">autoplot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/stl.html" class="external-link">stl</a></span><span class="op">(</span><span class="va">ts_data</span>, s.window <span class="op">=</span> <span class="st">"periodic"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu">theme_bw</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"UK driver deaths"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/stl.html" class="external-link">stl</a></span><span class="op">(</span><span class="va">ts_data</span>, s.window <span class="op">=</span> <span class="st">"periodic"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"UK driver deaths"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_ts-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">forecast</span><span class="fu">::</span><span class="fu"><a href="https://pkg.robjhyndman.com/forecast/reference/gglagplot.html" class="external-link">gglagplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">ts_data</span><span class="op">)</span>, do.lines <span class="op">=</span> <span class="cn">FALSE</span>, lags <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>  <span class="fu">theme_bw</span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span> <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"UK driver deaths"</span>, y <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_bw</a></span><span class="op">(</span>base_size <span class="op">=</span> <span class="fl">10</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"UK driver deaths"</span>, y <span class="op">=</span> <span class="st">"count"</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Registered S3 methods overwritten by 'forecast':</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   method                 from     </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>   autoplot.Arima         ggfortify</span>

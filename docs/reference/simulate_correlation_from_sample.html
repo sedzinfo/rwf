@@ -106,29 +106,29 @@ Accuracy of the reproduced correlations improves with larger <code>nrows</code>.
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">correlation_matrix</span> <span class="op">&lt;-</span> <span class="fu"><a href="generate_correlation_matrix.html">generate_correlation_matrix</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">correlation_matrix</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           X1       X2      X3       X4      X5       X6       X7       X8       X9      X10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X1   1.00000  0.42524 -0.1624 -0.11568 -0.1853  0.11371  0.57403 -0.11195 -0.35707 -0.06984</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2   0.42524  1.00000  0.5123  0.19084  0.2189  0.32674  0.68603 -0.44372  0.01034  0.33806</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.16244  0.51229  1.0000  0.66649  0.6681  0.44393  0.28147  0.31962  0.57028  0.17924</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.11568  0.19084  0.6665  1.00000  0.4583 -0.06459  0.24619  0.23092  0.50559 -0.02670</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X5  -0.18528  0.21894  0.6681  0.45826  1.0000  0.42231  0.32616  0.46044  0.28250  0.48575</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X6   0.11371  0.32674  0.4439 -0.06459  0.4223  1.00000  0.10400  0.06734  0.11160  0.58795</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X7   0.57403  0.68603  0.2815  0.24619  0.3262  0.10400  1.00000 -0.13950  0.03057  0.00252</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X8  -0.11195 -0.44372  0.3196  0.23092  0.4604  0.06734 -0.13950  1.00000  0.34725 -0.32021</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X9  -0.35707  0.01034  0.5703  0.50559  0.2825  0.11160  0.03057  0.34725  1.00000 -0.13824</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X10 -0.06984  0.33806  0.1792 -0.02670  0.4857  0.58795  0.00252 -0.32021 -0.13824  1.00000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           X1      X2       X3      X4       X5       X6       X7       X8        X9     X10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1   1.00000  0.1485 -0.05258  0.5330  0.33485 0.472075  0.58372 -0.06751  0.080628  0.1404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2   0.14852  1.0000 -0.23079  0.2616 -0.37314 0.102541  0.42390  0.11398  0.295923  0.5047</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.05258 -0.2308  1.00000  0.4943  0.08123 0.513299 -0.04967  0.12414 -0.254189  0.1011</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4   0.53300  0.2616  0.49434  1.0000 -0.14532 0.645254  0.13366  0.14151 -0.310712  0.4837</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X5   0.33485 -0.3731  0.08123 -0.1453  1.00000 0.375467  0.36076  0.45171 -0.096154 -0.2766</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X6   0.47207  0.1025  0.51330  0.6453  0.37547 1.000000  0.49805  0.36554  0.007535  0.2149</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X7   0.58372  0.4239 -0.04967  0.1337  0.36076 0.498052  1.00000 -0.06948  0.562107 -0.1225</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X8  -0.06751  0.1140  0.12414  0.1415  0.45171 0.365541 -0.06948  1.00000 -0.603866  0.5449</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X9   0.08063  0.2959 -0.25419 -0.3107 -0.09615 0.007535  0.56211 -0.60387  1.000000 -0.4262</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X10  0.14041  0.5047  0.10106  0.4837 -0.27664 0.214870 -0.12249  0.54485 -0.426195  1.0000</span>
 <span class="r-in"><span><span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="fu">simulate_correlation_from_sample</span><span class="op">(</span><span class="va">correlation_matrix</span>, nrows <span class="op">=</span> <span class="fl">1000</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           X1       X2      X3       X4      X5       X6        X7       X8       X9       X10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X1   1.00000  0.36551 -0.1903 -0.12759 -0.1709  0.09182  0.577645 -0.06907 -0.33211 -0.096863</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X2   0.36551  1.00000  0.5236  0.14503  0.2068  0.33619  0.655685 -0.45439  0.04868  0.321727</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.19027  0.52363  1.0000  0.64149  0.6296  0.44439  0.252590  0.29696  0.57837  0.157454</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X4  -0.12759  0.14503  0.6415  1.00000  0.4387 -0.08653  0.207818  0.26357  0.48562 -0.062635</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X5  -0.17094  0.20677  0.6296  0.43871  1.0000  0.43306  0.339248  0.44374  0.26100  0.498014</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X6   0.09182  0.33619  0.4444 -0.08653  0.4331  1.00000  0.103220  0.04901  0.09876  0.596333</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X7   0.57764  0.65568  0.2526  0.20782  0.3392  0.10322  1.000000 -0.11827  0.03347  0.002458</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X8  -0.06907 -0.45439  0.2970  0.26357  0.4437  0.04901 -0.118265  1.00000  0.34895 -0.330694</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X9  -0.33211  0.04868  0.5784  0.48562  0.2610  0.09876  0.033465  0.34895  1.00000 -0.156581</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> X10 -0.09686  0.32173  0.1575 -0.06263  0.4980  0.59633  0.002458 -0.33069 -0.15658  1.000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           X1       X2       X3      X4       X5      X6       X7       X8       X9      X10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X1   1.00000  0.15324 -0.06249  0.5136  0.37135 0.52650  0.65216 -0.04764  0.12209  0.07357</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X2   0.15324  1.00000 -0.24084  0.3009 -0.38683 0.09499  0.39286  0.12229  0.27784  0.54079</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X3  -0.06249 -0.24084  1.00000  0.4786  0.08436 0.48757 -0.06091  0.11623 -0.26339  0.07826</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X4   0.51364  0.30091  0.47858  1.0000 -0.13784 0.64527  0.17756  0.15600 -0.29311  0.45605</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X5   0.37135 -0.38683  0.08436 -0.1378  1.00000 0.40908  0.37785  0.44335 -0.07806 -0.31275</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X6   0.52650  0.09499  0.48757  0.6453  0.40908 1.00000  0.54828  0.34154  0.02938  0.15144</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X7   0.65216  0.39286 -0.06091  0.1776  0.37785 0.54828  1.00000 -0.07386  0.55841 -0.14224</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X8  -0.04764  0.12229  0.11623  0.1560  0.44335 0.34154 -0.07386  1.00000 -0.61139  0.54715</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X9   0.12209  0.27784 -0.26339 -0.2931 -0.07806 0.02938  0.55841 -0.61139  1.00000 -0.42086</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> X10  0.07357  0.54079  0.07826  0.4561 -0.31275 0.15144 -0.14224  0.54715 -0.42086  1.00000</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

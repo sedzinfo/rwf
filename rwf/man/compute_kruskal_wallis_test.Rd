@@ -114,7 +114,7 @@ R Core Team (2026). R: A language and environment for statistical computing. R F
 
 Sawilowsky, S. S. (2009). New effect size rules of thumb. Journal of Modern Applied Statistical Methods, 8(2), 597-599. \doi{10.22237/jmasm/1257035100}
 
-Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 1(21), 19-25.
+Tomczak, M., & Tomczak, E. (2014). The need to report effect size estimates revisited. An overview of some recommended measures of effect size. Trends in Sport Sciences, 21(1), 19-25.
 }
 \keyword{ANOVA}
 \keyword{kruskal}
