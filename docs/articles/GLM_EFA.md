@@ -40,66 +40,23 @@ factor structures:
 4.  A near-identity correlation matrix (all correlations ~0.01) — no
     real factor structure; loadings should be near zero.
 
-``` r
-
-model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
-plot_loadings(model=model,matrix_type="structure")
-```
+`model``<-``psych``::`[`fa`](https://rdrr.io/pkg/psych/man/fa.html)`(``mtcars``,nfactors``=``2``,rotate``=``"oblimin"``,fm``=``"pa"``,oblique.scores``=``TRUE``)`` `[`plot_loadings`](https://sedzinfo.github.io/rwf/reference/plot_loadings.md)`(``model``=``model``,matrix_type``=``"structure"``)`
 
 ![](GLM_EFA_files/figure-html/plot_loadings-1.png)![](GLM_EFA_files/figure-html/plot_loadings-2.png)
 
-``` r
-
-plot_loadings(model=model,matrix_type="pattern")
-```
+[`plot_loadings`](https://sedzinfo.github.io/rwf/reference/plot_loadings.md)`(``model``=``model``,matrix_type``=``"pattern"``)`
 
 ![](GLM_EFA_files/figure-html/plot_loadings-3.png)![](GLM_EFA_files/figure-html/plot_loadings-4.png)
 
-``` r
-
-cm<-matrix(c(1,.8,.8,.1,.1,.1,
-             .8,1,.8,.1,.1,.1,
-             .8,.8,1,.1,.1,.1,
-             .1,.1,.1,1,.8,.8,
-             .1,.1,.1,.8,1,.8,
-             .1,.1,.1,.8,.8,1),
-           ncol=6,nrow=6)
-df1<-generate_correlation_matrix(cm,nrows=10000)
-model1<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
-plot_loadings(model=model1,matrix_type="pattern",base_size=10)
-```
+`cm``<-`[`matrix`](https://rdrr.io/r/base/matrix.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``.8``,``.8``,``.1``,``.1``,``.1``,`` `` ``.8``,``1``,``.8``,``.1``,``.1``,``.1``,`` `` ``.8``,``.8``,``1``,``.1``,``.1``,``.1``,`` `` ``.1``,``.1``,``.1``,``1``,``.8``,``.8``,`` `` ``.1``,``.1``,``.1``,``.8``,``1``,``.8``,`` `` ``.1``,``.1``,``.1``,``.8``,``.8``,``1``)``,`` `` ncol``=``6``,nrow``=``6``)`` ``df1``<-`[`generate_correlation_matrix`](https://sedzinfo.github.io/rwf/reference/generate_correlation_matrix.md)`(``cm``,nrows``=``10000``)`` ``model1``<-``psych``::`[`fa`](https://rdrr.io/pkg/psych/man/fa.html)`(``df1``,nfactors``=``2``,rotate``=``"oblimin"``,fm``=``"pa"``,oblique.scores``=``TRUE``)`` `[`plot_loadings`](https://sedzinfo.github.io/rwf/reference/plot_loadings.md)`(``model``=``model1``,matrix_type``=``"pattern"``,base_size``=``10``)`
 
 ![](GLM_EFA_files/figure-html/plot_loadings-5.png)![](GLM_EFA_files/figure-html/plot_loadings-6.png)
 
-``` r
-
-cm<-matrix(c(1,.1,.1,.1,.1,.1,
-             .1,1,.1,.1,.1,.1,
-             .1,.1,1,.1,.1,.1,
-             .1,.1,.1,1,.8,.8,
-             .1,.1,.1,.8,1,.8,
-             .1,.1,.1,.8,.8,1),
-           ncol=6,nrow=6)
-df1<-generate_correlation_matrix(cm,nrows=10000)
-model2<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
-plot_loadings(model=model2,matrix_type="pattern",base_size=10)
-```
+`cm``<-`[`matrix`](https://rdrr.io/r/base/matrix.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``.1``,``.1``,``.1``,``.1``,``.1``,`` `` ``.1``,``1``,``.1``,``.1``,``.1``,``.1``,`` `` ``.1``,``.1``,``1``,``.1``,``.1``,``.1``,`` `` ``.1``,``.1``,``.1``,``1``,``.8``,``.8``,`` `` ``.1``,``.1``,``.1``,``.8``,``1``,``.8``,`` `` ``.1``,``.1``,``.1``,``.8``,``.8``,``1``)``,`` `` ncol``=``6``,nrow``=``6``)`` ``df1``<-`[`generate_correlation_matrix`](https://sedzinfo.github.io/rwf/reference/generate_correlation_matrix.md)`(``cm``,nrows``=``10000``)`` ``model2``<-``psych``::`[`fa`](https://rdrr.io/pkg/psych/man/fa.html)`(``df1``,nfactors``=``2``,rotate``=``"oblimin"``,fm``=``"pa"``,oblique.scores``=``TRUE``)`` `[`plot_loadings`](https://sedzinfo.github.io/rwf/reference/plot_loadings.md)`(``model``=``model2``,matrix_type``=``"pattern"``,base_size``=``10``)`
 
 ![](GLM_EFA_files/figure-html/plot_loadings-7.png)![](GLM_EFA_files/figure-html/plot_loadings-8.png)
 
-``` r
-
-cm<-matrix(c(1,.01,.01,.01,.01,.01,
-             .01,1,.01,.01,.01,.01,
-             .01,.01,1,.01,.01,.01,
-             .01,.01,.01,1,.01,.01,
-             .01,.01,.01,.01,1,.01,
-             .01,.01,.01,.01,.01,1),
-           ncol=6,nrow=6)
-df1<-generate_correlation_matrix(cm,nrows=10000)
-model3<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
-plot_loadings(model=model3,matrix_type="pattern",base_size=10)
-```
+`cm``<-`[`matrix`](https://rdrr.io/r/base/matrix.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``.01``,``.01``,``.01``,``.01``,``.01``,`` `` ``.01``,``1``,``.01``,``.01``,``.01``,``.01``,`` `` ``.01``,``.01``,``1``,``.01``,``.01``,``.01``,`` `` ``.01``,``.01``,``.01``,``1``,``.01``,``.01``,`` `` ``.01``,``.01``,``.01``,``.01``,``1``,``.01``,`` `` ``.01``,``.01``,``.01``,``.01``,``.01``,``1``)``,`` `` ncol``=``6``,nrow``=``6``)`` ``df1``<-`[`generate_correlation_matrix`](https://sedzinfo.github.io/rwf/reference/generate_correlation_matrix.md)`(``cm``,nrows``=``10000``)`` ``model3``<-``psych``::`[`fa`](https://rdrr.io/pkg/psych/man/fa.html)`(``df1``,nfactors``=``2``,rotate``=``"oblimin"``,fm``=``"pa"``,oblique.scores``=``TRUE``)`` `[`plot_loadings`](https://sedzinfo.github.io/rwf/reference/plot_loadings.md)`(``model``=``model3``,matrix_type``=``"pattern"``,base_size``=``10``)`
 
 ![](GLM_EFA_files/figure-html/plot_loadings-9.png)![](GLM_EFA_files/figure-html/plot_loadings-10.png)
 
@@ -116,10 +73,7 @@ which compares observed eigenvalues against those from random data of
 the same size. Factors with eigenvalues above the parallel analysis line
 are unlikely to be noise and should be retained.
 
-``` r
-
-plot_scree(df=mtcars,title="",base_size=15)
-```
+[`plot_scree`](https://sedzinfo.github.io/rwf/reference/plot_scree.md)`(``df``=``mtcars``,title``=``""``,base_size``=``15``)`
 
 ![](GLM_EFA_files/figure-html/plot_scree-1.png)
 
@@ -139,11 +93,7 @@ Three calls demonstrate the options:
 - `cut = 0.4, matrix_type = "all"`: both pattern and structure matrices
   side by side, unsorted.
 
-``` r
-
-model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
-model_loadings(model=model,cut=NULL,matrix_type="pattern")
-```
+`model``<-``psych``::`[`fa`](https://rdrr.io/pkg/psych/man/fa.html)`(``mtcars``,nfactors``=``2``,rotate``=``"oblimin"``,fm``=``"pa"``,oblique.scores``=``TRUE``)`` `[`model_loadings`](https://sedzinfo.github.io/rwf/reference/model_loadings.md)`(``model``=``model``,cut``=``NULL``,matrix_type``=``"pattern"``)`
 
     ##       Matrix variable   PA2  PA1
     ## qsec Pattern     qsec -0.92     
@@ -158,10 +108,7 @@ model_loadings(model=model,cut=NULL,matrix_type="pattern")
     ## wt   Pattern       wt           
     ## disp Pattern     disp
 
-``` r
-
-model_loadings(model=model,cut=0.4,matrix_type="structure")
-```
+[`model_loadings`](https://sedzinfo.github.io/rwf/reference/model_loadings.md)`(``model``=``model``,cut``=``0.4``,matrix_type``=``"structure"``)`
 
     ##         Matrix variable   PA2   PA1
     ## hp   Structure       hp  0.93      
@@ -176,10 +123,7 @@ model_loadings(model=model,cut=0.4,matrix_type="structure")
     ## wt   Structure       wt  0.61 -0.81
     ## disp Structure     disp  0.75 -0.77
 
-``` r
-
-model_loadings(model=model,cut=0.4,matrix_type="all",sort=FALSE)
-```
+[`model_loadings`](https://sedzinfo.github.io/rwf/reference/model_loadings.md)`(``model``=``model``,cut``=``0.4``,matrix_type``=``"all"``,sort``=``FALSE``)`
 
     ##       Matrix variable   PA2   PA1
     ## 1    Pattern      mpg -0.61  0.55
@@ -217,11 +161,7 @@ residuals above a given threshold). A low RMSR (typically \< 0.05) and
 few large residuals indicate that the factor model adequately reproduces
 the observed correlations.
 
-``` r
-
-model<-psych::fa(mtcars,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
-compute_residual_stats(model)
-```
+`model``<-``psych``::`[`fa`](https://rdrr.io/pkg/psych/man/fa.html)`(``mtcars``,nfactors``=``2``,rotate``=``"oblimin"``,fm``=``"pa"``,oblique.scores``=``TRUE``)`` `[`compute_residual_stats`](https://sedzinfo.github.io/rwf/reference/compute_residual_stats.md)`(``model``)`
 
     ##                       residual_statistics       value critical                              formula
     ## 1              Root Mean Squared Residual  0.04419293       NA              sqrt(mean(residuals^2))
@@ -241,26 +181,11 @@ the output should cleanly recover the two factors. The computation chunk
 uses `results='hide'` to suppress intermediate output; the formatted
 result is printed in the next chunk.
 
-``` r
-
-cm<-matrix(c(1,.8,.8,.1,.1,.1,
-             .8,1,.8,.1,.1,.1,
-             .8,.8,1,.1,.1,.1,
-             .1,.1,.1,1,.8,.8,
-             .1,.1,.1,.8,1,.8,
-             .1,.1,.1,.8,.8,1),
-           ncol=6,nrow=6)
-df1<-generate_correlation_matrix(cm,nrows=10000)
-model<-psych::fa(df1,nfactors=2,rotate="oblimin",fm="pa",oblique.scores=TRUE)
-result<-report_efa(model=model,df=df1)
-```
+`cm``<-`[`matrix`](https://rdrr.io/r/base/matrix.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``.8``,``.8``,``.1``,``.1``,``.1``,`` `` ``.8``,``1``,``.8``,``.1``,``.1``,``.1``,`` `` ``.8``,``.8``,``1``,``.1``,``.1``,``.1``,`` `` ``.1``,``.1``,``.1``,``1``,``.8``,``.8``,`` `` ``.1``,``.1``,``.1``,``.8``,``1``,``.8``,`` `` ``.1``,``.1``,``.1``,``.8``,``.8``,``1``)``,`` `` ncol``=``6``,nrow``=``6``)`` ``df1``<-`[`generate_correlation_matrix`](https://sedzinfo.github.io/rwf/reference/generate_correlation_matrix.md)`(``cm``,nrows``=``10000``)`` ``model``<-``psych``::`[`fa`](https://rdrr.io/pkg/psych/man/fa.html)`(``df1``,nfactors``=``2``,rotate``=``"oblimin"``,fm``=``"pa"``,oblique.scores``=``TRUE``)`` ``result``<-`[`report_efa`](https://sedzinfo.github.io/rwf/reference/report_efa.md)`(``model``=``model``,df``=``df1``)`
 
 ![](GLM_EFA_files/figure-html/report_efa-1.png)![](GLM_EFA_files/figure-html/report_efa-2.png)![](GLM_EFA_files/figure-html/report_efa-3.png)![](GLM_EFA_files/figure-html/report_efa-4.png)![](GLM_EFA_files/figure-html/report_efa-5.png)![](GLM_EFA_files/figure-html/report_efa-6.png)![](GLM_EFA_files/figure-html/report_efa-7.png)![](GLM_EFA_files/figure-html/report_efa-8.png)![](GLM_EFA_files/figure-html/report_efa-9.png)![](GLM_EFA_files/figure-html/report_efa-10.png)![](GLM_EFA_files/figure-html/report_efa-11.png)
 
-``` r
-
-result
-```
+`result`
 
     ## $correlations
     ##                        type            X1            X2            X3            X4            X5            X6

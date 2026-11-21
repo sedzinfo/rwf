@@ -117,18 +117,7 @@ With two groups the one-way ANOVA is the independent samples t test, and
 F=t^2. Fisher’s F matches Student’s t and Welch’s F matches Welch’s t,
 including the degrees of freedom:
 
-``` r
-
-fisher <- compute_one_way_test(formula = bp_before ~ sex, df = df_blood_pressure, var.equal = TRUE)
-welch <- compute_one_way_test(formula = bp_before ~ sex, df = df_blood_pressure, var.equal = FALSE)
-student_t <- stats::t.test(bp_before ~ sex, data = df_blood_pressure, var.equal = TRUE)
-welch_t <- stats::t.test(bp_before ~ sex, data = df_blood_pressure, var.equal = FALSE)
-data.frame(test = c("Fisher", "Welch"),
-           F_rwf = c(fisher$statistic, welch$statistic),
-           t_squared = c(student_t$statistic^2, welch_t$statistic^2),
-           df_error_rwf = c(fisher$df_error, welch$df_error),
-           df_t = c(student_t$parameter, welch_t$parameter))
-```
+`fisher`` ``<-`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``bp_before`` ``~`` ``sex``, df ``=`` ``df_blood_pressure``, var.equal ``=`` ``TRUE``)`` ``welch`` ``<-`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``bp_before`` ``~`` ``sex``, df ``=`` ``df_blood_pressure``, var.equal ``=`` ``FALSE``)`` ``student_t`` ``<-`` ``stats``::`[`t.test`](https://rdrr.io/r/stats/t.test.html)`(``bp_before`` ``~`` ``sex``, data ``=`` ``df_blood_pressure``, var.equal ``=`` ``TRUE``)`` ``welch_t`` ``<-`` ``stats``::`[`t.test`](https://rdrr.io/r/stats/t.test.html)`(``bp_before`` ``~`` ``sex``, data ``=`` ``df_blood_pressure``, var.equal ``=`` ``FALSE``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``test ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Fisher"``, ``"Welch"``)``,`` `` F_rwf ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``fisher``$``statistic``, ``welch``$``statistic``)``,`` `` t_squared ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``student_t``$``statistic``^``2``, ``welch_t``$``statistic``^``2``)``,`` `` df_error_rwf ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``fisher``$``df_error``, ``welch``$``df_error``)``,`` `` df_t ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``student_t``$``parameter``, ``welch_t``$``parameter``)``)`
 
     ##     test    F_rwf t_squared df_error_rwf     df_t
     ## 1 Fisher 7.755248  7.755248     118.0000 118.0000
@@ -157,33 +146,18 @@ The group standard deviations, the Q-Q plot of the residuals and
 Levene’s test (with the median, the Brown-Forsythe version) check
 normality and equal variances:
 
-``` r
-
-data.frame(n = tapply(df_blood_pressure$bp_before, df_blood_pressure$agegrp, length),
-           mean = tapply(df_blood_pressure$bp_before, df_blood_pressure$agegrp, mean),
-           sd = tapply(df_blood_pressure$bp_before, df_blood_pressure$agegrp, sd))
-```
+[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``n ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``df_blood_pressure``$``bp_before``, ``df_blood_pressure``$``agegrp``, ``length``)``,`` `` mean ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``df_blood_pressure``$``bp_before``, ``df_blood_pressure``$``agegrp``, ``mean``)``,`` `` sd ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``df_blood_pressure``$``bp_before``, ``df_blood_pressure``$``agegrp``, ``sd``)``)`
 
     ##        n    mean        sd
     ## 30-45 40 151.675  9.258087
     ## 46-59 40 155.100 11.459628
     ## 60+   40 162.575 10.727122
 
-``` r
-
-model <- stats::aov(bp_before ~ agegrp, data = df_blood_pressure)
-par(mfrow = c(1, 2))
-boxplot(bp_before ~ agegrp, data = df_blood_pressure, xlab = "age group", ylab = "blood pressure before")
-stats::qqnorm(stats::residuals(model))
-stats::qqline(stats::residuals(model))
-```
+`model`` ``<-`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``bp_before`` ``~`` ``agegrp``, data ``=`` ``df_blood_pressure``)`` `[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``2``)``)`` `[`boxplot`](https://rdrr.io/r/graphics/boxplot.html)`(``bp_before`` ``~`` ``agegrp``, data ``=`` ``df_blood_pressure``, xlab ``=`` ``"age group"``, ylab ``=`` ``"blood pressure before"``)`` ``stats``::`[`qqnorm`](https://rdrr.io/r/stats/qqnorm.html)`(``stats``::`[`residuals`](https://rdrr.io/r/stats/residuals.html)`(``model``)``)`` ``stats``::`[`qqline`](https://rdrr.io/r/stats/qqnorm.html)`(``stats``::`[`residuals`](https://rdrr.io/r/stats/residuals.html)`(``model``)``)`
 
 ![](GLM_ONE_WAY_files/figure-html/assumptions-1.png)
 
-``` r
-
-stats::shapiro.test(stats::residuals(model))
-```
+`stats``::`[`shapiro.test`](https://rdrr.io/r/stats/shapiro.test.html)`(``stats``::`[`residuals`](https://rdrr.io/r/stats/residuals.html)`(``model``)``)`
 
     ## 
     ##  Shapiro-Wilk normality test
@@ -191,10 +165,7 @@ stats::shapiro.test(stats::residuals(model))
     ## data:  stats::residuals(model)
     ## W = 0.96967, p-value = 0.008207
 
-``` r
-
-car::leveneTest(bp_before ~ factor(agegrp), data = df_blood_pressure, center = median)
-```
+`car``::`[`leveneTest`](https://rdrr.io/pkg/car/man/leveneTest.html)`(``bp_before`` ``~`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``agegrp``)``, data ``=`` ``df_blood_pressure``, center ``=`` ``median``)`
 
     ## Levene's Test for Homogeneity of Variance (center = median)
     ##        Df F value Pr(>F)
@@ -298,12 +269,7 @@ size:
 | very large | 0.26 to \< 0.50  | 0.60 to \< 1.00 | 1.2       |
 | huge       | ≥ 0.50           | ≥ 1.00          | 2.0       |
 
-``` r
-
-d <- c(0.2, 0.5, 0.8, 1.2, 2)
-eta_squared <- d^2 / (d^2 + 4)
-data.frame(d, eta_squared, f = sqrt(eta_squared / (1 - eta_squared)))
-```
+`d`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.2``, ``0.5``, ``0.8``, ``1.2``, ``2``)`` ``eta_squared`` ``<-`` ``d``^``2`` ``/`` ``(``d``^``2`` ``+`` ``4``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``d``, ``eta_squared``, f ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``eta_squared`` ``/`` ``(``1`` ``-`` ``eta_squared``)``)``)`
 
     ##     d eta_squared    f
     ## 1 0.2  0.00990099 0.10
@@ -333,17 +299,7 @@ observed power of about 0.5, and a non-significant result always has low
 observed power. It cannot show that a non-significant study “had enough
 power”. Each point below is one simulated study:
 
-``` r
-
-set.seed(1)
-studies <- do.call(rbind, lapply(1:500, function(i) {
-  sim <- data.frame(group = rep(c("a", "b", "c"), each = 20),
-                    score = rnorm(60, mean = rep(c(0, 0, runif(1, 0, 1)), each = 20)))
-  compute_one_way_test(formula = score ~ group, df = sim)[, c("p", "power")]
-}))
-plot(studies$p, studies$power, xlab = "p value", ylab = "observed power", pch = 16, col = "grey40")
-abline(v = 0.05, h = 0.5, lty = 2)
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``studies`` ``<-`` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`lapply`](https://rdrr.io/r/base/lapply.html)`(``1``:``500``, ``function``(``i``)`` ``{`` `` ``sim`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``group ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"a"``, ``"b"``, ``"c"``)``, each ``=`` ``20``)``,`` `` score ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``60``, mean ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``0``, `[`runif`](https://rdrr.io/r/stats/Uniform.html)`(``1``, ``0``, ``1``)``)``, each ``=`` ``20``)``)``)`` `` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``score`` ``~`` ``group``, df ``=`` ``sim``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"p"``, ``"power"``)``]`` ``}``)``)`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``studies``$``p``, ``studies``$``power``, xlab ``=`` ``"p value"``, ylab ``=`` ``"observed power"``, pch ``=`` ``16``, col ``=`` ``"grey40"``)`` `[`abline`](https://rdrr.io/r/graphics/abline.html)`(``v ``=`` ``0.05``, h ``=`` ``0.5``, lty ``=`` ``2``)`
 
 ![](GLM_ONE_WAY_files/figure-html/observed_power-1.png)
 
@@ -352,10 +308,7 @@ theory or earlier studies rather than from the data. For example, the
 number of participants per group needed to detect a medium effect
 (f=0.25) with three groups and 80% power:
 
-``` r
-
-pwr::pwr.anova.test(k = 3, f = 0.25, sig.level = 0.05, power = 0.80)
-```
+`pwr``::`[`pwr.anova.test`](https://rdrr.io/pkg/pwr/man/pwr.anova.test.html)`(``k ``=`` ``3``, f ``=`` ``0.25``, sig.level ``=`` ``0.05``, power ``=`` ``0.80``)`
 
     ## 
     ##      Balanced one-way analysis of variance power calculation 
@@ -374,10 +327,7 @@ pwr::pwr.anova.test(k = 3, f = 0.25, sig.level = 0.05, power = 0.80)
 age groups of 40. The formula `bp_before ~ agegrp` asks whether mean
 blood pressure before treatment differs between age groups.
 
-``` r
-
-head(df_blood_pressure)
-```
+[`head`](https://rdrr.io/r/utils/head.html)`(``df_blood_pressure``)`
 
     ##   patient  sex agegrp bp_before bp_after
     ## 1       1 Male  30-45       143      153
@@ -387,11 +337,7 @@ head(df_blood_pressure)
     ## 5       5 Male  30-45       146      141
     ## 6       6 Male  30-45       150      147
 
-``` r
-
-form <- formula(bp_before ~ agegrp)
-table(df_blood_pressure$agegrp)
-```
+`form`` ``<-`` `[`formula`](https://rdrr.io/r/stats/formula.html)`(``bp_before`` ``~`` ``agegrp``)`` `[`table`](https://rdrr.io/r/base/table.html)`(``df_blood_pressure``$``agegrp``)`
 
     ## 
     ## 30-45 46-59   60+ 
@@ -399,12 +345,7 @@ table(df_blood_pressure$agegrp)
 
 ## compute_one_way_test
 
-``` r
-
-fisher <- compute_one_way_test(formula = form, df = df_blood_pressure, var.equal = TRUE)
-welch <- compute_one_way_test(formula = form, df = df_blood_pressure, var.equal = FALSE)
-rbind(fisher, welch)
-```
+`fisher`` ``<-`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_blood_pressure``, var.equal ``=`` ``TRUE``)`` ``welch`` ``<-`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_blood_pressure``, var.equal ``=`` ``FALSE``)`` `[`rbind`](https://rdrr.io/r/base/cbind.html)`(``fisher``, ``welch``)`
 
     ##              formula                      method  ss_effect   ss_error  ms_effect   ms_error     etasq partial.etasq   omegasq partial.omegasq  cohens.f     power statistic df_effect  df_error
     ## 1 bp_before ~ agegrp   Assuming homoscedasticity 2485.55000 12952.1500 1242.77500 110.702137 0.1610052     0.1610052 0.1456192       0.1456192 0.4380668 0.9925726  11.22630         2 117.00000
@@ -434,75 +375,28 @@ The output columns are:
 
 Every quantity from the formulas above, computed by hand:
 
-``` r
-
-y <- df_blood_pressure$bp_before
-g <- factor(df_blood_pressure$agegrp)
-k <- nlevels(g)
-n_j <- tapply(y, g, length)
-mean_j <- tapply(y, g, mean)
-var_j <- tapply(y, g, var)
-N <- sum(n_j)
-ss_effect <- sum(n_j * (mean_j - mean(y))^2)
-ss_error <- sum((n_j - 1) * var_j)
-ss_total <- sum((y - mean(y))^2)
-df_effect <- k - 1
-df_error <- N - k
-ms_effect <- ss_effect / df_effect
-ms_error <- ss_error / df_error
-F_value <- ms_effect / ms_error
-etasq <- ss_effect / ss_total
-omegasq <- (ss_effect - df_effect * ms_error) / (ss_total + ms_error)
-cohens_f <- sqrt(etasq / (1 - etasq))
-power <- pf(qf(0.95, df_effect, df_error), df_effect, df_error, ncp = cohens_f^2 * N, lower.tail = FALSE)
-by_hand <- data.frame(ss_effect, ss_error, ms_effect, ms_error,
-                      etasq, partial.etasq = ss_effect / (ss_effect + ss_error),
-                      omegasq, partial.omegasq = df_effect * (ms_effect - ms_error) / (df_effect * ms_effect + (df_error + 1) * ms_error),
-                      cohens.f = cohens_f, power,
-                      statistic = F_value, df_effect, df_error,
-                      p = pf(F_value, df_effect, df_error, lower.tail = FALSE))
-by_hand
-```
+`y`` ``<-`` ``df_blood_pressure``$``bp_before`` ``g`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``df_blood_pressure``$``agegrp``)`` ``k`` ``<-`` `[`nlevels`](https://rdrr.io/r/base/nlevels.html)`(``g``)`` ``n_j`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``y``, ``g``, ``length``)`` ``mean_j`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``y``, ``g``, ``mean``)`` ``var_j`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``y``, ``g``, ``var``)`` ``N`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``n_j``)`` ``ss_effect`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``n_j`` ``*`` ``(``mean_j`` ``-`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``y``)``)``^``2``)`` ``ss_error`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``(``n_j`` ``-`` ``1``)`` ``*`` ``var_j``)`` ``ss_total`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``(``y`` ``-`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``y``)``)``^``2``)`` ``df_effect`` ``<-`` ``k`` ``-`` ``1`` ``df_error`` ``<-`` ``N`` ``-`` ``k`` ``ms_effect`` ``<-`` ``ss_effect`` ``/`` ``df_effect`` ``ms_error`` ``<-`` ``ss_error`` ``/`` ``df_error`` ``F_value`` ``<-`` ``ms_effect`` ``/`` ``ms_error`` ``etasq`` ``<-`` ``ss_effect`` ``/`` ``ss_total`` ``omegasq`` ``<-`` ``(``ss_effect`` ``-`` ``df_effect`` ``*`` ``ms_error``)`` ``/`` ``(``ss_total`` ``+`` ``ms_error``)`` ``cohens_f`` ``<-`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``etasq`` ``/`` ``(``1`` ``-`` ``etasq``)``)`` ``power`` ``<-`` `[`pf`](https://rdrr.io/r/stats/Fdist.html)`(`[`qf`](https://rdrr.io/r/stats/Fdist.html)`(``0.95``, ``df_effect``, ``df_error``)``, ``df_effect``, ``df_error``, ncp ``=`` ``cohens_f``^``2`` ``*`` ``N``, lower.tail ``=`` ``FALSE``)`` ``by_hand`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``ss_effect``, ``ss_error``, ``ms_effect``, ``ms_error``,`` `` ``etasq``, partial.etasq ``=`` ``ss_effect`` ``/`` ``(``ss_effect`` ``+`` ``ss_error``)``,`` `` ``omegasq``, partial.omegasq ``=`` ``df_effect`` ``*`` ``(``ms_effect`` ``-`` ``ms_error``)`` ``/`` ``(``df_effect`` ``*`` ``ms_effect`` ``+`` ``(``df_error`` ``+`` ``1``)`` ``*`` ``ms_error``)``,`` `` cohens.f ``=`` ``cohens_f``, ``power``,`` `` statistic ``=`` ``F_value``, ``df_effect``, ``df_error``,`` `` p ``=`` `[`pf`](https://rdrr.io/r/stats/Fdist.html)`(``F_value``, ``df_effect``, ``df_error``, lower.tail ``=`` ``FALSE``)``)`` ``by_hand`
 
     ##   ss_effect ss_error ms_effect ms_error     etasq partial.etasq   omegasq partial.omegasq  cohens.f     power statistic df_effect df_error            p
     ## 1   2485.55 12952.15  1242.775 110.7021 0.1610052     0.1610052 0.1456192       0.1456192 0.4380668 0.9925726   11.2263         2      117 3.466707e-05
 
-``` r
-
-c(ss_total = ss_total, ss_effect_plus_error = ss_effect + ss_error)
-```
+[`c`](https://rdrr.io/r/base/c.html)`(``ss_total ``=`` ``ss_total``, ss_effect_plus_error ``=`` ``ss_effect`` ``+`` ``ss_error``)`
 
     ##             ss_total ss_effect_plus_error 
     ##              15437.7              15437.7
 
-``` r
-
-all.equal(by_hand, fisher[, names(by_hand)], check.attributes = FALSE)
-```
+[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(``by_hand``, ``fisher``[``, `[`names`](https://rdrr.io/r/base/names.html)`(``by_hand``)``]``, check.attributes ``=`` ``FALSE``)`
 
     ## [1] TRUE
 
 ### Welch
 
-``` r
-
-w_j <- n_j / var_j
-W <- sum(w_j)
-mean_w <- sum(w_j * mean_j) / W
-Lambda <- sum((1 - w_j / W)^2 / (n_j - 1)) / (k^2 - 1)
-F_welch <- sum(w_j * (mean_j - mean_w)^2) / ((k - 1) * (1 + 2 * (k - 2) * Lambda))
-df_error_welch <- 1 / (3 * Lambda)
-data.frame(F = F_welch, df_effect = k - 1, df_error = df_error_welch,
-           p = pf(F_welch, k - 1, df_error_welch, lower.tail = FALSE))
-```
+`w_j`` ``<-`` ``n_j`` ``/`` ``var_j`` ``W`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``w_j``)`` ``mean_w`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``w_j`` ``*`` ``mean_j``)`` ``/`` ``W`` ``Lambda`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``(``1`` ``-`` ``w_j`` ``/`` ``W``)``^``2`` ``/`` ``(``n_j`` ``-`` ``1``)``)`` ``/`` ``(``k``^``2`` ``-`` ``1``)`` ``F_welch`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``w_j`` ``*`` ``(``mean_j`` ``-`` ``mean_w``)``^``2``)`` ``/`` ``(``(``k`` ``-`` ``1``)`` ``*`` ``(``1`` ``+`` ``2`` ``*`` ``(``k`` ``-`` ``2``)`` ``*`` ``Lambda``)``)`` ``df_error_welch`` ``<-`` ``1`` ``/`` ``(``3`` ``*`` ``Lambda``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``F ``=`` ``F_welch``, df_effect ``=`` ``k`` ``-`` ``1``, df_error ``=`` ``df_error_welch``,`` `` p ``=`` `[`pf`](https://rdrr.io/r/stats/Fdist.html)`(``F_welch``, ``k`` ``-`` ``1``, ``df_error_welch``, lower.tail ``=`` ``FALSE``)``)`
 
     ##          F df_effect df_error            p
     ## 1 11.89925         2 77.34665 3.121909e-05
 
-``` r
-
-welch[, c("statistic", "df_effect", "df_error", "p")]
-```
+`welch``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"statistic"``, ``"df_effect"``, ``"df_error"``, ``"p"``)``]`
 
     ##   statistic df_effect df_error            p
     ## 1  11.89925         2 77.34665 3.121909e-05
@@ -517,10 +411,7 @@ F, the degrees of freedom and the p value for both versions.
 [`car::Anova`](https://rdrr.io/pkg/car/man/Anova.html) give the sums of
 squares and mean squares of the Fisher version:
 
-``` r
-
-stats::oneway.test(formula = form, data = df_blood_pressure, var.equal = TRUE)
-```
+`stats``::`[`oneway.test`](https://rdrr.io/r/stats/oneway.test.html)`(``formula ``=`` ``form``, data ``=`` ``df_blood_pressure``, var.equal ``=`` ``TRUE``)`
 
     ## 
     ##  One-way analysis of means
@@ -528,10 +419,7 @@ stats::oneway.test(formula = form, data = df_blood_pressure, var.equal = TRUE)
     ## data:  bp_before and agegrp
     ## F = 11.226, num df = 2, denom df = 117, p-value = 3.467e-05
 
-``` r
-
-stats::oneway.test(formula = form, data = df_blood_pressure, var.equal = FALSE)
-```
+`stats``::`[`oneway.test`](https://rdrr.io/r/stats/oneway.test.html)`(``formula ``=`` ``form``, data ``=`` ``df_blood_pressure``, var.equal ``=`` ``FALSE``)`
 
     ## 
     ##  One-way analysis of means (not assuming equal variances)
@@ -539,10 +427,7 @@ stats::oneway.test(formula = form, data = df_blood_pressure, var.equal = FALSE)
     ## data:  bp_before and agegrp
     ## F = 11.899, num df = 2.000, denom df = 77.347, p-value = 3.122e-05
 
-``` r
-
-summary(stats::aov(form, data = df_blood_pressure))
-```
+[`summary`](https://rdrr.io/r/base/summary.html)`(``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``form``, data ``=`` ``df_blood_pressure``)``)`
 
     ##              Df Sum Sq Mean Sq F value   Pr(>F)    
     ## agegrp        2   2486  1242.8   11.23 3.47e-05 ***
@@ -550,16 +435,13 @@ summary(stats::aov(form, data = df_blood_pressure))
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-``` r
-
-car::Anova(stats::aov(form, data = df_blood_pressure), type = 2)
-```
+`car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``form``, data ``=`` ``df_blood_pressure``)``, type ``=`` ``2``)`
 
     ## Anova Table (Type II tests)
     ## 
     ## Response: bp_before
     ##            Sum Sq  Df F value    Pr(>F)    
-    ## agegrp     2485.6   2  11.226 3.467e-05 ***
+    ## agegrp     2485.5   2  11.226 3.467e-05 ***
     ## Residuals 12952.2 117                      
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -573,19 +455,13 @@ gives all the effect sizes and the observed power, and
 [`pwr::pwr.anova.test`](https://rdrr.io/pkg/pwr/man/pwr.anova.test.html)
 gives the power for groups of equal size:
 
-``` r
-
-lsr::etaSquared(stats::aov(form, data = df_blood_pressure), type = 3, anova = TRUE)
-```
+`lsr``::`[`etaSquared`](https://lsr.djnavarro.net/reference/etaSquared.html)`(``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``form``, data ``=`` ``df_blood_pressure``)``, type ``=`` ``3``, anova ``=`` ``TRUE``)`
 
     ##              eta.sq eta.sq.part       SS  df        MS       F            p
     ## agegrp    0.1610052   0.1610052  2485.55   2 1242.7750 11.2263 3.466707e-05
     ## Residuals 0.8389948          NA 12952.15 117  110.7021      NA           NA
 
-``` r
-
-effectsize::eta_squared(stats::aov(form, data = df_blood_pressure), partial = FALSE, ci = NULL)
-```
+`effectsize``::`[`eta_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``form``, data ``=`` ``df_blood_pressure``)``, partial ``=`` ``FALSE``, ci ``=`` ``NULL``)`
 
     ## # Effect Size for ANOVA (Type I)
     ## 
@@ -593,10 +469,7 @@ effectsize::eta_squared(stats::aov(form, data = df_blood_pressure), partial = FA
     ## ----------------
     ## agegrp    | 0.16
 
-``` r
-
-effectsize::omega_squared(stats::aov(form, data = df_blood_pressure), partial = FALSE, ci = NULL)
-```
+`effectsize``::`[`omega_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``form``, data ``=`` ``df_blood_pressure``)``, partial ``=`` ``FALSE``, ci ``=`` ``NULL``)`
 
     ## # Effect Size for ANOVA (Type I)
     ## 
@@ -604,10 +477,7 @@ effectsize::omega_squared(stats::aov(form, data = df_blood_pressure), partial = 
     ## ------------------
     ## agegrp    |   0.15
 
-``` r
-
-effectsize::cohens_f(stats::aov(form, data = df_blood_pressure), ci = NULL)
-```
+`effectsize``::`[`cohens_f`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``form``, data ``=`` ``df_blood_pressure``)``, ci ``=`` ``NULL``)`
 
     ## # Effect Size for ANOVA
     ## 
@@ -615,27 +485,18 @@ effectsize::cohens_f(stats::aov(form, data = df_blood_pressure), ci = NULL)
     ## ---------------------
     ## agegrp    |      0.44
 
-``` r
-
-sjstats::anova_stats(stats::lm(form, data = df_blood_pressure), digits = 22)
-```
+`sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``stats``::`[`lm`](https://rdrr.io/r/stats/lm.html)`(``form``, data ``=`` ``df_blood_pressure``)``, digits ``=`` ``22``)`
 
     ## etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |      term |     sumsq |  df |   meansq | statistic | p.value | power
     ## -----------------------------------------------------------------------------------------------------------------------------------------------
     ## 0.161 |         0.161 |   0.146 |           0.146 |     0.147 |    0.438 |    agegrp |  2485.550 |   2 | 1242.775 |    11.226 |  < .001 | 0.993
     ##       |               |         |                 |           |          | Residuals | 12952.150 | 117 |  110.702 |           |         |
 
-``` r
-
-pwr::pwr.anova.test(k = 3, n = 40, f = fisher$cohens.f, sig.level = 0.05)$power
-```
+`pwr``::`[`pwr.anova.test`](https://rdrr.io/pkg/pwr/man/pwr.anova.test.html)`(``k ``=`` ``3``, n ``=`` ``40``, f ``=`` ``fisher``$``cohens.f``, sig.level ``=`` ``0.05``)``$``power`
 
     ## [1] 0.9925726
 
-``` r
-
-fisher$power
-```
+`fisher``$``power`
 
     ## [1] 0.9925726
 
@@ -651,16 +512,7 @@ degrees of freedom, the same as
 \omega^2=\frac{df\_{\text{effect}}(F-1)}{F\\df\_{\text{effect}}+df\_{\text{error}}+1},\qquad
 f=\sqrt{\frac{F\\df\_{\text{effect}}}{df\_{\text{error}}}}
 
-``` r
-
-data.frame(
-  statistic = c("etasq", "omegasq", "partial.omegasq", "cohens.f"),
-  rwf = c(welch$etasq, welch$omegasq, welch$partial.omegasq, welch$cohens.f),
-  effectsize = c(effectsize::F_to_eta2(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Eta2_partial,
-                 effectsize::F_to_omega2(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Omega2_partial,
-                 effectsize::F_to_omega2(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Omega2_partial,
-                 effectsize::F_to_f(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Cohens_f_partial))
-```
+[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` statistic ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"etasq"``, ``"omegasq"``, ``"partial.omegasq"``, ``"cohens.f"``)``,`` `` rwf ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``welch``$``etasq``, ``welch``$``omegasq``, ``welch``$``partial.omegasq``, ``welch``$``cohens.f``)``,`` `` effectsize ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``effectsize``::`[`F_to_eta2`](https://easystats.github.io/effectsize/reference/F_to_eta2.html)`(``welch``$``statistic``, ``welch``$``df_effect``, ``welch``$``df_error``, ci ``=`` ``NULL``)``$``Eta2_partial``,`` `` ``effectsize``::`[`F_to_omega2`](https://easystats.github.io/effectsize/reference/F_to_eta2.html)`(``welch``$``statistic``, ``welch``$``df_effect``, ``welch``$``df_error``, ci ``=`` ``NULL``)``$``Omega2_partial``,`` `` ``effectsize``::`[`F_to_omega2`](https://easystats.github.io/effectsize/reference/F_to_eta2.html)`(``welch``$``statistic``, ``welch``$``df_effect``, ``welch``$``df_error``, ci ``=`` ``NULL``)``$``Omega2_partial``,`` `` ``effectsize``::`[`F_to_f`](https://easystats.github.io/effectsize/reference/F_to_eta2.html)`(``welch``$``statistic``, ``welch``$``df_effect``, ``welch``$``df_error``, ci ``=`` ``NULL``)``$``Cohens_f_partial``)``)`
 
     ##         statistic       rwf effectsize
     ## 1           etasq 0.2352906  0.2352906
@@ -679,60 +531,20 @@ packages and returns the difference. The Fisher version is compared with
 `stats`, `effectsize` and `sjstats`, the Welch version with `stats` and
 `effectsize`.
 
-``` r
-
-check_one_way <- function(formula, df) {
-  vars <- all.vars(formula)
-  df <- stats::na.omit(data.frame(y = df[[vars[1]]], g = factor(df[[vars[2]]])))
-  fisher <- compute_one_way_test(formula = y ~ g, df = df, var.equal = TRUE)
-  welch <- compute_one_way_test(formula = y ~ g, df = df, var.equal = FALSE)
-  model <- stats::aov(y ~ g, data = df)
-  anova_table <- summary(model)[[1]]
-  oneway_fisher <- stats::oneway.test(y ~ g, data = df, var.equal = TRUE)
-  oneway_welch <- stats::oneway.test(y ~ g, data = df, var.equal = FALSE)
-  sjstats_table <- as.data.frame(sjstats::anova_stats(stats::lm(y ~ g, data = df), digits = 22))
-  comparison <- data.frame(
-    test = c(rep("Fisher", 11), rep("Welch", 6)),
-    statistic = c("ss_effect", "ss_error", "statistic", "df_error", "p", "etasq", "omegasq", "partial.omegasq", "cohens.f", "power", "etasq",
-                  "statistic", "df_error", "p", "etasq", "omegasq", "cohens.f"),
-    package = c("stats::aov", "stats::aov", "stats::oneway.test", "stats::oneway.test", "stats::oneway.test",
-                "effectsize::eta_squared", "effectsize::omega_squared", "sjstats::anova_stats", "effectsize::cohens_f",
-                "sjstats::anova_stats", "lsr::etaSquared",
-                "stats::oneway.test", "stats::oneway.test", "stats::oneway.test",
-                "effectsize::F_to_eta2", "effectsize::F_to_omega2", "effectsize::F_to_f"),
-    rwf = c(fisher$ss_effect, fisher$ss_error, fisher$statistic, fisher$df_error, fisher$p,
-            fisher$etasq, fisher$omegasq, fisher$partial.omegasq, fisher$cohens.f, fisher$power, fisher$etasq,
-            welch$statistic, welch$df_error, welch$p, welch$etasq, welch$omegasq, welch$cohens.f),
-    other = c(anova_table[1, "Sum Sq"], anova_table[2, "Sum Sq"],
-              unname(oneway_fisher$statistic), unname(oneway_fisher$parameter[2]), oneway_fisher$p.value,
-              effectsize::eta_squared(model, partial = FALSE, ci = NULL)$Eta2,
-              effectsize::omega_squared(model, partial = FALSE, ci = NULL)$Omega2,
-              sjstats_table$partial.omegasq[1],
-              effectsize::cohens_f(model, ci = NULL, verbose = FALSE)$Cohens_f,
-              sjstats_table$power[1],
-              lsr::etaSquared(model)[1, "eta.sq"],
-              unname(oneway_welch$statistic), unname(oneway_welch$parameter[2]), oneway_welch$p.value,
-              effectsize::F_to_eta2(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Eta2_partial,
-              effectsize::F_to_omega2(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Omega2_partial,
-              effectsize::F_to_f(welch$statistic, welch$df_effect, welch$df_error, ci = NULL)$Cohens_f_partial))
-  comparison$difference <- comparison$rwf - comparison$other
-  comparison
-}
-check_one_way(formula = form, df = df_blood_pressure)
-```
+`check_one_way`` ``<-`` ``function``(``formula``, ``df``)`` ``{`` `` ``vars`` ``<-`` `[`all.vars`](https://rdrr.io/r/base/allnames.html)`(``formula``)`` `` ``df`` ``<-`` ``stats``::`[`na.omit`](https://rdrr.io/r/stats/na.fail.html)`(`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``y ``=`` ``df``[[``vars``[``1``]``]``]``, g ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``df``[[``vars``[``2``]``]``]``)``)``)`` `` ``fisher`` ``<-`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``y`` ``~`` ``g``, df ``=`` ``df``, var.equal ``=`` ``TRUE``)`` `` ``welch`` ``<-`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``y`` ``~`` ``g``, df ``=`` ``df``, var.equal ``=`` ``FALSE``)`` `` ``model`` ``<-`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``y`` ``~`` ``g``, data ``=`` ``df``)`` `` ``anova_table`` ``<-`` `[`summary`](https://rdrr.io/r/base/summary.html)`(``model``)``[[``1``]``]`` `` ``oneway_fisher`` ``<-`` ``stats``::`[`oneway.test`](https://rdrr.io/r/stats/oneway.test.html)`(``y`` ``~`` ``g``, data ``=`` ``df``, var.equal ``=`` ``TRUE``)`` `` ``oneway_welch`` ``<-`` ``stats``::`[`oneway.test`](https://rdrr.io/r/stats/oneway.test.html)`(``y`` ``~`` ``g``, data ``=`` ``df``, var.equal ``=`` ``FALSE``)`` `` ``sjstats_table`` ``<-`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(``sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``stats``::`[`lm`](https://rdrr.io/r/stats/lm.html)`(``y`` ``~`` ``g``, data ``=`` ``df``)``, digits ``=`` ``22``)``)`` `` ``comparison`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` test ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(``"Fisher"``, ``11``)``, `[`rep`](https://rdrr.io/r/base/rep.html)`(``"Welch"``, ``6``)``)``,`` `` statistic ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"ss_effect"``, ``"ss_error"``, ``"statistic"``, ``"df_error"``, ``"p"``, ``"etasq"``, ``"omegasq"``, ``"partial.omegasq"``, ``"cohens.f"``, ``"power"``, ``"etasq"``,`` `` ``"statistic"``, ``"df_error"``, ``"p"``, ``"etasq"``, ``"omegasq"``, ``"cohens.f"``)``,`` `` package ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"stats::aov"``, ``"stats::aov"``, ``"stats::oneway.test"``, ``"stats::oneway.test"``, ``"stats::oneway.test"``,`` `` ``"effectsize::eta_squared"``, ``"effectsize::omega_squared"``, ``"sjstats::anova_stats"``, ``"effectsize::cohens_f"``,`` `` ``"sjstats::anova_stats"``, ``"lsr::etaSquared"``,`` `` ``"stats::oneway.test"``, ``"stats::oneway.test"``, ``"stats::oneway.test"``,`` `` ``"effectsize::F_to_eta2"``, ``"effectsize::F_to_omega2"``, ``"effectsize::F_to_f"``)``,`` `` rwf ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``fisher``$``ss_effect``, ``fisher``$``ss_error``, ``fisher``$``statistic``, ``fisher``$``df_error``, ``fisher``$``p``,`` `` ``fisher``$``etasq``, ``fisher``$``omegasq``, ``fisher``$``partial.omegasq``, ``fisher``$``cohens.f``, ``fisher``$``power``, ``fisher``$``etasq``,`` `` ``welch``$``statistic``, ``welch``$``df_error``, ``welch``$``p``, ``welch``$``etasq``, ``welch``$``omegasq``, ``welch``$``cohens.f``)``,`` `` other ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``anova_table``[``1``, ``"Sum Sq"``]``, ``anova_table``[``2``, ``"Sum Sq"``]``,`` `` `[`unname`](https://rdrr.io/r/base/unname.html)`(``oneway_fisher``$``statistic``)``, `[`unname`](https://rdrr.io/r/base/unname.html)`(``oneway_fisher``$``parameter``[``2``]``)``, ``oneway_fisher``$``p.value``,`` `` ``effectsize``::`[`eta_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``model``, partial ``=`` ``FALSE``, ci ``=`` ``NULL``)``$``Eta2``,`` `` ``effectsize``::`[`omega_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``model``, partial ``=`` ``FALSE``, ci ``=`` ``NULL``)``$``Omega2``,`` `` ``sjstats_table``$``partial.omegasq``[``1``]``,`` `` ``effectsize``::`[`cohens_f`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``model``, ci ``=`` ``NULL``, verbose ``=`` ``FALSE``)``$``Cohens_f``,`` `` ``sjstats_table``$``power``[``1``]``,`` `` ``lsr``::`[`etaSquared`](https://lsr.djnavarro.net/reference/etaSquared.html)`(``model``)``[``1``, ``"eta.sq"``]``,`` `` `[`unname`](https://rdrr.io/r/base/unname.html)`(``oneway_welch``$``statistic``)``, `[`unname`](https://rdrr.io/r/base/unname.html)`(``oneway_welch``$``parameter``[``2``]``)``, ``oneway_welch``$``p.value``,`` `` ``effectsize``::`[`F_to_eta2`](https://easystats.github.io/effectsize/reference/F_to_eta2.html)`(``welch``$``statistic``, ``welch``$``df_effect``, ``welch``$``df_error``, ci ``=`` ``NULL``)``$``Eta2_partial``,`` `` ``effectsize``::`[`F_to_omega2`](https://easystats.github.io/effectsize/reference/F_to_eta2.html)`(``welch``$``statistic``, ``welch``$``df_effect``, ``welch``$``df_error``, ci ``=`` ``NULL``)``$``Omega2_partial``,`` `` ``effectsize``::`[`F_to_f`](https://easystats.github.io/effectsize/reference/F_to_eta2.html)`(``welch``$``statistic``, ``welch``$``df_effect``, ``welch``$``df_error``, ci ``=`` ``NULL``)``$``Cohens_f_partial``)``)`` `` ``comparison``$``difference`` ``<-`` ``comparison``$``rwf`` ``-`` ``comparison``$``other`` `` ``comparison`` ``}`` ``check_one_way``(``formula ``=`` ``form``, df ``=`` ``df_blood_pressure``)`
 
     ##      test       statistic                   package          rwf        other    difference
-    ## 1  Fisher       ss_effect                stats::aov 2.485550e+03 2.485550e+03 -1.818989e-11
-    ## 2  Fisher        ss_error                stats::aov 1.295215e+04 1.295215e+04 -1.455192e-11
+    ## 1  Fisher       ss_effect                stats::aov 2.485550e+03 2.485550e+03 -8.185452e-12
+    ## 2  Fisher        ss_error                stats::aov 1.295215e+04 1.295215e+04 -1.091394e-11
     ## 3  Fisher       statistic        stats::oneway.test 1.122630e+01 1.122630e+01  0.000000e+00
     ## 4  Fisher        df_error        stats::oneway.test 1.170000e+02 1.170000e+02  0.000000e+00
     ## 5  Fisher               p        stats::oneway.test 3.466707e-05 3.466707e-05  0.000000e+00
-    ## 6  Fisher           etasq   effectsize::eta_squared 1.610052e-01 1.610052e-01 -8.604228e-16
-    ## 7  Fisher         omegasq effectsize::omega_squared 1.456192e-01 1.456192e-01 -8.604228e-16
-    ## 8  Fisher partial.omegasq      sjstats::anova_stats 1.456192e-01 1.456192e-01 -8.881784e-16
-    ## 9  Fisher        cohens.f      effectsize::cohens_f 4.380668e-01 4.380668e-01 -1.443290e-15
-    ## 10 Fisher           power      sjstats::anova_stats 9.925726e-01 9.925726e-01 -3.330669e-16
-    ## 11 Fisher           etasq           lsr::etaSquared 1.610052e-01 1.610052e-01 -1.054712e-15
+    ## 6  Fisher           etasq   effectsize::eta_squared 1.610052e-01 1.610052e-01 -3.330669e-16
+    ## 7  Fisher         omegasq effectsize::omega_squared 1.456192e-01 1.456192e-01 -3.330669e-16
+    ## 8  Fisher partial.omegasq      sjstats::anova_stats 1.456192e-01 1.456192e-01 -3.608225e-16
+    ## 9  Fisher        cohens.f      effectsize::cohens_f 4.380668e-01 4.380668e-01 -5.551115e-16
+    ## 10 Fisher           power      sjstats::anova_stats 9.925726e-01 9.925726e-01 -1.110223e-16
+    ## 11 Fisher           etasq           lsr::etaSquared 1.610052e-01 1.610052e-01 -6.938894e-16
     ## 12  Welch       statistic        stats::oneway.test 1.189925e+01 1.189925e+01  0.000000e+00
     ## 13  Welch        df_error        stats::oneway.test 7.734665e+01 7.734665e+01  0.000000e+00
     ## 14  Welch               p        stats::oneway.test 3.121909e-05 3.121909e-05  0.000000e+00
@@ -745,40 +557,16 @@ and unequal group sizes, and equal and unequal variances.
 `max_abs_difference` is the largest absolute difference across all the
 comparisons for that dataset:
 
-``` r
-
-datasets <- list(
-  list(formula = bp_before ~ agegrp, df = df_blood_pressure),
-  list(formula = qsec ~ cyl, df = mtcars),
-  list(formula = weight ~ group, df = PlantGrowth),
-  list(formula = count ~ spray, df = InsectSprays),
-  list(formula = weight ~ feed, df = chickwts),
-  list(formula = len ~ dose, df = ToothGrowth),
-  list(formula = Sepal.Length ~ Species, df = iris)
-)
-do.call(rbind, lapply(datasets, function(d) {
-  fisher <- compute_one_way_test(formula = d$formula, df = d$df, var.equal = TRUE)
-  welch <- compute_one_way_test(formula = d$formula, df = d$df, var.equal = FALSE)
-  check <- check_one_way(formula = d$formula, df = d$df)
-  data.frame(formula = deparse(d$formula),
-             N = fisher$df_error + fisher$df_effect + 1,
-             k = fisher$df_effect + 1,
-             F_fisher = fisher$statistic,
-             F_welch = welch$statistic,
-             etasq = fisher$etasq,
-             omegasq = fisher$omegasq,
-             max_abs_difference = max(abs(check$difference)))
-}))
-```
+`datasets`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``bp_before`` ``~`` ``agegrp``, df ``=`` ``df_blood_pressure``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``qsec`` ``~`` ``cyl``, df ``=`` ``mtcars``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``weight`` ``~`` ``group``, df ``=`` ``PlantGrowth``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``count`` ``~`` ``spray``, df ``=`` ``InsectSprays``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``weight`` ``~`` ``feed``, df ``=`` ``chickwts``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``len`` ``~`` ``dose``, df ``=`` ``ToothGrowth``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``Sepal.Length`` ``~`` ``Species``, df ``=`` ``iris``)`` ``)`` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`lapply`](https://rdrr.io/r/base/lapply.html)`(``datasets``, ``function``(``d``)`` ``{`` `` ``fisher`` ``<-`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``d``$``formula``, df ``=`` ``d``$``df``, var.equal ``=`` ``TRUE``)`` `` ``welch`` ``<-`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``d``$``formula``, df ``=`` ``d``$``df``, var.equal ``=`` ``FALSE``)`` `` ``check`` ``<-`` ``check_one_way``(``formula ``=`` ``d``$``formula``, df ``=`` ``d``$``df``)`` `` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``formula ``=`` `[`deparse`](https://rdrr.io/r/base/deparse.html)`(``d``$``formula``)``,`` `` N ``=`` ``fisher``$``df_error`` ``+`` ``fisher``$``df_effect`` ``+`` ``1``,`` `` k ``=`` ``fisher``$``df_effect`` ``+`` ``1``,`` `` F_fisher ``=`` ``fisher``$``statistic``,`` `` F_welch ``=`` ``welch``$``statistic``,`` `` etasq ``=`` ``fisher``$``etasq``,`` `` omegasq ``=`` ``fisher``$``omegasq``,`` `` max_abs_difference ``=`` `[`max`](https://rdrr.io/r/base/Extremes.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``check``$``difference``)``)``)`` ``}``)``)`
 
     ##                  formula   N k   F_fisher    F_welch     etasq   omegasq max_abs_difference
-    ## 1     bp_before ~ agegrp 120 3  11.226296  11.899250 0.1610052 0.1456192       1.818989e-11
-    ## 2             qsec ~ cyl  32 3   7.793798   7.704359 0.3495949 0.2980547       8.526513e-14
-    ## 3         weight ~ group  30 3   4.846088   5.180972 0.2641483 0.2040788       1.243450e-14
-    ## 4          count ~ spray  72 6  34.702282  36.065444 0.7244390 0.7006379       4.547474e-13
-    ## 5          weight ~ feed  71 6  15.364800  19.661724 0.5416855 0.5028847       1.455192e-10
-    ## 6             len ~ dose  60 3  67.415738  68.400977 0.7028642 0.6888475       1.818989e-12
-    ## 7 Sepal.Length ~ Species 150 3 119.264502 138.908285 0.6187057 0.6119308       1.421085e-14
+    ## 1     bp_before ~ agegrp 120 3  11.226296  11.899250 0.1610052 0.1456192       1.091394e-11
+    ## 2             qsec ~ cyl  32 3   7.793798   7.704359 0.3495949 0.2980547       3.552714e-14
+    ## 3         weight ~ group  30 3   4.846088   5.180972 0.2641483 0.2040788       3.552714e-15
+    ## 4          count ~ spray  72 6  34.702282  36.065444 0.7244390 0.7006379       2.273737e-12
+    ## 5          weight ~ feed  71 6  15.364800  19.661724 0.5416855 0.5028847       2.037268e-10
+    ## 6             len ~ dose  60 3  67.415738  68.400977 0.7028642 0.6888475       9.094947e-13
+    ## 7 Sepal.Length ~ Species 150 3 119.264502 138.908285 0.6187057 0.6119308       2.131628e-14
 
 ## Fisher and Welch with unequal variances
 
@@ -786,17 +574,7 @@ Three groups have the **same** population mean, so every rejection is a
 Type I error. The smallest group has the largest standard deviation. At
 \alpha=0.05 a test should reject about 5% of the time:
 
-``` r
-
-set.seed(1)
-rejections <- t(replicate(2000, {
-  sim <- data.frame(group = rep(c("a", "b", "c"), times = c(10, 20, 40)),
-                    score = rnorm(70, mean = 0, sd = rep(c(4, 2, 1), times = c(10, 20, 40))))
-  c(fisher = compute_one_way_test(formula = score ~ group, df = sim, var.equal = TRUE)$p < 0.05,
-    welch = compute_one_way_test(formula = score ~ group, df = sim, var.equal = FALSE)$p < 0.05)
-}))
-colMeans(rejections)
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``rejections`` ``<-`` `[`t`](https://rdrr.io/r/base/t.html)`(`[`replicate`](https://rdrr.io/r/base/lapply.html)`(``2000``, ``{`` `` ``sim`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``group ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"a"``, ``"b"``, ``"c"``)``, times ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``10``, ``20``, ``40``)``)``,`` `` score ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``70``, mean ``=`` ``0``, sd ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``4``, ``2``, ``1``)``, times ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``10``, ``20``, ``40``)``)``)``)`` `` `[`c`](https://rdrr.io/r/base/c.html)`(``fisher ``=`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``score`` ``~`` ``group``, df ``=`` ``sim``, var.equal ``=`` ``TRUE``)``$``p`` ``<`` ``0.05``,`` `` welch ``=`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``score`` ``~`` ``group``, df ``=`` ``sim``, var.equal ``=`` ``FALSE``)``$``p`` ``<`` ``0.05``)`` ``}``)``)`` `[`colMeans`](https://rdrr.io/r/base/colSums.html)`(``rejections``)`
 
     ## fisher  welch 
     ## 0.2450 0.0515
@@ -812,15 +590,7 @@ population effect is the same in every row. As the sample grows, F grows
 and the p value drops towards 0, while \eta^2, \omega^2 and f settle
 around the same values:
 
-``` r
-
-set.seed(1)
-do.call(rbind, lapply(c(10, 30, 100, 300, 1000), function(n_per_group) {
-  sim <- data.frame(group = rep(c("a", "b", "c"), each = n_per_group),
-                    score = rnorm(3 * n_per_group, mean = rep(c(0, 0.3, 0.6), each = n_per_group)))
-  cbind(n_per_group, compute_one_way_test(formula = score ~ group, df = sim)[, c("statistic", "p", "etasq", "omegasq", "cohens.f")])
-}))
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`lapply`](https://rdrr.io/r/base/lapply.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``10``, ``30``, ``100``, ``300``, ``1000``)``, ``function``(``n_per_group``)`` ``{`` `` ``sim`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``group ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"a"``, ``"b"``, ``"c"``)``, each ``=`` ``n_per_group``)``,`` `` score ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``3`` ``*`` ``n_per_group``, mean ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``0.3``, ``0.6``)``, each ``=`` ``n_per_group``)``)``)`` `` `[`cbind`](https://rdrr.io/r/base/cbind.html)`(``n_per_group``, `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``score`` ``~`` ``group``, df ``=`` ``sim``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"statistic"``, ``"p"``, ``"etasq"``, ``"omegasq"``, ``"cohens.f"``)``]``)`` ``}``)``)`
 
     ##   n_per_group  statistic            p      etasq     omegasq  cohens.f
     ## 1          10  0.5476353 5.846048e-01 0.03898416 -0.03109541 0.2014090
@@ -841,18 +611,7 @@ When there is no effect at all, the average \eta^2 is close to
 of 10 the bias is 2/29\approx0.069, which is already above the “medium”
 benchmark:
 
-``` r
-
-set.seed(1)
-null_effects <- t(replicate(2000, {
-  sim <- data.frame(group = rep(c("a", "b", "c"), each = 10), score = rnorm(30))
-  unlist(compute_one_way_test(formula = score ~ group, df = sim)[, c("etasq", "omegasq")])
-}))
-data.frame(mean_etasq = mean(null_effects[, "etasq"]),
-           expected_etasq = (3 - 1) / (30 - 1),
-           mean_omegasq = mean(null_effects[, "omegasq"]),
-           proportion_negative_omegasq = mean(null_effects[, "omegasq"] < 0))
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``null_effects`` ``<-`` `[`t`](https://rdrr.io/r/base/t.html)`(`[`replicate`](https://rdrr.io/r/base/lapply.html)`(``2000``, ``{`` `` ``sim`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``group ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"a"``, ``"b"``, ``"c"``)``, each ``=`` ``10``)``, score ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``30``)``)`` `` `[`unlist`](https://rdrr.io/r/base/unlist.html)`(`[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``score`` ``~`` ``group``, df ``=`` ``sim``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"etasq"``, ``"omegasq"``)``]``)`` ``}``)``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``mean_etasq ``=`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``null_effects``[``, ``"etasq"``]``)``,`` `` expected_etasq ``=`` ``(``3`` ``-`` ``1``)`` ``/`` ``(``30`` ``-`` ``1``)``,`` `` mean_omegasq ``=`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``null_effects``[``, ``"omegasq"``]``)``,`` `` proportion_negative_omegasq ``=`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``null_effects``[``, ``"omegasq"``]`` ``<`` ``0``)``)`
 
     ##   mean_etasq expected_etasq  mean_omegasq proportion_negative_omegasq
     ## 1 0.06851786     0.06896552 -0.0003159352                      0.6225
@@ -869,21 +628,12 @@ Missing values in other columns of `df` are ignored. Two blood pressure
 values are set to missing here, and both functions use the remaining 118
 rows:
 
-``` r
-
-df_missing <- df_blood_pressure
-df_missing$bp_before[c(1, 50)] <- NA
-df_missing$bp_after[2] <- NA
-compute_one_way_test(formula = form, df = df_missing, var.equal = TRUE)
-```
+`df_missing`` ``<-`` ``df_blood_pressure`` ``df_missing``$``bp_before``[`[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``50``)``]`` ``<-`` ``NA`` ``df_missing``$``bp_after``[``2``]`` ``<-`` ``NA`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_missing``, var.equal ``=`` ``TRUE``)`
 
     ##              formula                    method ss_effect ss_error ms_effect ms_error     etasq partial.etasq   omegasq partial.omegasq  cohens.f    power statistic df_effect df_error            p
     ## 1 bp_before ~ agegrp Assuming homoscedasticity  2254.774 12818.42  1127.387 111.4645 0.1495884     0.1495884 0.1338091       0.1338091 0.4194057 0.986082  10.11431         2      115 8.988329e-05
 
-``` r
-
-stats::oneway.test(formula = form, data = df_missing, var.equal = TRUE)
-```
+`stats``::`[`oneway.test`](https://rdrr.io/r/stats/oneway.test.html)`(``formula ``=`` ``form``, data ``=`` ``df_missing``, var.equal ``=`` ``TRUE``)`
 
     ## 
     ##  One-way analysis of means
@@ -891,29 +641,26 @@ stats::oneway.test(formula = form, data = df_missing, var.equal = TRUE)
     ## data:  bp_before and agegrp
     ## F = 10.114, num df = 2, denom df = 115, p-value = 8.988e-05
 
-``` r
+`check_one_way``(``formula ``=`` ``form``, df ``=`` ``df_missing``)`
 
-check_one_way(formula = form, df = df_missing)
-```
-
-    ##      test       statistic                   package          rwf        other    difference
-    ## 1  Fisher       ss_effect                stats::aov 2.254774e+03 2.254774e+03  6.821210e-12
-    ## 2  Fisher        ss_error                stats::aov 1.281842e+04 1.281842e+04 -1.818989e-12
-    ## 3  Fisher       statistic        stats::oneway.test 1.011431e+01 1.011431e+01  0.000000e+00
-    ## 4  Fisher        df_error        stats::oneway.test 1.150000e+02 1.150000e+02  0.000000e+00
-    ## 5  Fisher               p        stats::oneway.test 8.988329e-05 8.988329e-05  0.000000e+00
-    ## 6  Fisher           etasq   effectsize::eta_squared 1.495884e-01 1.495884e-01  3.885781e-16
-    ## 7  Fisher         omegasq effectsize::omega_squared 1.338091e-01 1.338091e-01  3.885781e-16
-    ## 8  Fisher partial.omegasq      sjstats::anova_stats 1.338091e-01 1.338091e-01  4.163336e-16
-    ## 9  Fisher        cohens.f      effectsize::cohens_f 4.194057e-01 4.194057e-01  6.661338e-16
-    ## 10 Fisher           power      sjstats::anova_stats 9.860820e-01 9.860820e-01  2.220446e-16
-    ## 11 Fisher           etasq           lsr::etaSquared 1.495884e-01 1.495884e-01  4.996004e-16
-    ## 12  Welch       statistic        stats::oneway.test 1.066569e+01 1.066569e+01  0.000000e+00
-    ## 13  Welch        df_error        stats::oneway.test 7.616557e+01 7.616557e+01  0.000000e+00
-    ## 14  Welch               p        stats::oneway.test 8.246968e-05 8.246968e-05  0.000000e+00
-    ## 15  Welch           etasq     effectsize::F_to_eta2 2.187902e-01 2.187902e-01  0.000000e+00
-    ## 16  Welch         omegasq   effectsize::F_to_omega2 1.962637e-01 1.962637e-01  2.775558e-17
-    ## 17  Welch        cohens.f        effectsize::F_to_f 5.292125e-01 5.292125e-01  0.000000e+00
+    ##      test       statistic                   package          rwf        other   difference
+    ## 1  Fisher       ss_effect                stats::aov 2.254774e+03 2.254774e+03 5.002221e-12
+    ## 2  Fisher        ss_error                stats::aov 1.281842e+04 1.281842e+04 0.000000e+00
+    ## 3  Fisher       statistic        stats::oneway.test 1.011431e+01 1.011431e+01 0.000000e+00
+    ## 4  Fisher        df_error        stats::oneway.test 1.150000e+02 1.150000e+02 0.000000e+00
+    ## 5  Fisher               p        stats::oneway.test 8.988329e-05 8.988329e-05 0.000000e+00
+    ## 6  Fisher           etasq   effectsize::eta_squared 1.495884e-01 1.495884e-01 2.775558e-16
+    ## 7  Fisher         omegasq effectsize::omega_squared 1.338091e-01 1.338091e-01 2.775558e-16
+    ## 8  Fisher partial.omegasq      sjstats::anova_stats 1.338091e-01 1.338091e-01 2.775558e-16
+    ## 9  Fisher        cohens.f      effectsize::cohens_f 4.194057e-01 4.194057e-01 4.440892e-16
+    ## 10 Fisher           power      sjstats::anova_stats 9.860820e-01 9.860820e-01 2.220446e-16
+    ## 11 Fisher           etasq           lsr::etaSquared 1.495884e-01 1.495884e-01 3.885781e-16
+    ## 12  Welch       statistic        stats::oneway.test 1.066569e+01 1.066569e+01 0.000000e+00
+    ## 13  Welch        df_error        stats::oneway.test 7.616557e+01 7.616557e+01 0.000000e+00
+    ## 14  Welch               p        stats::oneway.test 8.246968e-05 8.246968e-05 0.000000e+00
+    ## 15  Welch           etasq     effectsize::F_to_eta2 2.187902e-01 2.187902e-01 0.000000e+00
+    ## 16  Welch         omegasq   effectsize::F_to_omega2 1.962637e-01 1.962637e-01 2.775558e-17
+    ## 17  Welch        cohens.f        effectsize::F_to_f 5.292125e-01 5.292125e-01 0.000000e+00
 
 ## References
 

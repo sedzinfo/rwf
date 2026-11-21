@@ -29,10 +29,7 @@ Type III sums of squares need sum-to-zero contrasts
 ([below](#type-iii-and-contrasts)), so this document sets them before
 any model is fitted:
 
-``` r
-
-options(contrasts = c("contr.sum", "contr.poly"))
-```
+[`options`](https://rdrr.io/r/base/options.html)`(``contrasts ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"contr.sum"``, ``"contr.poly"``)``)`
 
 ## Notation
 
@@ -75,11 +72,7 @@ give the same sums of squares. In an **unbalanced** design they differ.
 `mtcars` has between 2 and 12 cars per cell of cylinders by
 transmission:
 
-``` r
-
-cars <- transform(mtcars, cyl = factor(cyl), am = factor(am))
-table(cars$cyl, cars$am)
-```
+`cars`` ``<-`` `[`transform`](https://rdrr.io/r/base/transform.html)`(``mtcars``, cyl ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``cyl``)``, am ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``am``)``)`` `[`table`](https://rdrr.io/r/base/table.html)`(``cars``$``cyl``, ``cars``$``am``)`
 
     ##    
     ##      0  1
@@ -87,11 +80,7 @@ table(cars$cyl, cars$am)
     ##   6  4  3
     ##   8 12  2
 
-``` r
-
-model_cars <- stats::aov(mpg ~ cyl * am, data = cars)
-compute_aov_es(model = model_cars, ss = "I")[, c("comparisons", "Df", "Sum Sq", "F value", "Pr(>F)")]
-```
+`model_cars`` ``<-`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``mpg`` ``~`` ``cyl`` ``*`` ``am``, data ``=`` ``cars``)`` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_cars``, ss ``=`` ``"I"``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"comparisons"``, ``"Df"``, ``"Sum Sq"``, ``"F value"``, ``"Pr(>F)"``)``]`
 
     ##   comparisons Df    Sum Sq   F value       Pr(>F)
     ## 1         cyl  2 824.78459 44.851657 3.725274e-09
@@ -99,10 +88,7 @@ compute_aov_es(model = model_cars, ss = "I")[, c("comparisons", "Df", "Sum Sq", 
     ## 3      cyl:am  2  25.43651  1.383233 2.686140e-01
     ## 4   Residuals 26 239.05917        NA           NA
 
-``` r
-
-compute_aov_es(model = model_cars, ss = "II")[, c("comparisons", "Df", "Sum Sq", "F value", "Pr(>F)")]
-```
+[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_cars``, ss ``=`` ``"II"``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"comparisons"``, ``"Df"``, ``"Sum Sq"``, ``"F value"``, ``"Pr(>F)"``)``]`
 
     ##   comparisons Df    Sum Sq   F value       Pr(>F)
     ## 1         cyl  2 456.40092 24.819011 9.354735e-07
@@ -110,10 +96,7 @@ compute_aov_es(model = model_cars, ss = "II")[, c("comparisons", "Df", "Sum Sq",
     ## 3      cyl:am  2  25.43651  1.383233 2.686140e-01
     ## 4   Residuals 26 239.05917        NA           NA
 
-``` r
-
-compute_aov_es(model = model_cars, ss = "III")[, c("comparisons", "Df", "Sum Sq", "F value", "Pr(>F)")]
-```
+[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_cars``, ss ``=`` ``"III"``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"comparisons"``, ``"Df"``, ``"Sum Sq"``, ``"F value"``, ``"Pr(>F)"``)``]`
 
     ##   comparisons Df     Sum Sq    F value       Pr(>F)
     ## 1         cyl  2  410.46389  22.320962 2.274263e-06
@@ -125,10 +108,7 @@ compute_aov_es(model = model_cars, ss = "III")[, c("comparisons", "Df", "Sum Sq"
 Type I depends on the order of the terms. With `am` first, `am` gets all
 the variance it shares with `cyl`:
 
-``` r
-
-compute_aov_es(model = stats::aov(mpg ~ am * cyl, data = cars), ss = "I")[, c("comparisons", "Sum Sq")]
-```
+[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``mpg`` ``~`` ``am`` ``*`` ``cyl``, data ``=`` ``cars``)``, ss ``=`` ``"I"``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"comparisons"``, ``"Sum Sq"``)``]`
 
     ##   comparisons    Sum Sq
     ## 1          am 405.15059
@@ -140,10 +120,7 @@ Each sum of squares is a comparison of two models. The Type II sum of
 squares of `cyl` is the drop in the residual sum of squares when `cyl`
 is added to a model with `am`:
 
-``` r
-
-stats::anova(stats::lm(mpg ~ am, data = cars), stats::lm(mpg ~ am + cyl, data = cars))
-```
+`stats``::`[`anova`](https://rdrr.io/r/stats/anova.html)`(``stats``::`[`lm`](https://rdrr.io/r/stats/lm.html)`(``mpg`` ``~`` ``am``, data ``=`` ``cars``)``, ``stats``::`[`lm`](https://rdrr.io/r/stats/lm.html)`(``mpg`` ``~`` ``am`` ``+`` ``cyl``, data ``=`` ``cars``)``)`
 
     ## Analysis of Variance Table
     ## 
@@ -164,14 +141,7 @@ factor. With R’s default treatment contrasts (`contr.treatment`), it
 becomes the effect at the reference level of the other factor, which is
 rarely the question asked. The interaction is the same either way:
 
-``` r
-
-model_treatment <- stats::aov(mpg ~ cyl * am, data = cars,
-                              contrasts = list(cyl = "contr.treatment", am = "contr.treatment"))
-data.frame(term = c("cyl", "am", "cyl:am"),
-           ss_contr_sum = compute_aov_es(model = model_cars, ss = "III")$`Sum Sq`[1:3],
-           ss_contr_treatment = compute_aov_es(model = model_treatment, ss = "III")$`Sum Sq`[1:3])
-```
+`model_treatment`` ``<-`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``mpg`` ``~`` ``cyl`` ``*`` ``am``, data ``=`` ``cars``,`` `` contrasts ``=`` `[`list`](https://rdrr.io/r/base/list.html)`(``cyl ``=`` ``"contr.treatment"``, am ``=`` ``"contr.treatment"``)``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``term ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"cyl"``, ``"am"``, ``"cyl:am"``)``,`` `` ss_contr_sum ``=`` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_cars``, ss ``=`` ``"III"``)``$``` `Sum Sq` ```[``1``:``3``]``,`` `` ss_contr_treatment ``=`` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_treatment``, ss ``=`` ``"III"``)``$``` `Sum Sq` ```[``1``:``3``]``)`
 
     ##     term ss_contr_sum ss_contr_treatment
     ## 1    cyl    410.46389          167.70987
@@ -289,12 +259,7 @@ with or without `dose` in the model. Adding `dose`, which explains most
 of the variance, leaves \eta^2 of `supp` unchanged but raises \eta^2_p,
 because the error variance shrinks:
 
-``` r
-
-tooth <- transform(ToothGrowth, dose = factor(dose))
-rbind(compute_aov_es(model = stats::aov(len ~ supp, data = tooth))[1, c("comparisons", "etasq", "partial_etasq")],
-      compute_aov_es(model = stats::aov(len ~ supp * dose, data = tooth))[1, c("comparisons", "etasq", "partial_etasq")])
-```
+`tooth`` ``<-`` `[`transform`](https://rdrr.io/r/base/transform.html)`(``ToothGrowth``, dose ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``dose``)``)`` `[`rbind`](https://rdrr.io/r/base/cbind.html)`(`[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``len`` ``~`` ``supp``, data ``=`` ``tooth``)``)``[``1``, `[`c`](https://rdrr.io/r/base/c.html)`(``"comparisons"``, ``"etasq"``, ``"partial_etasq"``)``]``,`` `` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``len`` ``~`` ``supp`` ``*`` ``dose``, data ``=`` ``tooth``)``)``[``1``, `[`c`](https://rdrr.io/r/base/c.html)`(``"comparisons"``, ``"etasq"``, ``"partial_etasq"``)``]``)`
 
     ##   comparisons      etasq partial_etasq
     ## 1        supp 0.05948365    0.05948365
@@ -340,10 +305,7 @@ each given vitamin C at one of three doses (0.5, 1 and 2 mg/day) by one
 of two delivery methods (orange juice or ascorbic acid). The design is a
 balanced 2 by 3 factorial with 10 animals per cell.
 
-``` r
-
-head(tooth)
-```
+[`head`](https://rdrr.io/r/utils/head.html)`(``tooth``)`
 
     ##    len supp dose
     ## 1  4.2   VC  0.5
@@ -353,10 +315,7 @@ head(tooth)
     ## 5  6.4   VC  0.5
     ## 6 10.0   VC  0.5
 
-``` r
-
-table(tooth$supp, tooth$dose)
-```
+[`table`](https://rdrr.io/r/base/table.html)`(``tooth``$``supp``, ``tooth``$``dose``)`
 
     ##     
     ##      0.5  1  2
@@ -365,11 +324,7 @@ table(tooth$supp, tooth$dose)
 
 ## compute_aov_es
 
-``` r
-
-model_tooth <- stats::aov(len ~ supp * dose, data = tooth)
-compute_aov_es(model = model_tooth, ss = "I")
-```
+`model_tooth`` ``<-`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``len`` ``~`` ``supp`` ``*`` ``dose``, data ``=`` ``tooth``)`` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_tooth``, ss ``=`` ``"I"``)`
 
     ##                call ss comparisons Df   Sum Sq    Mean Sq   F value       Pr(>F)      etasq partial_etasq    omegasq partial_omegasq  epsilonsq  cohens_f
     ## 1 len ~ supp * dose  I        supp  1  205.350  205.35000 15.571979 2.311828e-04 0.05948365     0.2238254 0.05545191      0.19540824 0.05566373 0.5370009
@@ -377,10 +332,7 @@ compute_aov_es(model = model_tooth, ss = "I")
     ## 3 len ~ supp * dose  I   supp:dose  2  108.319   54.15950  4.106991 2.186027e-02 0.03137672     0.1320279 0.02364656      0.09384698 0.02373689 0.3900138
     ## 4 len ~ supp * dose  I   Residuals 54  712.106   13.18715        NA           NA         NA            NA         NA              NA         NA        NA
 
-``` r
-
-compute_aov_es(model = model_tooth, ss = "II")
-```
+[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_tooth``, ss ``=`` ``"II"``)`
 
     ##                call ss comparisons Df   Sum Sq    Mean Sq   F value       Pr(>F)      etasq partial_etasq    omegasq partial_omegasq  epsilonsq  cohens_f
     ## 1 len ~ supp * dose II        supp  1  205.350  205.35000 15.571979 2.311828e-04 0.05948365     0.2238254 0.05545191      0.19540824 0.05566373 0.5370009
@@ -388,10 +340,7 @@ compute_aov_es(model = model_tooth, ss = "II")
     ## 3 len ~ supp * dose II   supp:dose  2  108.319   54.15950  4.106991 2.186027e-02 0.03137672     0.1320279 0.02364656      0.09384698 0.02373689 0.3900138
     ## 4 len ~ supp * dose II   Residuals 54  712.106   13.18715        NA           NA         NA            NA         NA              NA         NA        NA
 
-``` r
-
-compute_aov_es(model = model_tooth, ss = "III")
-```
+[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_tooth``, ss ``=`` ``"III"``)`
 
     ##                call  ss comparisons Df    Sum Sq     Mean Sq     F value       Pr(>F)      etasq partial_etasq    omegasq partial_omegasq  epsilonsq  cohens_f
     ## 1 len ~ supp * dose III        supp  1   205.350   205.35000   15.571979 2.311828e-04 0.05948365     0.2238254 0.05545191      0.19540824 0.05566373 0.5370009
@@ -424,46 +373,19 @@ Every effect size computed by hand from the Type II table of the
 unbalanced `mtcars` model, where the sums of squares of the terms and
 the residuals do not add up to the total variance of `mpg`:
 
-``` r
-
-table_ii <- as.data.frame(car::Anova(model_cars, type = "II"))
-terms <- rownames(table_ii) != "Residuals"
-ss_effect <- table_ii$`Sum Sq`[terms]
-df_effect <- table_ii$Df[terms]
-ms_effect <- ss_effect / df_effect
-ss_error <- table_ii["Residuals", "Sum Sq"]
-ms_error <- ss_error / table_ii["Residuals", "Df"]
-ss_total <- sum(table_ii$`Sum Sq`)
-N <- nrow(stats::model.frame(model_cars))
-c(ss_total_table = ss_total, ss_total_mpg = sum((cars$mpg - mean(cars$mpg))^2))
-```
+`table_ii`` ``<-`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(``car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``model_cars``, type ``=`` ``"II"``)``)`` ``terms`` ``<-`` `[`rownames`](https://rdrr.io/r/base/colnames.html)`(``table_ii``)`` ``!=`` ``"Residuals"`` ``ss_effect`` ``<-`` ``table_ii``$``` `Sum Sq` ```[``terms``]`` ``df_effect`` ``<-`` ``table_ii``$``Df``[``terms``]`` ``ms_effect`` ``<-`` ``ss_effect`` ``/`` ``df_effect`` ``ss_error`` ``<-`` ``table_ii``[``"Residuals"``, ``"Sum Sq"``]`` ``ms_error`` ``<-`` ``ss_error`` ``/`` ``table_ii``[``"Residuals"``, ``"Df"``]`` ``ss_total`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``table_ii``$``` `Sum Sq` ```)`` ``N`` ``<-`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``stats``::`[`model.frame`](https://rdrr.io/r/stats/model.frame.html)`(``model_cars``)``)`` `[`c`](https://rdrr.io/r/base/c.html)`(``ss_total_table ``=`` ``ss_total``, ss_total_mpg ``=`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``(``cars``$``mpg`` ``-`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``cars``$``mpg``)``)``^``2``)``)`
 
     ## ss_total_table   ss_total_mpg 
     ##       757.6635      1126.0472
 
-``` r
-
-partial_etasq <- ss_effect / (ss_effect + ss_error)
-by_hand <- data.frame(comparisons = rownames(table_ii)[terms],
-                      etasq = ss_effect / ss_total,
-                      partial_etasq = partial_etasq,
-                      omegasq = (ss_effect - df_effect * ms_error) / (ss_total + ms_error),
-                      partial_omegasq = df_effect * (ms_effect - ms_error) / (ss_effect + (N - df_effect) * ms_error),
-                      epsilonsq = (ss_effect - df_effect * ms_error) / ss_total,
-                      cohens_f = sqrt(partial_etasq / (1 - partial_etasq)))
-by_hand
-```
+`partial_etasq`` ``<-`` ``ss_effect`` ``/`` ``(``ss_effect`` ``+`` ``ss_error``)`` ``by_hand`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``comparisons ``=`` `[`rownames`](https://rdrr.io/r/base/colnames.html)`(``table_ii``)``[``terms``]``,`` `` etasq ``=`` ``ss_effect`` ``/`` ``ss_total``,`` `` partial_etasq ``=`` ``partial_etasq``,`` `` omegasq ``=`` ``(``ss_effect`` ``-`` ``df_effect`` ``*`` ``ms_error``)`` ``/`` ``(``ss_total`` ``+`` ``ms_error``)``,`` `` partial_omegasq ``=`` ``df_effect`` ``*`` ``(``ms_effect`` ``-`` ``ms_error``)`` ``/`` ``(``ss_effect`` ``+`` ``(``N`` ``-`` ``df_effect``)`` ``*`` ``ms_error``)``,`` `` epsilonsq ``=`` ``(``ss_effect`` ``-`` ``df_effect`` ``*`` ``ms_error``)`` ``/`` ``ss_total``,`` `` cohens_f ``=`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``partial_etasq`` ``/`` ``(``1`` ``-`` ``partial_etasq``)``)``)`` ``by_hand`
 
     ##   comparisons      etasq partial_etasq     omegasq partial_omegasq   epsilonsq  cohens_f
     ## 1         cyl 0.60237943    0.65625753 0.571177058      0.59818188 0.578108545 1.3817216
     ## 2          am 0.04852671    0.13329747 0.035954939      0.08568186 0.036391268 0.3921714
     ## 3      cyl:am 0.03357231    0.09616986 0.009189894      0.02339181 0.009301417 0.3261941
 
-``` r
-
-rwf <- compute_aov_es(model = model_cars, ss = "II")
-all.equal(by_hand[, -1], rwf[!is.na(rwf$etasq), names(by_hand)[-1]], check.attributes = FALSE)
-```
+`rwf`` ``<-`` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_cars``, ss ``=`` ``"II"``)`` `[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(``by_hand``[``, ``-``1``]``, ``rwf``[``!`[`is.na`](https://rdrr.io/r/base/NA.html)`(``rwf``$``etasq``)``, `[`names`](https://rdrr.io/r/base/names.html)`(``by_hand``)``[``-``1``]``]``, check.attributes ``=`` ``FALSE``)`
 
     ## [1] TRUE
 
@@ -476,10 +398,7 @@ model (Type I) or from the
 [`car::Anova`](https://rdrr.io/pkg/car/man/Anova.html) table (Types II
 and III):
 
-``` r
-
-effectsize::eta_squared(car::Anova(model_cars, type = 3), partial = FALSE, ci = NULL)
-```
+`effectsize``::`[`eta_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``model_cars``, type ``=`` ``3``)``, partial ``=`` ``FALSE``, ci ``=`` ``NULL``)`
 
     ## # Effect Size for ANOVA (Type III)
     ## 
@@ -489,10 +408,7 @@ effectsize::eta_squared(car::Anova(model_cars, type = 3), partial = FALSE, ci = 
     ## am        | 0.04
     ## cyl:am    | 0.04
 
-``` r
-
-effectsize::eta_squared(car::Anova(model_cars, type = 3), partial = TRUE, ci = NULL)
-```
+`effectsize``::`[`eta_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``model_cars``, type ``=`` ``3``)``, partial ``=`` ``TRUE``, ci ``=`` ``NULL``)`
 
     ## # Effect Size for ANOVA (Type III)
     ## 
@@ -502,10 +418,7 @@ effectsize::eta_squared(car::Anova(model_cars, type = 3), partial = TRUE, ci = N
     ## am        |           0.11
     ## cyl:am    |           0.10
 
-``` r
-
-effectsize::omega_squared(car::Anova(model_cars, type = 3), partial = FALSE, ci = NULL)
-```
+`effectsize``::`[`omega_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``model_cars``, type ``=`` ``3``)``, partial ``=`` ``FALSE``, ci ``=`` ``NULL``)`
 
     ## # Effect Size for ANOVA (Type III)
     ## 
@@ -515,10 +428,7 @@ effectsize::omega_squared(car::Anova(model_cars, type = 3), partial = FALSE, ci 
     ## am        |     0.03
     ## cyl:am    | 9.87e-03
 
-``` r
-
-effectsize::omega_squared(car::Anova(model_cars, type = 3), partial = TRUE, ci = NULL)
-```
+`effectsize``::`[`omega_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``model_cars``, type ``=`` ``3``)``, partial ``=`` ``TRUE``, ci ``=`` ``NULL``)`
 
     ## # Effect Size for ANOVA (Type III)
     ## 
@@ -528,10 +438,7 @@ effectsize::omega_squared(car::Anova(model_cars, type = 3), partial = TRUE, ci =
     ## am        |             0.07
     ## cyl:am    |             0.02
 
-``` r
-
-effectsize::epsilon_squared(car::Anova(model_cars, type = 3), partial = FALSE, ci = NULL)
-```
+`effectsize``::`[`epsilon_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``model_cars``, type ``=`` ``3``)``, partial ``=`` ``FALSE``, ci ``=`` ``NULL``)`
 
     ## # Effect Size for ANOVA (Type III)
     ## 
@@ -541,10 +448,7 @@ effectsize::epsilon_squared(car::Anova(model_cars, type = 3), partial = FALSE, c
     ## am        |     0.03
     ## cyl:am    | 1.00e-02
 
-``` r
-
-effectsize::cohens_f(car::Anova(model_cars, type = 3), partial = TRUE, ci = NULL)
-```
+`effectsize``::`[`cohens_f`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``model_cars``, type ``=`` ``3``)``, partial ``=`` ``TRUE``, ci ``=`` ``NULL``)`
 
     ## # Effect Size for ANOVA (Type III)
     ## 
@@ -554,10 +458,7 @@ effectsize::cohens_f(car::Anova(model_cars, type = 3), partial = TRUE, ci = NULL
     ## am        |                0.35
     ## cyl:am    |                0.33
 
-``` r
-
-sjstats::anova_stats(car::Anova(model_cars, type = 3), digits = 22)
-```
+`sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``model_cars``, type ``=`` ``3``)``, digits ``=`` ``22``)`
 
     ## etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |      term |   sumsq | df |  meansq | statistic | p.value | power
     ## -------------------------------------------------------------------------------------------------------------------------------------------
@@ -566,10 +467,7 @@ sjstats::anova_stats(car::Anova(model_cars, type = 3), digits = 22)
     ## 0.036 |         0.096 |   0.010 |           0.023 |     0.010 |    0.326 |    cyl:am |  25.437 |  2 |  12.718 |     1.383 |   0.269 | 0.298
     ##       |               |         |                 |           |          | Residuals | 239.059 | 26 |   9.195 |           |         |
 
-``` r
-
-compute_aov_es(model = model_cars, ss = "III")
-```
+[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_cars``, ss ``=`` ``"III"``)`
 
     ##             call  ss comparisons Df     Sum Sq     Mean Sq    F value       Pr(>F)      etasq partial_etasq     omegasq partial_omegasq   epsilonsq  cohens_f
     ## 1 mpg ~ cyl * am III         cyl  2  410.46389  205.231946  22.320962 2.274263e-06 0.58236126    0.63194661 0.549107728      0.57128651 0.556270929 1.3103424
@@ -583,14 +481,7 @@ compute_aov_es(model = model_cars, ss = "III")
 In a one-way design, `compute_aov_es` and `compute_one_way_test` (with
 `var.equal = TRUE`) give the same \eta^2, \omega^2 and Cohen’s f:
 
-``` r
-
-one_way <- compute_one_way_test(formula = weight ~ feed, df = chickwts, var.equal = TRUE)
-aov_es <- compute_aov_es(model = stats::aov(weight ~ feed, data = chickwts))
-data.frame(statistic = c("etasq", "omegasq", "partial_omegasq", "cohens_f"),
-           compute_one_way_test = c(one_way$etasq, one_way$omegasq, one_way$partial.omegasq, one_way$cohens.f),
-           compute_aov_es = c(aov_es$etasq[1], aov_es$omegasq[1], aov_es$partial_omegasq[1], aov_es$cohens_f[1]))
-```
+`one_way`` ``<-`` `[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula ``=`` ``weight`` ``~`` ``feed``, df ``=`` ``chickwts``, var.equal ``=`` ``TRUE``)`` ``aov_es`` ``<-`` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``weight`` ``~`` ``feed``, data ``=`` ``chickwts``)``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``statistic ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"etasq"``, ``"omegasq"``, ``"partial_omegasq"``, ``"cohens_f"``)``,`` `` compute_one_way_test ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``one_way``$``etasq``, ``one_way``$``omegasq``, ``one_way``$``partial.omegasq``, ``one_way``$``cohens.f``)``,`` `` compute_aov_es ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``aov_es``$``etasq``[``1``]``, ``aov_es``$``omegasq``[``1``]``, ``aov_es``$``partial_omegasq``[``1``]``, ``aov_es``$``cohens_f``[``1``]``)``)`
 
     ##         statistic compute_one_way_test compute_aov_es
     ## 1           etasq            0.5416855      0.5416855
@@ -605,35 +496,7 @@ and `sjstats` and returns the differences, one row per term.
 `effectsize` reports negative values as 0, so the rwf values are
 truncated at 0 before the comparison with `effectsize`.
 
-``` r
-
-check_aov_es <- function(model, ss) {
-  rwf <- compute_aov_es(model = model, ss = ss)
-  rwf <- rwf[!is.na(rwf$etasq), ]
-  table <- if (ss == "I") model else car::Anova(model, type = ss)
-  effectsize_value <- function(fun, ...) {
-    values <- as.data.frame(suppressMessages(suppressWarnings(fun(table, ci = NULL, ...))))
-    values[match(rwf$comparisons, values$Parameter), 2]
-  }
-  sjstats_table <- as.data.frame(suppressMessages(suppressWarnings(sjstats::anova_stats(table, digits = 22))))
-  sjstats_table <- sjstats_table[match(rwf$comparisons, sjstats_table$term), ]
-  data.frame(term = rwf$comparisons,
-             etasq_effectsize = rwf$etasq - effectsize_value(effectsize::eta_squared, partial = FALSE),
-             partial_etasq_effectsize = rwf$partial_etasq - effectsize_value(effectsize::eta_squared, partial = TRUE),
-             omegasq_effectsize = pmax(0, rwf$omegasq) - effectsize_value(effectsize::omega_squared, partial = FALSE),
-             partial_omegasq_effectsize = pmax(0, rwf$partial_omegasq) - effectsize_value(effectsize::omega_squared, partial = TRUE),
-             epsilonsq_effectsize = pmax(0, rwf$epsilonsq) - effectsize_value(effectsize::epsilon_squared, partial = FALSE),
-             cohens_f_effectsize = rwf$cohens_f - effectsize_value(effectsize::cohens_f, partial = TRUE),
-             etasq_sjstats = rwf$etasq - sjstats_table$etasq,
-             partial_etasq_sjstats = rwf$partial_etasq - sjstats_table$partial.etasq,
-             omegasq_sjstats = rwf$omegasq - sjstats_table$omegasq,
-             partial_omegasq_sjstats = rwf$partial_omegasq - sjstats_table$partial.omegasq,
-             epsilonsq_sjstats = rwf$epsilonsq - sjstats_table$epsilonsq,
-             cohens_f_sjstats = rwf$cohens_f - sjstats_table$cohens.f,
-             row.names = NULL)
-}
-check_aov_es(model = model_cars, ss = "III")
-```
+`check_aov_es`` ``<-`` ``function``(``model``, ``ss``)`` ``{`` `` ``rwf`` ``<-`` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model``, ss ``=`` ``ss``)`` `` ``rwf`` ``<-`` ``rwf``[``!`[`is.na`](https://rdrr.io/r/base/NA.html)`(``rwf``$``etasq``)``, ``]`` `` ``table`` ``<-`` ``if`` ``(``ss`` ``==`` ``"I"``)`` ``model`` ``else`` ``car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``model``, type ``=`` ``ss``)`` `` ``effectsize_value`` ``<-`` ``function``(``fun``, ``...``)`` ``{`` `` ``values`` ``<-`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(`[`suppressMessages`](https://rdrr.io/r/base/message.html)`(`[`suppressWarnings`](https://rdrr.io/r/base/warning.html)`(``fun``(``table``, ci ``=`` ``NULL``, ``...``)``)``)``)`` `` ``values``[`[`match`](https://rdrr.io/r/base/match.html)`(``rwf``$``comparisons``, ``values``$``Parameter``)``, ``2``]`` `` ``}`` `` ``sjstats_table`` ``<-`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(`[`suppressMessages`](https://rdrr.io/r/base/message.html)`(`[`suppressWarnings`](https://rdrr.io/r/base/warning.html)`(``sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``table``, digits ``=`` ``22``)``)``)``)`` `` ``sjstats_table`` ``<-`` ``sjstats_table``[`[`match`](https://rdrr.io/r/base/match.html)`(``rwf``$``comparisons``, ``sjstats_table``$``term``)``, ``]`` `` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``term ``=`` ``rwf``$``comparisons``,`` `` etasq_effectsize ``=`` ``rwf``$``etasq`` ``-`` ``effectsize_value``(``effectsize``::`[`eta_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`, partial ``=`` ``FALSE``)``,`` `` partial_etasq_effectsize ``=`` ``rwf``$``partial_etasq`` ``-`` ``effectsize_value``(``effectsize``::`[`eta_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`, partial ``=`` ``TRUE``)``,`` `` omegasq_effectsize ``=`` `[`pmax`](https://rdrr.io/r/base/Extremes.html)`(``0``, ``rwf``$``omegasq``)`` ``-`` ``effectsize_value``(``effectsize``::`[`omega_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`, partial ``=`` ``FALSE``)``,`` `` partial_omegasq_effectsize ``=`` `[`pmax`](https://rdrr.io/r/base/Extremes.html)`(``0``, ``rwf``$``partial_omegasq``)`` ``-`` ``effectsize_value``(``effectsize``::`[`omega_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`, partial ``=`` ``TRUE``)``,`` `` epsilonsq_effectsize ``=`` `[`pmax`](https://rdrr.io/r/base/Extremes.html)`(``0``, ``rwf``$``epsilonsq``)`` ``-`` ``effectsize_value``(``effectsize``::`[`epsilon_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`, partial ``=`` ``FALSE``)``,`` `` cohens_f_effectsize ``=`` ``rwf``$``cohens_f`` ``-`` ``effectsize_value``(``effectsize``::`[`cohens_f`](https://easystats.github.io/effectsize/reference/eta_squared.html)`, partial ``=`` ``TRUE``)``,`` `` etasq_sjstats ``=`` ``rwf``$``etasq`` ``-`` ``sjstats_table``$``etasq``,`` `` partial_etasq_sjstats ``=`` ``rwf``$``partial_etasq`` ``-`` ``sjstats_table``$``partial.etasq``,`` `` omegasq_sjstats ``=`` ``rwf``$``omegasq`` ``-`` ``sjstats_table``$``omegasq``,`` `` partial_omegasq_sjstats ``=`` ``rwf``$``partial_omegasq`` ``-`` ``sjstats_table``$``partial.omegasq``,`` `` epsilonsq_sjstats ``=`` ``rwf``$``epsilonsq`` ``-`` ``sjstats_table``$``epsilonsq``,`` `` cohens_f_sjstats ``=`` ``rwf``$``cohens_f`` ``-`` ``sjstats_table``$``cohens.f``,`` `` row.names ``=`` ``NULL``)`` ``}`` ``check_aov_es``(``model ``=`` ``model_cars``, ss ``=`` ``"III"``)`
 
     ##     term etasq_effectsize partial_etasq_effectsize omegasq_effectsize partial_omegasq_effectsize epsilonsq_effectsize cohens_f_effectsize etasq_sjstats partial_etasq_sjstats omegasq_sjstats
     ## 1    cyl                0                        0                  0                          0                    0                   0             0                     0               0
@@ -648,23 +511,7 @@ The same check on five models, balanced and unbalanced, with one to four
 terms, for all three types of sums of squares. `max_abs_difference` is
 the largest absolute difference across all the comparisons and terms:
 
-``` r
-
-models <- list(
-  "len ~ supp * dose" = model_tooth,
-  "mpg ~ cyl * am" = model_cars,
-  "breaks ~ wool * tension" = stats::aov(breaks ~ wool * tension, data = warpbreaks),
-  "yield ~ block + N * P + K" = stats::aov(yield ~ block + N * P + K, data = npk),
-  "weight ~ feed" = stats::aov(weight ~ feed, data = chickwts)
-)
-do.call(rbind, lapply(names(models), function(name) {
-  do.call(rbind, lapply(c("I", "II", "III"), function(ss) {
-    check <- check_aov_es(model = models[[name]], ss = ss)
-    data.frame(model = name, ss = ss, terms = nrow(check),
-               max_abs_difference = max(abs(as.matrix(check[, -1]))))
-  }))
-}))
-```
+`models`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`` `` ``"len ~ supp * dose"`` ``=`` ``model_tooth``,`` `` ``"mpg ~ cyl * am"`` ``=`` ``model_cars``,`` `` ``"breaks ~ wool * tension"`` ``=`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``breaks`` ``~`` ``wool`` ``*`` ``tension``, data ``=`` ``warpbreaks``)``,`` `` ``"yield ~ block + N * P + K"`` ``=`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``yield`` ``~`` ``block`` ``+`` ``N`` ``*`` ``P`` ``+`` ``K``, data ``=`` ``npk``)``,`` `` ``"weight ~ feed"`` ``=`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``weight`` ``~`` ``feed``, data ``=`` ``chickwts``)`` ``)`` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`lapply`](https://rdrr.io/r/base/lapply.html)`(`[`names`](https://rdrr.io/r/base/names.html)`(``models``)``, ``function``(``name``)`` ``{`` `` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`lapply`](https://rdrr.io/r/base/lapply.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"I"``, ``"II"``, ``"III"``)``, ``function``(``ss``)`` ``{`` `` ``check`` ``<-`` ``check_aov_es``(``model ``=`` ``models``[[``name``]``]``, ss ``=`` ``ss``)`` `` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``model ``=`` ``name``, ss ``=`` ``ss``, terms ``=`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``check``)``,`` `` max_abs_difference ``=`` `[`max`](https://rdrr.io/r/base/Extremes.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(`[`as.matrix`](https://rdrr.io/r/base/matrix.html)`(``check``[``, ``-``1``]``)``)``)``)`` `` ``}``)``)`` ``}``)``)`
 
     ##                        model  ss terms max_abs_difference
     ## 1          len ~ supp * dose   I     3       0.000000e+00
@@ -676,12 +523,12 @@ do.call(rbind, lapply(names(models), function(name) {
     ## 7    breaks ~ wool * tension   I     3       0.000000e+00
     ## 8    breaks ~ wool * tension  II     3       0.000000e+00
     ## 9    breaks ~ wool * tension III     3       0.000000e+00
-    ## 10 yield ~ block + N * P + K   I     5       0.000000e+00
-    ## 11 yield ~ block + N * P + K  II     5       0.000000e+00
-    ## 12 yield ~ block + N * P + K III     5       0.000000e+00
+    ## 10 yield ~ block + N * P + K   I     5       5.551115e-17
+    ## 11 yield ~ block + N * P + K  II     5       1.110223e-16
+    ## 12 yield ~ block + N * P + K III     5       1.110223e-16
     ## 13             weight ~ feed   I     1       1.110223e-16
-    ## 14             weight ~ feed  II     1       0.000000e+00
-    ## 15             weight ~ feed III     1       0.000000e+00
+    ## 14             weight ~ feed  II     1       1.110223e-16
+    ## 15             weight ~ feed III     1       1.110223e-16
 
 ## Bias of eta-squared
 
@@ -689,15 +536,7 @@ In a 2 by 3 design with 5 observations per cell and **no** effects at
 all, the average \eta^2 and \eta^2_p are well above 0, while \omega^2,
 \omega^2_p and \varepsilon^2 are close to 0:
 
-``` r
-
-set.seed(1)
-null_effects <- do.call(rbind, replicate(1000, {
-  sim <- data.frame(a = factor(rep(1:2, each = 15)), b = factor(rep(1:3, times = 10)), y = rnorm(30))
-  compute_aov_es(model = stats::aov(y ~ a * b, data = sim))[1:3, c("comparisons", "etasq", "partial_etasq", "omegasq", "partial_omegasq", "epsilonsq")]
-}, simplify = FALSE))
-aggregate(cbind(etasq, partial_etasq, omegasq, partial_omegasq, epsilonsq) ~ comparisons, data = null_effects, FUN = mean)
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``null_effects`` ``<-`` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`replicate`](https://rdrr.io/r/base/lapply.html)`(``1000``, ``{`` `` ``sim`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``a ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(``1``:``2``, each ``=`` ``15``)``)``, b ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(``1``:``3``, times ``=`` ``10``)``)``, y ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``30``)``)`` `` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``y`` ``~`` ``a`` ``*`` ``b``, data ``=`` ``sim``)``)``[``1``:``3``, `[`c`](https://rdrr.io/r/base/c.html)`(``"comparisons"``, ``"etasq"``, ``"partial_etasq"``, ``"omegasq"``, ``"partial_omegasq"``, ``"epsilonsq"``)``]`` ``}``, simplify ``=`` ``FALSE``)``)`` `[`aggregate`](https://rdrr.io/r/stats/aggregate.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``etasq``, ``partial_etasq``, ``omegasq``, ``partial_omegasq``, ``epsilonsq``)`` ``~`` ``comparisons``, data ``=`` ``null_effects``, FUN ``=`` ``mean``)`
 
     ##   comparisons      etasq partial_etasq       omegasq partial_omegasq     epsilonsq
     ## 1           a 0.03466595    0.04014430  5.727781e-05    0.0005051266 -2.410846e-05
@@ -714,33 +553,21 @@ A factor of random labels explains less variance than expected by chance
 here (F\<1). rwf and `sjstats` return negative \omega^2, \omega^2_p and
 \varepsilon^2, while `effectsize` reports 0:
 
-``` r
-
-set.seed(5)
-tooth_noise <- transform(tooth, noise = factor(sample(c("a", "b"), nrow(tooth), replace = TRUE)))
-model_noise <- stats::aov(len ~ dose + noise, data = tooth_noise)
-compute_aov_es(model = model_noise)[, c("comparisons", "F value", "omegasq", "partial_omegasq", "epsilonsq")]
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``5``)`` ``tooth_noise`` ``<-`` `[`transform`](https://rdrr.io/r/base/transform.html)`(``tooth``, noise ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`sample`](https://rdrr.io/r/base/sample.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"a"``, ``"b"``)``, `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``tooth``)``, replace ``=`` ``TRUE``)``)``)`` ``model_noise`` ``<-`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``len`` ``~`` ``dose`` ``+`` ``noise``, data ``=`` ``tooth_noise``)`` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_noise``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"comparisons"``, ``"F value"``, ``"omegasq"``, ``"partial_omegasq"``, ``"epsilonsq"``)``]`
 
     ##   comparisons     F value     omegasq partial_omegasq    epsilonsq
     ## 1        dose 66.25825665  0.68860391      0.68506667  0.692256246
     ## 2       noise  0.02134975 -0.00516335     -0.01658129 -0.005190736
     ## 3   Residuals          NA          NA              NA           NA
 
-``` r
-
-as.data.frame(sjstats::anova_stats(model_noise, digits = 22))[, c("term", "omegasq", "partial.omegasq", "epsilonsq")]
-```
+[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(``sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``model_noise``, digits ``=`` ``22``)``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"term"``, ``"omegasq"``, ``"partial.omegasq"``, ``"epsilonsq"``)``]`
 
     ##            term     omegasq partial.omegasq    epsilonsq
     ## dose       dose  0.68860391      0.68506667  0.692256246
     ## noise     noise -0.00516335     -0.01658129 -0.005190736
     ## 1     Residuals          NA              NA           NA
 
-``` r
-
-effectsize::omega_squared(model_noise, partial = FALSE, ci = NULL)
-```
+`effectsize``::`[`omega_squared`](https://easystats.github.io/effectsize/reference/eta_squared.html)`(``model_noise``, partial ``=`` ``FALSE``, ci ``=`` ``NULL``)`
 
     ## # Effect Size for ANOVA (Type I)
     ## 
@@ -755,20 +582,11 @@ effectsize::omega_squared(model_noise, partial = FALSE, ci = NULL)
 before fitting, and `compute_aov_es` takes N from the rows the model
 used:
 
-``` r
-
-tooth_missing <- tooth
-tooth_missing$len[c(1, 31)] <- NA
-model_missing <- stats::aov(len ~ supp * dose, data = tooth_missing)
-nrow(stats::model.frame(model_missing))
-```
+`tooth_missing`` ``<-`` ``tooth`` ``tooth_missing``$``len``[`[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``31``)``]`` ``<-`` ``NA`` ``model_missing`` ``<-`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``len`` ``~`` ``supp`` ``*`` ``dose``, data ``=`` ``tooth_missing``)`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``stats``::`[`model.frame`](https://rdrr.io/r/stats/model.frame.html)`(``model_missing``)``)`
 
     ## [1] 58
 
-``` r
-
-check_aov_es(model = model_missing, ss = "II")
-```
+`check_aov_es``(``model ``=`` ``model_missing``, ss ``=`` ``"II"``)`
 
     ##        term etasq_effectsize partial_etasq_effectsize omegasq_effectsize partial_omegasq_effectsize epsilonsq_effectsize cohens_f_effectsize etasq_sjstats partial_etasq_sjstats omegasq_sjstats
     ## 1      supp                0                        0                  0                          0                    0                   0             0                     0               0
@@ -786,11 +604,7 @@ blocks, so it cannot be estimated. Type I sums of squares still work,
 but [`car::Anova`](https://rdrr.io/pkg/car/man/Anova.html) cannot
 compute Types II and III:
 
-``` r
-
-model_npk <- stats::aov(yield ~ block + N * P * K, data = npk)
-compute_aov_es(model = model_npk, ss = "I")[, c("comparisons", "Df", "Sum Sq", "etasq", "partial_etasq")]
-```
+`model_npk`` ``<-`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``yield`` ``~`` ``block`` ``+`` ``N`` ``*`` ``P`` ``*`` ``K``, data ``=`` ``npk``)`` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_npk``, ss ``=`` ``"I"``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"comparisons"``, ``"Df"``, ``"Sum Sq"``, ``"etasq"``, ``"partial_etasq"``)``]`
 
     ##   comparisons Df      Sum Sq        etasq partial_etasq
     ## 1       block  5 343.2950000 0.3917260502   0.649464447
@@ -802,10 +616,7 @@ compute_aov_es(model = model_npk, ss = "I")[, c("comparisons", "Df", "Sum Sq", "
     ## 7         P:K  1   0.4816667 0.0005496188   0.002592835
     ## 8   Residuals 12 185.2866667           NA            NA
 
-``` r
-
-tryCatch(compute_aov_es(model = model_npk, ss = "III"), error = conditionMessage)
-```
+[`tryCatch`](https://rdrr.io/r/base/conditions.html)`(`[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model ``=`` ``model_npk``, ss ``=`` ``"III"``)``, error ``=`` ``conditionMessage``)`
 
     ## [1] "there are aliased coefficients in the model"
 

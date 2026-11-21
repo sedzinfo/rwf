@@ -65,6 +65,7 @@ report_choric_serial(
 ``` r
 report_choric_serial(generate_data(min=0,max=1,type="uniform"),
               type="tetrachoric",file=file.path(tempdir(),"tetrachoric"))
+#> For i = 4 j = 3  A cell entry of 0 was replaced with correct =  0.5.  Check your data!
 #> Warning: Matrix was not positive definite, smoothing was done
 #> 
 

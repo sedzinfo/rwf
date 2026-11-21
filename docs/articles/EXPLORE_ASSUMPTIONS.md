@@ -22,15 +22,7 @@ right-skewed (exponential) and one with heavy tails (t distribution with
 3 degrees of freedom). Five missing values are added to the normal
 variable.
 
-``` r
-
-set.seed(1)
-df <- data.frame(normal = rnorm(300, mean = 50, sd = 10),
-                 skewed = rexp(300, rate = 0.1),
-                 heavy_tails = 50 + 10 * rt(300, df = 3))
-df$normal[sample(300, 5)] <- NA
-head(df)
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``df`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``normal ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``300``, mean ``=`` ``50``, sd ``=`` ``10``)``,`` `` skewed ``=`` `[`rexp`](https://rdrr.io/r/stats/Exponential.html)`(``300``, rate ``=`` ``0.1``)``,`` `` heavy_tails ``=`` ``50`` ``+`` ``10`` ``*`` `[`rt`](https://rdrr.io/r/stats/TDist.html)`(``300``, df ``=`` ``3``)``)`` ``df``$``normal``[`[`sample`](https://rdrr.io/r/base/sample.html)`(``300``, ``5``)``]`` ``<-`` ``NA`` `[`head`](https://rdrr.io/r/utils/head.html)`(``df``)`
 
     ##     normal     skewed heavy_tails
     ## 1       NA  6.2850350    33.31939
@@ -90,10 +82,7 @@ n\>10\end{cases}
 Points close to the line mean the data are close to normal; a curve
 means skew and an S shape means heavier or lighter tails than normal.
 
-``` r
-
-plot_normality_diagnostics(df = df, title = "Simulated data")
-```
+[`plot_normality_diagnostics`](https://sedzinfo.github.io/rwf/reference/plot_normality_diagnostics.md)`(``df ``=`` ``df``, title ``=`` ``"Simulated data"``)`
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_normality_diagnostics-1.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_normality_diagnostics-2.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_normality_diagnostics-3.png)
 
@@ -106,19 +95,13 @@ bins on the minimum and maximum, so the bin width is:
 
 w=\frac{x\_{(n)}-x\_{(1)}}{\text{bins}-1}
 
-``` r
-
-invisible(plot_multiplot(plotlist = plot_histogram(df = df, bins = 30), cols = 3))
-```
+[`invisible`](https://rdrr.io/r/base/invisible.html)`(`[`plot_multiplot`](https://sedzinfo.github.io/rwf/reference/plot_multiplot.md)`(``plotlist ``=`` `[`plot_histogram`](https://sedzinfo.github.io/rwf/reference/plot_histogram.md)`(``df ``=`` ``df``, bins ``=`` ``30``)``, cols ``=`` ``3``)``)`
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram-1.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram-2.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram-3.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram-4.png)
 
 `xlims` fixes the x-axis range, `fill` and `color` set the bar colours:
 
-``` r
-
-plot_histogram(df = df$skewed, bins = 20, xlims = c(0, 60), fill = "steelblue", color = "white")[[1]]
-```
+[`plot_histogram`](https://sedzinfo.github.io/rwf/reference/plot_histogram.md)`(``df ``=`` ``df``$``skewed``, bins ``=`` ``20``, xlims ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``60``)``, fill ``=`` ``"steelblue"``, color ``=`` ``"white"``)``[[``1``]``]`
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram_options-1.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram_options-2.png)
 
@@ -128,10 +111,7 @@ One `ggplot2` Q-Q plot per numeric variable, with the same plotting
 positions p_i and quartile reference line as in
 [plot_normality_diagnostics](#plot_normality_diagnostics).
 
-``` r
-
-invisible(plot_multiplot(plotlist = plot_qq(df = df[, c("skewed", "heavy_tails")]), cols = 2))
-```
+[`invisible`](https://rdrr.io/r/base/invisible.html)`(`[`plot_multiplot`](https://sedzinfo.github.io/rwf/reference/plot_multiplot.md)`(``plotlist ``=`` `[`plot_qq`](https://sedzinfo.github.io/rwf/reference/plot_qq.md)`(``df ``=`` ``df``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"skewed"``, ``"heavy_tails"``)``]``)``, cols ``=`` ``2``)``)`
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_qq-1.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_qq-2.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_qq-3.png)
 
@@ -147,10 +127,7 @@ extreme values inside the fences and values outside are drawn as points:
 
 \left\[Q_1-1.5\\IQR,\\ \\ Q_3+1.5\\IQR\right\]
 
-``` r
-
-plot_boxplot(df = df, title = "Simulated data")
-```
+[`plot_boxplot`](https://sedzinfo.github.io/rwf/reference/plot_boxplot.md)`(``df ``=`` ``df``, title ``=`` ``"Simulated data"``)`
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_boxplot-1.png)
 
@@ -162,10 +139,7 @@ values are skipped. Small p values mean the data deviate from normality;
 with large samples even small, unimportant deviations give small p
 values.
 
-``` r
-
-report_normality_tests(df = df)
-```
+[`report_normality_tests`](https://sedzinfo.github.io/rwf/reference/report_normality_tests.md)`(``df ``=`` ``df``)`
 
     ## [1] "##################################################"
     ## [1] "NORMALITY TESTS"
@@ -174,7 +148,7 @@ report_normality_tests(df = df)
     ## [1] "#########################"
     ##       variable   n    statistic df            p                                         method alternative n.classes
     ## 1       normal 295 9.972825e-01 NA 9.060430e-01                    Shapiro-Wilk normality test        <NA>        NA
-    ## 2       normal 295 2.718761e-01 NA 9.576420e-01       Anderson-Darling test of goodness-of-fit        <NA>        NA
+    ## 2       normal 295 2.718761e-01 NA 6.691560e-01                Anderson-Darling normality test        <NA>        NA
     ## 3       normal 295 5.050757e-02 NA 5.023404e-01                Cramer-von Mises normality test        <NA>        NA
     ## 4       normal 295 9.976499e-01 NA 9.079017e-01                 Shapiro-Francia normality test        <NA>        NA
     ## 5       normal 295 1.472553e-01  2 9.290176e-01                        Robust Jarque Bera Test        <NA>        NA
@@ -182,7 +156,7 @@ report_normality_tests(df = df)
     ## 7       normal 295 4.067779e-02 NA 7.134580e-01  Asymptotic one-sample Kolmogorov-Smirnov test   two-sided        NA
     ## 8       normal 295 1.530508e+01 17 5.735170e-01              Pearson chi-square normality test        <NA>        20
     ## 9       skewed 300 7.899850e-01 NA 2.287367e-19                    Shapiro-Wilk normality test        <NA>        NA
-    ## 10      skewed 300 1.589933e+01 NA 2.000000e-06       Anderson-Darling test of goodness-of-fit        <NA>        NA
+    ## 10      skewed 300 1.589933e+01 NA 3.700000e-24                Anderson-Darling normality test        <NA>        NA
     ## 11      skewed 300 2.660485e+00 NA 7.370000e-10                Cramer-von Mises normality test        <NA>        NA
     ## 12      skewed 300 7.886278e-01 NA 7.775158e-17                 Shapiro-Francia normality test        <NA>        NA
     ## 13      skewed 300 1.530339e+03  2 0.000000e+00                        Robust Jarque Bera Test        <NA>        NA
@@ -190,10 +164,10 @@ report_normality_tests(df = df)
     ## 15      skewed 300 1.749833e-01 NA 2.100843e-08  Asymptotic one-sample Kolmogorov-Smirnov test   two-sided        NA
     ## 16      skewed 300 1.869333e+02 17 1.192809e-30              Pearson chi-square normality test        <NA>        20
     ## 17 heavy_tails 300 9.740061e-01 NA 2.937593e-05                    Shapiro-Wilk normality test        <NA>        NA
-    ## 18 heavy_tails 300 1.994873e+00 NA 9.247587e-02       Anderson-Darling test of goodness-of-fit        <NA>        NA
+    ## 18 heavy_tails 300 1.994873e+00 NA 4.321204e-05                Anderson-Darling normality test        <NA>        NA
     ## 19 heavy_tails 300 3.432478e-01 NA 1.067328e-04                Cramer-von Mises normality test        <NA>        NA
     ## 20 heavy_tails 300 9.711620e-01 NA 2.863242e-05                 Shapiro-Francia normality test        <NA>        NA
-    ## 21 heavy_tails 300 8.216889e+01  2 0.000000e+00                        Robust Jarque Bera Test        <NA>        NA
+    ## 21 heavy_tails 300 8.216889e+01  2 1.436324e-18                        Robust Jarque Bera Test        <NA>        NA
     ## 22 heavy_tails 300 7.338292e-02 NA 5.103346e-04 Lilliefors (Kolmogorov-Smirnov) normality test        <NA>        NA
     ## 23 heavy_tails 300 7.338292e-02 NA 7.902856e-02  Asymptotic one-sample Kolmogorov-Smirnov test   two-sided        NA
     ## 24 heavy_tails 300 3.453333e+01 17 7.160032e-03              Pearson chi-square normality test        <NA>        20
@@ -320,14 +294,7 @@ mean and SD are pulled towards outliers themselves, so the median and
 boxplot rules are more robust. The plots below apply the three rules to
 the first 100 cases of the skewed variable.
 
-``` r
-
-skewed <- df$skewed[1:100]
-invisible(plot_multiplot(plotlist = c(plot_outlier(df = skewed, method = "mean", title = "mean"),
-                                      plot_outlier(df = skewed, method = "median", title = "median"),
-                                      plot_outlier(df = skewed, method = "boxplot", title = "boxplot")),
-                         cols = 3))
-```
+`skewed`` ``<-`` ``df``$``skewed``[``1``:``100``]`` `[`invisible`](https://rdrr.io/r/base/invisible.html)`(`[`plot_multiplot`](https://sedzinfo.github.io/rwf/reference/plot_multiplot.md)`(``plotlist ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`plot_outlier`](https://sedzinfo.github.io/rwf/reference/plot_outlier.md)`(``df ``=`` ``skewed``, method ``=`` ``"mean"``, title ``=`` ``"mean"``)``,`` `` `[`plot_outlier`](https://sedzinfo.github.io/rwf/reference/plot_outlier.md)`(``df ``=`` ``skewed``, method ``=`` ``"median"``, title ``=`` ``"median"``)``,`` `` `[`plot_outlier`](https://sedzinfo.github.io/rwf/reference/plot_outlier.md)`(``df ``=`` ``skewed``, method ``=`` ``"boxplot"``, title ``=`` ``"boxplot"``)``)``,`` `` cols ``=`` ``3``)``)`
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_outlier-1.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_outlier-2.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_outlier-3.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_outlier-4.png)
 
@@ -343,10 +310,7 @@ For normal data about 100\cdot2\left(1-\Phi(c)\right) percent are
 expected: 5%, 1% and 0.1%. Clearly larger percentages point to heavy
 tails or outliers (Tabachnick & Fidell, 2013).
 
-``` r
-
-data.frame(t(sapply(df, outlier_summary)))
-```
+[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`t`](https://rdrr.io/r/base/t.html)`(`[`sapply`](https://rdrr.io/r/base/lapply.html)`(``df``, ``outlier_summary``)``)``)`
 
     ##             abs_z_1.96 abs_z_2.58 abs_z_3.29
     ## normal          5.76 %     0.68 %        0 %
@@ -363,12 +327,7 @@ x_i\>Q\_{p_2}+1.5\\IQR\\ x_i & \text{otherwise}\end{cases}
 IQR is always Q\_{0.75}-Q\_{0.25}, whatever `probs` is; with the default
 `probs = c(0.25, 0.75)` these are the boxplot fences (Tukey, 1977).
 
-``` r
-
-cleaned <- data.frame(sapply(df, remove_outliers))
-data.frame(missing_before = colSums(is.na(df)),
-           missing_after = colSums(is.na(cleaned)))
-```
+`cleaned`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`sapply`](https://rdrr.io/r/base/lapply.html)`(``df``, ``remove_outliers``)``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``missing_before ``=`` `[`colSums`](https://rdrr.io/r/base/colSums.html)`(`[`is.na`](https://rdrr.io/r/base/NA.html)`(``df``)``)``,`` `` missing_after ``=`` `[`colSums`](https://rdrr.io/r/base/colSums.html)`(`[`is.na`](https://rdrr.io/r/base/NA.html)`(``cleaned``)``)``)`
 
     ##             missing_before missing_after
     ## normal                   5             7

@@ -50,9 +50,9 @@
     <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
-    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -634,7 +634,7 @@ in the same way before the comparison.</p>
 <span><span class="co">## 2          H               coin::kruskal_test 1.956442e+01 1.956442e+01 1.776357e-14</span></span>
 <span><span class="co">## 3         df              stats::kruskal.test 2.000000e+00 2.000000e+00 0.000000e+00</span></span>
 <span><span class="co">## 4          p              stats::kruskal.test 5.644699e-05 5.644699e-05 0.000000e+00</span></span>
-<span><span class="co">## 5  epsilonsq                      lm on ranks 1.644069e-01 1.644069e-01 1.665335e-16</span></span>
+<span><span class="co">## 5  epsilonsq                      lm on ranks 1.644069e-01 1.644069e-01 3.053113e-16</span></span>
 <span><span class="co">## 6  epsilonsq       rcompanion::epsilonSquared 1.644069e-01 1.644069e-01 1.110223e-16</span></span>
 <span><span class="co">## 7  epsilonsq         rstatix::kruskal_effsize 1.644069e-01 1.644069e-01 0.000000e+00</span></span>
 <span><span class="co">## 8  epsilonsq effectsize::rank_epsilon_squared 1.644069e-01 1.644069e-01 0.000000e+00</span></span>
@@ -666,10 +666,10 @@ dataset:</p>
 <span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##              formula   n k         H     etasq epsilonsq max_abs_difference</span></span>
 <span><span class="co">## 1 bp_before ~ agegrp 120 3 19.564417 0.1501232 0.1644069       1.776357e-14</span></span>
-<span><span class="co">## 2         qsec ~ cyl  32 3 10.155158 0.2812123 0.3275857       5.329071e-15</span></span>
-<span><span class="co">## 3     weight ~ group  30 3  7.988229 0.2217862 0.2754562       1.421085e-14</span></span>
-<span><span class="co">## 4      count ~ spray  72 6 54.691345 0.7528992 0.7703006       2.220446e-16</span></span>
-<span><span class="co">## 5      weight ~ feed  71 6 37.342718 0.4975803 0.5334674       2.131628e-14</span></span>
+<span><span class="co">## 2         qsec ~ cyl  32 3 10.155158 0.2812123 0.3275857       1.776357e-15</span></span>
+<span><span class="co">## 3     weight ~ group  30 3  7.988229 0.2217862 0.2754562       1.598721e-14</span></span>
+<span><span class="co">## 4      count ~ spray  72 6 54.691345 0.7528992 0.7703006       7.105427e-15</span></span>
+<span><span class="co">## 5      weight ~ feed  71 6 37.342718 0.4975803 0.5334674       7.105427e-15</span></span>
 <span><span class="co">## 6         len ~ dose  60 3 40.668935 0.6784024 0.6893040       7.105427e-15</span></span></code></pre>
 </div>
 </div>
@@ -827,7 +827,7 @@ missing here, and both functions use the remaining 118 rows:</p>
 <code class="sourceCode R"><span><span class="fu">check_kruskal_wallis</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">form</span>, df <span class="op">=</span> <span class="va">df_missing</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    statistic                          package          rwf        other    difference</span></span>
 <span><span class="co">## 1          H              stats::kruskal.test 1.780663e+01 1.780663e+01  0.000000e+00</span></span>
-<span><span class="co">## 2          H               coin::kruskal_test 1.780663e+01 1.780663e+01 -7.105427e-15</span></span>
+<span><span class="co">## 2          H               coin::kruskal_test 1.780663e+01 1.780663e+01  1.421085e-14</span></span>
 <span><span class="co">## 3         df              stats::kruskal.test 2.000000e+00 2.000000e+00  0.000000e+00</span></span>
 <span><span class="co">## 4          p              stats::kruskal.test 1.359376e-04 1.359376e-04  0.000000e+00</span></span>
 <span><span class="co">## 5  epsilonsq                      lm on ranks 1.521934e-01 1.521934e-01  1.110223e-16</span></span>

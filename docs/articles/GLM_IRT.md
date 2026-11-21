@@ -66,19 +66,7 @@ respectively, from known generating parameters — useful for confirming
 that a fitted model recovers the properties actually built into the
 simulation.
 
-``` r
-
-set.seed(12345)
-cormatrix_normal <- psych::sim.rasch(nvar = 5, n = 5000, low = -4, high = 4, d = NULL, a = 1, mu = 0, sd = 1)$items
-cormatrix_easy    <- psych::sim.rasch(nvar = 5, n = 5000, low = -6, high = -4, d = NULL, a = 1, mu = 0, sd = 1)$items
-cormatrix_hard    <- psych::sim.rasch(nvar = 5, n = 5000, low = 4, high = 6, d = NULL, a = 1, mu = 0, sd = 1)$items
-cormatrix_lowdisc <- psych::sim.rasch(nvar = 5, n = 5000, low = -4, high = -4, d = NULL, a = 0.01, mu = 0, sd = 1)$items
-
-model_normal  <- mirt::mirt(cormatrix_normal, 1, empiricalhist = TRUE, calcNull = TRUE)
-model_easy    <- mirt::mirt(cormatrix_easy, 1, empiricalhist = TRUE, calcNull = TRUE)
-model_hard    <- mirt::mirt(cormatrix_hard, 1, empiricalhist = TRUE, calcNull = TRUE)
-model_lowdisc <- mirt::mirt(cormatrix_lowdisc, 1, empiricalhist = TRUE, calcNull = TRUE)
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``12345``)`` ``cormatrix_normal`` ``<-`` ``psych``::`[`sim.rasch`](https://rdrr.io/pkg/psych/man/sim.irt.html)`(``nvar ``=`` ``5``, n ``=`` ``5000``, low ``=`` ``-``4``, high ``=`` ``4``, d ``=`` ``NULL``, a ``=`` ``1``, mu ``=`` ``0``, sd ``=`` ``1``)``$``items`` ``cormatrix_easy`` ``<-`` ``psych``::`[`sim.rasch`](https://rdrr.io/pkg/psych/man/sim.irt.html)`(``nvar ``=`` ``5``, n ``=`` ``5000``, low ``=`` ``-``6``, high ``=`` ``-``4``, d ``=`` ``NULL``, a ``=`` ``1``, mu ``=`` ``0``, sd ``=`` ``1``)``$``items`` ``cormatrix_hard`` ``<-`` ``psych``::`[`sim.rasch`](https://rdrr.io/pkg/psych/man/sim.irt.html)`(``nvar ``=`` ``5``, n ``=`` ``5000``, low ``=`` ``4``, high ``=`` ``6``, d ``=`` ``NULL``, a ``=`` ``1``, mu ``=`` ``0``, sd ``=`` ``1``)``$``items`` ``cormatrix_lowdisc`` ``<-`` ``psych``::`[`sim.rasch`](https://rdrr.io/pkg/psych/man/sim.irt.html)`(``nvar ``=`` ``5``, n ``=`` ``5000``, low ``=`` ``-``4``, high ``=`` ``-``4``, d ``=`` ``NULL``, a ``=`` ``0.01``, mu ``=`` ``0``, sd ``=`` ``1``)``$``items`` `` ``model_normal`` ``<-`` ``mirt``::`[`mirt`](https://philchalmers.github.io/mirt/reference/mirt.html)`(``cormatrix_normal``, ``1``, empiricalhist ``=`` ``TRUE``, calcNull ``=`` ``TRUE``)`` ``model_easy`` ``<-`` ``mirt``::`[`mirt`](https://philchalmers.github.io/mirt/reference/mirt.html)`(``cormatrix_easy``, ``1``, empiricalhist ``=`` ``TRUE``, calcNull ``=`` ``TRUE``)`` ``model_hard`` ``<-`` ``mirt``::`[`mirt`](https://philchalmers.github.io/mirt/reference/mirt.html)`(``cormatrix_hard``, ``1``, empiricalhist ``=`` ``TRUE``, calcNull ``=`` ``TRUE``)`` ``model_lowdisc`` ``<-`` ``mirt``::`[`mirt`](https://philchalmers.github.io/mirt/reference/mirt.html)`(``cormatrix_lowdisc``, ``1``, empiricalhist ``=`` ``TRUE``, calcNull ``=`` ``TRUE``)`
 
 ## Test Information and Expected Score Plots
 
@@ -88,10 +76,7 @@ total score curve, all against \theta.
 
 ### A normally-targeted item bank
 
-``` r
-
-plot_irt_onefactor(model = model_normal, base_size = 10, title = "Normal Test")
-```
+[`plot_irt_onefactor`](https://sedzinfo.github.io/rwf/reference/plot_irt_onefactor.md)`(``model ``=`` ``model_normal``, base_size ``=`` ``10``, title ``=`` ``"Normal Test"``)`
 
 ![](GLM_IRT_files/figure-html/plot_normal-1.png)
 
@@ -101,10 +86,7 @@ most precisely.
 
 ### Items that are too easy
 
-``` r
-
-plot_irt_onefactor(model = model_easy, base_size = 10, title = "Easy Items")
-```
+[`plot_irt_onefactor`](https://sedzinfo.github.io/rwf/reference/plot_irt_onefactor.md)`(``model ``=`` ``model_easy``, base_size ``=`` ``10``, title ``=`` ``"Easy Items"``)`
 
 ![](GLM_IRT_files/figure-html/plot_easy-1.png)
 
@@ -115,10 +97,7 @@ range answers correctly.
 
 ### Items that are too hard
 
-``` r
-
-plot_irt_onefactor(model = model_hard, base_size = 10, title = "Difficult Items")
-```
+[`plot_irt_onefactor`](https://sedzinfo.github.io/rwf/reference/plot_irt_onefactor.md)`(``model ``=`` ``model_hard``, base_size ``=`` ``10``, title ``=`` ``"Difficult Items"``)`
 
 ![](GLM_IRT_files/figure-html/plot_hard-1.png)
 
@@ -128,10 +107,7 @@ average-ability examinees.
 
 ### Low discrimination
 
-``` r
-
-plot_irt_onefactor(model = model_lowdisc, base_size = 10, title = "Low Discrimination")
-```
+[`plot_irt_onefactor`](https://sedzinfo.github.io/rwf/reference/plot_irt_onefactor.md)`(``model ``=`` ``model_lowdisc``, base_size ``=`` ``10``, title ``=`` ``"Low Discrimination"``)`
 
 ![](GLM_IRT_files/figure-html/plot_lowdisc-1.png)
 
@@ -141,13 +117,7 @@ low-ability examinees at all, regardless of where they’re targeted.
 
 ### Graded response (polytomous) items
 
-``` r
-
-cormatrix_graded <- psych::sim.poly(nvar = 5, n = 5000, low = -4, high = 4, a = 1, c = 0, z = 1, d = NULL,
-                                     mu = 0, sd = 1, cat = 5, mod = "logistic", theta = NULL)$items
-model_graded <- mirt::mirt(cormatrix_graded, 1, itemtype = "graded")
-plot_irt_onefactor(model = model_graded, base_size = 10, title = "Graded Response")
-```
+`cormatrix_graded`` ``<-`` ``psych``::`[`sim.poly`](https://rdrr.io/pkg/psych/man/sim.irt.html)`(``nvar ``=`` ``5``, n ``=`` ``5000``, low ``=`` ``-``4``, high ``=`` ``4``, a ``=`` ``1``, c ``=`` ``0``, z ``=`` ``1``, d ``=`` ``NULL``,`` `` mu ``=`` ``0``, sd ``=`` ``1``, cat ``=`` ``5``, mod ``=`` ``"logistic"``, theta ``=`` ``NULL``)``$``items`` ``model_graded`` ``<-`` ``mirt``::`[`mirt`](https://philchalmers.github.io/mirt/reference/mirt.html)`(``cormatrix_graded``, ``1``, itemtype ``=`` ``"graded"``)`` `[`plot_irt_onefactor`](https://sedzinfo.github.io/rwf/reference/plot_irt_onefactor.md)`(``model ``=`` ``model_graded``, base_size ``=`` ``10``, title ``=`` ``"Graded Response"``)`
 
 ![](GLM_IRT_files/figure-html/plot_graded-1.png)
 
@@ -160,15 +130,9 @@ The same information/expected-score logic extends directly to ordinal
 item fit, and both relative (AIC/BIC/SABIC) and absolute (M2, RMSEA,
 CFI, TLI, SRMR) fit statistics into one report.
 
-``` r
+`result`` ``<-`` `[`report_irt`](https://sedzinfo.github.io/rwf/reference/report_irt.md)`(``model ``=`` ``model_normal``)`
 
-result <- report_irt(model = model_normal)
-```
-
-``` r
-
-result$model_coefficients
-```
+`result``$``model_coefficients`
 
     ##           a1           d g u
     ## V1 0.9780104  3.99223519 0 1
@@ -177,10 +141,7 @@ result$model_coefficients
     ## V4 0.8444014 -1.92714665 0 1
     ## V5 0.9006706 -3.88346798 0 1
 
-``` r
-
-result$q3_matrix
-```
+`result``$``q3_matrix`
 
     ##                V1           V2          V3          V4   V5         min           max
     ## V1             NA           NA          NA          NA   NA          NA            NA
@@ -191,10 +152,7 @@ result$q3_matrix
     ## min -0.0565901333 -0.125794388 -0.13620190 -0.02557768  Inf -0.13620190 -0.0565901333
     ## max  0.0004612702 -0.005053068 -0.06771623 -0.02557768 -Inf -0.05659013  0.0004612702
 
-``` r
-
-result$item_fit
-```
+`result``$``item_fit`
 
     ##   item  S_X2 df.S_X2 RMSEA.S_X2 p.S_X2
     ## 1   V1 2.689       1      0.018  0.101
@@ -203,10 +161,7 @@ result$item_fit
     ## 4   V4 1.316       2      0.000  0.518
     ## 5   V5 2.041       1      0.014  0.153
 
-``` r
-
-result$m2_fit
-```
+`result``$``m2_fit`
 
     ##          M2 df     p RMSEA RMSEA_5 RMSEA_95 SRMSR   TLI   CFI
     ## stats 5.596  5 0.348 0.005       0    0.021  0.01 0.995 0.998
@@ -224,27 +179,17 @@ result$m2_fit
 Comparing models with different numbers of factors illustrates how these
 statistics respond to model complexity:
 
-``` r
+`model_twofactor`` ``<-`` ``mirt``::`[`mirt`](https://philchalmers.github.io/mirt/reference/mirt.html)`(``cormatrix_normal``, ``2``, empiricalhist ``=`` ``TRUE``, calcNull ``=`` ``TRUE``)`` ``result_twofactor`` ``<-`` `[`report_irt`](https://sedzinfo.github.io/rwf/reference/report_irt.md)`(``model ``=`` ``model_twofactor``)`
 
-model_twofactor   <- mirt::mirt(cormatrix_normal, 2, empiricalhist = TRUE, calcNull = TRUE)
-result_twofactor  <- report_irt(model = model_twofactor)
-```
-
-``` r
-
-result$m2_fit
-```
+`result``$``m2_fit`
 
     ##          M2 df     p RMSEA RMSEA_5 RMSEA_95 SRMSR   TLI   CFI
     ## stats 5.596  5 0.348 0.005       0    0.021  0.01 0.995 0.998
 
-``` r
-
-result_twofactor$m2_fit
-```
+`result_twofactor``$``m2_fit`
 
     ##          M2 df     p RMSEA RMSEA_5 RMSEA_95 SRMSR   TLI CFI
-    ## stats 0.648  1 0.421     0       0    0.035 0.004 1.014   1
+    ## stats 0.625  1 0.429     0       0    0.034 0.004 1.014   1
 
 ------------------------------------------------------------------------
 

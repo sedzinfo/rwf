@@ -48,7 +48,8 @@ Iteration continues until the update is smaller than a tolerance (or a
 maximum iteration count is hit), and the final estimate is clamped to
 `lim_theta` to avoid runaway estimates for all-correct/all-incorrect
 patterns (a known weakness of ML estimation, discussed further in the
-[EAP vignette](https://sedzinfo.github.io/rwf/articles/EXAMPLE_EAP.rmd),
+[EAP
+vignette](https://sedzinfo.github.io/vignettes/cat_irt_eap/eap_dichotomous.html),
 which uses a Bayesian prior instead to avoid this failure mode
 entirely).
 
@@ -68,23 +69,7 @@ SE(\theta)=1/\sqrt{I(\theta)} — more information means a smaller
 
 ## The Item Response Function
 
-``` r
-
-x <- seq(-3, 3, by = 0.01)
-df_curves <- data.frame(
-  theta = x,
-  a5_b0  = compute_unidimensional_theta(a = 5, b = 0, theta = x),
-  a1_b0  = compute_unidimensional_theta(a = 1, b = 0, theta = x),
-  a10_b0 = compute_unidimensional_theta(a = 10, b = 0, theta = x),
-  a5_bm1 = compute_unidimensional_theta(a = 5, b = -1, theta = x),
-  a5_bp1 = compute_unidimensional_theta(a = 5, b = 1, theta = x)
-)
-df_long <- reshape2::melt(df_curves, id.vars = "theta", variable.name = "curve", value.name = "P")
-ggplot(df_long, aes(x = theta, y = P, color = curve)) +
-  geom_line(linewidth = 1) +
-  labs(title = "Effect of discrimination (a) and difficulty (b)", x = expression(theta), y = expression(P(theta))) +
-  theme_bw(base_size = 12)
-```
+`x`` ``<-`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``-``3``, ``3``, by ``=`` ``0.01``)`` ``df_curves`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` theta ``=`` ``x``,`` `` a5_b0 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``5``, b ``=`` ``0``, theta ``=`` ``x``)``,`` `` a1_b0 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``1``, b ``=`` ``0``, theta ``=`` ``x``)``,`` `` a10_b0 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``10``, b ``=`` ``0``, theta ``=`` ``x``)``,`` `` a5_bm1 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``5``, b ``=`` ``-``1``, theta ``=`` ``x``)``,`` `` a5_bp1 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``5``, b ``=`` ``1``, theta ``=`` ``x``)`` ``)`` ``df_long`` ``<-`` ``reshape2``::`[`melt`](https://rdrr.io/pkg/reshape2/man/melt.html)`(``df_curves``, id.vars ``=`` ``"theta"``, variable.name ``=`` ``"curve"``, value.name ``=`` ``"P"``)`` ``ggplot``(``df_long``, ``aes``(``x ``=`` ``theta``, y ``=`` ``P``, color ``=`` ``curve``)``)`` ``+`` `` ``geom_line``(``linewidth ``=`` ``1``)`` ``+`` `` ``labs``(``title ``=`` ``"Effect of discrimination (a) and difficulty (b)"``, x ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(``theta``)``, y ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(``P``(``theta``)``)``)`` ``+`` `` ``theme_bw``(``base_size ``=`` ``12``)`
 
 ![](GLM_IRT_U_files/figure-html/theta_curves-1.png)
 
@@ -93,20 +78,7 @@ Higher `a` produces a steeper curve (sharper discrimination around `b`);
 
 ### Checking the guessing parameter
 
-``` r
-
-df_guess <- data.frame(
-  theta = x,
-  g0.0 = compute_unidimensional_theta(a = 10, b = 0, g = 0, theta = x),
-  g0.1 = compute_unidimensional_theta(a = 10, b = 0, g = .1, theta = x),
-  g0.5 = compute_unidimensional_theta(a = 10, b = 0, g = .5, theta = x)
-)
-df_guess_long <- reshape2::melt(df_guess, id.vars = "theta", variable.name = "g", value.name = "P")
-ggplot(df_guess_long, aes(x = theta, y = P, color = g)) +
-  geom_line(linewidth = 1) +
-  labs(title = "Effect of guessing (g): raises the lower asymptote", x = expression(theta), y = expression(P(theta))) +
-  theme_bw(base_size = 12)
-```
+`df_guess`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` theta ``=`` ``x``,`` `` g0.0 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``10``, b ``=`` ``0``, g ``=`` ``0``, theta ``=`` ``x``)``,`` `` g0.1 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``10``, b ``=`` ``0``, g ``=`` ``.1``, theta ``=`` ``x``)``,`` `` g0.5 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``10``, b ``=`` ``0``, g ``=`` ``.5``, theta ``=`` ``x``)`` ``)`` ``df_guess_long`` ``<-`` ``reshape2``::`[`melt`](https://rdrr.io/pkg/reshape2/man/melt.html)`(``df_guess``, id.vars ``=`` ``"theta"``, variable.name ``=`` ``"g"``, value.name ``=`` ``"P"``)`` ``ggplot``(``df_guess_long``, ``aes``(``x ``=`` ``theta``, y ``=`` ``P``, color ``=`` ``g``)``)`` ``+`` `` ``geom_line``(``linewidth ``=`` ``1``)`` ``+`` `` ``labs``(``title ``=`` ``"Effect of guessing (g): raises the lower asymptote"``, x ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(``theta``)``, y ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(``P``(``theta``)``)``)`` ``+`` `` ``theme_bw``(``base_size ``=`` ``12``)`
 
 ![](GLM_IRT_U_files/figure-html/guessing_check-1.png)
 
@@ -121,15 +93,7 @@ The function signature also accepts an inattentiveness parameter `i`
 — but checking the source shows the function body never actually uses
 `i` in its formula. This is verifiable directly:
 
-``` r
-
-data.frame(
-  theta = x[1:5],
-  i_1.0 = compute_unidimensional_theta(a = 10, b = 0, g = 0, i = 1, theta = x[1:5]),
-  i_0.9 = compute_unidimensional_theta(a = 10, b = 0, g = 0, i = .9, theta = x[1:5]),
-  i_0.6 = compute_unidimensional_theta(a = 10, b = 0, g = 0, i = .6, theta = x[1:5])
-)
-```
+[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` theta ``=`` ``x``[``1``:``5``]``,`` `` i_1.0 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``10``, b ``=`` ``0``, g ``=`` ``0``, i ``=`` ``1``, theta ``=`` ``x``[``1``:``5``]``)``,`` `` i_0.9 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``10``, b ``=`` ``0``, g ``=`` ``0``, i ``=`` ``.9``, theta ``=`` ``x``[``1``:``5``]``)``,`` `` i_0.6 ``=`` `[`compute_unidimensional_theta`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_theta.md)`(``a ``=`` ``10``, b ``=`` ``0``, g ``=`` ``0``, i ``=`` ``.6``, theta ``=`` ``x``[``1``:``5``]``)`` ``)`
 
     ##   theta        i_1.0        i_0.9        i_0.6
     ## 1 -3.00 6.682266e-23 6.014039e-23 4.009360e-23
@@ -150,38 +114,17 @@ inside the function would need to become `renum <- i-g`.
 worked examples documented in its own roxygen block, each of which
 records the exact expected output:
 
-``` r
-
-a <- c(0.39, 0.45, 0.52, 0.3, 0.35, 0.43, 0.42, 0.44, 0.34, 0.42)
-b <- c(-1.96, -1.9, -1.38, -0.58, 0.48, -0.81, -0.35, 1.59, 1.33, 2.93)
-u <- c(1, 1, 1, 1, 0, 0, 1, 0, 1, 0)
-theta1 <- compute_unidimensional_ability(a = a, b = b, u = u, d = 1.7, g = NULL)
-c(estimated = theta1, expected = 0.48402574251176, match = isTRUE(all.equal(theta1, 0.48402574251176, tolerance = 1e-6)))
-```
+`a`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.39``, ``0.45``, ``0.52``, ``0.3``, ``0.35``, ``0.43``, ``0.42``, ``0.44``, ``0.34``, ``0.42``)`` ``b`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``-``1.96``, ``-``1.9``, ``-``1.38``, ``-``0.58``, ``0.48``, ``-``0.81``, ``-``0.35``, ``1.59``, ``1.33``, ``2.93``)`` ``u`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``1``, ``1``, ``1``, ``0``, ``0``, ``1``, ``0``, ``1``, ``0``)`` ``theta1`` ``<-`` `[`compute_unidimensional_ability`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_ability.md)`(``a ``=`` ``a``, b ``=`` ``b``, u ``=`` ``u``, d ``=`` ``1.7``, g ``=`` ``NULL``)`` `[`c`](https://rdrr.io/r/base/c.html)`(``estimated ``=`` ``theta1``, expected ``=`` ``0.48402574251176``, match ``=`` `[`isTRUE`](https://rdrr.io/r/base/Logic.html)`(`[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(``theta1``, ``0.48402574251176``, tolerance ``=`` ``1e-6``)``)``)`
 
     ## estimated  expected     match 
     ## 0.4840150 0.4840257 0.0000000
 
-``` r
-
-a <- c(1.27, 0.9, 0.94, 0.95, 0.55, 0.6, 0.44, 0.4)
-b <- c(-0.54, 0.18, 0.21, 1.26, 1.73, -0.87, 1.72, 2.67)
-u <- c(1, 1, 1, 1, 0, 0, 0, 0)
-theta2 <- compute_unidimensional_ability(a = a, b = b, u = u, d = 1.7, g = NULL)
-c(estimated = theta2, expected = 1.04621621510192, match = isTRUE(all.equal(theta2, 1.04621621510192, tolerance = 1e-6)))
-```
+`a`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``1.27``, ``0.9``, ``0.94``, ``0.95``, ``0.55``, ``0.6``, ``0.44``, ``0.4``)`` ``b`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``-``0.54``, ``0.18``, ``0.21``, ``1.26``, ``1.73``, ``-``0.87``, ``1.72``, ``2.67``)`` ``u`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``1``, ``1``, ``1``, ``0``, ``0``, ``0``, ``0``)`` ``theta2`` ``<-`` `[`compute_unidimensional_ability`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_ability.md)`(``a ``=`` ``a``, b ``=`` ``b``, u ``=`` ``u``, d ``=`` ``1.7``, g ``=`` ``NULL``)`` `[`c`](https://rdrr.io/r/base/c.html)`(``estimated ``=`` ``theta2``, expected ``=`` ``1.04621621510192``, match ``=`` `[`isTRUE`](https://rdrr.io/r/base/Logic.html)`(`[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(``theta2``, ``1.04621621510192``, tolerance ``=`` ``1e-6``)``)``)`
 
     ## estimated  expected     match 
     ##  1.046215  1.046216  1.000000
 
-``` r
-
-a <- c(0.41, 0.32, 0.33, 1.2, 0.63, 0.62, 0.7, 0.61, 0.38, 0.53, 0.6, 1.16)
-b <- c(-1.4, -1.3, -1.17, 0.2, 0.71, 0.86, -0.12, 0.12, 2.06, 1.38, 1.18, -0.33)
-u <- c(1, 0, 1, 1, 0, 0, 0, 1, 1, 0, 1, 0)
-theta3 <- compute_unidimensional_ability(a = a, b = b, u = u, d = 1.7, g = NULL)
-c(estimated = theta3, expected = 0.0860506282671103, match = isTRUE(all.equal(theta3, 0.0860506282671103, tolerance = 1e-6)))
-```
+`a`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.41``, ``0.32``, ``0.33``, ``1.2``, ``0.63``, ``0.62``, ``0.7``, ``0.61``, ``0.38``, ``0.53``, ``0.6``, ``1.16``)`` ``b`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``-``1.4``, ``-``1.3``, ``-``1.17``, ``0.2``, ``0.71``, ``0.86``, ``-``0.12``, ``0.12``, ``2.06``, ``1.38``, ``1.18``, ``-``0.33``)`` ``u`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``0``, ``1``, ``1``, ``0``, ``0``, ``0``, ``1``, ``1``, ``0``, ``1``, ``0``)`` ``theta3`` ``<-`` `[`compute_unidimensional_ability`](https://sedzinfo.github.io/rwf/reference/compute_unidimensional_ability.md)`(``a ``=`` ``a``, b ``=`` ``b``, u ``=`` ``u``, d ``=`` ``1.7``, g ``=`` ``NULL``)`` `[`c`](https://rdrr.io/r/base/c.html)`(``estimated ``=`` ``theta3``, expected ``=`` ``0.0860506282671103``, match ``=`` `[`isTRUE`](https://rdrr.io/r/base/Logic.html)`(`[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(``theta3``, ``0.0860506282671103``, tolerance ``=`` ``1e-6``)``)``)`
 
     ##  estimated   expected      match 
     ## 0.08614538 0.08605063 0.00000000
@@ -192,24 +135,7 @@ patterns.
 
 ## Item and Test Information
 
-``` r
-
-theta_grid <- seq(-6, 6, by = 0.01)
-df_info <- data.frame(
-  theta = theta_grid,
-  `1PL` = compute_info_1pl(b = 1, theta = theta_grid),
-  `2PL (a=1)` = compute_info_2pl(a = 1, b = -2, theta = theta_grid),
-  `2PL (a=2)` = compute_info_2pl(a = 2, b = 0, theta = theta_grid),
-  `2PL (a=3)` = compute_info_2pl(a = 3, b = 2, theta = theta_grid),
-  `3PL (g=0.2)` = compute_info_3pl(a = 1.5, b = 1, g = .2, theta = theta_grid),
-  check.names = FALSE
-)
-df_info_long <- reshape2::melt(df_info, id.vars = "theta", variable.name = "model", value.name = "information")
-ggplot(df_info_long, aes(x = theta, y = information, color = model)) +
-  geom_line(linewidth = 1) +
-  labs(title = "Item information by model and parameters", x = expression(theta), y = "Information") +
-  theme_bw(base_size = 12)
-```
+`theta_grid`` ``<-`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``-``6``, ``6``, by ``=`` ``0.01``)`` ``df_info`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` theta ``=`` ``theta_grid``,`` ```  `1PL`  ```=`` `[`compute_info_1pl`](https://sedzinfo.github.io/rwf/reference/compute_info_1pl.md)`(``b ``=`` ``1``, theta ``=`` ``theta_grid``)``,`` ```  `2PL (a=1)`  ```=`` `[`compute_info_2pl`](https://sedzinfo.github.io/rwf/reference/compute_info_2pl.md)`(``a ``=`` ``1``, b ``=`` ``-``2``, theta ``=`` ``theta_grid``)``,`` ```  `2PL (a=2)`  ```=`` `[`compute_info_2pl`](https://sedzinfo.github.io/rwf/reference/compute_info_2pl.md)`(``a ``=`` ``2``, b ``=`` ``0``, theta ``=`` ``theta_grid``)``,`` ```  `2PL (a=3)`  ```=`` `[`compute_info_2pl`](https://sedzinfo.github.io/rwf/reference/compute_info_2pl.md)`(``a ``=`` ``3``, b ``=`` ``2``, theta ``=`` ``theta_grid``)``,`` ```  `3PL (g=0.2)`  ```=`` `[`compute_info_3pl`](https://sedzinfo.github.io/rwf/reference/compute_info_3pl.md)`(``a ``=`` ``1.5``, b ``=`` ``1``, g ``=`` ``.2``, theta ``=`` ``theta_grid``)``,`` `` check.names ``=`` ``FALSE`` ``)`` ``df_info_long`` ``<-`` ``reshape2``::`[`melt`](https://rdrr.io/pkg/reshape2/man/melt.html)`(``df_info``, id.vars ``=`` ``"theta"``, variable.name ``=`` ``"model"``, value.name ``=`` ``"information"``)`` ``ggplot``(``df_info_long``, ``aes``(``x ``=`` ``theta``, y ``=`` ``information``, color ``=`` ``model``)``)`` ``+`` `` ``geom_line``(``linewidth ``=`` ``1``)`` ``+`` `` ``labs``(``title ``=`` ``"Item information by model and parameters"``, x ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(``theta``)``, y ``=`` ``"Information"``)`` ``+`` `` ``theme_bw``(``base_size ``=`` ``12``)`
 
 ![](GLM_IRT_U_files/figure-html/info_curves-1.png)
 
@@ -222,17 +148,7 @@ less diagnostic of low ability.
 
 ## Standard Error from Information
 
-``` r
-
-info_2pl <- compute_info_2pl(a = 1.5, b = 0, theta = theta_grid)
-df_se <- data.frame(theta = theta_grid, information = info_2pl, se = compute_se_theta(info_2pl))
-df_se_long <- reshape2::melt(df_se, id.vars = "theta", variable.name = "quantity", value.name = "value")
-ggplot(df_se_long, aes(x = theta, y = value, color = quantity)) +
-  geom_line(linewidth = 1) +
-  facet_wrap(~quantity, scales = "free_y", ncol = 1) +
-  labs(title = "Information and its corresponding SE", x = expression(theta), y = NULL) +
-  theme_bw(base_size = 12)
-```
+`info_2pl`` ``<-`` `[`compute_info_2pl`](https://sedzinfo.github.io/rwf/reference/compute_info_2pl.md)`(``a ``=`` ``1.5``, b ``=`` ``0``, theta ``=`` ``theta_grid``)`` ``df_se`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``theta ``=`` ``theta_grid``, information ``=`` ``info_2pl``, se ``=`` `[`compute_se_theta`](https://sedzinfo.github.io/rwf/reference/compute_se_theta.md)`(``info_2pl``)``)`` ``df_se_long`` ``<-`` ``reshape2``::`[`melt`](https://rdrr.io/pkg/reshape2/man/melt.html)`(``df_se``, id.vars ``=`` ``"theta"``, variable.name ``=`` ``"quantity"``, value.name ``=`` ``"value"``)`` ``ggplot``(``df_se_long``, ``aes``(``x ``=`` ``theta``, y ``=`` ``value``, color ``=`` ``quantity``)``)`` ``+`` `` ``geom_line``(``linewidth ``=`` ``1``)`` ``+`` `` ``facet_wrap``(``~``quantity``, scales ``=`` ``"free_y"``, ncol ``=`` ``1``)`` ``+`` `` ``labs``(``title ``=`` ``"Information and its corresponding SE"``, x ``=`` `[`expression`](https://rdrr.io/r/base/expression.html)`(``theta``)``, y ``=`` ``NULL``)`` ``+`` `` ``theme_bw``(``base_size ``=`` ``12``)`
 
 ![](GLM_IRT_U_files/figure-html/se_curve-1.png)
 

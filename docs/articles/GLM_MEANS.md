@@ -37,10 +37,7 @@ Format: A data frame with 1338 rows and 7 variables:
 
 Source: researchpy repo
 
-``` r
-
-head(df_insurance)
-```
+[`head`](https://rdrr.io/r/utils/head.html)`(``df_insurance``)`
 
     ##   age    sex    bmi children smoker    region   charges
     ## 1  19 female 27.900        0    yes southwest 16884.924
@@ -50,10 +47,7 @@ head(df_insurance)
     ## 5  32   male 28.880        0     no northwest  3866.855
     ## 6  31 female 25.740        0     no southeast  3756.622
 
-``` r
-
-cdf(df_insurance)
-```
+[`cdf`](https://sedzinfo.github.io/rwf/reference/cdf.md)`(``df_insurance``)`
 
     ## $summary
     ##   COLLUMNS ROWS TOTAL EMPTY null NAN na INF  FIN FACTOR
@@ -131,20 +125,14 @@ The calls below demonstrate the key options:
   variances; default (`FALSE`) uses Welch’s t-test which does not assume
   equal variances and is generally safer.
 
-``` r
-
-report_ttests(df=df_insurance,dv=7,iv=c(2))
-```
+[`report_ttests`](https://sedzinfo.github.io/rwf/reference/report_ttests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``)``)`
 
     ##        DV  IV level1 level2  n1  n2         t      df          p      CI_l      CI_u alternative                  method    mean1    mean2     sd1      sd2 sd_pooled         d          r
     ## 1 charges sex female   male 662 676 -2.100888 1313.36 0.03584101 -2682.489 -91.85535   two.sided Welch Two Sample t-test 12569.58 13956.75 11128.7 12971.03  12085.02 0.1147844 0.05733752
     ##   k_squared[bartlett] df[bartlett]  p[bartlett] bonferroni_p significant
     ## 1            15.58524            1 7.886777e-05         0.05        TRUE
 
-``` r
-
-report_ttests(df=df_insurance,dv=7,iv=c(4))
-```
+[`report_ttests`](https://sedzinfo.github.io/rwf/reference/report_ttests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``4``)``)`
 
     ##         DV       IV level1 level2  n1  n2          t        df            p       CI_l      CI_u alternative                  method    mean1     mean2       sd1       sd2 sd_pooled          d
     ## 1  charges children      0      1 574 324 -0.4417876 679.59012 6.587834e-01 -1988.2577 1257.8653   two.sided Welch Two Sample t-test 12365.98 12731.172 12023.294 11823.631 11923.881 0.03062730
@@ -179,10 +167,7 @@ report_ttests(df=df_insurance,dv=7,iv=c(4))
     ## 14 0.21480331          23.3775961            1 1.331200e-06  0.003333333        TRUE
     ## 15 0.34327189          12.2513375            1 4.649248e-04  0.003333333       FALSE
 
-``` r
-
-report_ttests(df=df_insurance,dv=7,iv=c(2,4))
-```
+[`report_ttests`](https://sedzinfo.github.io/rwf/reference/report_ttests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``4``)``)`
 
     ##         DV       IV level1 level2  n1  n2          t         df            p       CI_l       CI_u alternative                  method    mean1     mean2       sd1       sd2 sd_pooled          d
     ## 1  charges      sex female   male 662 676 -2.1008878 1313.36032 3.584101e-02 -2682.4893  -91.85535   two.sided Welch Two Sample t-test 12569.58 13956.751 11128.704 12971.026 12085.023 0.11478442
@@ -219,10 +204,7 @@ report_ttests(df=df_insurance,dv=7,iv=c(2,4))
     ## 15 0.21480331          23.3775961            1 1.331200e-06     0.003125        TRUE
     ## 16 0.34327189          12.2513375            1 4.649248e-04     0.003125       FALSE
 
-``` r
-
-report_ttests(df=df_insurance,dv=7,iv=c(2,4),alternative="two.sided")
-```
+[`report_ttests`](https://sedzinfo.github.io/rwf/reference/report_ttests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``4``)``,alternative``=``"two.sided"``)`
 
     ##         DV       IV level1 level2  n1  n2          t         df            p       CI_l       CI_u alternative                  method    mean1     mean2       sd1       sd2 sd_pooled          d
     ## 1  charges      sex female   male 662 676 -2.1008878 1313.36032 3.584101e-02 -2682.4893  -91.85535   two.sided Welch Two Sample t-test 12569.58 13956.751 11128.704 12971.026 12085.023 0.11478442
@@ -259,10 +241,7 @@ report_ttests(df=df_insurance,dv=7,iv=c(2,4),alternative="two.sided")
     ## 15 0.21480331          23.3775961            1 1.331200e-06     0.003125        TRUE
     ## 16 0.34327189          12.2513375            1 4.649248e-04     0.003125       FALSE
 
-``` r
-
-report_ttests(df=df_insurance,dv=7,iv=c(2,4),alternative="less")
-```
+[`report_ttests`](https://sedzinfo.github.io/rwf/reference/report_ttests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``4``)``,alternative``=``"less"``)`
 
     ##         DV       IV level1 level2  n1  n2          t         df           p CI_l       CI_u alternative                  method    mean1     mean2       sd1       sd2 sd_pooled          d          r
     ## 1  charges      sex female   male 662 676 -2.1008878 1313.36032 0.017920507 -Inf  -300.3432        less Welch Two Sample t-test 12569.58 13956.751 11128.704 12971.026 12085.023 0.11478442 0.05733752
@@ -299,10 +278,7 @@ report_ttests(df=df_insurance,dv=7,iv=c(2,4),alternative="less")
     ## 15          23.3775961            1 1.331200e-06     0.003125       FALSE
     ## 16          12.2513375            1 4.649248e-04     0.003125       FALSE
 
-``` r
-
-report_ttests(df=df_insurance,dv=7,iv=c(2,4),alternative="greater")
-```
+[`report_ttests`](https://sedzinfo.github.io/rwf/reference/report_ttests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``4``)``,alternative``=``"greater"``)`
 
     ##         DV       IV level1 level2  n1  n2          t         df            p      CI_l CI_u alternative                  method    mean1     mean2       sd1       sd2 sd_pooled          d          r
     ## 1  charges      sex female   male 662 676 -2.1008878 1313.36032 9.820795e-01 -2474.001  Inf     greater Welch Two Sample t-test 12569.58 13956.751 11128.704 12971.026 12085.023 0.11478442 0.05733752
@@ -339,10 +315,7 @@ report_ttests(df=df_insurance,dv=7,iv=c(2,4),alternative="greater")
     ## 15          23.3775961            1 1.331200e-06     0.003125        TRUE
     ## 16          12.2513375            1 4.649248e-04     0.003125       FALSE
 
-``` r
-
-report_ttests(df=df_insurance,dv=7,iv=c(2,4),var.equal=TRUE)
-```
+[`report_ttests`](https://sedzinfo.github.io/rwf/reference/report_ttests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``4``)``,var.equal``=``TRUE``)`
 
     ##         DV       IV level1 level2  n1  n2          t   df           p       CI_l        CI_u alternative             method    mean1     mean2       sd1       sd2 sd_pooled          d          r
     ## 1  charges      sex female   male 662 676 -2.0975466 1336 0.036132721 -2684.5324   -89.81229   two.sided  Two Sample t-test 12569.58 13956.751 11128.704 12971.026 12085.023 0.11478442 0.05733752
@@ -428,20 +401,14 @@ comparison of parametric and non-parametric results on the same data.
 The key difference in the output is the **W statistic** (Wilcoxon
 rank-sum) in place of t.
 
-``` r
-
-report_wtests(df=df_insurance,dv=7,iv=c(2))
-```
+[`report_wtests`](https://sedzinfo.github.io/rwf/reference/report_wtests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``)``)`
 
     ##        DV  IV level1 level2  n1  n2      W         p      CI_l     CI_u alternative                                            method    mean1    mean2     sd1      sd2 sd_pooled         d
     ## 1 charges sex female   male 662 676 221304 0.7286511 -929.0673 566.9229   two.sided Wilcoxon rank sum test with continuity correction 12569.58 13956.75 11128.7 12971.03  12085.02 0.1147844
     ##             r k_squared[bartlett] df[bartlett]  p[bartlett] bonferroni_p significant
     ## 1 0.009484225            15.58524            1 7.886777e-05         0.05       FALSE
 
-``` r
-
-report_wtests(df=df_insurance,dv=7,iv=c(4))
-```
+[`report_wtests`](https://sedzinfo.github.io/rwf/reference/report_wtests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``4``)``)`
 
     ##         DV       IV level1 level2  n1  n2     W            p         CI_l       CI_u alternative                                            method    mean1     mean2       sd1       sd2 sd_pooled
     ## 1  charges children      0      1 574 324 87794 1.641134e-01 -1563.034053   309.0238   two.sided Wilcoxon rank sum test with continuity correction 12365.98 12731.172 12023.294 11823.631 11923.881
@@ -476,10 +443,7 @@ report_wtests(df=df_insurance,dv=7,iv=c(4))
     ## 14 0.71987114 0.147964493          23.3775961            1 1.331200e-06  0.003333333       FALSE
     ## 15 0.72340811 0.307186821          12.2513375            1 4.649248e-04  0.003333333       FALSE
 
-``` r
-
-report_wtests(df=df_insurance,dv=7,iv=c(2,4))
-```
+[`report_wtests`](https://sedzinfo.github.io/rwf/reference/report_wtests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``4``)``)`
 
     ##         DV       IV level1 level2  n1  n2      W            p         CI_l       CI_u alternative                                            method    mean1     mean2       sd1       sd2 sd_pooled
     ## 1  charges      sex female   male 662 676 221304 7.286511e-01  -929.067302   566.9229   two.sided Wilcoxon rank sum test with continuity correction 12569.58 13956.751 11128.704 12971.026 12085.023
@@ -516,10 +480,7 @@ report_wtests(df=df_insurance,dv=7,iv=c(2,4))
     ## 15 0.71987114 0.147964493          23.3775961            1 1.331200e-06     0.003125       FALSE
     ## 16 0.72340811 0.307186821          12.2513375            1 4.649248e-04     0.003125       FALSE
 
-``` r
-
-report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="two.sided")
-```
+[`report_wtests`](https://sedzinfo.github.io/rwf/reference/report_wtests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``4``)``,alternative``=``"two.sided"``)`
 
     ##         DV       IV level1 level2  n1  n2      W            p         CI_l       CI_u alternative                                            method    mean1     mean2       sd1       sd2 sd_pooled
     ## 1  charges      sex female   male 662 676 221304 7.286511e-01  -929.067302   566.9229   two.sided Wilcoxon rank sum test with continuity correction 12569.58 13956.751 11128.704 12971.026 12085.023
@@ -556,10 +517,7 @@ report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="two.sided")
     ## 15 0.71987114 0.147964493          23.3775961            1 1.331200e-06     0.003125       FALSE
     ## 16 0.72340811 0.307186821          12.2513375            1 4.649248e-04     0.003125       FALSE
 
-``` r
-
-report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="less")
-```
+[`report_wtests`](https://sedzinfo.github.io/rwf/reference/report_wtests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``4``)``,alternative``=``"less"``)`
 
     ##         DV       IV level1 level2  n1  n2      W            p CI_l       CI_u alternative                                            method    mean1     mean2       sd1       sd2 sd_pooled          d
     ## 1  charges      sex female   male 662 676 221304 3.643255e-01 -Inf   480.1140        less Wilcoxon rank sum test with continuity correction 12569.58 13956.751 11128.704 12971.026 12085.023 0.11478442
@@ -596,10 +554,7 @@ report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="less")
     ## 15 0.147964493          23.3775961            1 1.331200e-06     0.003125       FALSE
     ## 16 0.307186821          12.2513375            1 4.649248e-04     0.003125       FALSE
 
-``` r
-
-report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="greater")
-```
+[`report_wtests`](https://sedzinfo.github.io/rwf/reference/report_wtests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``4``)``,alternative``=``"greater"``)`
 
     ##         DV       IV level1 level2  n1  n2      W          p       CI_l CI_u alternative                                            method    mean1     mean2       sd1       sd2 sd_pooled          d
     ## 1  charges      sex female   male 662 676 221304 0.63572761  -791.7764  Inf     greater Wilcoxon rank sum test with continuity correction 12569.58 13956.751 11128.704 12971.026 12085.023 0.11478442
@@ -636,10 +591,7 @@ report_wtests(df=df_insurance,dv=7,iv=c(2,4),alternative="greater")
     ## 15 0.147964493          23.3775961            1 1.331200e-06     0.003125       FALSE
     ## 16 0.307186821          12.2513375            1 4.649248e-04     0.003125       FALSE
 
-``` r
-
-report_wtests(df=df_insurance,dv=7,iv=c(2,4),var.equal=FALSE)
-```
+[`report_wtests`](https://sedzinfo.github.io/rwf/reference/report_wtests.md)`(``df``=``df_insurance``,dv``=``7``,iv``=`[`c`](https://rdrr.io/r/base/c.html)`(``2``,``4``)``,var.equal``=``FALSE``)`
 
     ##         DV       IV level1 level2  n1  n2      W            p         CI_l       CI_u alternative                                            method    mean1     mean2       sd1       sd2 sd_pooled
     ## 1  charges      sex female   male 662 676 221304 7.286511e-01  -929.067302   566.9229   two.sided Wilcoxon rank sum test with continuity correction 12569.58 13956.751 11128.704 12971.026 12085.023

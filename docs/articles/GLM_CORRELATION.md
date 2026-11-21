@@ -73,10 +73,7 @@ rather than the raw observed correlation.
 heatmap — only the lower triangle is shown (the matrix is symmetric, so
 the upper triangle is redundant).
 
-``` r
-
-plot_corrplot(stats::cor(mtcars), title = "mtcars correlation matrix")
-```
+[`plot_corrplot`](https://sedzinfo.github.io/rwf/reference/plot_corrplot.md)`(``stats``::`[`cor`](https://rdrr.io/r/stats/cor.html)`(``mtcars``)``, title ``=`` ``"mtcars correlation matrix"``)`
 
 ![](GLM_CORRELATION_files/figure-html/plot_corrplot-1.png)
 
@@ -91,18 +88,11 @@ statistical power to detect a correlation of magnitude `r` at the given
 significance level, via
 [`pwr::pwr.r.test`](https://rdrr.io/pkg/pwr/man/pwr.r.test.html).
 
-``` r
-
-result <- compute_power_r(n = 100, r = 0.5, sig.level = 0.05, alternative = "two.sided")
-result$plot
-```
+`result`` ``<-`` `[`compute_power_r`](https://sedzinfo.github.io/rwf/reference/compute_power_r.md)`(``n ``=`` ``100``, r ``=`` ``0.5``, sig.level ``=`` ``0.05``, alternative ``=`` ``"two.sided"``)`` ``result``$``plot`
 
 ![](GLM_CORRELATION_files/figure-html/compute_power_r-1.png)
 
-``` r
-
-head(result$power_table)
-```
+[`head`](https://rdrr.io/r/utils/head.html)`(``result``$``power_table``)`
 
     ##    n   r    p     power alternative                                                              method
     ## 1 10 0.5 0.05 0.3290749   two.sided approximate correlation power calculation (arctangh transformation)
@@ -123,17 +113,11 @@ and median absolute correlation (off-diagonal), and arranging all four
 power curves in one multiplot — a quick way to see the range of power
 your dataset’s correlations imply.
 
-``` r
-
-result_matrix <- compute_power_r_matrix(m = stats::cor(mtcars, use = "pairwise.complete.obs"), n = 100)
-```
+`result_matrix`` ``<-`` `[`compute_power_r_matrix`](https://sedzinfo.github.io/rwf/reference/compute_power_r_matrix.md)`(``m ``=`` ``stats``::`[`cor`](https://rdrr.io/r/stats/cor.html)`(``mtcars``, use ``=`` ``"pairwise.complete.obs"``)``, n ``=`` ``100``)`
 
 ![](GLM_CORRELATION_files/figure-html/compute_power_r_matrix-1.png)
 
-``` r
-
-result_matrix$plot
-```
+`result_matrix``$``plot`
 
     ## [[1]]
 
@@ -145,17 +129,11 @@ returns every quantity you’d need for a correlation table in a paper: r,
 r², p (raw and adjusted), t, n, and SE — each as a lower-triangle matrix
 — plus confidence intervals and (optionally) all pairwise scatterplots.
 
-``` r
-
-result <- report_correlation(x = mtcars[, 1:5], scatterplot = TRUE)
-```
+`result`` ``<-`` `[`report_correlation`](https://sedzinfo.github.io/rwf/reference/report_correlation.md)`(``x ``=`` ``mtcars``[``, ``1``:``5``]``, scatterplot ``=`` ``TRUE``)`
 
 ![](GLM_CORRELATION_files/figure-html/report_correlation-1.png)![](GLM_CORRELATION_files/figure-html/report_correlation-2.png)![](GLM_CORRELATION_files/figure-html/report_correlation-3.png)![](GLM_CORRELATION_files/figure-html/report_correlation-4.png)![](GLM_CORRELATION_files/figure-html/report_correlation-5.png)![](GLM_CORRELATION_files/figure-html/report_correlation-6.png)![](GLM_CORRELATION_files/figure-html/report_correlation-7.png)![](GLM_CORRELATION_files/figure-html/report_correlation-8.png)![](GLM_CORRELATION_files/figure-html/report_correlation-9.png)![](GLM_CORRELATION_files/figure-html/report_correlation-10.png)![](GLM_CORRELATION_files/figure-html/report_correlation-11.png)
 
-``` r
-
-result$r_lower
-```
+`result``$``r_lower`
 
     ##             mpg        cyl       disp         hp drat
     ## mpg          NA         NA         NA         NA   NA
@@ -164,10 +142,7 @@ result$r_lower
     ## hp   -0.7761684  0.8324475  0.7909486         NA   NA
     ## drat  0.6811719 -0.6999381 -0.7102139 -0.4487591   NA
 
-``` r
-
-result$p_lower
-```
+`result``$``p_lower`
 
     ##               mpg          cyl         disp          hp drat
     ## mpg            NA           NA           NA          NA   NA
@@ -176,10 +151,7 @@ result$p_lower
     ## hp   1.787835e-07 3.477861e-09 7.142679e-08          NA   NA
     ## drat 1.776240e-05 8.244636e-06 5.282022e-06 0.009988772   NA
 
-``` r
-
-result$p_lower_adjusted
-```
+`result``$``p_lower_adjusted`
 
     ##               mpg          cyl         disp          hp drat
     ## mpg            NA           NA           NA          NA   NA
@@ -188,18 +160,12 @@ result$p_lower_adjusted
     ## hp   8.939176e-07 2.434502e-08 4.285607e-07          NA   NA
     ## drat 3.552480e-05 2.473391e-05 2.112809e-05 0.009988772   NA
 
-``` r
-
-result$n_lower
-```
+`result``$``n_lower`
 
     ##    n
     ## 1 32
 
-``` r
-
-head(result$ci)
-```
+[`head`](https://rdrr.io/r/utils/head.html)`(``result``$``ci``)`
 
     ##               lower          r      upper            p  lower.adj  upper.adj
     ## mpg-cyl  -0.9257694 -0.8521620 -0.7163171 6.112687e-10 -0.9445783 -0.6345981
@@ -221,24 +187,13 @@ table.
 based on `type`, and produces both a correlation heatmap and (when
 `file` is set) an Excel export.
 
-``` r
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``12345``)`` ``binary_data`` ``<-`` `[`generate_data`](https://sedzinfo.github.io/rwf/reference/generate_data.md)`(``min ``=`` ``0``, max ``=`` ``1``, type ``=`` ``"uniform"``)`` ``ordinal_data`` ``<-`` `[`generate_data`](https://sedzinfo.github.io/rwf/reference/generate_data.md)`(``min ``=`` ``1``, max ``=`` ``5``, type ``=`` ``"uniform"``)`
 
-set.seed(12345)
-binary_data <- generate_data(min = 0, max = 1, type = "uniform")
-ordinal_data <- generate_data(min = 1, max = 5, type = "uniform")
-```
-
-``` r
-
-result_tetrachoric <- report_choric_serial(binary_data, type = "tetrachoric")
-```
+`result_tetrachoric`` ``<-`` `[`report_choric_serial`](https://sedzinfo.github.io/rwf/reference/report_choric_serial.md)`(``binary_data``, type ``=`` ``"tetrachoric"``)`
 
 ![](GLM_CORRELATION_files/figure-html/tetrachoric-1.png)
 
-``` r
-
-result_tetrachoric$rho
-```
+`result_tetrachoric``$``rho`
 
     ##            X1          X2         X3         X4          X5
     ## X1 1.00000000  0.08174944  0.3755173  0.5497670  0.08174944
@@ -247,17 +202,11 @@ result_tetrachoric$rho
     ## X4 0.54976701 -0.15002601  0.1810725  1.0000000 -0.62268231
     ## X5 0.08174944  0.08174944  0.3755173 -0.6226823  1.00000000
 
-``` r
-
-result_polychoric <- report_choric_serial(ordinal_data, type = "polychoric")
-```
+`result_polychoric`` ``<-`` `[`report_choric_serial`](https://sedzinfo.github.io/rwf/reference/report_choric_serial.md)`(``ordinal_data``, type ``=`` ``"polychoric"``)`
 
 ![](GLM_CORRELATION_files/figure-html/polychoric-1.png)
 
-``` r
-
-result_polychoric$rho
-```
+`result_polychoric``$``rho`
 
     ##             X1          X2          X3          X4          X5
     ## X1  1.00000000 -0.55211654  0.76948238 -0.22606737  0.06875757
@@ -266,11 +215,7 @@ result_polychoric$rho
     ## X4 -0.22606737  0.01504807 -0.37106659  1.00000000  0.13208526
     ## X5  0.06875757 -0.58026259  0.03417760  0.13208526  1.00000000
 
-``` r
-
-result_polyserial <- report_choric_serial(x = psych::lsat6, y = psych::lsat6, type = "polyserial")
-result_polyserial
-```
+`result_polyserial`` ``<-`` `[`report_choric_serial`](https://sedzinfo.github.io/rwf/reference/report_choric_serial.md)`(``x ``=`` ``psych``::`[`lsat6`](https://rdrr.io/pkg/psych/man/bock.table.html)`, y ``=`` ``psych``::`[`lsat6`](https://rdrr.io/pkg/psych/man/bock.table.html)`, type ``=`` ``"polyserial"``)`` ``result_polyserial`
 
     ##            Q1         Q2         Q3         Q4         Q5
     ## Q1 1.00000000 0.13678199 0.18325313 0.08203137 0.04408537
@@ -279,17 +224,11 @@ result_polyserial
     ## Q4 0.06096647 0.08580483 0.15023434 1.00000000 0.13666538
     ## Q5 0.03781726 0.13706077 0.08452447 0.15774041 1.00000000
 
-``` r
-
-result_biserial <- report_choric_serial(x = psych::lsat6, y = psych::lsat6, type = "biserial")
-```
+`result_biserial`` ``<-`` `[`report_choric_serial`](https://sedzinfo.github.io/rwf/reference/report_choric_serial.md)`(``x ``=`` ``psych``::`[`lsat6`](https://rdrr.io/pkg/psych/man/bock.table.html)`, y ``=`` ``psych``::`[`lsat6`](https://rdrr.io/pkg/psych/man/bock.table.html)`, type ``=`` ``"biserial"``)`
 
 ![](GLM_CORRELATION_files/figure-html/biserial-1.png)
 
-``` r
-
-result_biserial
-```
+`result_biserial`
 
     ##            Q1         Q2         Q3         Q4         Q5
     ## Q1 1.00000000 0.13671358 0.18316148 0.08199035 0.04406333

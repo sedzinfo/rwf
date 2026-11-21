@@ -46,7 +46,9 @@ plot_outlier(df, method = "mean", title = "", base_size = 10, pb = FALSE)
 
 - base_size:
 
-  Base font size passed to `theme_bw()`. Default is `10`.
+  Base font size passed to
+  [`theme_bw()`](https://ggplot2.tidyverse.org/reference/ggtheme.html).
+  Default is `10`.
 
 - pb:
 

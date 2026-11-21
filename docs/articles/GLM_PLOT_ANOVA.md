@@ -52,35 +52,19 @@ The `df_blood_pressure` data is first reshaped from wide to long format
 using `melt`, so that each treatment condition becomes a level of a
 single `treatment` factor rather than separate columns.
 
-``` r
-
-df_blood_pressure_melt<-melt(df_blood_pressure,
-                             variable.name="treatment",
-                             value.name="blood_pressure",
-                             id.vars=c("patient","sex","agegrp"))
-plot_oneway(df=df_blood_pressure_melt,dv=5,iv=3:4,type="se")
-```
+`df_blood_pressure_melt``<-``melt``(``df_blood_pressure``,`` `` variable.name``=``"treatment"``,`` `` value.name``=``"blood_pressure"``,`` `` id.vars``=`[`c`](https://rdrr.io/r/base/c.html)`(``"patient"``,``"sex"``,``"agegrp"``)``)`` `[`plot_oneway`](https://sedzinfo.github.io/rwf/reference/plot_oneway.md)`(``df``=``df_blood_pressure_melt``,dv``=``5``,iv``=``3``:``4``,type``=``"se"``)`
 
 ![](GLM_PLOT_ANOVA_files/figure-html/plot_oneway-1.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_oneway-2.png)
 
-``` r
-
-plot_oneway(df=df_blood_pressure,dv=5,iv=2,type="ci")
-```
+[`plot_oneway`](https://sedzinfo.github.io/rwf/reference/plot_oneway.md)`(``df``=``df_blood_pressure``,dv``=``5``,iv``=``2``,type``=``"ci"``)`
 
 ![](GLM_PLOT_ANOVA_files/figure-html/plot_oneway-3.png)
 
-``` r
-
-plot_oneway(df=df_blood_pressure,dv=4:5,iv=2,type="sd")
-```
+[`plot_oneway`](https://sedzinfo.github.io/rwf/reference/plot_oneway.md)`(``df``=``df_blood_pressure``,dv``=``4``:``5``,iv``=``2``,type``=``"sd"``)`
 
 ![](GLM_PLOT_ANOVA_files/figure-html/plot_oneway-4.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_oneway-5.png)
 
-``` r
-
-plot_oneway(df=df_blood_pressure,dv=4:5,iv=2:3)
-```
+[`plot_oneway`](https://sedzinfo.github.io/rwf/reference/plot_oneway.md)`(``df``=``df_blood_pressure``,dv``=``4``:``5``,iv``=``2``:``3``)`
 
 ![](GLM_PLOT_ANOVA_files/figure-html/plot_oneway-6.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_oneway-7.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_oneway-8.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_oneway-9.png)
 
@@ -108,18 +92,11 @@ The two calls demonstrate different contexts:
   make patterns in the interaction easier to read when factor levels
   have no natural order.
 
-``` r
-
-plot_interaction(df=df_blood_pressure_melt,
-                 dv=5,iv=2:4,base_size=20,title="",type="se")
-```
+[`plot_interaction`](https://sedzinfo.github.io/rwf/reference/plot_interaction.md)`(``df``=``df_blood_pressure_melt``,`` `` dv``=``5``,iv``=``2``:``4``,base_size``=``20``,title``=``""``,type``=``"se"``)`
 
 ![](GLM_PLOT_ANOVA_files/figure-html/plot_interactions-1.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_interactions-2.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_interactions-3.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_interactions-4.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_interactions-5.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_interactions-6.png)
 
-``` r
-
-plot_interaction(df=df_crop_yield,dv=3,iv=1:2,type="se",order_factor=TRUE)
-```
+[`plot_interaction`](https://sedzinfo.github.io/rwf/reference/plot_interaction.md)`(``df``=``df_crop_yield``,dv``=``3``,iv``=``1``:``2``,type``=``"se"``,order_factor``=``TRUE``)`
 
 ![](GLM_PLOT_ANOVA_files/figure-html/plot_interactions-7.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_interactions-8.png)
 
@@ -148,9 +125,6 @@ Here the blood pressure data is used in long format with blood pressure
 as the DV and sex, age group, and treatment as IVs, allowing diagnostics
 to be assessed across all three grouping factors simultaneously.
 
-``` r
-
-plot_oneway_diagnostics(df=df_blood_pressure_melt,dv=5,iv=2:4,base_size=15)
-```
+[`plot_oneway_diagnostics`](https://sedzinfo.github.io/rwf/reference/plot_oneway_diagnostics.md)`(``df``=``df_blood_pressure_melt``,dv``=``5``,iv``=``2``:``4``,base_size``=``15``)`
 
 ![](GLM_PLOT_ANOVA_files/figure-html/plot_anova_diagnostics-1.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_anova_diagnostics-2.png)![](GLM_PLOT_ANOVA_files/figure-html/plot_anova_diagnostics-3.png)

@@ -67,8 +67,5 @@ compute_wilcoxon_effect_size(
 rstatix::wilcox_effsize(bp_before ~ agegrp,
   data = df_blood_pressure[df_blood_pressure$agegrp %in% c("30-45", "46-59"), ]
 )
-#> # A tibble: 1 × 7
-#>   .y.       group1 group2 effsize    n1    n2 magnitude
-#> * <chr>     <chr>  <chr>    <dbl> <int> <int> <ord>    
-#> 1 bp_before 30-45  46-59    0.143    40    40 small    
+#> Error in required_package("coin"): coin package needed to be installed before using this function. Type this in R: install.packages('coin')
 ```

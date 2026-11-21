@@ -101,7 +101,7 @@ Kramer, C. Y. (1956). Extension of multiple range tests to group means
 with unequal numbers of replications. Biometrics, 12(3), 307-310.
 [doi:10.2307/3001469](https://doi.org/10.2307/3001469)
 
-Peters, G.-J. Y. userfriendlyscience: Quantitative analysis made
+Peters, G.-J. Y. (2018). userfriendlyscience: Quantitative analysis made
 accessible (R package version 0.7.2).
 <https://github.com/Matherion/userfriendlyscience>
 

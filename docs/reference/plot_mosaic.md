@@ -27,7 +27,9 @@ plot_mosaic(df, factor_index, base_size = 10, title = "", pb = FALSE)
 
 - base_size:
 
-  Base font size passed to `theme_bw()`. Default is `10`.
+  Base font size passed to
+  [`theme_bw()`](https://ggplot2.tidyverse.org/reference/ggtheme.html).
+  Default is `10`.
 
 - title:
 

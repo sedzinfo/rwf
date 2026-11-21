@@ -39,37 +39,37 @@ df <- generate_missing(df)
 fit <- lavaan::cfa(model, data = df, missing = "ML")
 report_cfa(fit)
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.labels’ for ‘inspect’
+#>    Unknown argument 'add.labels' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.class’ for ‘inspect’
+#>    Unknown argument 'add.class' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘list.by.group’ for ‘inspect’
+#>    Unknown argument 'list.by.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘drop.list.single.group’ for ‘inspect’
+#>    Unknown argument 'drop.list.single.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.labels’ for ‘inspect’
+#>    Unknown argument 'add.labels' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.class’ for ‘inspect’
+#>    Unknown argument 'add.class' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘list.by.group’ for ‘inspect’
+#>    Unknown argument 'list.by.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘drop.list.single.group’ for ‘inspect’
+#>    Unknown argument 'drop.list.single.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.labels’ for ‘inspect’
+#>    Unknown argument 'add.labels' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.class’ for ‘inspect’
+#>    Unknown argument 'add.class' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘list.by.group’ for ‘inspect’
+#>    Unknown argument 'list.by.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘drop.list.single.group’ for ‘inspect’
+#>    Unknown argument 'drop.list.single.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.labels’ for ‘inspect’
+#>    Unknown argument 'add.labels' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.class’ for ‘inspect’
+#>    Unknown argument 'add.class' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘list.by.group’ for ‘inspect’
+#>    Unknown argument 'list.by.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘drop.list.single.group’ for ‘inspect’
+#>    Unknown argument 'drop.list.single.group' for 'inspect'
 #> Skipping circle_parameters_wih_equality_constraints: replacement has 0 rows, data has 5
 #> Skipping tree_parameters_wih_equality_constraints: replacement has 0 rows, data has 5
 #> Skipping spring_parameters_wih_equality_constraints: replacement has 0 rows, data has 5
@@ -282,12 +282,12 @@ report_cfa(fit)
 #> 8   ITEM3 ~~  ITEM3   0  0.72828 0.1674  4.3510 0.00001355217445   0.4002  1.05634  0.72828  0.33581
 #> 9   ITEM4 ~~  ITEM4   0  0.91499 0.1599  5.7229 0.00000001047405   0.6016  1.22836  0.91499  0.52220
 #> 10  ITEM5 ~~  ITEM5   0  0.84560 0.1470  5.7529 0.00000000877034   0.5575  1.13368  0.84560  0.52632
-#> 11 LATENT ~~ LATENT   0  1.24641 0.3379  3.6884 0.00022571087846   0.5841  1.90874  1.00000  1.00000
-#> 12  ITEM1 ~1          0 -0.05338 0.1610 -0.3316 0.74021280963934  -0.3689  0.26217 -0.05338 -0.03367
-#> 13  ITEM2 ~1          0 -0.20653 0.1417 -1.4580 0.14484703309341  -0.4842  0.07111 -0.20653 -0.14805
-#> 14  ITEM3 ~1          0 -0.13891 0.1492 -0.9313 0.35170464156665  -0.4312  0.15343 -0.13891 -0.09432
-#> 15  ITEM4 ~1          0 -0.08822 0.1345 -0.6561 0.51177311709738  -0.3518  0.17533 -0.08822 -0.06665
-#> 16  ITEM5 ~1          0 -0.26501 0.1288 -2.0580 0.03958868413638  -0.5174 -0.01263 -0.26501 -0.20908
+#> 11 LATENT ~~ LATENT   0  1.24641 0.3379  3.6884 0.00022571087869   0.5841  1.90874  1.00000  1.00000
+#> 12  ITEM1 ~1          0 -0.05338 0.1610 -0.3316 0.74021280963860  -0.3689  0.26217 -0.05338 -0.03367
+#> 13  ITEM2 ~1          0 -0.20653 0.1417 -1.4580 0.14484703309578  -0.4842  0.07111 -0.20653 -0.14805
+#> 14  ITEM3 ~1          0 -0.13891 0.1492 -0.9313 0.35170464156875  -0.4312  0.15343 -0.13891 -0.09432
+#> 15  ITEM4 ~1          0 -0.08822 0.1345 -0.6561 0.51177311709724  -0.3518  0.17533 -0.08822 -0.06665
+#> 16  ITEM5 ~1          0 -0.26501 0.1288 -2.0580 0.03958868413543  -0.5174 -0.01263 -0.26501 -0.20908
 #> 17 LATENT ~1          0  0.00000 0.0000      NA               NA   0.0000  0.00000  0.00000  0.00000
 #> 18  ITEM1 r2  ITEM1   0  0.49595     NA      NA               NA       NA       NA       NA       NA
 #> 19  ITEM2 r2  ITEM2   0  0.51211     NA      NA               NA       NA       NA       NA       NA
@@ -464,12 +464,12 @@ report_cfa(fit)
 #> 8   ITEM3 ~~  ITEM3   0  0.72828 0.1674  4.3510 0.00001355217445   0.4002  1.05634  0.72828  0.33581
 #> 9   ITEM4 ~~  ITEM4   0  0.91499 0.1599  5.7229 0.00000001047405   0.6016  1.22836  0.91499  0.52220
 #> 10  ITEM5 ~~  ITEM5   0  0.84560 0.1470  5.7529 0.00000000877034   0.5575  1.13368  0.84560  0.52632
-#> 11 LATENT ~~ LATENT   0  1.24641 0.3379  3.6884 0.00022571087846   0.5841  1.90874  1.00000  1.00000
-#> 12  ITEM1 ~1          0 -0.05338 0.1610 -0.3316 0.74021280963934  -0.3689  0.26217 -0.05338 -0.03367
-#> 13  ITEM2 ~1          0 -0.20653 0.1417 -1.4580 0.14484703309341  -0.4842  0.07111 -0.20653 -0.14805
-#> 14  ITEM3 ~1          0 -0.13891 0.1492 -0.9313 0.35170464156665  -0.4312  0.15343 -0.13891 -0.09432
-#> 15  ITEM4 ~1          0 -0.08822 0.1345 -0.6561 0.51177311709738  -0.3518  0.17533 -0.08822 -0.06665
-#> 16  ITEM5 ~1          0 -0.26501 0.1288 -2.0580 0.03958868413638  -0.5174 -0.01263 -0.26501 -0.20908
+#> 11 LATENT ~~ LATENT   0  1.24641 0.3379  3.6884 0.00022571087869   0.5841  1.90874  1.00000  1.00000
+#> 12  ITEM1 ~1          0 -0.05338 0.1610 -0.3316 0.74021280963860  -0.3689  0.26217 -0.05338 -0.03367
+#> 13  ITEM2 ~1          0 -0.20653 0.1417 -1.4580 0.14484703309578  -0.4842  0.07111 -0.20653 -0.14805
+#> 14  ITEM3 ~1          0 -0.13891 0.1492 -0.9313 0.35170464156875  -0.4312  0.15343 -0.13891 -0.09432
+#> 15  ITEM4 ~1          0 -0.08822 0.1345 -0.6561 0.51177311709724  -0.3518  0.17533 -0.08822 -0.06665
+#> 16  ITEM5 ~1          0 -0.26501 0.1288 -2.0580 0.03958868413543  -0.5174 -0.01263 -0.26501 -0.20908
 #> 17 LATENT ~1          0  0.00000 0.0000      NA               NA   0.0000  0.00000  0.00000  0.00000
 #> 18  ITEM1 r2  ITEM1   0  0.49595     NA      NA               NA       NA       NA       NA       NA
 #> 19  ITEM2 r2  ITEM2   0  0.51211     NA      NA               NA       NA       NA       NA       NA
@@ -480,15 +480,15 @@ report_cfa(fit)
 #> $modification_indices
 #>       lhs op    rhs                   mi             epc        sepc.all delta    ncp   power decision
 #> 21  ITEM1 ~~  ITEM5 0.546839559868500080  0.105427920679  0.101866223045   0.1 0.4920 0.10799      (i)
-#> 25  ITEM3 ~~  ITEM4 0.275767621240513516  0.073874994761  0.090498129420   0.1 0.5053 0.10959      (i)
-#> 20  ITEM1 ~~  ITEM4 0.182608093538492694 -0.063586230775 -0.059062288848   0.1 0.4516 0.10313      (i)
-#> 26  ITEM3 ~~  ITEM5 0.144146944786837622 -0.051078368338 -0.065088839207   0.1 0.5525 0.11530      (i)
-#> 27  ITEM4 ~~  ITEM5 0.055751883265722252 -0.028087992141 -0.031932286682   0.1 0.7067 0.13405      (i)
-#> 19  ITEM1 ~~  ITEM3 0.045199737013384499 -0.036087498532 -0.037571986417   0.1 0.3471 0.09061      (i)
-#> 24  ITEM2 ~~  ITEM5 0.005416283716054616 -0.009202625795 -0.010270451024   0.1 0.6396 0.12587      (i)
-#> 22  ITEM2 ~~  ITEM3 0.004474560269000546  0.010044330851  0.012079016583   0.1 0.4435 0.10215      (i)
-#> 18  ITEM1 ~~  ITEM2 0.003803638239456918 -0.009638680153 -0.008788872998   0.1 0.4094 0.09806      (i)
-#> 23  ITEM2 ~~  ITEM4 0.003578688330883772  0.007808557914  0.008377630806   0.1 0.5869 0.11947      (i)
+#> 25  ITEM3 ~~  ITEM4 0.275767621240508021  0.073874994761  0.090498129420   0.1 0.5053 0.10959      (i)
+#> 20  ITEM1 ~~  ITEM4 0.182608093538490890 -0.063586230775 -0.059062288848   0.1 0.4516 0.10313      (i)
+#> 26  ITEM3 ~~  ITEM5 0.144146944786839315 -0.051078368338 -0.065088839207   0.1 0.5525 0.11530      (i)
+#> 27  ITEM4 ~~  ITEM5 0.055751883265722953 -0.028087992141 -0.031932286682   0.1 0.7067 0.13405      (i)
+#> 19  ITEM1 ~~  ITEM3 0.045199737013381272 -0.036087498532 -0.037571986417   0.1 0.3471 0.09061      (i)
+#> 24  ITEM2 ~~  ITEM5 0.005416283716054107 -0.009202625795 -0.010270451024   0.1 0.6396 0.12587      (i)
+#> 22  ITEM2 ~~  ITEM3 0.004474560269000743  0.010044330851  0.012079016583   0.1 0.4435 0.10215      (i)
+#> 18  ITEM1 ~~  ITEM2 0.003803638239458201 -0.009638680153 -0.008788872998   0.1 0.4094 0.09806      (i)
+#> 23  ITEM2 ~~  ITEM4 0.003578688330884250  0.007808557914  0.008377630806   0.1 0.5869 0.11947      (i)
 #> 6   ITEM1 ~~  ITEM1 0.000000000006250995 -0.000000541352 -0.504045141476   0.1 0.2133 0.07477      (i)
 #> 9   ITEM4 ~~  ITEM4 0.000000000000540229  0.000000113514  0.522204342330   0.1 0.4193 0.09924      (i)
 #> 7   ITEM2 ~~  ITEM2 0.000000000000472315  0.000000112738  0.487893130267   0.1 0.3716 0.09354      (i)
@@ -696,37 +696,37 @@ report_cfa(fit)
 #> 
 report_cfa(fit, file = file)
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.labels’ for ‘inspect’
+#>    Unknown argument 'add.labels' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.class’ for ‘inspect’
+#>    Unknown argument 'add.class' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘list.by.group’ for ‘inspect’
+#>    Unknown argument 'list.by.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘drop.list.single.group’ for ‘inspect’
+#>    Unknown argument 'drop.list.single.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.labels’ for ‘inspect’
+#>    Unknown argument 'add.labels' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.class’ for ‘inspect’
+#>    Unknown argument 'add.class' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘list.by.group’ for ‘inspect’
+#>    Unknown argument 'list.by.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘drop.list.single.group’ for ‘inspect’
+#>    Unknown argument 'drop.list.single.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.labels’ for ‘inspect’
+#>    Unknown argument 'add.labels' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.class’ for ‘inspect’
+#>    Unknown argument 'add.class' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘list.by.group’ for ‘inspect’
+#>    Unknown argument 'list.by.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘drop.list.single.group’ for ‘inspect’
+#>    Unknown argument 'drop.list.single.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.labels’ for ‘inspect’
+#>    Unknown argument 'add.labels' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘add.class’ for ‘inspect’
+#>    Unknown argument 'add.class' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘list.by.group’ for ‘inspect’
+#>    Unknown argument 'list.by.group' for 'inspect'
 #> Warning: lavaan->inspect.lavaan():  
-#>    Unknown argument ‘drop.list.single.group’ for ‘inspect’
+#>    Unknown argument 'drop.list.single.group' for 'inspect'
 #> Skipping circle_parameters_wih_equality_constraints: replacement has 0 rows, data has 5
 #> Skipping tree_parameters_wih_equality_constraints: replacement has 0 rows, data has 5
 #> Skipping spring_parameters_wih_equality_constraints: replacement has 0 rows, data has 5
@@ -939,12 +939,12 @@ report_cfa(fit, file = file)
 #> 8   ITEM3 ~~  ITEM3   0  0.72828 0.1674  4.3510 0.00001355217445   0.4002  1.05634  0.72828  0.33581
 #> 9   ITEM4 ~~  ITEM4   0  0.91499 0.1599  5.7229 0.00000001047405   0.6016  1.22836  0.91499  0.52220
 #> 10  ITEM5 ~~  ITEM5   0  0.84560 0.1470  5.7529 0.00000000877034   0.5575  1.13368  0.84560  0.52632
-#> 11 LATENT ~~ LATENT   0  1.24641 0.3379  3.6884 0.00022571087846   0.5841  1.90874  1.00000  1.00000
-#> 12  ITEM1 ~1          0 -0.05338 0.1610 -0.3316 0.74021280963934  -0.3689  0.26217 -0.05338 -0.03367
-#> 13  ITEM2 ~1          0 -0.20653 0.1417 -1.4580 0.14484703309341  -0.4842  0.07111 -0.20653 -0.14805
-#> 14  ITEM3 ~1          0 -0.13891 0.1492 -0.9313 0.35170464156665  -0.4312  0.15343 -0.13891 -0.09432
-#> 15  ITEM4 ~1          0 -0.08822 0.1345 -0.6561 0.51177311709738  -0.3518  0.17533 -0.08822 -0.06665
-#> 16  ITEM5 ~1          0 -0.26501 0.1288 -2.0580 0.03958868413638  -0.5174 -0.01263 -0.26501 -0.20908
+#> 11 LATENT ~~ LATENT   0  1.24641 0.3379  3.6884 0.00022571087869   0.5841  1.90874  1.00000  1.00000
+#> 12  ITEM1 ~1          0 -0.05338 0.1610 -0.3316 0.74021280963860  -0.3689  0.26217 -0.05338 -0.03367
+#> 13  ITEM2 ~1          0 -0.20653 0.1417 -1.4580 0.14484703309578  -0.4842  0.07111 -0.20653 -0.14805
+#> 14  ITEM3 ~1          0 -0.13891 0.1492 -0.9313 0.35170464156875  -0.4312  0.15343 -0.13891 -0.09432
+#> 15  ITEM4 ~1          0 -0.08822 0.1345 -0.6561 0.51177311709724  -0.3518  0.17533 -0.08822 -0.06665
+#> 16  ITEM5 ~1          0 -0.26501 0.1288 -2.0580 0.03958868413543  -0.5174 -0.01263 -0.26501 -0.20908
 #> 17 LATENT ~1          0  0.00000 0.0000      NA               NA   0.0000  0.00000  0.00000  0.00000
 #> 18  ITEM1 r2  ITEM1   0  0.49595     NA      NA               NA       NA       NA       NA       NA
 #> 19  ITEM2 r2  ITEM2   0  0.51211     NA      NA               NA       NA       NA       NA       NA
@@ -1121,12 +1121,12 @@ report_cfa(fit, file = file)
 #> 8   ITEM3 ~~  ITEM3   0  0.72828 0.1674  4.3510 0.00001355217445   0.4002  1.05634  0.72828  0.33581
 #> 9   ITEM4 ~~  ITEM4   0  0.91499 0.1599  5.7229 0.00000001047405   0.6016  1.22836  0.91499  0.52220
 #> 10  ITEM5 ~~  ITEM5   0  0.84560 0.1470  5.7529 0.00000000877034   0.5575  1.13368  0.84560  0.52632
-#> 11 LATENT ~~ LATENT   0  1.24641 0.3379  3.6884 0.00022571087846   0.5841  1.90874  1.00000  1.00000
-#> 12  ITEM1 ~1          0 -0.05338 0.1610 -0.3316 0.74021280963934  -0.3689  0.26217 -0.05338 -0.03367
-#> 13  ITEM2 ~1          0 -0.20653 0.1417 -1.4580 0.14484703309341  -0.4842  0.07111 -0.20653 -0.14805
-#> 14  ITEM3 ~1          0 -0.13891 0.1492 -0.9313 0.35170464156665  -0.4312  0.15343 -0.13891 -0.09432
-#> 15  ITEM4 ~1          0 -0.08822 0.1345 -0.6561 0.51177311709738  -0.3518  0.17533 -0.08822 -0.06665
-#> 16  ITEM5 ~1          0 -0.26501 0.1288 -2.0580 0.03958868413638  -0.5174 -0.01263 -0.26501 -0.20908
+#> 11 LATENT ~~ LATENT   0  1.24641 0.3379  3.6884 0.00022571087869   0.5841  1.90874  1.00000  1.00000
+#> 12  ITEM1 ~1          0 -0.05338 0.1610 -0.3316 0.74021280963860  -0.3689  0.26217 -0.05338 -0.03367
+#> 13  ITEM2 ~1          0 -0.20653 0.1417 -1.4580 0.14484703309578  -0.4842  0.07111 -0.20653 -0.14805
+#> 14  ITEM3 ~1          0 -0.13891 0.1492 -0.9313 0.35170464156875  -0.4312  0.15343 -0.13891 -0.09432
+#> 15  ITEM4 ~1          0 -0.08822 0.1345 -0.6561 0.51177311709724  -0.3518  0.17533 -0.08822 -0.06665
+#> 16  ITEM5 ~1          0 -0.26501 0.1288 -2.0580 0.03958868413543  -0.5174 -0.01263 -0.26501 -0.20908
 #> 17 LATENT ~1          0  0.00000 0.0000      NA               NA   0.0000  0.00000  0.00000  0.00000
 #> 18  ITEM1 r2  ITEM1   0  0.49595     NA      NA               NA       NA       NA       NA       NA
 #> 19  ITEM2 r2  ITEM2   0  0.51211     NA      NA               NA       NA       NA       NA       NA
@@ -1137,15 +1137,15 @@ report_cfa(fit, file = file)
 #> $modification_indices
 #>       lhs op    rhs                   mi             epc        sepc.all delta    ncp   power decision
 #> 21  ITEM1 ~~  ITEM5 0.546839559868500080  0.105427920679  0.101866223045   0.1 0.4920 0.10799      (i)
-#> 25  ITEM3 ~~  ITEM4 0.275767621240513516  0.073874994761  0.090498129420   0.1 0.5053 0.10959      (i)
-#> 20  ITEM1 ~~  ITEM4 0.182608093538492694 -0.063586230775 -0.059062288848   0.1 0.4516 0.10313      (i)
-#> 26  ITEM3 ~~  ITEM5 0.144146944786837622 -0.051078368338 -0.065088839207   0.1 0.5525 0.11530      (i)
-#> 27  ITEM4 ~~  ITEM5 0.055751883265722252 -0.028087992141 -0.031932286682   0.1 0.7067 0.13405      (i)
-#> 19  ITEM1 ~~  ITEM3 0.045199737013384499 -0.036087498532 -0.037571986417   0.1 0.3471 0.09061      (i)
-#> 24  ITEM2 ~~  ITEM5 0.005416283716054616 -0.009202625795 -0.010270451024   0.1 0.6396 0.12587      (i)
-#> 22  ITEM2 ~~  ITEM3 0.004474560269000546  0.010044330851  0.012079016583   0.1 0.4435 0.10215      (i)
-#> 18  ITEM1 ~~  ITEM2 0.003803638239456918 -0.009638680153 -0.008788872998   0.1 0.4094 0.09806      (i)
-#> 23  ITEM2 ~~  ITEM4 0.003578688330883772  0.007808557914  0.008377630806   0.1 0.5869 0.11947      (i)
+#> 25  ITEM3 ~~  ITEM4 0.275767621240508021  0.073874994761  0.090498129420   0.1 0.5053 0.10959      (i)
+#> 20  ITEM1 ~~  ITEM4 0.182608093538490890 -0.063586230775 -0.059062288848   0.1 0.4516 0.10313      (i)
+#> 26  ITEM3 ~~  ITEM5 0.144146944786839315 -0.051078368338 -0.065088839207   0.1 0.5525 0.11530      (i)
+#> 27  ITEM4 ~~  ITEM5 0.055751883265722953 -0.028087992141 -0.031932286682   0.1 0.7067 0.13405      (i)
+#> 19  ITEM1 ~~  ITEM3 0.045199737013381272 -0.036087498532 -0.037571986417   0.1 0.3471 0.09061      (i)
+#> 24  ITEM2 ~~  ITEM5 0.005416283716054107 -0.009202625795 -0.010270451024   0.1 0.6396 0.12587      (i)
+#> 22  ITEM2 ~~  ITEM3 0.004474560269000743  0.010044330851  0.012079016583   0.1 0.4435 0.10215      (i)
+#> 18  ITEM1 ~~  ITEM2 0.003803638239458201 -0.009638680153 -0.008788872998   0.1 0.4094 0.09806      (i)
+#> 23  ITEM2 ~~  ITEM4 0.003578688330884250  0.007808557914  0.008377630806   0.1 0.5869 0.11947      (i)
 #> 6   ITEM1 ~~  ITEM1 0.000000000006250995 -0.000000541352 -0.504045141476   0.1 0.2133 0.07477      (i)
 #> 9   ITEM4 ~~  ITEM4 0.000000000000540229  0.000000113514  0.522204342330   0.1 0.4193 0.09924      (i)
 #> 7   ITEM2 ~~  ITEM2 0.000000000000472315  0.000000112738  0.487893130267   0.1 0.3716 0.09354      (i)

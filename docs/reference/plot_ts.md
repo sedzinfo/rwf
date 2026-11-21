@@ -2,8 +2,9 @@
 
 Converts a `ts` object into a ggplot2 line chart with semi-transparent
 points and an overlaid linear trend line. The returned `ggplot` object
-can be extended with additional layers (e.g. `geom_vline()` to mark
-events).
+can be extended with additional layers (e.g.
+[`geom_vline()`](https://ggplot2.tidyverse.org/reference/geom_abline.html)
+to mark events).
 
 ## Usage
 
@@ -19,7 +20,9 @@ plot_ts(df, base_size = 10, ylab = "Count", title = "")
 
 - base_size:
 
-  Base font size passed to `theme_bw()`. Default is `10`.
+  Base font size passed to
+  [`theme_bw()`](https://ggplot2.tidyverse.org/reference/ggtheme.html).
+  Default is `10`.
 
 - ylab:
 

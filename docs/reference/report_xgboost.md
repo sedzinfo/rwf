@@ -129,116 +129,59 @@ xgb_classification<-xgboost::xgb.train(
                     data=train_test_classification$xgb$f1$train,
                     evals=train_test_classification$xgb$f1$watchlist,
                     nround=20)
-#> [1]  train-logloss:0.601567  test-logloss:0.535093 
-#> [2]  train-logloss:0.575618  test-logloss:0.521200 
-#> [3]  train-logloss:0.559581  test-logloss:0.515340 
-#> [4]  train-logloss:0.549645  test-logloss:0.511429 
-#> [5]  train-logloss:0.543232  test-logloss:0.510642 
-#> [6]  train-logloss:0.539043  test-logloss:0.509685 
-#> [7]  train-logloss:0.536289  test-logloss:0.509001 
-#> [8]  train-logloss:0.534253  test-logloss:0.509510 
-#> [9]  train-logloss:0.532991  test-logloss:0.508879 
-#> [10] train-logloss:0.531934  test-logloss:0.509436 
-#> [11] train-logloss:0.531048  test-logloss:0.513843 
-#> [12] train-logloss:0.530487  test-logloss:0.518176 
-#> [13] train-logloss:0.530105  test-logloss:0.521507 
-#> [14] train-logloss:0.529684  test-logloss:0.517731 
-#> [15] train-logloss:0.529402  test-logloss:0.520672 
-#> [16] train-logloss:0.529249  test-logloss:0.522455 
-#> [17] train-logloss:0.528879  test-logloss:0.518311 
-#> [18] train-logloss:0.528678  test-logloss:0.520694 
-#> [19] train-logloss:0.528140  test-logloss:0.515638 
-#> [20] train-logloss:0.527980  test-logloss:0.518252 
+#> [1]  train-logloss:0.591452  test-logloss:0.612299 
+#> [2]  train-logloss:0.567817  test-logloss:0.594450 
+#> [3]  train-logloss:0.551699  test-logloss:0.584122 
+#> [4]  train-logloss:0.541590  test-logloss:0.580610 
+#> [5]  train-logloss:0.534795  test-logloss:0.577169 
+#> [6]  train-logloss:0.530139  test-logloss:0.576748 
+#> [7]  train-logloss:0.527660  test-logloss:0.574108 
+#> [8]  train-logloss:0.525916  test-logloss:0.571550 
+#> [9]  train-logloss:0.524702  test-logloss:0.573293 
+#> [10] train-logloss:0.523779  test-logloss:0.572424 
+#> [11] train-logloss:0.523133  test-logloss:0.571744 
+#> [12] train-logloss:0.522428  test-logloss:0.570725 
+#> [13] train-logloss:0.521823  test-logloss:0.568952 
+#> [14] train-logloss:0.521453  test-logloss:0.567706 
+#> [15] train-logloss:0.521048  test-logloss:0.570858 
+#> [16] train-logloss:0.520781  test-logloss:0.571206 
+#> [17] train-logloss:0.520570  test-logloss:0.570251 
+#> [18] train-logloss:0.520210  test-logloss:0.573325 
+#> [19] train-logloss:0.520024  test-logloss:0.573604 
+#> [20] train-logloss:0.519850  test-logloss:0.573921 
 xgb_regression<-xgboost::xgb.train(
                 data=train_test_regression$xgb$f1$train,
                 evals=train_test_regression$xgb$f1$watchlist,
                 nround=20)
-#> [1]  train-rmse:6.877490 test-rmse:6.881132 
-#> [2]  train-rmse:5.207159 test-rmse:5.844378 
-#> [3]  train-rmse:4.026195 test-rmse:5.177089 
-#> [4]  train-rmse:3.169878 test-rmse:4.787926 
-#> [5]  train-rmse:2.581531 test-rmse:4.580796 
-#> [6]  train-rmse:2.100192 test-rmse:4.304045 
-#> [7]  train-rmse:1.777937 test-rmse:4.165161 
-#> [8]  train-rmse:1.534497 test-rmse:3.980251 
-#> [9]  train-rmse:1.379046 test-rmse:3.961146 
-#> [10] train-rmse:1.247219 test-rmse:3.875961 
-#> [11] train-rmse:1.135899 test-rmse:3.798032 
-#> [12] train-rmse:1.050888 test-rmse:3.749944 
-#> [13] train-rmse:0.959931 test-rmse:3.728645 
-#> [14] train-rmse:0.905722 test-rmse:3.721090 
-#> [15] train-rmse:0.853247 test-rmse:3.731942 
-#> [16] train-rmse:0.822476 test-rmse:3.729514 
-#> [17] train-rmse:0.772964 test-rmse:3.678861 
-#> [18] train-rmse:0.731270 test-rmse:3.686072 
-#> [19] train-rmse:0.691505 test-rmse:3.695998 
-#> [20] train-rmse:0.676991 test-rmse:3.684742 
+#> [1]  train-rmse:6.932495 test-rmse:6.170404 
+#> [2]  train-rmse:5.231546 test-rmse:5.448754 
+#> [3]  train-rmse:4.043074 test-rmse:5.077008 
+#> [4]  train-rmse:3.174738 test-rmse:4.642024 
+#> [5]  train-rmse:2.547561 test-rmse:4.538237 
+#> [6]  train-rmse:2.112099 test-rmse:4.426193 
+#> [7]  train-rmse:1.797579 test-rmse:4.329764 
+#> [8]  train-rmse:1.562939 test-rmse:4.386720 
+#> [9]  train-rmse:1.383725 test-rmse:4.347521 
+#> [10] train-rmse:1.254522 test-rmse:4.321362 
+#> [11] train-rmse:1.135862 test-rmse:4.312929 
+#> [12] train-rmse:1.054336 test-rmse:4.287460 
+#> [13] train-rmse:0.951440 test-rmse:4.255665 
+#> [14] train-rmse:0.913182 test-rmse:4.248794 
+#> [15] train-rmse:0.855071 test-rmse:4.233847 
+#> [16] train-rmse:0.800970 test-rmse:4.249786 
+#> [17] train-rmse:0.764507 test-rmse:4.240963 
+#> [18] train-rmse:0.735382 test-rmse:4.246517 
+#> [19] train-rmse:0.677213 test-rmse:4.205235 
+#> [20] train-rmse:0.659834 test-rmse:4.204043 
 report_xgboost(model=xgb_classification,
                validation_data=train_test_classification$f$test$f1,
                label=train_test_classification$outcome,
                file=file.path(tempdir(),"Classification"))
-#> $observed_predicted
-#> 
-#> $plot_performance
-#> 
-#> $cut_performance
-#>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion
-#> 1   0.07838    0.40               1.00               0.25            0.25             1.0          0.6250
-#> 2   0.17838    0.68               0.88               0.33            0.70             0.6          0.6275
-#> 3   0.27838    0.68               0.83               0.29            0.75             0.4          0.5675
-#> 4   0.37838    0.60               0.75               0.00            0.75             0.0          0.3750
-#> 5   0.47838    0.60               0.75               0.00            0.75             0.0          0.3750
-#> 
-#> $cut
-#> [1] 0.1784
-#> 
-#> $confusion_matrix
-#>         0    1   sum    p
-#> 0   14.00 2.00 16.00 0.88
-#> 1    6.00 3.00  9.00 0.33
-#> sum 20.00 5.00 25.00 1.00
-#> p    0.70 0.60  1.00 0.68
-#> 
-#> $observed_predicted
-
-#> 
-#> $plot_performance
-
-#> 
-#> $cut_performance
-#>   cut_point Overall Collumn_Observed.1 Collumn_Observed.2 Row_Predicted.1 Row_Predicted.2 Mean_proportion
-#> 1   0.07838    0.40               1.00               0.25            0.25             1.0          0.6250
-#> 2   0.17838    0.68               0.88               0.33            0.70             0.6          0.6275
-#> 3   0.27838    0.68               0.83               0.29            0.75             0.4          0.5675
-#> 4   0.37838    0.60               0.75               0.00            0.75             0.0          0.3750
-#> 5   0.47838    0.60               0.75               0.00            0.75             0.0          0.3750
-#> 
-#> $cut
-#> [1] 0.1784
-#> 
-#> $confusion_matrix
-#>         0    1   sum    p
-#> 0   14.00 2.00 16.00 0.88
-#> 1    6.00 3.00  9.00 0.33
-#> sum 20.00 5.00 25.00 1.00
-#> p    0.70 0.60  1.00 0.68
-#> 
-
-
-
-
-
+#> Error: cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory
 report_xgboost(model=xgb_regression,
                validation_data=train_test_regression$f$test$f1,
                label=train_test_regression$outcome,
                file=file.path(tempdir(),"Regression"))
-#> $observed_predicted
-#> 
-#> $observed_predicted
-
-#> 
-
-
-
-
+#> Warning: restarting interrupted promise evaluation
+#> Error: cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory
 ```

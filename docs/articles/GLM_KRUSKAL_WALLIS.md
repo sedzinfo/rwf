@@ -112,17 +112,11 @@ With two groups the Kruskal-Wallis test is the Wilcoxon-Mann-Whitney
 rank-sum test. Both give the same p value when the Wilcoxon test uses
 the normal approximation without continuity correction:
 
-``` r
-
-stats::kruskal.test(bp_before ~ sex, data = df_blood_pressure)$p.value
-```
+`stats``::`[`kruskal.test`](https://rdrr.io/r/stats/kruskal.test.html)`(``bp_before`` ``~`` ``sex``, data ``=`` ``df_blood_pressure``)``$``p.value`
 
     ## [1] 0.004681996
 
-``` r
-
-stats::wilcox.test(bp_before ~ sex, data = df_blood_pressure, exact = FALSE, correct = FALSE)$p.value
-```
+`stats``::`[`wilcox.test`](https://rdrr.io/r/stats/wilcox.test.html)`(``bp_before`` ``~`` ``sex``, data ``=`` ``df_blood_pressure``, exact ``=`` ``FALSE``, correct ``=`` ``FALSE``)``$``p.value`
 
     ## [1] 0.004681996
 
@@ -151,26 +145,17 @@ group, and an outcome measured in whole numbers. The boxplots and the
 Fligner-Killeen test of equal spread check whether the groups have a
 similar shape and spread:
 
-``` r
-
-boxplot(bp_before ~ agegrp, data = df_blood_pressure, xlab = "age group", ylab = "blood pressure before")
-```
+[`boxplot`](https://rdrr.io/r/graphics/boxplot.html)`(``bp_before`` ``~`` ``agegrp``, data ``=`` ``df_blood_pressure``, xlab ``=`` ``"age group"``, ylab ``=`` ``"blood pressure before"``)`
 
 ![](GLM_KRUSKAL_WALLIS_files/figure-html/assumptions-1.png)
 
-``` r
-
-table(df_blood_pressure$agegrp)
-```
+[`table`](https://rdrr.io/r/base/table.html)`(``df_blood_pressure``$``agegrp``)`
 
     ## 
     ## 30-45 46-59   60+ 
     ##    40    40    40
 
-``` r
-
-stats::fligner.test(bp_before ~ agegrp, data = df_blood_pressure)
-```
+`stats``::`[`fligner.test`](https://rdrr.io/r/stats/fligner.test.html)`(``bp_before`` ``~`` ``agegrp``, data ``=`` ``df_blood_pressure``)`
 
     ## 
     ##  Fligner-Killeen test of homogeneity of variances
@@ -252,11 +237,7 @@ the \eta^2 scale with \eta^2=d^2/(d^2+4):
 | very large | 0.26 to \< 0.50           | 1.2       |
 | huge       | ≥ 0.50                    | 2.0       |
 
-``` r
-
-d <- c(0.2, 0.5, 0.8, 1.2, 2)
-data.frame(d, eta_squared = d^2 / (d^2 + 4))
-```
+`d`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.2``, ``0.5``, ``0.8``, ``1.2``, ``2``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``d``, eta_squared ``=`` ``d``^``2`` ``/`` ``(``d``^``2`` ``+`` ``4``)``)`
 
     ##     d eta_squared
     ## 1 0.2  0.00990099
@@ -275,10 +256,7 @@ age groups of 40. The formula `bp_before ~ agegrp` asks whether blood
 pressure before treatment differs between age groups. Blood pressure is
 recorded in whole numbers, so there are many ties.
 
-``` r
-
-head(df_blood_pressure)
-```
+[`head`](https://rdrr.io/r/utils/head.html)`(``df_blood_pressure``)`
 
     ##   patient  sex agegrp bp_before bp_after
     ## 1       1 Male  30-45       143      153
@@ -288,11 +266,7 @@ head(df_blood_pressure)
     ## 5       5 Male  30-45       146      141
     ## 6       6 Male  30-45       150      147
 
-``` r
-
-form <- formula(bp_before ~ agegrp)
-table(df_blood_pressure$agegrp)
-```
+`form`` ``<-`` `[`formula`](https://rdrr.io/r/stats/formula.html)`(``bp_before`` ``~`` ``agegrp``)`` `[`table`](https://rdrr.io/r/base/table.html)`(``df_blood_pressure``$``agegrp``)`
 
     ## 
     ## 30-45 46-59   60+ 
@@ -300,11 +274,7 @@ table(df_blood_pressure$agegrp)
 
 ## compute_kruskal_wallis_test
 
-``` r
-
-result <- compute_kruskal_wallis_test(formula = form, df = df_blood_pressure)
-result
-```
+`result`` ``<-`` `[`compute_kruskal_wallis_test`](https://sedzinfo.github.io/rwf/reference/compute_kruskal_wallis_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_blood_pressure``)`` ``result`
 
     ##              formula                       method     etasq epsilonsq        H df            p
     ## 1 bp_before ~ agegrp Kruskal-Wallis rank sum test 0.1501232 0.1644069 19.56442  2 5.644699e-05
@@ -325,17 +295,7 @@ The output columns are:
 
 Every quantity from the formulas above, computed by hand.
 
-``` r
-
-x <- df_blood_pressure$bp_before
-g <- factor(df_blood_pressure$agegrp)
-n <- length(x)
-k <- nlevels(g)
-r <- rank(x)
-data.frame(n_j = tapply(r, g, length),
-           R_j = tapply(r, g, sum),
-           mean_rank = tapply(r, g, mean))
-```
+`x`` ``<-`` ``df_blood_pressure``$``bp_before`` ``g`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``df_blood_pressure``$``agegrp``)`` ``n`` ``<-`` `[`length`](https://rdrr.io/r/base/length.html)`(``x``)`` ``k`` ``<-`` `[`nlevels`](https://rdrr.io/r/base/nlevels.html)`(``g``)`` ``r`` ``<-`` `[`rank`](https://rdrr.io/r/base/rank.html)`(``x``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``n_j ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``r``, ``g``, ``length``)``,`` `` R_j ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``r``, ``g``, ``sum``)``,`` `` mean_rank ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``r``, ``g``, ``mean``)``)`
 
     ##       n_j    R_j mean_rank
     ## 30-45  40 1842.0   46.0500
@@ -344,50 +304,25 @@ data.frame(n_j = tapply(r, g, length),
 
 H without ties, the tie correction and the corrected H:
 
-``` r
-
-R_j <- tapply(r, g, sum)
-n_j <- tapply(r, g, length)
-H_0 <- 12 / (n * (n + 1)) * sum(R_j^2 / n_j) - 3 * (n + 1)
-t_l <- table(x)
-C <- 1 - sum(t_l^3 - t_l) / (n^3 - n)
-H <- H_0 / C
-data.frame(H_0, C, H)
-```
+`R_j`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``r``, ``g``, ``sum``)`` ``n_j`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``r``, ``g``, ``length``)`` ``H_0`` ``<-`` ``12`` ``/`` ``(``n`` ``*`` ``(``n`` ``+`` ``1``)``)`` ``*`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``R_j``^``2`` ``/`` ``n_j``)`` ``-`` ``3`` ``*`` ``(``n`` ``+`` ``1``)`` ``t_l`` ``<-`` `[`table`](https://rdrr.io/r/base/table.html)`(``x``)`` ``C`` ``<-`` ``1`` ``-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``t_l``^``3`` ``-`` ``t_l``)`` ``/`` ``(``n``^``3`` ``-`` ``n``)`` ``H`` ``<-`` ``H_0`` ``/`` ``C`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``H_0``, ``C``, ``H``)`
 
     ##       H_0         C        H
     ## 1 19.5403 0.9987673 19.56442
 
 The same H from the sums of squares of the ranks:
 
-``` r
-
-ss_between <- sum(n_j * (tapply(r, g, mean) - mean(r))^2)
-ss_total <- sum((r - mean(r))^2)
-(n - 1) * ss_between / ss_total
-```
+`ss_between`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``n_j`` ``*`` ``(`[`tapply`](https://rdrr.io/r/base/tapply.html)`(``r``, ``g``, ``mean``)`` ``-`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``r``)``)``^``2``)`` ``ss_total`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``(``r`` ``-`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``r``)``)``^``2``)`` ``(``n`` ``-`` ``1``)`` ``*`` ``ss_between`` ``/`` ``ss_total`
 
     ## [1] 19.56442
 
 Degrees of freedom, p value and effect sizes:
 
-``` r
-
-by_hand <- data.frame(etasq = (H - k + 1) / (n - k),
-                      epsilonsq = H / (n - 1),
-                      H = H,
-                      df = k - 1,
-                      p = pchisq(H, k - 1, lower.tail = FALSE))
-by_hand
-```
+`by_hand`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``etasq ``=`` ``(``H`` ``-`` ``k`` ``+`` ``1``)`` ``/`` ``(``n`` ``-`` ``k``)``,`` `` epsilonsq ``=`` ``H`` ``/`` ``(``n`` ``-`` ``1``)``,`` `` H ``=`` ``H``,`` `` df ``=`` ``k`` ``-`` ``1``,`` `` p ``=`` `[`pchisq`](https://rdrr.io/r/stats/Chisquare.html)`(``H``, ``k`` ``-`` ``1``, lower.tail ``=`` ``FALSE``)``)`` ``by_hand`
 
     ##       etasq epsilonsq        H df            p
     ## 1 0.1501232 0.1644069 19.56442  2 5.644699e-05
 
-``` r
-
-all.equal(by_hand, result[, c("etasq", "epsilonsq", "H", "df", "p")], check.attributes = FALSE)
-```
+[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(``by_hand``, ``result``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"etasq"``, ``"epsilonsq"``, ``"H"``, ``"df"``, ``"p"``)``]``, check.attributes ``=`` ``FALSE``)`
 
     ## [1] TRUE
 
@@ -399,10 +334,7 @@ all.equal(by_hand, result[, c("etasq", "epsilonsq", "H", "df", "p")], check.attr
 [`coin::kruskal_test`](https://rdrr.io/pkg/coin/man/LocationTests.html)
 give the same H, degrees of freedom and p value:
 
-``` r
-
-stats::kruskal.test(formula = form, data = df_blood_pressure)
-```
+`stats``::`[`kruskal.test`](https://rdrr.io/r/stats/kruskal.test.html)`(``formula ``=`` ``form``, data ``=`` ``df_blood_pressure``)`
 
     ## 
     ##  Kruskal-Wallis rank sum test
@@ -410,10 +342,7 @@ stats::kruskal.test(formula = form, data = df_blood_pressure)
     ## data:  bp_before by agegrp
     ## Kruskal-Wallis chi-squared = 19.564, df = 2, p-value = 5.645e-05
 
-``` r
-
-coin::kruskal_test(bp_before ~ factor(agegrp), data = df_blood_pressure)
-```
+`coin``::`[`kruskal_test`](https://rdrr.io/pkg/coin/man/LocationTests.html)`(``bp_before`` ``~`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``agegrp``)``, data ``=`` ``df_blood_pressure``)`
 
     ## 
     ##  Asymptotic Kruskal-Wallis Test
@@ -425,17 +354,11 @@ coin::kruskal_test(bp_before ~ factor(agegrp), data = df_blood_pressure)
 
 \varepsilon^2_R is the R^2 of a linear model of the ranks on the groups:
 
-``` r
-
-summary(lm(rank(bp_before) ~ agegrp, data = df_blood_pressure))$r.squared
-```
+[`summary`](https://rdrr.io/r/base/summary.html)`(`[`lm`](https://rdrr.io/r/stats/lm.html)`(`[`rank`](https://rdrr.io/r/base/rank.html)`(``bp_before``)`` ``~`` ``agegrp``, data ``=`` ``df_blood_pressure``)``)``$``r.squared`
 
     ## [1] 0.1644069
 
-``` r
-
-result$epsilonsq
-```
+`result``$``epsilonsq`
 
     ## [1] 0.1644069
 
@@ -454,39 +377,26 @@ change slightly from run to run. The [confidence
 intervals](#confidence-intervals) section compares them with the
 intervals from rwf.
 
-``` r
-
-rcompanion::epsilonSquared(x = df_blood_pressure$bp_before, g = df_blood_pressure$agegrp,
-                           group = "row", ci = TRUE, conf = 0.95, type = "perc", R = 1000, digits = 3)
-```
+`rcompanion``::`[`epsilonSquared`](https://rdrr.io/pkg/rcompanion/man/epsilonSquared.html)`(``x ``=`` ``df_blood_pressure``$``bp_before``, g ``=`` ``df_blood_pressure``$``agegrp``,`` `` group ``=`` ``"row"``, ci ``=`` ``TRUE``, conf ``=`` ``0.95``, type ``=`` ``"perc"``, R ``=`` ``1000``, digits ``=`` ``3``)`
 
     ##   epsilon.squared lower.ci upper.ci
     ## 1           0.164   0.0646    0.314
 
-``` r
-
-rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
-```
+`rstatix``::`[`kruskal_effsize`](https://rpkgs.datanovia.com/rstatix/reference/kruskal_effsize.html)`(``df_blood_pressure``, ``form``, ci ``=`` ``TRUE``, conf.level ``=`` ``0.95``, ci.type ``=`` ``"perc"``, nboot ``=`` ``100``)`
 
     ## # A tibble: 1 × 7
     ##   .y.           n effsize conf.low conf.high method  magnitude
     ## * <chr>     <int>   <dbl>    <dbl>     <dbl> <chr>   <ord>    
     ## 1 bp_before   120   0.150     0.05      0.28 eta2[H] large
 
-``` r
-
-rstatix::kruskal_effsize(df_blood_pressure, form, method = "epsilon2")
-```
+`rstatix``::`[`kruskal_effsize`](https://rpkgs.datanovia.com/rstatix/reference/kruskal_effsize.html)`(``df_blood_pressure``, ``form``, method ``=`` ``"epsilon2"``)`
 
     ## # A tibble: 1 × 5
     ##   .y.           n effsize method   magnitude
     ## * <chr>     <int>   <dbl> <chr>    <ord>    
     ## 1 bp_before   120   0.164 epsilon2 large
 
-``` r
-
-effectsize::rank_epsilon_squared(form, data = df_blood_pressure)
-```
+`effectsize``::`[`rank_epsilon_squared`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``form``, data ``=`` ``df_blood_pressure``)`
 
     ## Epsilon2 (rank) |       95% CI
     ## ------------------------------
@@ -494,10 +404,7 @@ effectsize::rank_epsilon_squared(form, data = df_blood_pressure)
     ## 
     ## - One-sided CIs: upper bound fixed at [1.00].
 
-``` r
-
-effectsize::rank_eta_squared(form, data = df_blood_pressure)
-```
+`effectsize``::`[`rank_eta_squared`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``form``, data ``=`` ``df_blood_pressure``)`
 
     ## Eta2 (rank) |       95% CI
     ## --------------------------
@@ -512,45 +419,14 @@ other packages and returns the difference. `rstatix` and `effectsize`
 truncate \eta^2_H at 0, so the rwf value is truncated in the same way
 before the comparison.
 
-``` r
-
-check_kruskal_wallis <- function(formula, df) {
-  y <- all.vars(formula)[1]
-  g <- all.vars(formula)[2]
-  df <- stats::na.omit(data.frame(y = df[[y]], g = factor(df[[g]])))
-  rwf <- compute_kruskal_wallis_test(formula = y ~ g, df = df)
-  kw <- stats::kruskal.test(y ~ g, data = df)
-  rwf_etasq <- max(0, min(1, rwf$etasq))
-  comparison <- data.frame(
-    statistic = c("H", "H", "df", "p", "epsilonsq", "epsilonsq", "epsilonsq", "epsilonsq", "etasq", "etasq"),
-    package = c("stats::kruskal.test", "coin::kruskal_test", "stats::kruskal.test", "stats::kruskal.test",
-                "lm on ranks", "rcompanion::epsilonSquared", "rstatix::kruskal_effsize", "effectsize::rank_epsilon_squared",
-                "rstatix::kruskal_effsize", "effectsize::rank_eta_squared"),
-    rwf = c(rwf$H, rwf$H, rwf$df, rwf$p,
-            rwf$epsilonsq, rwf$epsilonsq, rwf$epsilonsq, rwf$epsilonsq,
-            rwf_etasq, rwf_etasq),
-    other = c(unname(kw$statistic),
-              unname(coin::statistic(coin::kruskal_test(y ~ g, data = df))),
-              unname(kw$parameter),
-              kw$p.value,
-              summary(lm(rank(y) ~ g, data = df))$r.squared,
-              unname(rcompanion::epsilonSquared(x = df$y, g = df$g, digits = 15)),
-              rstatix::kruskal_effsize(df, y ~ g, method = "epsilon2")$effsize,
-              effectsize::rank_epsilon_squared(y ~ g, data = df, ci = NULL)$rank_epsilon_squared,
-              rstatix::kruskal_effsize(df, y ~ g)$effsize,
-              effectsize::rank_eta_squared(y ~ g, data = df, ci = NULL)$rank_eta_squared))
-  comparison$difference <- comparison$rwf - comparison$other
-  comparison
-}
-check_kruskal_wallis(formula = form, df = df_blood_pressure)
-```
+`check_kruskal_wallis`` ``<-`` ``function``(``formula``, ``df``)`` ``{`` `` ``y`` ``<-`` `[`all.vars`](https://rdrr.io/r/base/allnames.html)`(``formula``)``[``1``]`` `` ``g`` ``<-`` `[`all.vars`](https://rdrr.io/r/base/allnames.html)`(``formula``)``[``2``]`` `` ``df`` ``<-`` ``stats``::`[`na.omit`](https://rdrr.io/r/stats/na.fail.html)`(`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``y ``=`` ``df``[[``y``]``]``, g ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``df``[[``g``]``]``)``)``)`` `` ``rwf`` ``<-`` `[`compute_kruskal_wallis_test`](https://sedzinfo.github.io/rwf/reference/compute_kruskal_wallis_test.md)`(``formula ``=`` ``y`` ``~`` ``g``, df ``=`` ``df``)`` `` ``kw`` ``<-`` ``stats``::`[`kruskal.test`](https://rdrr.io/r/stats/kruskal.test.html)`(``y`` ``~`` ``g``, data ``=`` ``df``)`` `` ``rwf_etasq`` ``<-`` `[`max`](https://rdrr.io/r/base/Extremes.html)`(``0``, `[`min`](https://rdrr.io/r/base/Extremes.html)`(``1``, ``rwf``$``etasq``)``)`` `` ``comparison`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` statistic ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"H"``, ``"H"``, ``"df"``, ``"p"``, ``"epsilonsq"``, ``"epsilonsq"``, ``"epsilonsq"``, ``"epsilonsq"``, ``"etasq"``, ``"etasq"``)``,`` `` package ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"stats::kruskal.test"``, ``"coin::kruskal_test"``, ``"stats::kruskal.test"``, ``"stats::kruskal.test"``,`` `` ``"lm on ranks"``, ``"rcompanion::epsilonSquared"``, ``"rstatix::kruskal_effsize"``, ``"effectsize::rank_epsilon_squared"``,`` `` ``"rstatix::kruskal_effsize"``, ``"effectsize::rank_eta_squared"``)``,`` `` rwf ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``rwf``$``H``, ``rwf``$``H``, ``rwf``$``df``, ``rwf``$``p``,`` `` ``rwf``$``epsilonsq``, ``rwf``$``epsilonsq``, ``rwf``$``epsilonsq``, ``rwf``$``epsilonsq``,`` `` ``rwf_etasq``, ``rwf_etasq``)``,`` `` other ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`unname`](https://rdrr.io/r/base/unname.html)`(``kw``$``statistic``)``,`` `` `[`unname`](https://rdrr.io/r/base/unname.html)`(``coin``::`[`statistic`](https://rdrr.io/pkg/coin/man/statistic-methods.html)`(``coin``::`[`kruskal_test`](https://rdrr.io/pkg/coin/man/LocationTests.html)`(``y`` ``~`` ``g``, data ``=`` ``df``)``)``)``,`` `` `[`unname`](https://rdrr.io/r/base/unname.html)`(``kw``$``parameter``)``,`` `` ``kw``$``p.value``,`` `` `[`summary`](https://rdrr.io/r/base/summary.html)`(`[`lm`](https://rdrr.io/r/stats/lm.html)`(`[`rank`](https://rdrr.io/r/base/rank.html)`(``y``)`` ``~`` ``g``, data ``=`` ``df``)``)``$``r.squared``,`` `` `[`unname`](https://rdrr.io/r/base/unname.html)`(``rcompanion``::`[`epsilonSquared`](https://rdrr.io/pkg/rcompanion/man/epsilonSquared.html)`(``x ``=`` ``df``$``y``, g ``=`` ``df``$``g``, digits ``=`` ``15``)``)``,`` `` ``rstatix``::`[`kruskal_effsize`](https://rpkgs.datanovia.com/rstatix/reference/kruskal_effsize.html)`(``df``, ``y`` ``~`` ``g``, method ``=`` ``"epsilon2"``)``$``effsize``,`` `` ``effectsize``::`[`rank_epsilon_squared`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``y`` ``~`` ``g``, data ``=`` ``df``, ci ``=`` ``NULL``)``$``rank_epsilon_squared``,`` `` ``rstatix``::`[`kruskal_effsize`](https://rpkgs.datanovia.com/rstatix/reference/kruskal_effsize.html)`(``df``, ``y`` ``~`` ``g``)``$``effsize``,`` `` ``effectsize``::`[`rank_eta_squared`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``y`` ``~`` ``g``, data ``=`` ``df``, ci ``=`` ``NULL``)``$``rank_eta_squared``)``)`` `` ``comparison``$``difference`` ``<-`` ``comparison``$``rwf`` ``-`` ``comparison``$``other`` `` ``comparison`` ``}`` ``check_kruskal_wallis``(``formula ``=`` ``form``, df ``=`` ``df_blood_pressure``)`
 
     ##    statistic                          package          rwf        other   difference
     ## 1          H              stats::kruskal.test 1.956442e+01 1.956442e+01 0.000000e+00
     ## 2          H               coin::kruskal_test 1.956442e+01 1.956442e+01 1.776357e-14
     ## 3         df              stats::kruskal.test 2.000000e+00 2.000000e+00 0.000000e+00
     ## 4          p              stats::kruskal.test 5.644699e-05 5.644699e-05 0.000000e+00
-    ## 5  epsilonsq                      lm on ranks 1.644069e-01 1.644069e-01 1.665335e-16
+    ## 5  epsilonsq                      lm on ranks 1.644069e-01 1.644069e-01 3.053113e-16
     ## 6  epsilonsq       rcompanion::epsilonSquared 1.644069e-01 1.644069e-01 1.110223e-16
     ## 7  epsilonsq         rstatix::kruskal_effsize 1.644069e-01 1.644069e-01 0.000000e+00
     ## 8  epsilonsq effectsize::rank_epsilon_squared 1.644069e-01 1.644069e-01 0.000000e+00
@@ -561,35 +437,14 @@ The same check on six datasets with different numbers of groups, sample
 sizes and amounts of ties. `max_abs_difference` is the largest absolute
 difference across all the comparisons for that dataset:
 
-``` r
-
-datasets <- list(
-  list(formula = bp_before ~ agegrp, df = df_blood_pressure),
-  list(formula = qsec ~ cyl, df = mtcars),
-  list(formula = weight ~ group, df = PlantGrowth),
-  list(formula = count ~ spray, df = InsectSprays),
-  list(formula = weight ~ feed, df = chickwts),
-  list(formula = len ~ dose, df = ToothGrowth)
-)
-do.call(rbind, lapply(datasets, function(d) {
-  rwf <- compute_kruskal_wallis_test(formula = d$formula, df = d$df)
-  check <- check_kruskal_wallis(formula = d$formula, df = d$df)
-  data.frame(formula = deparse(d$formula),
-             n = nrow(d$df),
-             k = rwf$df + 1,
-             H = rwf$H,
-             etasq = rwf$etasq,
-             epsilonsq = rwf$epsilonsq,
-             max_abs_difference = max(abs(check$difference)))
-}))
-```
+`datasets`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``bp_before`` ``~`` ``agegrp``, df ``=`` ``df_blood_pressure``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``qsec`` ``~`` ``cyl``, df ``=`` ``mtcars``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``weight`` ``~`` ``group``, df ``=`` ``PlantGrowth``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``count`` ``~`` ``spray``, df ``=`` ``InsectSprays``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``weight`` ``~`` ``feed``, df ``=`` ``chickwts``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``len`` ``~`` ``dose``, df ``=`` ``ToothGrowth``)`` ``)`` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`lapply`](https://rdrr.io/r/base/lapply.html)`(``datasets``, ``function``(``d``)`` ``{`` `` ``rwf`` ``<-`` `[`compute_kruskal_wallis_test`](https://sedzinfo.github.io/rwf/reference/compute_kruskal_wallis_test.md)`(``formula ``=`` ``d``$``formula``, df ``=`` ``d``$``df``)`` `` ``check`` ``<-`` ``check_kruskal_wallis``(``formula ``=`` ``d``$``formula``, df ``=`` ``d``$``df``)`` `` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``formula ``=`` `[`deparse`](https://rdrr.io/r/base/deparse.html)`(``d``$``formula``)``,`` `` n ``=`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``d``$``df``)``,`` `` k ``=`` ``rwf``$``df`` ``+`` ``1``,`` `` H ``=`` ``rwf``$``H``,`` `` etasq ``=`` ``rwf``$``etasq``,`` `` epsilonsq ``=`` ``rwf``$``epsilonsq``,`` `` max_abs_difference ``=`` `[`max`](https://rdrr.io/r/base/Extremes.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``check``$``difference``)``)``)`` ``}``)``)`
 
     ##              formula   n k         H     etasq epsilonsq max_abs_difference
     ## 1 bp_before ~ agegrp 120 3 19.564417 0.1501232 0.1644069       1.776357e-14
-    ## 2         qsec ~ cyl  32 3 10.155158 0.2812123 0.3275857       5.329071e-15
-    ## 3     weight ~ group  30 3  7.988229 0.2217862 0.2754562       1.421085e-14
-    ## 4      count ~ spray  72 6 54.691345 0.7528992 0.7703006       2.220446e-16
-    ## 5      weight ~ feed  71 6 37.342718 0.4975803 0.5334674       2.131628e-14
+    ## 2         qsec ~ cyl  32 3 10.155158 0.2812123 0.3275857       1.776357e-15
+    ## 3     weight ~ group  30 3  7.988229 0.2217862 0.2754562       1.598721e-14
+    ## 4      count ~ spray  72 6 54.691345 0.7528992 0.7703006       7.105427e-15
+    ## 5      weight ~ feed  71 6 37.342718 0.4975803 0.5334674       7.105427e-15
     ## 6         len ~ dose  60 3 40.668935 0.6784024 0.6893040       7.105427e-15
 
 ## Confidence intervals
@@ -608,11 +463,7 @@ estimates. Unlike `rstatix` and `effectsize`, rwf does not truncate the
 bootstrap values of \eta^2_H at 0, so its lower limit can be negative
 when the effect is small.
 
-``` r
-
-set.seed(1)
-compute_kruskal_wallis_test(formula = form, df = df_blood_pressure, ci = TRUE, conf.level = 0.95, nboot = 5000)
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` `[`compute_kruskal_wallis_test`](https://sedzinfo.github.io/rwf/reference/compute_kruskal_wallis_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_blood_pressure``, ci ``=`` ``TRUE``, conf.level ``=`` ``0.95``, nboot ``=`` ``5000``)`
 
     ##              formula                       method     etasq etasq_lower etasq_upper epsilonsq epsilonsq_lower epsilonsq_upper        H df            p
     ## 1 bp_before ~ agegrp Kruskal-Wallis rank sum test 0.1501232  0.05272121   0.2940747 0.1644069      0.06864186        0.305939 19.56442  2 5.644699e-05
@@ -621,30 +472,7 @@ The other packages use the same percentile method. Each bootstrap draws
 different resamples, so the limits agree only to about two decimals, and
 they get closer as `nboot` grows:
 
-``` r
-
-set.seed(1)
-rwf <- compute_kruskal_wallis_test(formula = form, df = df_blood_pressure, ci = TRUE, nboot = 5000)
-set.seed(1)
-rcompanion_epsilonsq <- rcompanion::epsilonSquared(x = df_blood_pressure$bp_before, g = df_blood_pressure$agegrp,
-                                                   ci = TRUE, type = "perc", R = 5000, digits = 15)
-set.seed(1)
-rstatix_etasq <- rstatix::kruskal_effsize(df_blood_pressure, form, ci = TRUE, ci.type = "perc", nboot = 5000)
-set.seed(1)
-effectsize_epsilonsq <- effectsize::rank_epsilon_squared(form, data = df_blood_pressure, alternative = "two.sided", iterations = 5000)
-set.seed(1)
-effectsize_etasq <- effectsize::rank_eta_squared(form, data = df_blood_pressure, alternative = "two.sided", iterations = 5000)
-data.frame(
-  statistic = c("etasq", "etasq", "etasq", "epsilonsq", "epsilonsq", "epsilonsq"),
-  package = c("rwf", "rstatix::kruskal_effsize", "effectsize::rank_eta_squared",
-              "rwf", "rcompanion::epsilonSquared", "effectsize::rank_epsilon_squared"),
-  estimate = c(rwf$etasq, rstatix_etasq$effsize, effectsize_etasq$rank_eta_squared,
-               rwf$epsilonsq, rcompanion_epsilonsq$epsilon.squared, effectsize_epsilonsq$rank_epsilon_squared),
-  lower = c(rwf$etasq_lower, rstatix_etasq$conf.low, effectsize_etasq$CI_low,
-            rwf$epsilonsq_lower, rcompanion_epsilonsq$lower.ci, effectsize_epsilonsq$CI_low),
-  upper = c(rwf$etasq_upper, rstatix_etasq$conf.high, effectsize_etasq$CI_high,
-            rwf$epsilonsq_upper, rcompanion_epsilonsq$upper.ci, effectsize_epsilonsq$CI_high))
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``rwf`` ``<-`` `[`compute_kruskal_wallis_test`](https://sedzinfo.github.io/rwf/reference/compute_kruskal_wallis_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_blood_pressure``, ci ``=`` ``TRUE``, nboot ``=`` ``5000``)`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``rcompanion_epsilonsq`` ``<-`` ``rcompanion``::`[`epsilonSquared`](https://rdrr.io/pkg/rcompanion/man/epsilonSquared.html)`(``x ``=`` ``df_blood_pressure``$``bp_before``, g ``=`` ``df_blood_pressure``$``agegrp``,`` `` ci ``=`` ``TRUE``, type ``=`` ``"perc"``, R ``=`` ``5000``, digits ``=`` ``15``)`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``rstatix_etasq`` ``<-`` ``rstatix``::`[`kruskal_effsize`](https://rpkgs.datanovia.com/rstatix/reference/kruskal_effsize.html)`(``df_blood_pressure``, ``form``, ci ``=`` ``TRUE``, ci.type ``=`` ``"perc"``, nboot ``=`` ``5000``)`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``effectsize_epsilonsq`` ``<-`` ``effectsize``::`[`rank_epsilon_squared`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``form``, data ``=`` ``df_blood_pressure``, alternative ``=`` ``"two.sided"``, iterations ``=`` ``5000``)`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``effectsize_etasq`` ``<-`` ``effectsize``::`[`rank_eta_squared`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``form``, data ``=`` ``df_blood_pressure``, alternative ``=`` ``"two.sided"``, iterations ``=`` ``5000``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` statistic ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"etasq"``, ``"etasq"``, ``"etasq"``, ``"epsilonsq"``, ``"epsilonsq"``, ``"epsilonsq"``)``,`` `` package ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"rwf"``, ``"rstatix::kruskal_effsize"``, ``"effectsize::rank_eta_squared"``,`` `` ``"rwf"``, ``"rcompanion::epsilonSquared"``, ``"effectsize::rank_epsilon_squared"``)``,`` `` estimate ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``rwf``$``etasq``, ``rstatix_etasq``$``effsize``, ``effectsize_etasq``$``rank_eta_squared``,`` `` ``rwf``$``epsilonsq``, ``rcompanion_epsilonsq``$``epsilon.squared``, ``effectsize_epsilonsq``$``rank_epsilon_squared``)``,`` `` lower ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``rwf``$``etasq_lower``, ``rstatix_etasq``$``conf.low``, ``effectsize_etasq``$``CI_low``,`` `` ``rwf``$``epsilonsq_lower``, ``rcompanion_epsilonsq``$``lower.ci``, ``effectsize_epsilonsq``$``CI_low``)``,`` `` upper ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``rwf``$``etasq_upper``, ``rstatix_etasq``$``conf.high``, ``effectsize_etasq``$``CI_high``,`` `` ``rwf``$``epsilonsq_upper``, ``rcompanion_epsilonsq``$``upper.ci``, ``effectsize_epsilonsq``$``CI_high``)``)`
 
     ##   statistic                          package  estimate      lower     upper
     ## 1     etasq                              rwf 0.1501232 0.05272121 0.2940747
@@ -666,15 +494,7 @@ population effect is the same in every row. As the sample grows, H grows
 and the p value drops towards 0, while \eta^2_H and \varepsilon^2_R
 settle around the same value:
 
-``` r
-
-set.seed(1)
-do.call(rbind, lapply(c(10, 30, 100, 300, 1000), function(n_per_group) {
-  sim <- data.frame(group = rep(c("a", "b", "c"), each = n_per_group),
-                    score = rnorm(3 * n_per_group, mean = rep(c(0, 0.3, 0.6), each = n_per_group)))
-  cbind(n_per_group, compute_kruskal_wallis_test(formula = score ~ group, df = sim)[, c("H", "p", "etasq", "epsilonsq")])
-}))
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`lapply`](https://rdrr.io/r/base/lapply.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``10``, ``30``, ``100``, ``300``, ``1000``)``, ``function``(``n_per_group``)`` ``{`` `` ``sim`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``group ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"a"``, ``"b"``, ``"c"``)``, each ``=`` ``n_per_group``)``,`` `` score ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``3`` ``*`` ``n_per_group``, mean ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``0.3``, ``0.6``)``, each ``=`` ``n_per_group``)``)``)`` `` `[`cbind`](https://rdrr.io/r/base/cbind.html)`(``n_per_group``, `[`compute_kruskal_wallis_test`](https://sedzinfo.github.io/rwf/reference/compute_kruskal_wallis_test.md)`(``formula ``=`` ``score`` ``~`` ``group``, df ``=`` ``sim``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"H"``, ``"p"``, ``"etasq"``, ``"epsilonsq"``)``]``)`` ``}``)``)`
 
     ##   n_per_group          H            p       etasq  epsilonsq
     ## 1          10   1.643871 4.395800e-01 -0.01318996 0.05668521
@@ -693,18 +513,7 @@ When there is no effect at all, the average \varepsilon^2_R is close to
 of 10 the bias is 2/29\approx0.069, which is already above the “medium”
 benchmark:
 
-``` r
-
-set.seed(1)
-null_effects <- t(replicate(2000, {
-  sim <- data.frame(group = rep(c("a", "b", "c"), each = 10), score = rnorm(30))
-  unlist(compute_kruskal_wallis_test(formula = score ~ group, df = sim)[, c("etasq", "epsilonsq")])
-}))
-data.frame(mean_etasq = mean(null_effects[, "etasq"]),
-           mean_epsilonsq = mean(null_effects[, "epsilonsq"]),
-           expected_epsilonsq = (3 - 1) / (30 - 1),
-           proportion_negative_etasq = mean(null_effects[, "etasq"] < 0))
-```
+[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``null_effects`` ``<-`` `[`t`](https://rdrr.io/r/base/t.html)`(`[`replicate`](https://rdrr.io/r/base/lapply.html)`(``2000``, ``{`` `` ``sim`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``group ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"a"``, ``"b"``, ``"c"``)``, each ``=`` ``10``)``, score ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``30``)``)`` `` `[`unlist`](https://rdrr.io/r/base/unlist.html)`(`[`compute_kruskal_wallis_test`](https://sedzinfo.github.io/rwf/reference/compute_kruskal_wallis_test.md)`(``formula ``=`` ``score`` ``~`` ``group``, df ``=`` ``sim``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"etasq"``, ``"epsilonsq"``)``]``)`` ``}``)``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``mean_etasq ``=`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``null_effects``[``, ``"etasq"``]``)``,`` `` mean_epsilonsq ``=`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``null_effects``[``, ``"epsilonsq"``]``)``,`` `` expected_epsilonsq ``=`` ``(``3`` ``-`` ``1``)`` ``/`` ``(``30`` ``-`` ``1``)``,`` `` proportion_negative_etasq ``=`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``null_effects``[``, ``"etasq"``]`` ``<`` ``0``)``)`
 
     ##      mean_etasq mean_epsilonsq expected_epsilonsq proportion_negative_etasq
     ## 1 -0.0008525209     0.06817179         0.06896552                     0.625
@@ -718,29 +527,19 @@ If the groups have identical rank distributions, H=0 and
 \eta^2_H=(0-k+1)/(n-k) is negative. rwf returns the negative value,
 while `rstatix` and `effectsize` report 0:
 
-``` r
-
-identical_groups <- data.frame(group = rep(c("a", "b", "c"), each = 5), score = rep(1:5, times = 3))
-compute_kruskal_wallis_test(formula = score ~ group, df = identical_groups)
-```
+`identical_groups`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``group ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"a"``, ``"b"``, ``"c"``)``, each ``=`` ``5``)``, score ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``1``:``5``, times ``=`` ``3``)``)`` `[`compute_kruskal_wallis_test`](https://sedzinfo.github.io/rwf/reference/compute_kruskal_wallis_test.md)`(``formula ``=`` ``score`` ``~`` ``group``, df ``=`` ``identical_groups``)`
 
     ##         formula                       method      etasq epsilonsq H df p
     ## 1 score ~ group Kruskal-Wallis rank sum test -0.1666667         0 0  2 1
 
-``` r
-
-rstatix::kruskal_effsize(identical_groups, score ~ group)
-```
+`rstatix``::`[`kruskal_effsize`](https://rpkgs.datanovia.com/rstatix/reference/kruskal_effsize.html)`(``identical_groups``, ``score`` ``~`` ``group``)`
 
     ## # A tibble: 1 × 5
     ##   .y.       n effsize method  magnitude
     ## * <chr> <int>   <dbl> <chr>   <ord>    
     ## 1 score    15       0 eta2[H] small
 
-``` r
-
-effectsize::rank_eta_squared(score ~ group, data = identical_groups, ci = NULL)
-```
+`effectsize``::`[`rank_eta_squared`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``score`` ``~`` ``group``, data ``=`` ``identical_groups``, ci ``=`` ``NULL``)`
 
     ## Eta2 (rank)
     ## -----------
@@ -758,21 +557,12 @@ Missing values in other columns of `df` are ignored. Two blood pressure
 values are set to missing here, and both functions use the remaining 118
 rows:
 
-``` r
-
-df_missing <- df_blood_pressure
-df_missing$bp_before[c(1, 50)] <- NA
-df_missing$bp_after[2] <- NA
-compute_kruskal_wallis_test(formula = form, df = df_missing)
-```
+`df_missing`` ``<-`` ``df_blood_pressure`` ``df_missing``$``bp_before``[`[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``50``)``]`` ``<-`` ``NA`` ``df_missing``$``bp_after``[``2``]`` ``<-`` ``NA`` `[`compute_kruskal_wallis_test`](https://sedzinfo.github.io/rwf/reference/compute_kruskal_wallis_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_missing``)`
 
     ##              formula                       method     etasq epsilonsq        H df            p
     ## 1 bp_before ~ agegrp Kruskal-Wallis rank sum test 0.1374489 0.1521934 17.80663  2 0.0001359376
 
-``` r
-
-stats::kruskal.test(formula = form, data = df_missing)
-```
+`stats``::`[`kruskal.test`](https://rdrr.io/r/stats/kruskal.test.html)`(``formula ``=`` ``form``, data ``=`` ``df_missing``)`
 
     ## 
     ##  Kruskal-Wallis rank sum test
@@ -780,14 +570,11 @@ stats::kruskal.test(formula = form, data = df_missing)
     ## data:  bp_before by agegrp
     ## Kruskal-Wallis chi-squared = 17.807, df = 2, p-value = 0.0001359
 
-``` r
-
-check_kruskal_wallis(formula = form, df = df_missing)
-```
+`check_kruskal_wallis``(``formula ``=`` ``form``, df ``=`` ``df_missing``)`
 
     ##    statistic                          package          rwf        other    difference
     ## 1          H              stats::kruskal.test 1.780663e+01 1.780663e+01  0.000000e+00
-    ## 2          H               coin::kruskal_test 1.780663e+01 1.780663e+01 -7.105427e-15
+    ## 2          H               coin::kruskal_test 1.780663e+01 1.780663e+01  1.421085e-14
     ## 3         df              stats::kruskal.test 2.000000e+00 2.000000e+00  0.000000e+00
     ## 4          p              stats::kruskal.test 1.359376e-04 1.359376e-04  0.000000e+00
     ## 5  epsilonsq                      lm on ranks 1.521934e-01 1.521934e-01  1.110223e-16

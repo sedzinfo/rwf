@@ -37,11 +37,7 @@ The ΔR² column in the output tells you whether each block of predictors
 significantly improved model fit — a key quantity when building
 theoretically motivated regression models step by step.
 
-``` r
-
-result<-report_hlr(df=infert,corlist=8,factorlist=1,predictor="case",random_effect="case")
-result
-```
+`result``<-`[`report_hlr`](https://sedzinfo.github.io/rwf/reference/report_hlr.md)`(``df``=``infert``,corlist``=``8``,factorlist``=``1``,predictor``=``"case"``,random_effect``=``"case"``)`` ``result`
 
     ##               dv                      model                 fixed       random                                                                                                call Model df      AIC
     ## 1 pooled.stratum                       base    pooled.stratum ~ 1         <NA>                                   nlme::gls(model = formula(fbaseline), data = temp, method = "ML")     1  2 2119.941
@@ -50,6 +46,6 @@ result
     ## 4 pooled.stratum     random_intercept_slope pooled.stratum ~ case ~case | case             lme.formula(fixed = fpredictor, data = temp, random = frandom_slope,     method = "ML")     4  6 2127.936
     ##        BIC    logLik   Test      L.Ratio   p.value
     ## 1 2126.968 -1057.971                  NA        NA
-    ## 2 2132.482 -1057.971 1 vs 2 3.060691e-07 0.9995586
-    ## 3 2137.989 -1057.968 2 vs 3 5.861154e-03 0.9389750
-    ## 4 2149.016 -1057.968 3 vs 4 4.047206e-08 1.0000000
+    ## 2 2132.482 -1057.971 1 vs 2 3.073201e-07 0.9995577
+    ## 3 2137.989 -1057.968 2 vs 3 5.861155e-03 0.9389750
+    ## 4 2149.016 -1057.968 3 vs 4 4.050480e-08 1.0000000

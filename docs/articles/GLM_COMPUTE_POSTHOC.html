@@ -50,9 +50,9 @@
     <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
-    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -521,9 +521,9 @@ the packages list the pairs in the same order as rwf.</p>
 <span><span class="op">}</span></span>
 <span><span class="fu">check_posthoc</span><span class="op">(</span>y <span class="op">=</span> <span class="va">df_blood_pressure</span><span class="op">$</span><span class="va">bp_before</span>, x <span class="op">=</span> <span class="va">df_blood_pressure</span><span class="op">$</span><span class="va">agegrp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##          pair tukey_t_emmeans tukey_df_emmeans tukey_p_TukeyHSD tukey_p_emmeans tukey_p_rstatix games_howell_t_welch games_howell_df_welch games_howell_p_rstatix</span></span>
-<span><span class="co">## 1 30-45:46-59   -1.509903e-14                0     5.440093e-15    7.438494e-15    5.440093e-15         0.000000e+00          1.421085e-14                      0</span></span>
-<span><span class="co">## 2   30-45:60+   -1.776357e-14                0     0.000000e+00    0.000000e+00    0.000000e+00         0.000000e+00         -4.263256e-14                      0</span></span>
-<span><span class="co">## 3   46-59:60+   -1.332268e-15                0     0.000000e+00    2.220446e-16    0.000000e+00         8.881784e-16         -5.684342e-14                      0</span></span></code></pre>
+<span><span class="co">## 1 30-45:46-59   -7.105427e-15                0     5.551115e-15    3.330669e-15    5.551115e-15         0.000000e+00          1.421085e-14                      0</span></span>
+<span><span class="co">## 2   30-45:60+   -8.881784e-15                0     0.000000e+00    0.000000e+00    0.000000e+00         0.000000e+00         -4.263256e-14                      0</span></span>
+<span><span class="co">## 3   46-59:60+   -3.552714e-15                0    -1.110223e-16   -1.110223e-16   -1.110223e-16         8.881784e-16         -5.684342e-14                      0</span></span></code></pre>
 <p>The same check on seven datasets with different numbers of groups,
 equal and unequal group sizes, and equal and unequal variances.
 <code>max_abs_difference</code> is the largest absolute difference
@@ -550,10 +550,10 @@ across all the comparisons and pairs for that dataset:</p>
 <span><span class="co">## 1     bp_before ~ agegrp 120 3     3       5.684342e-14</span></span>
 <span><span class="co">## 2      bp_after ~ agegrp 120 3     3       2.842171e-14</span></span>
 <span><span class="co">## 3          weight ~ feed  71 6    15       7.105427e-15</span></span>
-<span><span class="co">## 4          count ~ spray  72 6    15       1.065814e-14</span></span>
+<span><span class="co">## 4          count ~ spray  72 6    15       3.086420e-14</span></span>
 <span><span class="co">## 5         weight ~ group  30 3     3       1.065814e-14</span></span>
-<span><span class="co">## 6 Sepal.Length ~ Species 150 3     3       3.552714e-15</span></span>
-<span><span class="co">## 7             qsec ~ cyl  32 3     3       9.769963e-15</span></span></code></pre>
+<span><span class="co">## 6 Sepal.Length ~ Species 150 3     3       7.105427e-15</span></span>
+<span><span class="co">## 7             qsec ~ cyl  32 3     3       5.329071e-15</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">

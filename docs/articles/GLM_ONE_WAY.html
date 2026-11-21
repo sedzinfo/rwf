@@ -50,9 +50,9 @@
     <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
-    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -712,7 +712,7 @@ the sums of squares and mean squares of the Fisher version:</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Response: bp_before</span></span>
 <span><span class="co">##            Sum Sq  Df F value    Pr(&gt;F)    </span></span>
-<span><span class="co">## agegrp     2485.6   2  11.226 3.467e-05 ***</span></span>
+<span><span class="co">## agegrp     2485.5   2  11.226 3.467e-05 ***</span></span>
 <span><span class="co">## Residuals 12952.2 117                      </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
@@ -840,17 +840,17 @@ compared with <code>stats</code>, <code>effectsize</code> and
 <span><span class="op">}</span></span>
 <span><span class="fu">check_one_way</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">form</span>, df <span class="op">=</span> <span class="va">df_blood_pressure</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      test       statistic                   package          rwf        other    difference</span></span>
-<span><span class="co">## 1  Fisher       ss_effect                stats::aov 2.485550e+03 2.485550e+03 -1.818989e-11</span></span>
-<span><span class="co">## 2  Fisher        ss_error                stats::aov 1.295215e+04 1.295215e+04 -1.455192e-11</span></span>
+<span><span class="co">## 1  Fisher       ss_effect                stats::aov 2.485550e+03 2.485550e+03 -8.185452e-12</span></span>
+<span><span class="co">## 2  Fisher        ss_error                stats::aov 1.295215e+04 1.295215e+04 -1.091394e-11</span></span>
 <span><span class="co">## 3  Fisher       statistic        stats::oneway.test 1.122630e+01 1.122630e+01  0.000000e+00</span></span>
 <span><span class="co">## 4  Fisher        df_error        stats::oneway.test 1.170000e+02 1.170000e+02  0.000000e+00</span></span>
 <span><span class="co">## 5  Fisher               p        stats::oneway.test 3.466707e-05 3.466707e-05  0.000000e+00</span></span>
-<span><span class="co">## 6  Fisher           etasq   effectsize::eta_squared 1.610052e-01 1.610052e-01 -8.604228e-16</span></span>
-<span><span class="co">## 7  Fisher         omegasq effectsize::omega_squared 1.456192e-01 1.456192e-01 -8.604228e-16</span></span>
-<span><span class="co">## 8  Fisher partial.omegasq      sjstats::anova_stats 1.456192e-01 1.456192e-01 -8.881784e-16</span></span>
-<span><span class="co">## 9  Fisher        cohens.f      effectsize::cohens_f 4.380668e-01 4.380668e-01 -1.443290e-15</span></span>
-<span><span class="co">## 10 Fisher           power      sjstats::anova_stats 9.925726e-01 9.925726e-01 -3.330669e-16</span></span>
-<span><span class="co">## 11 Fisher           etasq           lsr::etaSquared 1.610052e-01 1.610052e-01 -1.054712e-15</span></span>
+<span><span class="co">## 6  Fisher           etasq   effectsize::eta_squared 1.610052e-01 1.610052e-01 -3.330669e-16</span></span>
+<span><span class="co">## 7  Fisher         omegasq effectsize::omega_squared 1.456192e-01 1.456192e-01 -3.330669e-16</span></span>
+<span><span class="co">## 8  Fisher partial.omegasq      sjstats::anova_stats 1.456192e-01 1.456192e-01 -3.608225e-16</span></span>
+<span><span class="co">## 9  Fisher        cohens.f      effectsize::cohens_f 4.380668e-01 4.380668e-01 -5.551115e-16</span></span>
+<span><span class="co">## 10 Fisher           power      sjstats::anova_stats 9.925726e-01 9.925726e-01 -1.110223e-16</span></span>
+<span><span class="co">## 11 Fisher           etasq           lsr::etaSquared 1.610052e-01 1.610052e-01 -6.938894e-16</span></span>
 <span><span class="co">## 12  Welch       statistic        stats::oneway.test 1.189925e+01 1.189925e+01  0.000000e+00</span></span>
 <span><span class="co">## 13  Welch        df_error        stats::oneway.test 7.734665e+01 7.734665e+01  0.000000e+00</span></span>
 <span><span class="co">## 14  Welch               p        stats::oneway.test 3.121909e-05 3.121909e-05  0.000000e+00</span></span>
@@ -885,13 +885,13 @@ across all the comparisons for that dataset:</p>
 <span>             max_abs_difference <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">check</span><span class="op">$</span><span class="va">difference</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                  formula   N k   F_fisher    F_welch     etasq   omegasq max_abs_difference</span></span>
-<span><span class="co">## 1     bp_before ~ agegrp 120 3  11.226296  11.899250 0.1610052 0.1456192       1.818989e-11</span></span>
-<span><span class="co">## 2             qsec ~ cyl  32 3   7.793798   7.704359 0.3495949 0.2980547       8.526513e-14</span></span>
-<span><span class="co">## 3         weight ~ group  30 3   4.846088   5.180972 0.2641483 0.2040788       1.243450e-14</span></span>
-<span><span class="co">## 4          count ~ spray  72 6  34.702282  36.065444 0.7244390 0.7006379       4.547474e-13</span></span>
-<span><span class="co">## 5          weight ~ feed  71 6  15.364800  19.661724 0.5416855 0.5028847       1.455192e-10</span></span>
-<span><span class="co">## 6             len ~ dose  60 3  67.415738  68.400977 0.7028642 0.6888475       1.818989e-12</span></span>
-<span><span class="co">## 7 Sepal.Length ~ Species 150 3 119.264502 138.908285 0.6187057 0.6119308       1.421085e-14</span></span></code></pre>
+<span><span class="co">## 1     bp_before ~ agegrp 120 3  11.226296  11.899250 0.1610052 0.1456192       1.091394e-11</span></span>
+<span><span class="co">## 2             qsec ~ cyl  32 3   7.793798   7.704359 0.3495949 0.2980547       3.552714e-14</span></span>
+<span><span class="co">## 3         weight ~ group  30 3   4.846088   5.180972 0.2641483 0.2040788       3.552714e-15</span></span>
+<span><span class="co">## 4          count ~ spray  72 6  34.702282  36.065444 0.7244390 0.7006379       2.273737e-12</span></span>
+<span><span class="co">## 5          weight ~ feed  71 6  15.364800  19.661724 0.5416855 0.5028847       2.037268e-10</span></span>
+<span><span class="co">## 6             len ~ dose  60 3  67.415738  68.400977 0.7028642 0.6888475       9.094947e-13</span></span>
+<span><span class="co">## 7 Sepal.Length ~ Species 150 3 119.264502 138.908285 0.6187057 0.6119308       2.131628e-14</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -985,24 +985,24 @@ missing here, and both functions use the remaining 118 rows:</p>
 <span><span class="co">## F = 10.114, num df = 2, denom df = 115, p-value = 8.988e-05</span></span></code></pre>
 <div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">check_one_way</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">form</span>, df <span class="op">=</span> <span class="va">df_missing</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      test       statistic                   package          rwf        other    difference</span></span>
-<span><span class="co">## 1  Fisher       ss_effect                stats::aov 2.254774e+03 2.254774e+03  6.821210e-12</span></span>
-<span><span class="co">## 2  Fisher        ss_error                stats::aov 1.281842e+04 1.281842e+04 -1.818989e-12</span></span>
-<span><span class="co">## 3  Fisher       statistic        stats::oneway.test 1.011431e+01 1.011431e+01  0.000000e+00</span></span>
-<span><span class="co">## 4  Fisher        df_error        stats::oneway.test 1.150000e+02 1.150000e+02  0.000000e+00</span></span>
-<span><span class="co">## 5  Fisher               p        stats::oneway.test 8.988329e-05 8.988329e-05  0.000000e+00</span></span>
-<span><span class="co">## 6  Fisher           etasq   effectsize::eta_squared 1.495884e-01 1.495884e-01  3.885781e-16</span></span>
-<span><span class="co">## 7  Fisher         omegasq effectsize::omega_squared 1.338091e-01 1.338091e-01  3.885781e-16</span></span>
-<span><span class="co">## 8  Fisher partial.omegasq      sjstats::anova_stats 1.338091e-01 1.338091e-01  4.163336e-16</span></span>
-<span><span class="co">## 9  Fisher        cohens.f      effectsize::cohens_f 4.194057e-01 4.194057e-01  6.661338e-16</span></span>
-<span><span class="co">## 10 Fisher           power      sjstats::anova_stats 9.860820e-01 9.860820e-01  2.220446e-16</span></span>
-<span><span class="co">## 11 Fisher           etasq           lsr::etaSquared 1.495884e-01 1.495884e-01  4.996004e-16</span></span>
-<span><span class="co">## 12  Welch       statistic        stats::oneway.test 1.066569e+01 1.066569e+01  0.000000e+00</span></span>
-<span><span class="co">## 13  Welch        df_error        stats::oneway.test 7.616557e+01 7.616557e+01  0.000000e+00</span></span>
-<span><span class="co">## 14  Welch               p        stats::oneway.test 8.246968e-05 8.246968e-05  0.000000e+00</span></span>
-<span><span class="co">## 15  Welch           etasq     effectsize::F_to_eta2 2.187902e-01 2.187902e-01  0.000000e+00</span></span>
-<span><span class="co">## 16  Welch         omegasq   effectsize::F_to_omega2 1.962637e-01 1.962637e-01  2.775558e-17</span></span>
-<span><span class="co">## 17  Welch        cohens.f        effectsize::F_to_f 5.292125e-01 5.292125e-01  0.000000e+00</span></span></code></pre>
+<pre><code><span><span class="co">##      test       statistic                   package          rwf        other   difference</span></span>
+<span><span class="co">## 1  Fisher       ss_effect                stats::aov 2.254774e+03 2.254774e+03 5.002221e-12</span></span>
+<span><span class="co">## 2  Fisher        ss_error                stats::aov 1.281842e+04 1.281842e+04 0.000000e+00</span></span>
+<span><span class="co">## 3  Fisher       statistic        stats::oneway.test 1.011431e+01 1.011431e+01 0.000000e+00</span></span>
+<span><span class="co">## 4  Fisher        df_error        stats::oneway.test 1.150000e+02 1.150000e+02 0.000000e+00</span></span>
+<span><span class="co">## 5  Fisher               p        stats::oneway.test 8.988329e-05 8.988329e-05 0.000000e+00</span></span>
+<span><span class="co">## 6  Fisher           etasq   effectsize::eta_squared 1.495884e-01 1.495884e-01 2.775558e-16</span></span>
+<span><span class="co">## 7  Fisher         omegasq effectsize::omega_squared 1.338091e-01 1.338091e-01 2.775558e-16</span></span>
+<span><span class="co">## 8  Fisher partial.omegasq      sjstats::anova_stats 1.338091e-01 1.338091e-01 2.775558e-16</span></span>
+<span><span class="co">## 9  Fisher        cohens.f      effectsize::cohens_f 4.194057e-01 4.194057e-01 4.440892e-16</span></span>
+<span><span class="co">## 10 Fisher           power      sjstats::anova_stats 9.860820e-01 9.860820e-01 2.220446e-16</span></span>
+<span><span class="co">## 11 Fisher           etasq           lsr::etaSquared 1.495884e-01 1.495884e-01 3.885781e-16</span></span>
+<span><span class="co">## 12  Welch       statistic        stats::oneway.test 1.066569e+01 1.066569e+01 0.000000e+00</span></span>
+<span><span class="co">## 13  Welch        df_error        stats::oneway.test 7.616557e+01 7.616557e+01 0.000000e+00</span></span>
+<span><span class="co">## 14  Welch               p        stats::oneway.test 8.246968e-05 8.246968e-05 0.000000e+00</span></span>
+<span><span class="co">## 15  Welch           etasq     effectsize::F_to_eta2 2.187902e-01 2.187902e-01 0.000000e+00</span></span>
+<span><span class="co">## 16  Welch         omegasq   effectsize::F_to_omega2 1.962637e-01 1.962637e-01 2.775558e-17</span></span>
+<span><span class="co">## 17  Welch        cohens.f        effectsize::F_to_f 5.292125e-01 5.292125e-01 0.000000e+00</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

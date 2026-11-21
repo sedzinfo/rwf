@@ -40,55 +40,27 @@ The examples show:
   generated and plotted — a stress test for strong negative linear
   relationships.
 
-``` r
-
-result<-plot_scatterplot(df=mtcars,title="",coord_equal=TRUE,base_size=10)
-plot_scatterplot(df=mtcars[,1:2],base_size=10,coord_equal=TRUE,all_orders=FALSE)
-```
+`result``<-`[`plot_scatterplot`](https://sedzinfo.github.io/rwf/reference/plot_scatterplot.md)`(``df``=``mtcars``,title``=``""``,coord_equal``=``TRUE``,base_size``=``10``)`` `[`plot_scatterplot`](https://sedzinfo.github.io/rwf/reference/plot_scatterplot.md)`(``df``=``mtcars``[``,``1``:``2``]``,base_size``=``10``,coord_equal``=``TRUE``,all_orders``=``FALSE``)`
 
 ![](GLM_LINEAR_REGRESSION_files/figure-html/plot_scatterplot-1.png)
 
-``` r
-
-plot_scatterplot(df=mtcars[,1:2],base_size=10,coord_equal=FALSE,all_orders=FALSE)
-```
+[`plot_scatterplot`](https://sedzinfo.github.io/rwf/reference/plot_scatterplot.md)`(``df``=``mtcars``[``,``1``:``2``]``,base_size``=``10``,coord_equal``=``FALSE``,all_orders``=``FALSE``)`
 
 ![](GLM_LINEAR_REGRESSION_files/figure-html/plot_scatterplot-2.png)
 
-``` r
-
-plot_scatterplot(df=mtcars,base_size=10,coord_equal=TRUE,all_orders=FALSE,
-                 combinations=data.frame(x=c("mpg","mpg","mpg"),
-                                         y=c("cyl","hp","mpg")))
-```
+[`plot_scatterplot`](https://sedzinfo.github.io/rwf/reference/plot_scatterplot.md)`(``df``=``mtcars``,base_size``=``10``,coord_equal``=``TRUE``,all_orders``=``FALSE``,`` `` combinations``=`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``x``=`[`c`](https://rdrr.io/r/base/c.html)`(``"mpg"``,``"mpg"``,``"mpg"``)``,`` `` y``=`[`c`](https://rdrr.io/r/base/c.html)`(``"cyl"``,``"hp"``,``"mpg"``)``)``)`
 
 ![](GLM_LINEAR_REGRESSION_files/figure-html/plot_scatterplot-3.png)![](GLM_LINEAR_REGRESSION_files/figure-html/plot_scatterplot-4.png)
 
-``` r
-
-plot_scatterplot(df=mtcars,base_size=10,coord_equal=TRUE,all_orders=TRUE,
-                 combinations=data.frame(x=c("mpg"),y=c("cyl")))
-```
+[`plot_scatterplot`](https://sedzinfo.github.io/rwf/reference/plot_scatterplot.md)`(``df``=``mtcars``,base_size``=``10``,coord_equal``=``TRUE``,all_orders``=``TRUE``,`` `` combinations``=`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``x``=`[`c`](https://rdrr.io/r/base/c.html)`(``"mpg"``)``,y``=`[`c`](https://rdrr.io/r/base/c.html)`(``"cyl"``)``)``)`
 
 ![](GLM_LINEAR_REGRESSION_files/figure-html/plot_scatterplot-5.png)
 
-``` r
-
-x<-rnorm(1000)
-y<-x+rnorm(x,sd=.1)
-plot_scatterplot(df=data.frame(x,y),title="Random Simulation",coord_equal=TRUE)
-```
+`x``<-`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``1000``)`` ``y``<-``x``+`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``x``,sd``=``.1``)`` `[`plot_scatterplot`](https://sedzinfo.github.io/rwf/reference/plot_scatterplot.md)`(``df``=`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``x``,``y``)``,title``=``"Random Simulation"``,coord_equal``=``TRUE``)`
 
 ![](GLM_LINEAR_REGRESSION_files/figure-html/plot_scatterplot-6.png)
 
-``` r
-
-df<-data.frame(matrix(-.999,ncol=2,nrow=2))
-correlation_martix<-as.matrix(df)
-diag(correlation_martix)<-1
-df<-generate_correlation_matrix(correlation_martix,nrows=1000)
-plot_scatterplot(df,title="Simulation of -.999 Correlation",coord_equal=TRUE,base_size=10)
-```
+`df``<-`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`matrix`](https://rdrr.io/r/base/matrix.html)`(``-``.999``,ncol``=``2``,nrow``=``2``)``)`` ``correlation_martix``<-`[`as.matrix`](https://rdrr.io/r/base/matrix.html)`(``df``)`` `[`diag`](https://rdrr.io/r/base/diag.html)`(``correlation_martix``)``<-``1`` ``df``<-`[`generate_correlation_matrix`](https://sedzinfo.github.io/rwf/reference/generate_correlation_matrix.md)`(``correlation_martix``,nrows``=``1000``)`` `[`plot_scatterplot`](https://sedzinfo.github.io/rwf/reference/plot_scatterplot.md)`(``df``,title``=``"Simulation of -.999 Correlation"``,coord_equal``=``TRUE``,base_size``=``10``)`
 
 ![](GLM_LINEAR_REGRESSION_files/figure-html/plot_scatterplot-7.png)
 
@@ -99,10 +71,7 @@ displays the first 12 pairwise scatterplots from the full `mtcars`
 matrix generated above, laid out in 4 columns. This is useful for
 quickly scanning all pairwise relationships in a dataset side by side.
 
-``` r
-
-plot_multiplot(plotlist=result[1:12],cols=4)
-```
+[`plot_multiplot`](https://sedzinfo.github.io/rwf/reference/plot_multiplot.md)`(``plotlist``=``result``[``1``:``12``]``,cols``=``4``)`
 
 ![](GLM_LINEAR_REGRESSION_files/figure-html/plot_multiplot-1.png)
 
@@ -126,12 +95,7 @@ Two models are demonstrated:
   a highly parameterised model and whether collinearity among
   interaction terms is flagged in the VIF output.
 
-``` r
-
-regressionmodel<-lm(stats::formula(mpg~qsec),data=mtcars)
-multipleregressionmodel<-lm(mpg~qsec*hp*wt*drat,data=mtcars)
-res<-report_regression(model=regressionmodel,plot_diagnostics=TRUE)
-```
+`regressionmodel``<-`[`lm`](https://rdrr.io/r/stats/lm.html)`(``stats``::`[`formula`](https://rdrr.io/r/stats/formula.html)`(``mpg``~``qsec``)``,data``=``mtcars``)`` ``multipleregressionmodel``<-`[`lm`](https://rdrr.io/r/stats/lm.html)`(``mpg``~``qsec``*``hp``*``wt``*``drat``,data``=``mtcars``)`` ``res``<-`[`report_regression`](https://sedzinfo.github.io/rwf/reference/report_regression.md)`(``model``=``regressionmodel``,plot_diagnostics``=``TRUE``)`
 
 ![](GLM_LINEAR_REGRESSION_files/figure-html/report_regression-1.png)
 
@@ -210,10 +174,7 @@ res<-report_regression(model=regressionmodel,plot_diagnostics=TRUE)
     ## 1 lm(mpg ~ qsec,data=mtcars)
     ## NULL
 
-``` r
-
-res<-report_regression(model=multipleregressionmodel)
-```
+`res``<-`[`report_regression`](https://sedzinfo.github.io/rwf/reference/report_regression.md)`(``model``=``multipleregressionmodel``)`
 
 ![](GLM_LINEAR_REGRESSION_files/figure-html/report_regression-2.png)
 
@@ -259,23 +220,23 @@ res<-report_regression(model=multipleregressionmodel)
     ## [3] "t-test checks if coefficients are significantly different from 0. Coefficients of 0 indicate no predictor effects"                                             
     ## [4] "Significance value for t-test"                                                                                                                                 
     ## [1] "#########################"
-    ##          Row.names  standardized      Estimate   Std. Error   t value  Pr(>|t|)         2.5 %       97.5 %
-    ## 1             qsec -2.717754e+01  -91.66357842 7.294035e+01 -1.256692 0.2269029 -2.462902e+02 6.296306e+01
-    ## 2               hp -1.703674e+02  -14.97596573 1.014812e+01 -1.475738 0.1594222 -3.648901e+01 6.537081e+00
-    ## 3               wt -8.105037e+01 -499.24127624 3.921434e+02 -1.273109 0.2211668 -1.330548e+03 3.320655e+02
-    ## 4             drat -3.929849e+01 -442.97618634 3.285108e+02 -1.348437 0.1962972 -1.139388e+03 2.534355e+02
-    ## 5          qsec:hp  2.457432e-01    0.82883521 5.554520e-01  1.492182 0.1551057 -3.486704e-01 2.006341e+00
-    ## 6          qsec:wt  2.930801e+02   25.76289915 2.127164e+01  1.211138 0.2434282 -1.933096e+01 7.085676e+01
-    ## 7            hp:wt  6.866880e-01    4.22975267 2.935894e+00  1.440704 0.1689513 -1.994064e+00 1.045357e+01
-    ## 8        qsec:drat  2.114666e+00   23.83671194 1.784096e+01  1.336066 0.2002207 -1.398444e+01 6.165787e+01
-    ## 9          hp:drat  1.182306e+00    3.98764491 2.514520e+00  1.585847 0.1323373 -1.342900e+00 9.318190e+00
-    ## 10         wt:drat  1.430876e+03  125.77968939 9.763871e+01  1.288215 0.2159897 -8.120513e+01 3.327645e+02
-    ## 11      qsec:hp:wt -3.728817e-02   -0.22968182 1.591600e-01 -1.443087 0.1682885 -5.670860e-01 1.077224e-01
-    ## 12    qsec:hp:drat -1.979589e-02   -0.22314115 1.365331e-01 -1.634337 0.1217071 -5.125784e-01 6.629613e-02
-    ## 13    qsec:wt:drat -1.950004e+00   -6.57691575 5.248208e+00 -1.253174 0.2281474 -1.770262e+01 4.548789e+00
-    ## 14      hp:wt:drat -1.270188e+01   -1.11654543 7.340101e-01 -1.521158 0.1477359 -2.672577e+00 4.394865e-01
-    ## 15 qsec:hp:wt:drat  9.912982e-03    0.06106043 3.946677e-02  1.547135 0.1413804 -2.260538e-02 1.447262e-01
-    ## 16     (Intercept)            NA 1754.76788174 1.332327e+03  1.317070 0.2063672 -1.069639e+03 4.579174e+03
+    ##          Row.names standardized      Estimate   Std. Error   t value  Pr(>|t|)         2.5 %       97.5 %
+    ## 1             qsec    -27.17754  -91.66357842 7.294035e+01 -1.256692 0.2269029 -2.462902e+02 6.296306e+01
+    ## 2               hp   -170.36735  -14.97596573 1.014812e+01 -1.475738 0.1594222 -3.648901e+01 6.537081e+00
+    ## 3               wt    -81.05037 -499.24127624 3.921434e+02 -1.273109 0.2211668 -1.330548e+03 3.320655e+02
+    ## 4             drat    -39.29849 -442.97618634 3.285108e+02 -1.348437 0.1962972 -1.139388e+03 2.534355e+02
+    ## 5          qsec:hp    136.55219    0.82883521 5.554520e-01  1.492182 0.1551057 -3.486704e-01 2.006341e+00
+    ## 6          qsec:wt     74.50569   25.76289915 2.127164e+01  1.211138 0.2434282 -1.933096e+01 7.085676e+01
+    ## 7            hp:wt    239.97853    4.22975267 2.935894e+00  1.440704 0.1689513 -1.994064e+00 1.045357e+01
+    ## 8        qsec:drat     48.36629   23.83671194 1.784096e+01  1.336066 0.2002207 -1.398444e+01 6.165787e+01
+    ## 9          hp:drat    153.57762    3.98764491 2.514520e+00  1.585847 0.1323373 -1.342900e+00 9.318190e+00
+    ## 10         wt:drat     53.17227  125.77968939 9.763871e+01  1.288215 0.2159897 -8.120513e+01 3.327645e+02
+    ## 11      qsec:hp:wt   -211.34332   -0.22968182 1.591600e-01 -1.443087 0.1682885 -5.670860e-01 1.077224e-01
+    ## 12    qsec:hp:drat   -116.96004   -0.22314115 1.365331e-01 -1.634337 0.1217071 -5.125784e-01 6.629613e-02
+    ## 13    qsec:wt:drat    -50.30660   -6.57691575 5.248208e+00 -1.253174 0.2281474 -1.770262e+01 4.548789e+00
+    ## 14      hp:wt:drat   -203.19689   -1.11654543 7.340101e-01 -1.521158 0.1477359 -2.672577e+00 4.394865e-01
+    ## 15 qsec:hp:wt:drat    173.54414    0.06106043 3.946677e-02  1.547135 0.1413804 -2.260538e-02 1.447262e-01
+    ## 16     (Intercept)           NA 1754.76788175 1.332327e+03  1.317070 0.2063672 -1.069639e+03 4.579174e+03
     ## [1] "##################################################"
     ## [1] "ANOVA"
     ## [1] "##################################################"
@@ -332,33 +293,30 @@ res<-report_regression(model=multipleregressionmodel)
     ## 1 lm(mpg ~ qsec * hp * wt * drat,data=mtcars)
     ## NULL
 
-``` r
-
-res
-```
+`res`
 
     ## $r
     ##   r_squared adjusted_r_squared
     ## 1 0.9262612          0.8571311
     ## 
     ## $coeficients
-    ##          Row.names  standardized      Estimate   Std. Error   t value  Pr(>|t|)         2.5 %       97.5 %
-    ## 1             qsec -2.717754e+01  -91.66357842 7.294035e+01 -1.256692 0.2269029 -2.462902e+02 6.296306e+01
-    ## 2               hp -1.703674e+02  -14.97596573 1.014812e+01 -1.475738 0.1594222 -3.648901e+01 6.537081e+00
-    ## 3               wt -8.105037e+01 -499.24127624 3.921434e+02 -1.273109 0.2211668 -1.330548e+03 3.320655e+02
-    ## 4             drat -3.929849e+01 -442.97618634 3.285108e+02 -1.348437 0.1962972 -1.139388e+03 2.534355e+02
-    ## 5          qsec:hp  2.457432e-01    0.82883521 5.554520e-01  1.492182 0.1551057 -3.486704e-01 2.006341e+00
-    ## 6          qsec:wt  2.930801e+02   25.76289915 2.127164e+01  1.211138 0.2434282 -1.933096e+01 7.085676e+01
-    ## 7            hp:wt  6.866880e-01    4.22975267 2.935894e+00  1.440704 0.1689513 -1.994064e+00 1.045357e+01
-    ## 8        qsec:drat  2.114666e+00   23.83671194 1.784096e+01  1.336066 0.2002207 -1.398444e+01 6.165787e+01
-    ## 9          hp:drat  1.182306e+00    3.98764491 2.514520e+00  1.585847 0.1323373 -1.342900e+00 9.318190e+00
-    ## 10         wt:drat  1.430876e+03  125.77968939 9.763871e+01  1.288215 0.2159897 -8.120513e+01 3.327645e+02
-    ## 11      qsec:hp:wt -3.728817e-02   -0.22968182 1.591600e-01 -1.443087 0.1682885 -5.670860e-01 1.077224e-01
-    ## 12    qsec:hp:drat -1.979589e-02   -0.22314115 1.365331e-01 -1.634337 0.1217071 -5.125784e-01 6.629613e-02
-    ## 13    qsec:wt:drat -1.950004e+00   -6.57691575 5.248208e+00 -1.253174 0.2281474 -1.770262e+01 4.548789e+00
-    ## 14      hp:wt:drat -1.270188e+01   -1.11654543 7.340101e-01 -1.521158 0.1477359 -2.672577e+00 4.394865e-01
-    ## 15 qsec:hp:wt:drat  9.912982e-03    0.06106043 3.946677e-02  1.547135 0.1413804 -2.260538e-02 1.447262e-01
-    ## 16     (Intercept)            NA 1754.76788174 1.332327e+03  1.317070 0.2063672 -1.069639e+03 4.579174e+03
+    ##          Row.names standardized      Estimate   Std. Error   t value  Pr(>|t|)         2.5 %       97.5 %
+    ## 1             qsec    -27.17754  -91.66357842 7.294035e+01 -1.256692 0.2269029 -2.462902e+02 6.296306e+01
+    ## 2               hp   -170.36735  -14.97596573 1.014812e+01 -1.475738 0.1594222 -3.648901e+01 6.537081e+00
+    ## 3               wt    -81.05037 -499.24127624 3.921434e+02 -1.273109 0.2211668 -1.330548e+03 3.320655e+02
+    ## 4             drat    -39.29849 -442.97618634 3.285108e+02 -1.348437 0.1962972 -1.139388e+03 2.534355e+02
+    ## 5          qsec:hp    136.55219    0.82883521 5.554520e-01  1.492182 0.1551057 -3.486704e-01 2.006341e+00
+    ## 6          qsec:wt     74.50569   25.76289915 2.127164e+01  1.211138 0.2434282 -1.933096e+01 7.085676e+01
+    ## 7            hp:wt    239.97853    4.22975267 2.935894e+00  1.440704 0.1689513 -1.994064e+00 1.045357e+01
+    ## 8        qsec:drat     48.36629   23.83671194 1.784096e+01  1.336066 0.2002207 -1.398444e+01 6.165787e+01
+    ## 9          hp:drat    153.57762    3.98764491 2.514520e+00  1.585847 0.1323373 -1.342900e+00 9.318190e+00
+    ## 10         wt:drat     53.17227  125.77968939 9.763871e+01  1.288215 0.2159897 -8.120513e+01 3.327645e+02
+    ## 11      qsec:hp:wt   -211.34332   -0.22968182 1.591600e-01 -1.443087 0.1682885 -5.670860e-01 1.077224e-01
+    ## 12    qsec:hp:drat   -116.96004   -0.22314115 1.365331e-01 -1.634337 0.1217071 -5.125784e-01 6.629613e-02
+    ## 13    qsec:wt:drat    -50.30660   -6.57691575 5.248208e+00 -1.253174 0.2281474 -1.770262e+01 4.548789e+00
+    ## 14      hp:wt:drat   -203.19689   -1.11654543 7.340101e-01 -1.521158 0.1477359 -2.672577e+00 4.394865e-01
+    ## 15 qsec:hp:wt:drat    173.54414    0.06106043 3.946677e-02  1.547135 0.1413804 -2.260538e-02 1.447262e-01
+    ## 16     (Intercept)           NA 1754.76788175 1.332327e+03  1.317070 0.2063672 -1.069639e+03 4.579174e+03
     ## 
     ## $anova
     ## Analysis of Variance Table
@@ -390,11 +348,11 @@ res
     ## 
     ## $variance_covariance
     ##                   (Intercept)          qsec            hp            wt          drat       qsec:hp       qsec:wt         hp:wt     qsec:drat       hp:drat       wt:drat    qsec:hp:wt  qsec:hp:drat
-    ## (Intercept)     1775094.46689 -97145.564799 -1.276911e+04 -518872.18686 -436345.79921  696.16029575 28068.1184610  3628.9100948 23678.8426647 3089.99140791 127671.480112 -1.952401e+02 -166.49870865
-    ## qsec             -97145.56480   5320.295190  6.999534e+02   28411.43938   23888.18911  -38.16693402 -1538.6505858  -199.2139240 -1297.2111542 -169.44986064  -6993.929902  1.072520e+01    9.13137828
+    ## (Intercept)     1775094.46690 -97145.564799 -1.276911e+04 -518872.18686 -436345.79921  696.16029576 28068.1184611  3628.9100948 23678.8426647 3089.99140792 127671.480112 -1.952401e+02 -166.49870865
+    ## qsec             -97145.56480   5320.295190  6.999534e+02   28411.43938   23888.18911  -38.16693402 -1538.6505858  -199.2139240 -1297.2111542 -169.44986065  -6993.929902  1.072520e+01    9.13137828
     ## hp               -12769.11226    699.953438  1.029843e+02    3750.99973    3171.75048   -5.63339270  -203.2311607   -29.5255282  -172.4073953  -25.38510531   -932.991606  1.596306e+00    1.37445803
     ## wt              -518872.18686  28411.439383  3.751000e+03  153776.41327  128331.56346 -204.39144348 -8330.5048574 -1080.5272154 -6967.4533116 -913.81199716 -38133.833502  5.818519e+01   49.21105993
-    ## drat            -436345.79921  23888.189106  3.171750e+03  128331.56346  107919.31555 -172.93927582 -6948.7447057  -908.0534609 -5858.8339653 -773.35540170 -31799.302097  4.890958e+01   41.68773134
+    ## drat            -436345.79921  23888.189106  3.171750e+03  128331.56346  107919.31555 -172.93927582 -6948.7447058  -908.0534609 -5858.8339653 -773.35540170 -31799.302097  4.890958e+01   41.68773134
     ## qsec:hp             696.16030    -38.166934 -5.633393e+00    -204.39144    -172.93928    0.30852692    11.0688356     1.6124078     9.4032685    1.38993613     50.836544 -8.723061e-02   -0.07537428
     ## qsec:wt           28068.11846  -1538.650586 -2.032312e+02   -8330.50486   -6948.74471   11.06883559   452.4825628    58.8257531   377.6972760   49.56659412   2068.384113 -3.171778e+00   -2.66767391
     ## hp:wt              3628.91009   -199.213924 -2.952553e+01   -1080.52722    -908.05346    1.61240782    58.8257531     8.6194712    49.4334400    7.33542529    271.173257 -4.669722e-01   -0.39648332
