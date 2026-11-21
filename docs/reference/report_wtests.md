@@ -124,38 +124,73 @@ report_wtests(
   dv = which("bp_before" == names(df_blood_pressure)),
   iv = 2
 )
-#> Error: cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory
+#>          DV  IV level1 level2 n1 n2    W        p CI_l CI_u alternative                                            method mean1 mean2   sd1   sd2 sd_pooled      d      r k_squared[bartlett]
+#> 1 bp_before sex Female   Male 60 60 1262 0.004721  -10   -2   two.sided Wilcoxon rank sum test with continuity correction 153.6 159.3 10.74 11.41     11.08 0.5084 0.2579              0.2192
+#>   df[bartlett] p[bartlett] bonferroni_p significant
+#> 1            1      0.6397         0.05        TRUE
 report_wtests(
   df = df_blood_pressure,
   dv = which("bp_before" == names(df_blood_pressure)),
   iv = 2:3
 )
-#> Warning: restarting interrupted promise evaluation
-#> Error: cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory
+#>          DV     IV level1 level2 n1 n2      W           p CI_l CI_u alternative                                            method mean1 mean2    sd1   sd2 sd_pooled      d      r k_squared[bartlett]
+#> 1 bp_before    sex Female   Male 60 60 1261.5 0.004720545  -10   -2   two.sided Wilcoxon rank sum test with continuity correction 153.6 159.3 10.736 11.41     11.08 0.5084 0.2579              0.2192
+#> 2 bp_before agegrp  30-45  46-59 40 40  667.0 0.202247153   -7    2   two.sided                      Wilcoxon rank sum exact test 151.7 155.1  9.258 11.46     10.42 0.3288 0.1426              1.7393
+#> 3 bp_before agegrp  30-45    60+ 40 40  355.0 0.000009609  -16   -7   two.sided                      Wilcoxon rank sum exact test 151.7 162.6  9.258 10.73     10.02 1.0879 0.4948              0.8322
+#> 4 bp_before agegrp  46-59    60+ 40 40  484.5 0.002113691  -13   -3   two.sided                      Wilcoxon rank sum exact test 155.1 162.6 11.460 10.73     11.10 0.6735 0.3437              0.1679
+#>   df[bartlett] p[bartlett] bonferroni_p significant
+#> 1            1      0.6397       0.0125        TRUE
+#> 2            1      0.1872       0.0125       FALSE
+#> 3            1      0.3616       0.0125        TRUE
+#> 4            1      0.6820       0.0125        TRUE
 report_wtests(
   df = df_blood_pressure,
   dv = which("bp_before" == names(df_blood_pressure)),
   iv = 2:3,
   alternative = "two.sided"
 )
-#> Warning: restarting interrupted promise evaluation
-#> Error: cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory
+#>          DV     IV level1 level2 n1 n2      W           p CI_l CI_u alternative                                            method mean1 mean2    sd1   sd2 sd_pooled      d      r k_squared[bartlett]
+#> 1 bp_before    sex Female   Male 60 60 1261.5 0.004720545  -10   -2   two.sided Wilcoxon rank sum test with continuity correction 153.6 159.3 10.736 11.41     11.08 0.5084 0.2579              0.2192
+#> 2 bp_before agegrp  30-45  46-59 40 40  667.0 0.202247153   -7    2   two.sided                      Wilcoxon rank sum exact test 151.7 155.1  9.258 11.46     10.42 0.3288 0.1426              1.7393
+#> 3 bp_before agegrp  30-45    60+ 40 40  355.0 0.000009609  -16   -7   two.sided                      Wilcoxon rank sum exact test 151.7 162.6  9.258 10.73     10.02 1.0879 0.4948              0.8322
+#> 4 bp_before agegrp  46-59    60+ 40 40  484.5 0.002113691  -13   -3   two.sided                      Wilcoxon rank sum exact test 155.1 162.6 11.460 10.73     11.10 0.6735 0.3437              0.1679
+#>   df[bartlett] p[bartlett] bonferroni_p significant
+#> 1            1      0.6397       0.0125        TRUE
+#> 2            1      0.1872       0.0125       FALSE
+#> 3            1      0.3616       0.0125        TRUE
+#> 4            1      0.6820       0.0125        TRUE
 report_wtests(
   df = df_blood_pressure,
   dv = which("bp_before" == names(df_blood_pressure)),
   iv = 2:3,
   alternative = "less"
 )
-#> Warning: restarting interrupted promise evaluation
-#> Error: cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory
+#>          DV     IV level1 level2 n1 n2      W           p CI_l CI_u alternative                                            method mean1 mean2    sd1   sd2 sd_pooled      d      r k_squared[bartlett]
+#> 1 bp_before    sex Female   Male 60 60 1261.5 0.002360273 -Inf   -2        less Wilcoxon rank sum test with continuity correction 153.6 159.3 10.736 11.41     11.08 0.5084 0.2579              0.2192
+#> 2 bp_before agegrp  30-45  46-59 40 40  667.0 0.101123577 -Inf    1        less                      Wilcoxon rank sum exact test 151.7 155.1  9.258 11.46     10.42 0.3288 0.1426              1.7393
+#> 3 bp_before agegrp  30-45    60+ 40 40  355.0 0.000004805 -Inf   -7        less                      Wilcoxon rank sum exact test 151.7 162.6  9.258 10.73     10.02 1.0879 0.4948              0.8322
+#> 4 bp_before agegrp  46-59    60+ 40 40  484.5 0.001056845 -Inf   -4        less                      Wilcoxon rank sum exact test 155.1 162.6 11.460 10.73     11.10 0.6735 0.3437              0.1679
+#>   df[bartlett] p[bartlett] bonferroni_p significant
+#> 1            1      0.6397       0.0125        TRUE
+#> 2            1      0.1872       0.0125       FALSE
+#> 3            1      0.3616       0.0125        TRUE
+#> 4            1      0.6820       0.0125        TRUE
 report_wtests(
   df = df_blood_pressure,
   dv = which("bp_before" == names(df_blood_pressure)),
   iv = 2:3,
   alternative = "greater"
 )
-#> Warning: restarting interrupted promise evaluation
-#> Error: cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory
+#>          DV     IV level1 level2 n1 n2      W      p CI_l CI_u alternative                                            method mean1 mean2    sd1   sd2 sd_pooled      d      r k_squared[bartlett]
+#> 1 bp_before    sex Female   Male 60 60 1261.5 0.9977   -9  Inf     greater Wilcoxon rank sum test with continuity correction 153.6 159.3 10.736 11.41     11.08 0.5084 0.2579              0.2192
+#> 2 bp_before agegrp  30-45  46-59 40 40  667.0 0.8997   -7  Inf     greater                      Wilcoxon rank sum exact test 151.7 155.1  9.258 11.46     10.42 0.3288 0.1426              1.7393
+#> 3 bp_before agegrp  30-45    60+ 40 40  355.0 1.0000  -15  Inf     greater                      Wilcoxon rank sum exact test 151.7 162.6  9.258 10.73     10.02 1.0879 0.4948              0.8322
+#> 4 bp_before agegrp  46-59    60+ 40 40  484.5 0.9990  -13  Inf     greater                      Wilcoxon rank sum exact test 155.1 162.6 11.460 10.73     11.10 0.6735 0.3437              0.1679
+#>   df[bartlett] p[bartlett] bonferroni_p significant
+#> 1            1      0.6397       0.0125       FALSE
+#> 2            1      0.1872       0.0125       FALSE
+#> 3            1      0.3616       0.0125       FALSE
+#> 4            1      0.6820       0.0125       FALSE
 report_wtests(
   df = df_blood_pressure,
   dv = which("bp_before" == names(df_blood_pressure)),
@@ -163,6 +198,14 @@ report_wtests(
   var.equal = TRUE,
   file = file.path(tempdir(), "wilcoxontest")
 )
-#> Warning: restarting interrupted promise evaluation
-#> Error: cannot open file 'C:/Users/dzach/AppData/Local/R/win-library/4.6/rwf/R/rwf.rdb': No such file or directory
+#>          DV     IV level1 level2 n1 n2      W           p CI_l CI_u alternative                                            method mean1 mean2    sd1   sd2 sd_pooled      d      r k_squared[bartlett]
+#> 1 bp_before    sex Female   Male 60 60 1261.5 0.004720545  -10   -2   two.sided Wilcoxon rank sum test with continuity correction 153.6 159.3 10.736 11.41     11.08 0.5084 0.2579              0.2192
+#> 2 bp_before agegrp  30-45  46-59 40 40  667.0 0.202247153   -7    2   two.sided                      Wilcoxon rank sum exact test 151.7 155.1  9.258 11.46     10.42 0.3288 0.1426              1.7393
+#> 3 bp_before agegrp  30-45    60+ 40 40  355.0 0.000009609  -16   -7   two.sided                      Wilcoxon rank sum exact test 151.7 162.6  9.258 10.73     10.02 1.0879 0.4948              0.8322
+#> 4 bp_before agegrp  46-59    60+ 40 40  484.5 0.002113691  -13   -3   two.sided                      Wilcoxon rank sum exact test 155.1 162.6 11.460 10.73     11.10 0.6735 0.3437              0.1679
+#>   df[bartlett] p[bartlett] bonferroni_p significant
+#> 1            1      0.6397       0.0125        TRUE
+#> 2            1      0.1872       0.0125       FALSE
+#> 3            1      0.3616       0.0125        TRUE
+#> 4            1      0.6820       0.0125        TRUE
 ```
