@@ -50,9 +50,9 @@
     <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
-    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -339,7 +339,7 @@ interaction terms is flagged in the VIF output.</li>
 <span><span class="co">## 13    qsec:wt:drat    -50.30660   -6.57691575 5.248208e+00 -1.253174 0.2281474 -1.770262e+01 4.548789e+00</span></span>
 <span><span class="co">## 14      hp:wt:drat   -203.19689   -1.11654543 7.340101e-01 -1.521158 0.1477359 -2.672577e+00 4.394865e-01</span></span>
 <span><span class="co">## 15 qsec:hp:wt:drat    173.54414    0.06106043 3.946677e-02  1.547135 0.1413804 -2.260538e-02 1.447262e-01</span></span>
-<span><span class="co">## 16     (Intercept)           NA 1754.76788175 1.332327e+03  1.317070 0.2063672 -1.069639e+03 4.579174e+03</span></span>
+<span><span class="co">## 16     (Intercept)           NA 1754.76788174 1.332327e+03  1.317070 0.2063672 -1.069639e+03 4.579174e+03</span></span>
 <span><span class="co">## [1] "##################################################"</span></span>
 <span><span class="co">## [1] "ANOVA"</span></span>
 <span><span class="co">## [1] "##################################################"</span></span>
@@ -418,7 +418,7 @@ interaction terms is flagged in the VIF output.</li>
 <span><span class="co">## 13    qsec:wt:drat    -50.30660   -6.57691575 5.248208e+00 -1.253174 0.2281474 -1.770262e+01 4.548789e+00</span></span>
 <span><span class="co">## 14      hp:wt:drat   -203.19689   -1.11654543 7.340101e-01 -1.521158 0.1477359 -2.672577e+00 4.394865e-01</span></span>
 <span><span class="co">## 15 qsec:hp:wt:drat    173.54414    0.06106043 3.946677e-02  1.547135 0.1413804 -2.260538e-02 1.447262e-01</span></span>
-<span><span class="co">## 16     (Intercept)           NA 1754.76788175 1.332327e+03  1.317070 0.2063672 -1.069639e+03 4.579174e+03</span></span>
+<span><span class="co">## 16     (Intercept)           NA 1754.76788174 1.332327e+03  1.317070 0.2063672 -1.069639e+03 4.579174e+03</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $anova</span></span>
 <span><span class="co">## Analysis of Variance Table</span></span>
@@ -450,11 +450,11 @@ interaction terms is flagged in the VIF output.</li>
 <span><span class="co">## </span></span>
 <span><span class="co">## $variance_covariance</span></span>
 <span><span class="co">##                   (Intercept)          qsec            hp            wt          drat       qsec:hp       qsec:wt         hp:wt     qsec:drat       hp:drat       wt:drat    qsec:hp:wt  qsec:hp:drat</span></span>
-<span><span class="co">## (Intercept)     1775094.46690 -97145.564799 -1.276911e+04 -518872.18686 -436345.79921  696.16029576 28068.1184611  3628.9100948 23678.8426647 3089.99140792 127671.480112 -1.952401e+02 -166.49870865</span></span>
-<span><span class="co">## qsec             -97145.56480   5320.295190  6.999534e+02   28411.43938   23888.18911  -38.16693402 -1538.6505858  -199.2139240 -1297.2111542 -169.44986065  -6993.929902  1.072520e+01    9.13137828</span></span>
+<span><span class="co">## (Intercept)     1775094.46689 -97145.564799 -1.276911e+04 -518872.18686 -436345.79921  696.16029575 28068.1184610  3628.9100948 23678.8426647 3089.99140791 127671.480112 -1.952401e+02 -166.49870865</span></span>
+<span><span class="co">## qsec             -97145.56480   5320.295190  6.999534e+02   28411.43938   23888.18911  -38.16693402 -1538.6505858  -199.2139240 -1297.2111542 -169.44986064  -6993.929902  1.072520e+01    9.13137828</span></span>
 <span><span class="co">## hp               -12769.11226    699.953438  1.029843e+02    3750.99973    3171.75048   -5.63339270  -203.2311607   -29.5255282  -172.4073953  -25.38510531   -932.991606  1.596306e+00    1.37445803</span></span>
 <span><span class="co">## wt              -518872.18686  28411.439383  3.751000e+03  153776.41327  128331.56346 -204.39144348 -8330.5048574 -1080.5272154 -6967.4533116 -913.81199716 -38133.833502  5.818519e+01   49.21105993</span></span>
-<span><span class="co">## drat            -436345.79921  23888.189106  3.171750e+03  128331.56346  107919.31555 -172.93927582 -6948.7447058  -908.0534609 -5858.8339653 -773.35540170 -31799.302097  4.890958e+01   41.68773134</span></span>
+<span><span class="co">## drat            -436345.79921  23888.189106  3.171750e+03  128331.56346  107919.31555 -172.93927582 -6948.7447057  -908.0534609 -5858.8339653 -773.35540170 -31799.302097  4.890958e+01   41.68773134</span></span>
 <span><span class="co">## qsec:hp             696.16030    -38.166934 -5.633393e+00    -204.39144    -172.93928    0.30852692    11.0688356     1.6124078     9.4032685    1.38993613     50.836544 -8.723061e-02   -0.07537428</span></span>
 <span><span class="co">## qsec:wt           28068.11846  -1538.650586 -2.032312e+02   -8330.50486   -6948.74471   11.06883559   452.4825628    58.8257531   377.6972760   49.56659412   2068.384113 -3.171778e+00   -2.66767391</span></span>
 <span><span class="co">## hp:wt              3628.91009   -199.213924 -2.952553e+01   -1080.52722    -908.05346    1.61240782    58.8257531     8.6194712    49.4334400    7.33542529    271.173257 -4.669722e-01   -0.39648332</span></span>

@@ -75,13 +75,25 @@ of several, at fixed vs. randomly-sampled time points.
 
 ## Cronbach’s Alpha
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``12345``)`` ``cm`` ``<-`` `[`matrix`](https://rdrr.io/r/base/matrix.html)`(``.5``, ncol ``=`` ``6``, nrow ``=`` ``6``)`` `[`diag`](https://rdrr.io/r/base/diag.html)`(``cm``)`` ``<-`` ``1`` ``df_items`` ``<-`` `[`round`](https://rdrr.io/r/base/Round.html)`(`[`generate_correlation_matrix`](https://sedzinfo.github.io/rwf/reference/generate_correlation_matrix.md)`(``cm``, nrows ``=`` ``1000``)``, ``0``)`` ``+`` ``5`
+``` r
 
-`psych``::`[`alpha`](https://rdrr.io/pkg/psych/man/alpha.html)`(``df_items``)``$``total``$``raw_alpha`
+set.seed(12345)
+cm <- matrix(.5, ncol = 6, nrow = 6)
+diag(cm) <- 1
+df_items <- round(generate_correlation_matrix(cm, nrows = 1000), 0) + 5
+```
+
+``` r
+
+psych::alpha(df_items)$total$raw_alpha
+```
 
     ## [1] 0.8375375
 
-[`compute_raw_alpha`](https://sedzinfo.github.io/rwf/reference/compute_raw_alpha.md)`(``df ``=`` ``df_items``)`
+``` r
+
+compute_raw_alpha(df = df_items)
+```
 
     ## [1] 0.8375375
 
@@ -92,7 +104,10 @@ rather than via `psych`’s more elaborate internals.
 
 ### Item diagnostics
 
-[`compute_alpha_diagnostics`](https://sedzinfo.github.io/rwf/reference/compute_alpha_diagnostics.md)`(``df ``=`` ``df_items``)`
+``` r
+
+compute_alpha_diagnostics(df = df_items)
+```
 
     ##    item alpha.if.item.removed item.total.correlation item.total.correlation.r.drop
     ## X1   X1             0.8172775              0.7188293                     0.5813271
@@ -110,12 +125,18 @@ candidate for removal.
 
 ### Scale score mean and SD
 
-[`compute_mean_sd_alpha`](https://sedzinfo.github.io/rwf/reference/compute_mean_sd_alpha.md)`(``df_items``)`
+``` r
+
+compute_mean_sd_alpha(df_items)
+```
 
     ##       MEAN        SD
     ## 1 5.006833 0.7683419
 
-[`compute_mean_sd_alpha`](https://sedzinfo.github.io/rwf/reference/compute_mean_sd_alpha.md)`(``df_items``, divisor ``=`` ``100``)`
+``` r
+
+compute_mean_sd_alpha(df_items, divisor = 100)
+```
 
     ##      Mean         SD
     ## 1 0.30041 0.04610051
@@ -133,15 +154,25 @@ more named scales at once (with optional item reversal and bootstrap
 CIs), returning scale-level, item-level, and alpha-if-dropped tables
 together.
 
-`key`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(``f1 ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"X1"``, ``"X2"``, ``"X3"``)``, f2 ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"X4"``, ``"X5"``, ``"X6"``)``)`` ``result`` ``<-`` `[`report_alpha`](https://sedzinfo.github.io/rwf/reference/report_alpha.md)`(``df ``=`` ``df_items``, key ``=`` ``key``, check.keys ``=`` ``FALSE``, n.iter ``=`` ``2``)`
+``` r
 
-`result``$``result_total``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"dimension"``, ``"items"``, ``"raw_alpha"``, ``"alpha_criterion"``)``]`
+key <- list(f1 = c("X1", "X2", "X3"), f2 = c("X4", "X5", "X6"))
+result <- report_alpha(df = df_items, key = key, check.keys = FALSE, n.iter = 2)
+```
+
+``` r
+
+result$result_total[, c("dimension", "items", "raw_alpha", "alpha_criterion")]
+```
 
     ##   dimension items raw_alpha     alpha_criterion
     ## 1        f1     3 0.7247834 Good and Acceptable
     ## 2        f2     3 0.7093562 Good and Acceptable
 
-`result``$``result_item_statistics``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"dimension"``, ``"question"``, ``"raw_alpha"``)``]`
+``` r
+
+result$result_item_statistics[, c("dimension", "question", "raw_alpha")]
+```
 
     ##   dimension question raw_alpha
     ## 1        f1       X1 0.7247834
@@ -160,9 +191,24 @@ verdict alongside the numeric alpha.
 `plot_mtmm` requires long-format data (one row per subject per method)
 with the same trait items repeated under each method.
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``12345``)`` ``population_model`` ``<-`` ``"t1=~x1+.9*x2+.9*x3`` `` t2=~x4+.9*x5+.9*x6`` `` t3=~x7+.9*x8+.9*x9"`` ``model_data`` ``<-`` ``lavaan``::`[`simulateData`](https://rdrr.io/pkg/lavaan/man/simulateData.html)`(``population_model``, sample.nobs ``=`` ``1000``)`` ``model_data`` ``<-`` ``model_data``[`[`sample`](https://rdrr.io/r/base/sample.html)`(``1``:``1000``, ``1000``, ``TRUE``)``, ``]`` ``model_data`` ``<-`` `[`rbind`](https://rdrr.io/r/base/cbind.html)`(``model_data``, ``model_data``, ``model_data``)`` ``model_data``$``method`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(``"m1"``, ``1000``)``, `[`rep`](https://rdrr.io/r/base/rep.html)`(``"m2"``, ``1000``)``, `[`rep`](https://rdrr.io/r/base/rep.html)`(``"m3"``, ``1000``)``)`` ``model_data``$``id`` ``<-`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``1``:``1000``, ``3``)`` ``key_mtmm`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(``t1 ``=`` `[`paste0`](https://rdrr.io/r/base/paste.html)`(``"x"``, ``1``:``3``)``, t2 ``=`` `[`paste0`](https://rdrr.io/r/base/paste.html)`(``"x"``, ``4``:``6``)``, t3 ``=`` `[`paste0`](https://rdrr.io/r/base/paste.html)`(``"x"``, ``7``:``9``)``)`
+``` r
 
-[`plot_mtmm`](https://sedzinfo.github.io/rwf/reference/plot_mtmm.md)`(``df ``=`` ``model_data``, key ``=`` ``key_mtmm``, method ``=`` ``"method"``, subject ``=`` ``"id"``)`
+set.seed(12345)
+population_model <- "t1=~x1+.9*x2+.9*x3
+                     t2=~x4+.9*x5+.9*x6
+                     t3=~x7+.9*x8+.9*x9"
+model_data <- lavaan::simulateData(population_model, sample.nobs = 1000)
+model_data <- model_data[sample(1:1000, 1000, TRUE), ]
+model_data <- rbind(model_data, model_data, model_data)
+model_data$method <- c(rep("m1", 1000), rep("m2", 1000), rep("m3", 1000))
+model_data$id <- rep(1:1000, 3)
+key_mtmm <- list(t1 = paste0("x", 1:3), t2 = paste0("x", 4:6), t3 = paste0("x", 7:9))
+```
+
+``` r
+
+plot_mtmm(df = model_data, key = key_mtmm, method = "method", subject = "id")
+```
 
 ![](GLM_RELIABILITY_files/figure-html/mtmm_plot-1.png)
 
@@ -177,7 +223,10 @@ variance in this simulation.
 syntax, for fitting a formal confirmatory model on the same trait
 structure:
 
-[`cat`](https://rdrr.io/r/base/cat.html)`(`[`key_to_cfa_model`](https://sedzinfo.github.io/rwf/reference/key_to_cfa_model.md)`(``key_mtmm``)``)`
+``` r
+
+cat(key_to_cfa_model(key_mtmm))
+```
 
     ## t1 =~ x1+x2+x3 
     ##  t2 =~ x4+x5+x6 
@@ -190,7 +239,15 @@ structure:
 (person, item, time, and their interactions specified with `r(...)`),
 reporting each component’s percentage of total variance.
 
-`design`` ``<-`` `[`expand.grid`](https://rdrr.io/r/base/expand.grid.html)`(``time ``=`` ``1``:``3``, item ``=`` ``1``:``3``, person ``=`` ``1``:``10``)`` ``design`` ``<-`` `[`change_data_type`](https://sedzinfo.github.io/rwf/reference/change_data_type.md)`(``design``, type ``=`` ``"factor"``)`` ``design``$``response`` ``<-`` `[`rowSums`](https://rdrr.io/r/base/colSums.html)`(`[`change_data_type`](https://sedzinfo.github.io/rwf/reference/change_data_type.md)`(``design``[``, ``1``:``2``]``, type ``=`` ``"numeric"``)``)`` ``+`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``90``, ``0``, ``0.1``)`` ``model_vc`` ``<-`` ``mixlm``::`[`lm`](https://rdrr.io/pkg/mixlm/man/lm.html)`(``response`` ``~`` ``r``(``time``)`` ``*`` ``r``(``person``)`` ``+`` ``r``(``item``)`` ``*`` ``r``(``person``)``, data ``=`` ``design``)`` ``result_vc`` ``<-`` `[`extract_components`](https://sedzinfo.github.io/rwf/reference/extract_components.md)`(``model_vc``)`` ``result_vc``$``components`
+``` r
+
+design <- expand.grid(time = 1:3, item = 1:3, person = 1:10)
+design <- change_data_type(design, type = "factor")
+design$response <- rowSums(change_data_type(design[, 1:2], type = "numeric")) + rnorm(90, 0, 0.1)
+model_vc <- mixlm::lm(response ~ r(time) * r(person) + r(item) * r(person), data = design)
+result_vc <- extract_components(model_vc)
+result_vc$components
+```
 
     ##     component            VC   vc_percent
     ## 1        time  1.0724072562 50.784203370
@@ -200,14 +257,28 @@ reporting each component’s percentage of total variance.
     ## 5 person:item -0.0003358241  0.015903061
     ## 6   Residuals  0.0080428214  0.380870492
 
-`result_vc``$``plot`
+``` r
+
+result_vc$plot
+```
 
 ![](GLM_RELIABILITY_files/figure-html/variance_components-1.png)
 
 `compute_shrout` then converts these variance components into the five
 Shrout-Fleiss reliability coefficients:
 
-`vc`` ``<-`` ``result_vc``$``components`` `[`compute_shrout`](https://sedzinfo.github.io/rwf/reference/compute_shrout.md)`(`` `` sperson ``=`` ``vc``[``vc``$``component`` ``==`` ``"person"``, ``"VC"``]``,`` `` spersonitem ``=`` ``vc``[``vc``$``component`` ``==`` ``"item:person"``, ``"VC"``]``,`` `` stime ``=`` ``vc``[``vc``$``component`` ``==`` ``"time"``, ``"VC"``]``,`` `` spersontime ``=`` ``vc``[``vc``$``component`` ``==`` ``"time:person"``, ``"VC"``]``,`` `` serror ``=`` ``vc``[``vc``$``component`` ``==`` ``"Residuals"``, ``"VC"``]``,`` `` m ``=`` ``3``, k ``=`` ``3`` ``)`
+``` r
+
+vc <- result_vc$components
+compute_shrout(
+  sperson = vc[vc$component == "person", "VC"],
+  spersonitem = vc[vc$component == "item:person", "VC"],
+  stime = vc[vc$component == "time", "VC"],
+  spersontime = vc[vc$component == "time:person", "VC"],
+  serror = vc[vc$component == "Residuals", "VC"],
+  m = 3, k = 3
+)
+```
 
     ##   measure      result                                                                                         description
     ## 1     r1f -0.05607748                            Reliability (between persons) of measures taken on the same fixed k time

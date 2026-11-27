@@ -103,7 +103,15 @@ n\_+ and n\_- count the blocks with a positive and a negative
 difference, and tied blocks drop out. This is the squared z of the sign
 test:
 
-`bp_long`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``patient ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``df_blood_pressure``$``patient``, ``2``)``,`` `` time ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"before"``, ``"after"``)``, each ``=`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``df_blood_pressure``)``)``,`` `` bp ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``df_blood_pressure``$``bp_before``, ``df_blood_pressure``$``bp_after``)``)`` ``difference`` ``<-`` ``df_blood_pressure``$``bp_before`` ``-`` ``df_blood_pressure``$``bp_after`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``Q_rwf ``=`` `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``bp`` ``~`` ``time`` ``|`` ``patient``, df ``=`` ``bp_long``)``$``Q``,`` `` Q_sign_test ``=`` ``(`[`sum`](https://rdrr.io/r/base/sum.html)`(``difference`` ``>`` ``0``)`` ``-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``difference`` ``<`` ``0``)``)``^``2`` ``/`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``difference`` ``!=`` ``0``)``)`
+``` r
+
+bp_long <- data.frame(patient = rep(df_blood_pressure$patient, 2),
+                      time = rep(c("before", "after"), each = nrow(df_blood_pressure)),
+                      bp = c(df_blood_pressure$bp_before, df_blood_pressure$bp_after))
+difference <- df_blood_pressure$bp_before - df_blood_pressure$bp_after
+data.frame(Q_rwf = compute_friedman_test(formula = bp ~ time | patient, df = bp_long)$Q,
+           Q_sign_test = (sum(difference > 0) - sum(difference < 0))^2 / sum(difference != 0))
+```
 
     ##      Q_rwf Q_sign_test
     ## 1 7.758621    7.758621
@@ -138,7 +146,10 @@ adjustment for multiple comparisons.
 with `paired = TRUE` pairs observations by position, so the data must be
 sorted by block within each group, as `df_co2` is:
 
-`stats``::`[`pairwise.wilcox.test`](https://rdrr.io/r/stats/pairwise.wilcox.test.html)`(``df_co2``$``uptake``, ``df_co2``$``conc``, paired ``=`` ``TRUE``, p.adjust.method ``=`` ``"holm"``)`
+``` r
+
+stats::pairwise.wilcox.test(df_co2$uptake, df_co2$conc, paired = TRUE, p.adjust.method = "holm")
+```
 
     ## 
     ##  Pairwise comparisons using Wilcoxon signed rank exact test 
@@ -205,7 +216,15 @@ between all pairs of blocks:
 `df_co2` has one plant with tied values, so the two are close but not
 identical here:
 
-`uptake`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``df_co2``$``uptake``, `[`list`](https://rdrr.io/r/base/list.html)`(``df_co2``$``Plant``, ``df_co2``$``conc``)``, ``identity``)`` ``spearman`` ``<-`` `[`cor`](https://rdrr.io/r/stats/cor.html)`(`[`t`](https://rdrr.io/r/base/t.html)`(``uptake``)``, method ``=`` ``"spearman"``)`` ``W`` ``<-`` `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``uptake`` ``~`` ``conc`` ``|`` ``Plant``, df ``=`` ``df_co2``)``$``kendall_w`` ``n`` ``<-`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``uptake``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``mean_spearman ``=`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``spearman``[`[`upper.tri`](https://rdrr.io/r/base/lower.tri.html)`(``spearman``)``]``)``,`` `` from_W ``=`` ``(``n`` ``*`` ``W`` ``-`` ``1``)`` ``/`` ``(``n`` ``-`` ``1``)``)`
+``` r
+
+uptake <- tapply(df_co2$uptake, list(df_co2$Plant, df_co2$conc), identity)
+spearman <- cor(t(uptake), method = "spearman")
+W <- compute_friedman_test(formula = uptake ~ conc | Plant, df = df_co2)$kendall_w
+n <- nrow(uptake)
+data.frame(mean_spearman = mean(spearman[upper.tri(spearman)]),
+           from_W = (n * W - 1) / (n - 1))
+```
 
     ##   mean_spearman    from_W
     ## 1     0.8122001 0.8132825
@@ -242,7 +261,10 @@ concentrations are the groups. The formula `uptake ~ conc | Plant` asks
 whether uptake changes with concentration, comparing each plant only
 with itself.
 
-[`head`](https://rdrr.io/r/utils/head.html)`(``df_co2``)`
+``` r
+
+head(df_co2)
+```
 
     ##   Plant   Type  Treatment conc uptake
     ## 1   Qn1 Quebec nonchilled   95   16.0
@@ -252,7 +274,11 @@ with itself.
     ## 5   Qn1 Quebec nonchilled  500   35.3
     ## 6   Qn1 Quebec nonchilled  675   39.2
 
-`form`` ``<-`` `[`formula`](https://rdrr.io/r/stats/formula.html)`(``uptake`` ``~`` ``conc`` ``|`` ``Plant``)`` `[`table`](https://rdrr.io/r/base/table.html)`(``df_co2``$``Plant``, ``df_co2``$``conc``)`
+``` r
+
+form <- formula(uptake ~ conc | Plant)
+table(df_co2$Plant, df_co2$conc)
+```
 
     ##      
     ##       95 175 250 350 500 675 1000
@@ -272,13 +298,21 @@ with itself.
 Each line is one plant. Uptake rises with concentration in almost every
 plant, even though the plants differ a lot in their overall level:
 
-[`interaction.plot`](https://rdrr.io/r/stats/interaction.plot.html)`(``df_co2``$``conc``, ``df_co2``$``Plant``, ``df_co2``$``uptake``, legend ``=`` ``FALSE``,`` `` xlab ``=`` ``"CO2 concentration"``, ylab ``=`` ``"uptake"``, col ``=`` ``"grey40"``, lty ``=`` ``1``)`
+``` r
+
+interaction.plot(df_co2$conc, df_co2$Plant, df_co2$uptake, legend = FALSE,
+                 xlab = "CO2 concentration", ylab = "uptake", col = "grey40", lty = 1)
+```
 
 ![](GLM_FRIEDMAN_files/figure-html/data_plot-1.png)
 
 ## compute_friedman_test
 
-`result`` ``<-`` `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_co2``)`` ``result`
+``` r
+
+result <- compute_friedman_test(formula = form, df = df_co2)
+result
+```
 
     ##                 formula                 method kendall_w        Q df  n            p
     ## 1 uptake ~ conc | Plant Friedman rank sum test 0.8288423 59.67665  6 12 5.235869e-11
@@ -300,7 +334,14 @@ The output columns are:
 Every quantity from the formulas above, computed by hand. First the
 blocks by groups matrix and the ranks within each block:
 
-`y`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``df_co2``$``uptake``, `[`list`](https://rdrr.io/r/base/list.html)`(``df_co2``$``Plant``, ``df_co2``$``conc``)``, ``identity``)`` ``n`` ``<-`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``y``)`` ``k`` ``<-`` `[`ncol`](https://rdrr.io/r/base/nrow.html)`(``y``)`` ``r`` ``<-`` `[`t`](https://rdrr.io/r/base/t.html)`(`[`apply`](https://rdrr.io/r/base/apply.html)`(``y``, ``1``, ``rank``)``)`` ``r`
+``` r
+
+y <- tapply(df_co2$uptake, list(df_co2$Plant, df_co2$conc), identity)
+n <- nrow(y)
+k <- ncol(y)
+r <- t(apply(y, 1, rank))
+r
+```
 
     ##     95 175 250 350 500 675 1000
     ## Mc1  1   2   3   4   5   7    6
@@ -316,14 +357,27 @@ blocks by groups matrix and the ranks within each block:
     ## Qn2  1   2   3   6   4   5    7
     ## Qn3  1   2   3   4   5   6    7
 
-`R_j`` ``<-`` `[`colSums`](https://rdrr.io/r/base/colSums.html)`(``r``)`` ``R_j`
+``` r
+
+R_j <- colSums(r)
+R_j
+```
 
     ##   95  175  250  350  500  675 1000 
     ##   12   27   37   56   58   68   78
 
 Q without ties, the tie correction and the corrected Q:
 
-`Q_0`` ``<-`` ``12`` ``/`` ``(``n`` ``*`` ``k`` ``*`` ``(``k`` ``+`` ``1``)``)`` ``*`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``R_j``^``2``)`` ``-`` ``3`` ``*`` ``n`` ``*`` ``(``k`` ``+`` ``1``)`` ``ties`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(`[`apply`](https://rdrr.io/r/base/apply.html)`(``y``, ``1``, ``function``(``u``)`` ``{`` `` ``t`` ``<-`` `[`table`](https://rdrr.io/r/base/table.html)`(``u``)`` `` `[`sum`](https://rdrr.io/r/base/sum.html)`(``t``^``3`` ``-`` ``t``)`` ``}``)``)`` ``Q`` ``<-`` ``12`` ``*`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``(``R_j`` ``-`` ``n`` ``*`` ``(``k`` ``+`` ``1``)`` ``/`` ``2``)``^``2``)`` ``/`` ``(``n`` ``*`` ``k`` ``*`` ``(``k`` ``+`` ``1``)`` ``-`` ``ties`` ``/`` ``(``k`` ``-`` ``1``)``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``Q_0``, ``ties``, ``Q``)`
+``` r
+
+Q_0 <- 12 / (n * k * (k + 1)) * sum(R_j^2) - 3 * n * (k + 1)
+ties <- sum(apply(y, 1, function(u) {
+  t <- table(u)
+  sum(t^3 - t)
+}))
+Q <- 12 * sum((R_j - n * (k + 1) / 2)^2) / (n * k * (k + 1) - ties / (k - 1))
+data.frame(Q_0, ties, Q)
+```
 
     ##        Q_0 ties        Q
     ## 1 59.32143   24 59.67665
@@ -331,16 +385,30 @@ Q without ties, the tie correction and the corrected Q:
 Degrees of freedom, p value and Kendall’s W, from Q and from its own
 formula:
 
-`by_hand`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``kendall_w ``=`` ``Q`` ``/`` ``(``n`` ``*`` ``(``k`` ``-`` ``1``)``)``,`` `` Q ``=`` ``Q``,`` `` df ``=`` ``k`` ``-`` ``1``,`` `` n ``=`` ``n``,`` `` p ``=`` `[`pchisq`](https://rdrr.io/r/stats/Chisquare.html)`(``Q``, ``k`` ``-`` ``1``, lower.tail ``=`` ``FALSE``)``)`` ``by_hand`
+``` r
+
+by_hand <- data.frame(kendall_w = Q / (n * (k - 1)),
+                      Q = Q,
+                      df = k - 1,
+                      n = n,
+                      p = pchisq(Q, k - 1, lower.tail = FALSE))
+by_hand
+```
 
     ##   kendall_w        Q df  n            p
     ## 1 0.8288423 59.67665  6 12 5.235869e-11
 
-`12`` ``*`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``(``R_j`` ``-`` ``n`` ``*`` ``(``k`` ``+`` ``1``)`` ``/`` ``2``)``^``2``)`` ``/`` ``(``n``^``2`` ``*`` ``(``k``^``3`` ``-`` ``k``)`` ``-`` ``n`` ``*`` ``ties``)`
+``` r
+
+12 * sum((R_j - n * (k + 1) / 2)^2) / (n^2 * (k^3 - k) - n * ties)
+```
 
     ## [1] 0.8288423
 
-[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(``by_hand``, ``result``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"kendall_w"``, ``"Q"``, ``"df"``, ``"n"``, ``"p"``)``]``, check.attributes ``=`` ``FALSE``)`
+``` r
+
+all.equal(by_hand, result[, c("kendall_w", "Q", "df", "n", "p")], check.attributes = FALSE)
+```
 
     ## [1] TRUE
 
@@ -356,7 +424,10 @@ and
 give the same Q, degrees of freedom and p value. `coin` needs the groups
 and blocks as factors:
 
-`stats``::`[`friedman.test`](https://rdrr.io/r/stats/friedman.test.html)`(``formula ``=`` ``form``, data ``=`` ``df_co2``)`
+``` r
+
+stats::friedman.test(formula = form, data = df_co2)
+```
 
     ## 
     ##  Friedman rank sum test
@@ -364,7 +435,10 @@ and blocks as factors:
     ## data:  uptake and conc and Plant
     ## Friedman chi-squared = 59.677, df = 6, p-value = 5.236e-11
 
-`stats``::`[`friedman.test`](https://rdrr.io/r/stats/friedman.test.html)`(``y``)`
+``` r
+
+stats::friedman.test(y)
+```
 
     ## 
     ##  Friedman rank sum test
@@ -372,7 +446,10 @@ and blocks as factors:
     ## data:  y
     ## Friedman chi-squared = 59.677, df = 6, p-value = 5.236e-11
 
-`coin``::`[`friedman_test`](https://rdrr.io/pkg/coin/man/SymmetryTests.html)`(``uptake`` ``~`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``conc``)`` ``|`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``Plant``)``, data ``=`` ``df_co2``)`
+``` r
+
+coin::friedman_test(uptake ~ factor(conc) | factor(Plant), data = df_co2)
+```
 
     ## 
     ##  Asymptotic Friedman Test
@@ -381,7 +458,10 @@ and blocks as factors:
     ##   stratified by factor(Plant)
     ## chi-squared = 59.677, df = 6, p-value = 5.236e-11
 
-`rstatix``::`[`friedman_test`](https://rpkgs.datanovia.com/rstatix/reference/friedman_test.html)`(``df_co2``, ``form``)`
+``` r
+
+rstatix::friedman_test(df_co2, form)
+```
 
     ## # A tibble: 1 × 6
     ##   .y.        n statistic    df        p method       
@@ -398,14 +478,20 @@ slightly from run to run. The [confidence
 intervals](#confidence-intervals) section compares them with the
 interval from rwf.
 
-`rstatix``::`[`friedman_effsize`](https://rpkgs.datanovia.com/rstatix/reference/friedman_effsize.html)`(``df_co2``, ``form``, ci ``=`` ``TRUE``, conf.level ``=`` ``0.95``, ci.type ``=`` ``"perc"``, nboot ``=`` ``100``)`
+``` r
+
+rstatix::friedman_effsize(df_co2, form, ci = TRUE, conf.level = 0.95, ci.type = "perc", nboot = 100)
+```
 
     ## # A tibble: 1 × 7
     ##   .y.        n effsize conf.low conf.high method    magnitude
     ## * <chr>  <int>   <dbl>    <dbl>     <dbl> <chr>     <ord>    
     ## 1 uptake    12   0.829     0.72      0.94 Kendall W large
 
-`effectsize``::`[`kendalls_w`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``form``, data ``=`` ``df_co2``)`
+``` r
+
+effectsize::kendalls_w(form, data = df_co2)
+```
 
     ## Kendall's W |       95% CI
     ## --------------------------
@@ -423,7 +509,33 @@ are also sorted by block and group, because
 depends on the row order (see [effectsize and row
 order](#effectsize-and-row-order)).
 
-`check_friedman`` ``<-`` ``function``(``formula``, ``df``)`` ``{`` `` ``vars`` ``<-`` `[`all.vars`](https://rdrr.io/r/base/allnames.html)`(``formula``)`` `` ``df`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``y ``=`` ``df``[[``vars``[``1``]``]``]``, g ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``df``[[``vars``[``2``]``]``]``)``, b ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``df``[[``vars``[``3``]``]``]``)``)`` `` ``incomplete`` ``<-`` `[`unique`](https://rdrr.io/r/base/unique.html)`(``df``$``b``[`[`is.na`](https://rdrr.io/r/base/NA.html)`(``df``$``y``)``]``)`` `` ``df`` ``<-`` `[`droplevels`](https://rdrr.io/r/base/droplevels.html)`(``df``[``!``df``$``b`` `[`%in%`](https://rdrr.io/r/base/match.html)` ``incomplete``, ``]``)`` `` ``df`` ``<-`` ``df``[`[`order`](https://rdrr.io/r/base/order.html)`(``df``$``b``, ``df``$``g``)``, ``]`` `` ``rwf`` ``<-`` `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``y`` ``~`` ``g`` ``|`` ``b``, df ``=`` ``df``)`` `` ``fr`` ``<-`` ``stats``::`[`friedman.test`](https://rdrr.io/r/stats/friedman.test.html)`(``y`` ``~`` ``g`` ``|`` ``b``, data ``=`` ``df``)`` `` ``comparison`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` statistic ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Q"``, ``"Q"``, ``"Q"``, ``"df"``, ``"p"``, ``"kendall_w"``, ``"kendall_w"``)``,`` `` package ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"stats::friedman.test"``, ``"coin::friedman_test"``, ``"rstatix::friedman_test"``, ``"stats::friedman.test"``,`` `` ``"stats::friedman.test"``, ``"rstatix::friedman_effsize"``, ``"effectsize::kendalls_w"``)``,`` `` rwf ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``rwf``$``Q``, ``rwf``$``Q``, ``rwf``$``Q``, ``rwf``$``df``, ``rwf``$``p``, ``rwf``$``kendall_w``, ``rwf``$``kendall_w``)``,`` `` other ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`unname`](https://rdrr.io/r/base/unname.html)`(``fr``$``statistic``)``,`` `` `[`unname`](https://rdrr.io/r/base/unname.html)`(``coin``::`[`statistic`](https://rdrr.io/pkg/coin/man/statistic-methods.html)`(``coin``::`[`friedman_test`](https://rdrr.io/pkg/coin/man/SymmetryTests.html)`(``y`` ``~`` ``g`` ``|`` ``b``, data ``=`` ``df``)``)``)``,`` `` ``rstatix``::`[`friedman_test`](https://rpkgs.datanovia.com/rstatix/reference/friedman_test.html)`(``df``, ``y`` ``~`` ``g`` ``|`` ``b``)``$``statistic``,`` `` `[`unname`](https://rdrr.io/r/base/unname.html)`(``fr``$``parameter``)``,`` `` ``fr``$``p.value``,`` `` ``rstatix``::`[`friedman_effsize`](https://rpkgs.datanovia.com/rstatix/reference/friedman_effsize.html)`(``df``, ``y`` ``~`` ``g`` ``|`` ``b``)``$``effsize``,`` `` `[`suppressWarnings`](https://rdrr.io/r/base/warning.html)`(``effectsize``::`[`kendalls_w`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``y`` ``~`` ``g`` ``|`` ``b``, data ``=`` ``df``, ci ``=`` ``NULL``)``$``Kendalls_W``)``)``)`` `` ``comparison``$``difference`` ``<-`` ``comparison``$``rwf`` ``-`` ``comparison``$``other`` `` ``comparison`` ``}`` ``check_friedman``(``formula ``=`` ``form``, df ``=`` ``df_co2``)`
+``` r
+
+check_friedman <- function(formula, df) {
+  vars <- all.vars(formula)
+  df <- data.frame(y = df[[vars[1]]], g = factor(df[[vars[2]]]), b = factor(df[[vars[3]]]))
+  incomplete <- unique(df$b[is.na(df$y)])
+  df <- droplevels(df[!df$b %in% incomplete, ])
+  df <- df[order(df$b, df$g), ]
+  rwf <- compute_friedman_test(formula = y ~ g | b, df = df)
+  fr <- stats::friedman.test(y ~ g | b, data = df)
+  comparison <- data.frame(
+    statistic = c("Q", "Q", "Q", "df", "p", "kendall_w", "kendall_w"),
+    package = c("stats::friedman.test", "coin::friedman_test", "rstatix::friedman_test", "stats::friedman.test",
+                "stats::friedman.test", "rstatix::friedman_effsize", "effectsize::kendalls_w"),
+    rwf = c(rwf$Q, rwf$Q, rwf$Q, rwf$df, rwf$p, rwf$kendall_w, rwf$kendall_w),
+    other = c(unname(fr$statistic),
+              unname(coin::statistic(coin::friedman_test(y ~ g | b, data = df))),
+              rstatix::friedman_test(df, y ~ g | b)$statistic,
+              unname(fr$parameter),
+              fr$p.value,
+              rstatix::friedman_effsize(df, y ~ g | b)$effsize,
+              suppressWarnings(effectsize::kendalls_w(y ~ g | b, data = df, ci = NULL)$Kendalls_W)))
+  comparison$difference <- comparison$rwf - comparison$other
+  comparison
+}
+check_friedman(formula = form, df = df_co2)
+```
 
     ##   statistic                   package          rwf        other    difference
     ## 1         Q      stats::friedman.test 5.967665e+01 5.967665e+01  0.000000e+00
@@ -441,7 +553,38 @@ baseball players, each timed rounding first base with three methods.
 `max_abs_difference` is the largest absolute difference across all the
 comparisons for that dataset:
 
-`RoundingTimes`` ``<-`` `[`matrix`](https://rdrr.io/r/base/matrix.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``5.40``, ``5.50``, ``5.55``, ``5.85``, ``5.70``, ``5.75``, ``5.20``, ``5.60``, ``5.50``, ``5.55``, ``5.50``, ``5.40``,`` `` ``5.90``, ``5.85``, ``5.70``, ``5.45``, ``5.55``, ``5.60``, ``5.40``, ``5.40``, ``5.35``, ``5.45``, ``5.50``, ``5.35``,`` `` ``5.25``, ``5.15``, ``5.00``, ``5.85``, ``5.80``, ``5.70``, ``5.25``, ``5.20``, ``5.10``, ``5.65``, ``5.55``, ``5.45``,`` `` ``5.60``, ``5.35``, ``5.45``, ``5.05``, ``5.00``, ``4.95``, ``5.50``, ``5.50``, ``5.40``, ``5.45``, ``5.55``, ``5.50``,`` `` ``5.55``, ``5.55``, ``5.35``, ``5.45``, ``5.50``, ``5.55``, ``5.50``, ``5.45``, ``5.25``, ``5.65``, ``5.60``, ``5.40``,`` `` ``5.70``, ``5.65``, ``5.55``, ``6.30``, ``6.30``, ``6.25``)``,`` `` nrow ``=`` ``22``, byrow ``=`` ``TRUE``)`` ``df_rounding`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``time ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``RoundingTimes``)``,`` `` method ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"Round Out"``, ``"Narrow Angle"``, ``"Wide Angle"``)``, each ``=`` ``22``)``,`` `` player ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``1``:``22``, times ``=`` ``3``)``)`` ``datasets`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``uptake`` ``~`` ``conc`` ``|`` ``Plant``, df ``=`` ``df_co2``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``time`` ``~`` ``method`` ``|`` ``player``, df ``=`` ``df_rounding``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``bp`` ``~`` ``time`` ``|`` ``patient``, df ``=`` ``bp_long``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``decrease`` ``~`` ``treatment`` ``|`` ``rowpos``, df ``=`` ``OrchardSprays``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``circumference`` ``~`` ``age`` ``|`` ``Tree``, df ``=`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(``Orange``)``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``conc`` ``~`` ``time`` ``|`` ``Subject``, df ``=`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(``Indometh``)``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``formula ``=`` ``height`` ``~`` ``age`` ``|`` ``Seed``, df ``=`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(``Loblolly``)``)`` ``)`` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`lapply`](https://rdrr.io/r/base/lapply.html)`(``datasets``, ``function``(``d``)`` ``{`` `` ``rwf`` ``<-`` `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``d``$``formula``, df ``=`` ``d``$``df``)`` `` ``check`` ``<-`` ``check_friedman``(``formula ``=`` ``d``$``formula``, df ``=`` ``d``$``df``)`` `` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``formula ``=`` `[`deparse`](https://rdrr.io/r/base/deparse.html)`(``d``$``formula``)``,`` `` n ``=`` ``rwf``$``n``,`` `` k ``=`` ``rwf``$``df`` ``+`` ``1``,`` `` Q ``=`` ``rwf``$``Q``,`` `` kendall_w ``=`` ``rwf``$``kendall_w``,`` `` max_abs_difference ``=`` `[`max`](https://rdrr.io/r/base/Extremes.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``check``$``difference``)``)``)`` ``}``)``)`
+``` r
+
+RoundingTimes <- matrix(c(5.40, 5.50, 5.55, 5.85, 5.70, 5.75, 5.20, 5.60, 5.50, 5.55, 5.50, 5.40,
+                          5.90, 5.85, 5.70, 5.45, 5.55, 5.60, 5.40, 5.40, 5.35, 5.45, 5.50, 5.35,
+                          5.25, 5.15, 5.00, 5.85, 5.80, 5.70, 5.25, 5.20, 5.10, 5.65, 5.55, 5.45,
+                          5.60, 5.35, 5.45, 5.05, 5.00, 4.95, 5.50, 5.50, 5.40, 5.45, 5.55, 5.50,
+                          5.55, 5.55, 5.35, 5.45, 5.50, 5.55, 5.50, 5.45, 5.25, 5.65, 5.60, 5.40,
+                          5.70, 5.65, 5.55, 6.30, 6.30, 6.25),
+                        nrow = 22, byrow = TRUE)
+df_rounding <- data.frame(time = c(RoundingTimes),
+                          method = rep(c("Round Out", "Narrow Angle", "Wide Angle"), each = 22),
+                          player = rep(1:22, times = 3))
+datasets <- list(
+  list(formula = uptake ~ conc | Plant, df = df_co2),
+  list(formula = time ~ method | player, df = df_rounding),
+  list(formula = bp ~ time | patient, df = bp_long),
+  list(formula = decrease ~ treatment | rowpos, df = OrchardSprays),
+  list(formula = circumference ~ age | Tree, df = as.data.frame(Orange)),
+  list(formula = conc ~ time | Subject, df = as.data.frame(Indometh)),
+  list(formula = height ~ age | Seed, df = as.data.frame(Loblolly))
+)
+do.call(rbind, lapply(datasets, function(d) {
+  rwf <- compute_friedman_test(formula = d$formula, df = d$df)
+  check <- check_friedman(formula = d$formula, df = d$df)
+  data.frame(formula = deparse(d$formula),
+             n = rwf$n,
+             k = rwf$df + 1,
+             Q = rwf$Q,
+             kendall_w = rwf$kendall_w,
+             max_abs_difference = max(abs(check$difference)))
+}))
+```
 
     ##                         formula   n  k         Q  kendall_w max_abs_difference
     ## 1         uptake ~ conc | Plant  12  7 59.676647 0.82884232       7.105427e-15
@@ -449,7 +592,7 @@ comparisons for that dataset:
     ## 3           bp ~ time | patient 120  2  7.758621 0.06465517       0.000000e+00
     ## 4 decrease ~ treatment | rowpos   8  8 45.808670 0.81801196       7.105427e-15
     ## 5    circumference ~ age | Tree   5  7 29.913978 0.99713262       7.105427e-15
-    ## 6         conc ~ time | Subject   6 11 59.536826 0.99228044       1.421085e-14
+    ## 6         conc ~ time | Subject   6 11 59.536826 0.99228044       2.131628e-14
     ## 7           height ~ age | Seed  14  6 70.000000 1.00000000       0.000000e+00
 
 ### effectsize and row order
@@ -463,7 +606,22 @@ rwf, `stats`, `coin` and `rstatix` give the same result in any row
 order, and so does `effectsize` when it is given sorted rows or the
 blocks by groups matrix:
 
-`orchard`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``decrease ``=`` ``OrchardSprays``$``decrease``,`` `` treatment ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``OrchardSprays``$``treatment``)``,`` `` rowpos ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``OrchardSprays``$``rowpos``)``)`` ``orchard_sorted`` ``<-`` ``orchard``[`[`order`](https://rdrr.io/r/base/order.html)`(``orchard``$``rowpos``, ``orchard``$``treatment``)``, ``]`` ``orchard_matrix`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``orchard``$``decrease``, `[`list`](https://rdrr.io/r/base/list.html)`(``orchard``$``rowpos``, ``orchard``$``treatment``)``, ``identity``)`` `[`suppressWarnings`](https://rdrr.io/r/base/warning.html)`(`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` input ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"original order"``, ``"sorted by block"``, ``"matrix"``)``,`` `` rwf ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``decrease`` ``~`` ``treatment`` ``|`` ``rowpos``, df ``=`` ``orchard``)``$``kendall_w``,`` `` `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``decrease`` ``~`` ``treatment`` ``|`` ``rowpos``, df ``=`` ``orchard_sorted``)``$``kendall_w``,`` `` ``NA``)``,`` `` effectsize ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``effectsize``::`[`kendalls_w`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``decrease`` ``~`` ``treatment`` ``|`` ``rowpos``, data ``=`` ``orchard``, ci ``=`` ``NULL``)``$``Kendalls_W``,`` `` ``effectsize``::`[`kendalls_w`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``decrease`` ``~`` ``treatment`` ``|`` ``rowpos``, data ``=`` ``orchard_sorted``, ci ``=`` ``NULL``)``$``Kendalls_W``,`` `` ``effectsize``::`[`kendalls_w`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``orchard_matrix``, ci ``=`` ``NULL``)``$``Kendalls_W``)``)``)`
+``` r
+
+orchard <- data.frame(decrease = OrchardSprays$decrease,
+                      treatment = factor(OrchardSprays$treatment),
+                      rowpos = factor(OrchardSprays$rowpos))
+orchard_sorted <- orchard[order(orchard$rowpos, orchard$treatment), ]
+orchard_matrix <- tapply(orchard$decrease, list(orchard$rowpos, orchard$treatment), identity)
+suppressWarnings(data.frame(
+  input = c("original order", "sorted by block", "matrix"),
+  rwf = c(compute_friedman_test(decrease ~ treatment | rowpos, df = orchard)$kendall_w,
+          compute_friedman_test(decrease ~ treatment | rowpos, df = orchard_sorted)$kendall_w,
+          NA),
+  effectsize = c(effectsize::kendalls_w(decrease ~ treatment | rowpos, data = orchard, ci = NULL)$Kendalls_W,
+                 effectsize::kendalls_w(decrease ~ treatment | rowpos, data = orchard_sorted, ci = NULL)$Kendalls_W,
+                 effectsize::kendalls_w(orchard_matrix, ci = NULL)$Kendalls_W)))
+```
 
     ##             input      rwf effectsize
     ## 1  original order 0.818012   0.818012
@@ -487,7 +645,11 @@ The interval is
 
 where W^{\*}\_{(q)} is the q quantile of the bootstrap estimates.
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_co2``, ci ``=`` ``TRUE``, conf.level ``=`` ``0.95``, nboot ``=`` ``5000``)`
+``` r
+
+set.seed(1)
+compute_friedman_test(formula = form, df = df_co2, ci = TRUE, conf.level = 0.95, nboot = 5000)
+```
 
     ##                 formula                 method kendall_w kendall_w_lower kendall_w_upper        Q df  n            p
     ## 1 uptake ~ conc | Plant Friedman rank sum test 0.8288423        0.750505       0.9300719 59.67665  6 12 5.235869e-11
@@ -496,7 +658,19 @@ where W^{\*}\_{(q)} is the q quantile of the bootstrap estimates.
 method. Each bootstrap draws different resamples, so the limits agree
 only to about two decimals, and they get closer as `nboot` grows:
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``rwf`` ``<-`` `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_co2``, ci ``=`` ``TRUE``, nboot ``=`` ``5000``)`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``rstatix_w`` ``<-`` ``rstatix``::`[`friedman_effsize`](https://rpkgs.datanovia.com/rstatix/reference/friedman_effsize.html)`(``df_co2``, ``form``, ci ``=`` ``TRUE``, ci.type ``=`` ``"perc"``, nboot ``=`` ``5000``)`` `[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``effectsize_w`` ``<-`` `[`suppressWarnings`](https://rdrr.io/r/base/warning.html)`(``effectsize``::`[`kendalls_w`](https://easystats.github.io/effectsize/reference/rank_epsilon_squared.html)`(``form``, data ``=`` ``df_co2``, alternative ``=`` ``"two.sided"``, iterations ``=`` ``5000``)``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``package ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"rwf"``, ``"rstatix::friedman_effsize"``, ``"effectsize::kendalls_w"``)``,`` `` estimate ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``rwf``$``kendall_w``, ``rstatix_w``$``effsize``, ``effectsize_w``$``Kendalls_W``)``,`` `` lower ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``rwf``$``kendall_w_lower``, ``rstatix_w``$``conf.low``, ``effectsize_w``$``CI_low``)``,`` `` upper ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``rwf``$``kendall_w_upper``, ``rstatix_w``$``conf.high``, ``effectsize_w``$``CI_high``)``)`
+``` r
+
+set.seed(1)
+rwf <- compute_friedman_test(formula = form, df = df_co2, ci = TRUE, nboot = 5000)
+set.seed(1)
+rstatix_w <- rstatix::friedman_effsize(df_co2, form, ci = TRUE, ci.type = "perc", nboot = 5000)
+set.seed(1)
+effectsize_w <- suppressWarnings(effectsize::kendalls_w(form, data = df_co2, alternative = "two.sided", iterations = 5000))
+data.frame(package = c("rwf", "rstatix::friedman_effsize", "effectsize::kendalls_w"),
+           estimate = c(rwf$kendall_w, rstatix_w$effsize, effectsize_w$Kendalls_W),
+           lower = c(rwf$kendall_w_lower, rstatix_w$conf.low, effectsize_w$CI_low),
+           upper = c(rwf$kendall_w_upper, rstatix_w$conf.high, effectsize_w$CI_high))
+```
 
     ##                     package  estimate    lower     upper
     ## 1                       rwf 0.8288423 0.750505 0.9300719
@@ -515,7 +689,20 @@ standard deviations, with 10 to 1,000 subjects. The population effect is
 the same in every row. As the number of subjects grows, Q grows and the
 p value drops towards 0, while W settles around the same value:
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``simulate_blocks`` ``<-`` ``function``(``n_subjects``, ``shift``)`` ``{`` `` ``subject_level`` ``<-`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n_subjects``)`` `` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``subject ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`seq_len`](https://rdrr.io/r/base/seq.html)`(``n_subjects``)``, times ``=`` ``3``)``,`` `` condition ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"a"``, ``"b"``, ``"c"``)``, each ``=`` ``n_subjects``)``,`` `` score ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``subject_level``, times ``=`` ``3``)`` ``+`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``1``, ``2``)`` ``*`` ``shift``, each ``=`` ``n_subjects``)`` ``+`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``3`` ``*`` ``n_subjects``)``)`` ``}`` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`lapply`](https://rdrr.io/r/base/lapply.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``10``, ``30``, ``100``, ``300``, ``1000``)``, ``function``(``n_subjects``)`` ``{`` `` ``sim`` ``<-`` ``simulate_blocks``(``n_subjects``, shift ``=`` ``0.5``)`` `` `[`cbind`](https://rdrr.io/r/base/cbind.html)`(``n_subjects``, `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``score`` ``~`` ``condition`` ``|`` ``subject``, df ``=`` ``sim``)``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"Q"``, ``"p"``, ``"kendall_w"``)``]``)`` ``}``)``)`
+``` r
+
+set.seed(1)
+simulate_blocks <- function(n_subjects, shift) {
+  subject_level <- rnorm(n_subjects)
+  data.frame(subject = rep(seq_len(n_subjects), times = 3),
+             condition = rep(c("a", "b", "c"), each = n_subjects),
+             score = rep(subject_level, times = 3) + rep(c(0, 1, 2) * shift, each = n_subjects) + rnorm(3 * n_subjects))
+}
+do.call(rbind, lapply(c(10, 30, 100, 300, 1000), function(n_subjects) {
+  sim <- simulate_blocks(n_subjects, shift = 0.5)
+  cbind(n_subjects, compute_friedman_test(formula = score ~ condition | subject, df = sim)[, c("Q", "p", "kendall_w")])
+}))
+```
 
     ##   n_subjects          Q            p kendall_w
     ## 1         10   5.600000 6.081006e-02 0.2800000
@@ -535,7 +722,17 @@ When there is no effect at all, the average W is close to 1/n, while the
 average \bar{r}\_s=(nW-1)/(n-1) is close to 0. With 10 subjects the bias
 is 1/10=0.1, which already reaches the “small” benchmark:
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``null_W`` ``<-`` `[`replicate`](https://rdrr.io/r/base/lapply.html)`(``2000``, ``{`` `` ``sim`` ``<-`` ``simulate_blocks``(``10``, shift ``=`` ``0``)`` `` `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``score`` ``~`` ``condition`` ``|`` ``subject``, df ``=`` ``sim``)``$``kendall_w`` ``}``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``mean_kendall_w ``=`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``null_W``)``,`` `` expected_kendall_w ``=`` ``1`` ``/`` ``10``,`` `` mean_spearman ``=`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``(``10`` ``*`` ``null_W`` ``-`` ``1``)`` ``/`` ``(``10`` ``-`` ``1``)``)``)`
+``` r
+
+set.seed(1)
+null_W <- replicate(2000, {
+  sim <- simulate_blocks(10, shift = 0)
+  compute_friedman_test(formula = score ~ condition | subject, df = sim)$kendall_w
+})
+data.frame(mean_kendall_w = mean(null_W),
+           expected_kendall_w = 1 / 10,
+           mean_spearman = mean((10 * null_W - 1) / (10 - 1)))
+```
 
     ##   mean_kendall_w expected_kendall_w mean_spearman
     ## 1        0.10034                0.1  0.0003777778
@@ -553,16 +750,27 @@ does. The formula method of
 stops with an error instead. Here one measurement of the first plant is
 set to missing:
 
-`df_missing`` ``<-`` ``df_co2`` ``df_missing``$``uptake``[``1``]`` ``<-`` ``NA`` `[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``form``, df ``=`` ``df_missing``)`
+``` r
+
+df_missing <- df_co2
+df_missing$uptake[1] <- NA
+compute_friedman_test(formula = form, df = df_missing)
+```
 
     ##                 formula                 method kendall_w        Q df  n            p
     ## 1 uptake ~ conc | Plant Friedman rank sum test 0.8175876 53.96078  6 11 7.512708e-10
 
-[`tryCatch`](https://rdrr.io/r/base/conditions.html)`(``stats``::`[`friedman.test`](https://rdrr.io/r/stats/friedman.test.html)`(``formula ``=`` ``form``, data ``=`` ``df_missing``)``, error ``=`` ``conditionMessage``)`
+``` r
+
+tryCatch(stats::friedman.test(formula = form, data = df_missing), error = conditionMessage)
+```
 
     ## [1] "not an unreplicated complete block design"
 
-`stats``::`[`friedman.test`](https://rdrr.io/r/stats/friedman.test.html)`(`[`tapply`](https://rdrr.io/r/base/tapply.html)`(``df_missing``$``uptake``, `[`list`](https://rdrr.io/r/base/list.html)`(``df_missing``$``Plant``, ``df_missing``$``conc``)``, ``identity``)``)`
+``` r
+
+stats::friedman.test(tapply(df_missing$uptake, list(df_missing$Plant, df_missing$conc), identity))
+```
 
     ## 
     ##  Friedman rank sum test
@@ -570,21 +778,27 @@ set to missing:
     ## data:  tapply(df_missing$uptake, list(df_missing$Plant, df_missing$conc), identity)
     ## Friedman chi-squared = 53.961, df = 6, p-value = 7.513e-10
 
-`check_friedman``(``formula ``=`` ``form``, df ``=`` ``df_missing``)`
+``` r
 
-    ##   statistic                   package          rwf        other    difference
-    ## 1         Q      stats::friedman.test 5.396078e+01 5.396078e+01  0.000000e+00
-    ## 2         Q       coin::friedman_test 5.396078e+01 5.396078e+01 -1.421085e-14
-    ## 3         Q    rstatix::friedman_test 5.396078e+01 5.396078e+01  0.000000e+00
-    ## 4        df      stats::friedman.test 6.000000e+00 6.000000e+00  0.000000e+00
-    ## 5         p      stats::friedman.test 7.512708e-10 7.512708e-10  0.000000e+00
-    ## 6 kendall_w rstatix::friedman_effsize 8.175876e-01 8.175876e-01  0.000000e+00
-    ## 7 kendall_w    effectsize::kendalls_w 8.175876e-01 8.175876e-01  0.000000e+00
+check_friedman(formula = form, df = df_missing)
+```
+
+    ##   statistic                   package          rwf        other   difference
+    ## 1         Q      stats::friedman.test 5.396078e+01 5.396078e+01 0.000000e+00
+    ## 2         Q       coin::friedman_test 5.396078e+01 5.396078e+01 2.131628e-14
+    ## 3         Q    rstatix::friedman_test 5.396078e+01 5.396078e+01 0.000000e+00
+    ## 4        df      stats::friedman.test 6.000000e+00 6.000000e+00 0.000000e+00
+    ## 5         p      stats::friedman.test 7.512708e-10 7.512708e-10 0.000000e+00
+    ## 6 kendall_w rstatix::friedman_effsize 8.175876e-01 8.175876e-01 0.000000e+00
+    ## 7 kendall_w    effectsize::kendalls_w 8.175876e-01 8.175876e-01 0.000000e+00
 
 A block with two observations for the same group is an error, because
 the design is no longer an unreplicated complete block design:
 
-[`tryCatch`](https://rdrr.io/r/base/conditions.html)`(`[`compute_friedman_test`](https://sedzinfo.github.io/rwf/reference/compute_friedman_test.md)`(``formula ``=`` ``form``, df ``=`` `[`rbind`](https://rdrr.io/r/base/cbind.html)`(``df_co2``, ``df_co2``[``1``, ``]``)``)``, error ``=`` ``conditionMessage``)`
+``` r
+
+tryCatch(compute_friedman_test(formula = form, df = rbind(df_co2, df_co2[1, ])), error = conditionMessage)
+```
 
     ## [1] "each block must have at most one observation per group"
 

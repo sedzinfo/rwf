@@ -75,13 +75,6 @@
   in blocks and see how much more variance each block explains, as the
   change in R².
 
-- [Item response theory
-  reports](https://sedzinfo.github.io/rwf/articles/GLM_IRT.md):
-
-  Item response theory reports with rwf: test information and expected
-  score curves, and a full report of a mirt model with its coefficients,
-  local independence and fit.
-
 - [Thurstonian item response
   theory](https://sedzinfo.github.io/rwf/articles/GLM_IRT_T.md):
 
@@ -95,6 +88,13 @@
   Unidimensional IRT from scratch in base R with rwf: the item response
   function, item and test information for the 1PL, 2PL and 3PL models,
   and Newton-Raphson ability estimates.
+
+- [Item response theory
+  reports](https://sedzinfo.github.io/rwf/articles/GLM_IRT.md):
+
+  Item response theory reports with rwf: test information and expected
+  score curves, and a full report of a mirt model with its coefficients,
+  local independence and fit.
 
 - [Kruskal–Wallis
   test](https://sedzinfo.github.io/rwf/articles/GLM_KRUSKAL_WALLIS.md):

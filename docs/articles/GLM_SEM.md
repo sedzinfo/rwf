@@ -62,13 +62,25 @@ collection.
 rectangles, observed variables as light rectangles, and edges labeled
 with loadings.
 
-`model_syntax`` ``<-`` ``"LATENT1=~X1+X2+X3`` `` LATENT2=~X4+X5+X6"`` ``df_cfa`` ``<-`` ``lavaan``::`[`simulateData`](https://rdrr.io/pkg/lavaan/man/simulateData.html)`(``model ``=`` ``model_syntax``, model.type ``=`` ``"cfa"``, return.type ``=`` ``"data.frame"``, sample.nobs ``=`` ``300``)`` ``fit`` ``<-`` ``lavaan``::`[`cfa`](https://rdrr.io/pkg/lavaan/man/cfa.html)`(``model_syntax``, data ``=`` ``df_cfa``)`
+``` r
 
-[`plot_cfa_gg`](https://sedzinfo.github.io/rwf/reference/plot_cfa_gg.md)`(``fit``, what ``=`` ``"std"``, layout ``=`` ``"tree"``)`
+model_syntax <- "LATENT1=~X1+X2+X3
+                 LATENT2=~X4+X5+X6"
+df_cfa <- lavaan::simulateData(model = model_syntax, model.type = "cfa", return.type = "data.frame", sample.nobs = 300)
+fit <- lavaan::cfa(model_syntax, data = df_cfa)
+```
+
+``` r
+
+plot_cfa_gg(fit, what = "std", layout = "tree")
+```
 
 ![](GLM_SEM_files/figure-html/plot_cfa_std-1.png)
 
-[`plot_cfa_gg`](https://sedzinfo.github.io/rwf/reference/plot_cfa_gg.md)`(``fit``, what ``=`` ``"est"``, layout ``=`` ``"circle"``)`
+``` r
+
+plot_cfa_gg(fit, what = "est", layout = "circle")
+```
 
 ![](GLM_SEM_files/figure-html/plot_cfa_est-1.png)
 
@@ -86,7 +98,13 @@ loadings without a label show their estimate. It needs a model with
 labelled parameters. Here the loadings of X2 and X3 are constrained to
 be equal (`a`), and so are those of X5 and X6 (`b`):
 
-`model_eq`` ``<-`` ``"LATENT1=~X1+a*X2+a*X3`` `` LATENT2=~X4+b*X5+b*X6"`` ``fit_eq`` ``<-`` ``lavaan``::`[`cfa`](https://rdrr.io/pkg/lavaan/man/cfa.html)`(``model_eq``, data ``=`` ``df_cfa``)`` `[`plot_cfa_gg`](https://sedzinfo.github.io/rwf/reference/plot_cfa_gg.md)`(``fit_eq``, what ``=`` ``"eq"``, layout ``=`` ``"spring"``)`
+``` r
+
+model_eq <- "LATENT1=~X1+a*X2+a*X3
+             LATENT2=~X4+b*X5+b*X6"
+fit_eq <- lavaan::cfa(model_eq, data = df_cfa)
+plot_cfa_gg(fit_eq, what = "eq", layout = "spring")
+```
 
 ![](GLM_SEM_files/figure-html/plot_cfa_eq-1.png)
 
@@ -96,7 +114,12 @@ be equal (`a`), and so are those of X5 and X6 (`b`):
 path labels; `color_latent` and `color_observed` set the fill colour of
 the latent and observed nodes:
 
-[`plot_cfa_gg`](https://sedzinfo.github.io/rwf/reference/plot_cfa_gg.md)`(``fit``, what ``=`` ``"std"``, layout ``=`` ``"tree"``,`` `` label_size ``=`` ``4``, edge_label_size ``=`` ``3.5``,`` `` color_latent ``=`` ``"#2c3e50"``, color_observed ``=`` ``"#ecf0f1"``)`
+``` r
+
+plot_cfa_gg(fit, what = "std", layout = "tree",
+            label_size = 4, edge_label_size = 3.5,
+            color_latent = "#2c3e50", color_observed = "#ecf0f1")
+```
 
 ![](GLM_SEM_files/figure-html/plot_cfa_style-1.png)
 
@@ -108,13 +131,23 @@ picking the clearest arrangement for a report. The three `eq` diagrams
 are only produced for models with labelled parameters, so `fit` gives 6
 diagrams and `fit_eq` gives all 9:
 
-`all_plots`` ``<-`` `[`plot_cfa`](https://sedzinfo.github.io/rwf/reference/plot_cfa.md)`(``fit``)`` ``all_plots_eq`` ``<-`` `[`plot_cfa`](https://sedzinfo.github.io/rwf/reference/plot_cfa.md)`(``fit_eq``)`
+``` r
 
-[`names`](https://rdrr.io/r/base/names.html)`(``all_plots``)`
+all_plots <- plot_cfa(fit)
+all_plots_eq <- plot_cfa(fit_eq)
+```
+
+``` r
+
+names(all_plots)
+```
 
     ## [1] "circle_estimates"          "circle_standard_estimates" "tree_estimates"            "tree_standard_estimates"   "spring_estimates"          "spring_standard_estimates"
 
-[`names`](https://rdrr.io/r/base/names.html)`(``all_plots_eq``)`
+``` r
+
+names(all_plots_eq)
+```
 
     ## [1] "circle_estimates"                           "circle_standard_estimates"                  "circle_parameters_wih_equality_constraints" "tree_estimates"                            
     ## [5] "tree_standard_estimates"                    "tree_parameters_wih_equality_constraints"   "spring_estimates"                           "spring_standard_estimates"                 
@@ -122,7 +155,10 @@ diagrams and `fit_eq` gives all 9:
 
 Any diagram can be taken from the list by name:
 
-`all_plots``$``spring_standard_estimates`
+``` r
+
+all_plots$spring_standard_estimates
+```
 
 ![](GLM_SEM_files/figure-html/plot_cfa_batch_one-1.png)
 
@@ -133,11 +169,17 @@ Any diagram can be taken from the list by name:
 covariance, model-implied predicted scores, and the path diagrams into
 one structured report.
 
-`result`` ``<-`` `[`report_cfa`](https://sedzinfo.github.io/rwf/reference/report_cfa.md)`(``model ``=`` ``fit``)`
+``` r
+
+result <- report_cfa(model = fit)
+```
 
 ![](GLM_SEM_files/figure-html/report_cfa-1.png)![](GLM_SEM_files/figure-html/report_cfa-2.png)![](GLM_SEM_files/figure-html/report_cfa-3.png)![](GLM_SEM_files/figure-html/report_cfa-4.png)![](GLM_SEM_files/figure-html/report_cfa-5.png)![](GLM_SEM_files/figure-html/report_cfa-6.png)
 
-`result``$``fit_indices`
+``` r
+
+result$fit_indices
+```
 
     ##                                 fit
     ## npar                   1.300000e+01
@@ -191,7 +233,10 @@ one structured report.
     ## mfi                    9.992247e-01
     ## ecvi                   1.148846e-01
 
-`result``$``r_squared`
+``` r
+
+result$r_squared
+```
 
     ##    r_squared
     ## X1 0.5097622
@@ -201,7 +246,10 @@ one structured report.
     ## X5 0.5162224
     ## X6 0.4683997
 
-`result``$``parameters`
+``` r
+
+result$parameters
+```
 
     ##        lhs op     rhs exo         est         se          z       pvalue   ci.lower  ci.upper      std.lv     std.all
     ## 1  LATENT1 =~      X1   0  1.00000000 0.00000000         NA           NA  1.0000000 1.0000000  1.05053670  0.71397632
@@ -226,7 +274,10 @@ one structured report.
     ## 20      X5 r2      X5   0  0.51622239         NA         NA           NA         NA        NA          NA          NA
     ## 21      X6 r2      X6   0  0.46839967         NA         NA           NA         NA        NA          NA          NA
 
-`result``$``modification_indices``[`[`order`](https://rdrr.io/r/base/order.html)`(``-``result``$``modification_indices``$``mi``)``, ``]`
+``` r
+
+result$modification_indices[order(-result$modification_indices$mi), ]
+```
 
     ##        lhs op     rhs           mi           epc      sepc.all delta          ncp      power decision
     ## 35      X4 ~~      X6 3.394818e+00  5.166441e+00  5.036385e+00   0.1 0.0012718431 0.05014570      (i)
@@ -276,7 +327,10 @@ one structured report.
 
 The rest of the report holds the input data and model matrices:
 
-`result``$``sample_covariance`
+``` r
+
+result$sample_covariance
+```
 
     ##            X1          X2          X3          X4          X5          X6
     ## 1  2.16498482  1.15795978  1.00635404 -0.03586956 -0.11364379  0.04557297
@@ -286,7 +340,10 @@ The rest of the report holds the input data and model matrices:
     ## 5 -0.11364379 -0.09721179 -0.13486048  0.84878467  1.74258736  0.86323231
     ## 6  0.04557297 -0.01665839  0.10953145  0.81857306  0.86323231  1.77117744
 
-`result``$``standardized_estimates`
+``` r
+
+result$standardized_estimates
+```
 
     ## $lambda
     ##    LATENT1 LATENT2
@@ -311,7 +368,10 @@ The rest of the report holds the input data and model matrices:
     ## LATENT1   1.000        
     ## LATENT2  -0.024   1.000
 
-[`head`](https://rdrr.io/r/utils/head.html)`(``result``$``predict``)`
+``` r
+
+head(result$predict)
+```
 
     ##           X1         X2         X3         X4         X5         X6    LATENT1    LATENT2
     ## 1 -1.9067342 -0.8628151 -0.2705948  1.3446878 -0.9457707 -0.6144465 -0.7639561 -0.1515991
@@ -321,7 +381,10 @@ The rest of the report holds the input data and model matrices:
     ## 5  0.7261056  0.3029449 -0.4017335 -0.6748330 -0.6954542 -1.6117709  0.1929808 -0.7195893
     ## 6  1.0277574 -0.5210594 -1.2306230  1.8513064  1.7918047  2.6459962 -0.1920262  1.4678569
 
-`result``$``call`
+``` r
+
+result$call
+```
 
     ##                                                                call
     ## 1   lavaan::lavaan(model=model_syntax,data=df_cfa,model.type="cfa",
@@ -396,14 +459,22 @@ sample sizes, in parallel, and returns fit indices at each size — either
 generating data from known population parameters (`model_sim`) or
 resampling from an observed dataset’s correlation structure (`df`).
 
-`model_sim`` ``<-`` ``"LATENT =~ 1*X1 + 0.5*X2 + 1.5*X3 + 1.5*X4 + X5"`` ``model_est`` ``<-`` ``"LATENT =~ X1 + X2 + X3 + X4 + X5"`` ``result_sim`` ``<-`` `[`simulate_cfa_fit`](https://sedzinfo.github.io/rwf/reference/simulate_cfa_fit.md)`(``model_sim ``=`` ``model_sim``, model ``=`` ``model_est``, minnobs ``=`` ``50``, maxnobs ``=`` ``10000``, stepping ``=`` ``100``)`
+``` r
+
+model_sim <- "LATENT =~ 1*X1 + 0.5*X2 + 1.5*X3 + 1.5*X4 + X5"
+model_est <- "LATENT =~ X1 + X2 + X3 + X4 + X5"
+result_sim <- simulate_cfa_fit(model_sim = model_sim, model = model_est, minnobs = 50, maxnobs = 10000, stepping = 100)
+```
 
 ![](GLM_SEM_files/figure-html/simulate_cfa_fit-1.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-2.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-3.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-4.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-5.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-6.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-7.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-8.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-9.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-10.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-11.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-12.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-13.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-14.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-15.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-16.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-17.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-18.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-19.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-20.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-21.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-22.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-23.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-24.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-25.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-26.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-27.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-28.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-29.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-30.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-31.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-32.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-33.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-34.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-35.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-36.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-37.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-38.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-39.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-40.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-41.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-42.png)![](GLM_SEM_files/figure-html/simulate_cfa_fit-43.png)
 
 The first element is a table with one row per sample size and one column
 per fit index; the second is a named list of plots, one per fit index:
 
-[`head`](https://rdrr.io/r/utils/head.html)`(``result_sim``[[``1``]``]``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"observations"``, ``"cfi"``, ``"tli"``, ``"rmsea"``, ``"srmr"``)``]``)`
+``` r
+
+head(result_sim[[1]][, c("observations", "cfi", "tli", "rmsea", "srmr")])
+```
 
     ##   observations       cfi       tli      rmsea        srmr
     ## 1           50 0.9944520 0.9889041 0.03458957 0.049146723
@@ -413,7 +484,12 @@ per fit index; the second is a named list of plots, one per fit index:
     ## 5          450 1.0000000 1.0092607 0.00000000 0.008447864
     ## 6          550 1.0000000 1.0025621 0.00000000 0.010802308
 
-[`plot_multiplot`](https://sedzinfo.github.io/rwf/reference/plot_multiplot.md)`(``plotlist ``=`` ``result_sim``[[``2``]``]``[`[`c`](https://rdrr.io/r/base/c.html)`(``"observations_cfi"``, ``"observations_tli"``,`` `` ``"observations_rmsea"``, ``"observations_srmr"``)``]``,`` `` cols ``=`` ``2``)`
+``` r
+
+plot_multiplot(plotlist = result_sim[[2]][c("observations_cfi", "observations_tli",
+                                            "observations_rmsea", "observations_srmr")],
+               cols = 2)
+```
 
 ![](GLM_SEM_files/figure-html/simulate_cfa_fit_plots-1.png)
 

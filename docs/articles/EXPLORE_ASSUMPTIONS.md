@@ -22,7 +22,15 @@ right-skewed (exponential) and one with heavy tails (t distribution with
 3 degrees of freedom). Five missing values are added to the normal
 variable.
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``df`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``normal ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``300``, mean ``=`` ``50``, sd ``=`` ``10``)``,`` `` skewed ``=`` `[`rexp`](https://rdrr.io/r/stats/Exponential.html)`(``300``, rate ``=`` ``0.1``)``,`` `` heavy_tails ``=`` ``50`` ``+`` ``10`` ``*`` `[`rt`](https://rdrr.io/r/stats/TDist.html)`(``300``, df ``=`` ``3``)``)`` ``df``$``normal``[`[`sample`](https://rdrr.io/r/base/sample.html)`(``300``, ``5``)``]`` ``<-`` ``NA`` `[`head`](https://rdrr.io/r/utils/head.html)`(``df``)`
+``` r
+
+set.seed(1)
+df <- data.frame(normal = rnorm(300, mean = 50, sd = 10),
+                 skewed = rexp(300, rate = 0.1),
+                 heavy_tails = 50 + 10 * rt(300, df = 3))
+df$normal[sample(300, 5)] <- NA
+head(df)
+```
 
     ##     normal     skewed heavy_tails
     ## 1       NA  6.2850350    33.31939
@@ -82,7 +90,10 @@ n\>10\end{cases}
 Points close to the line mean the data are close to normal; a curve
 means skew and an S shape means heavier or lighter tails than normal.
 
-[`plot_normality_diagnostics`](https://sedzinfo.github.io/rwf/reference/plot_normality_diagnostics.md)`(``df ``=`` ``df``, title ``=`` ``"Simulated data"``)`
+``` r
+
+plot_normality_diagnostics(df = df, title = "Simulated data")
+```
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_normality_diagnostics-1.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_normality_diagnostics-2.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_normality_diagnostics-3.png)
 
@@ -95,13 +106,19 @@ bins on the minimum and maximum, so the bin width is:
 
 w=\frac{x\_{(n)}-x\_{(1)}}{\text{bins}-1}
 
-[`invisible`](https://rdrr.io/r/base/invisible.html)`(`[`plot_multiplot`](https://sedzinfo.github.io/rwf/reference/plot_multiplot.md)`(``plotlist ``=`` `[`plot_histogram`](https://sedzinfo.github.io/rwf/reference/plot_histogram.md)`(``df ``=`` ``df``, bins ``=`` ``30``)``, cols ``=`` ``3``)``)`
+``` r
+
+invisible(plot_multiplot(plotlist = plot_histogram(df = df, bins = 30), cols = 3))
+```
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram-1.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram-2.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram-3.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram-4.png)
 
 `xlims` fixes the x-axis range, `fill` and `color` set the bar colours:
 
-[`plot_histogram`](https://sedzinfo.github.io/rwf/reference/plot_histogram.md)`(``df ``=`` ``df``$``skewed``, bins ``=`` ``20``, xlims ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``60``)``, fill ``=`` ``"steelblue"``, color ``=`` ``"white"``)``[[``1``]``]`
+``` r
+
+plot_histogram(df = df$skewed, bins = 20, xlims = c(0, 60), fill = "steelblue", color = "white")[[1]]
+```
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram_options-1.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_histogram_options-2.png)
 
@@ -111,7 +128,10 @@ One `ggplot2` Q-Q plot per numeric variable, with the same plotting
 positions p_i and quartile reference line as in
 [plot_normality_diagnostics](#plot_normality_diagnostics).
 
-[`invisible`](https://rdrr.io/r/base/invisible.html)`(`[`plot_multiplot`](https://sedzinfo.github.io/rwf/reference/plot_multiplot.md)`(``plotlist ``=`` `[`plot_qq`](https://sedzinfo.github.io/rwf/reference/plot_qq.md)`(``df ``=`` ``df``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"skewed"``, ``"heavy_tails"``)``]``)``, cols ``=`` ``2``)``)`
+``` r
+
+invisible(plot_multiplot(plotlist = plot_qq(df = df[, c("skewed", "heavy_tails")]), cols = 2))
+```
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_qq-1.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_qq-2.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_qq-3.png)
 
@@ -127,7 +147,10 @@ extreme values inside the fences and values outside are drawn as points:
 
 \left\[Q_1-1.5\\IQR,\\ \\ Q_3+1.5\\IQR\right\]
 
-[`plot_boxplot`](https://sedzinfo.github.io/rwf/reference/plot_boxplot.md)`(``df ``=`` ``df``, title ``=`` ``"Simulated data"``)`
+``` r
+
+plot_boxplot(df = df, title = "Simulated data")
+```
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_boxplot-1.png)
 
@@ -139,7 +162,10 @@ values are skipped. Small p values mean the data deviate from normality;
 with large samples even small, unimportant deviations give small p
 values.
 
-[`report_normality_tests`](https://sedzinfo.github.io/rwf/reference/report_normality_tests.md)`(``df ``=`` ``df``)`
+``` r
+
+report_normality_tests(df = df)
+```
 
     ## [1] "##################################################"
     ## [1] "NORMALITY TESTS"
@@ -294,7 +320,14 @@ mean and SD are pulled towards outliers themselves, so the median and
 boxplot rules are more robust. The plots below apply the three rules to
 the first 100 cases of the skewed variable.
 
-`skewed`` ``<-`` ``df``$``skewed``[``1``:``100``]`` `[`invisible`](https://rdrr.io/r/base/invisible.html)`(`[`plot_multiplot`](https://sedzinfo.github.io/rwf/reference/plot_multiplot.md)`(``plotlist ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`plot_outlier`](https://sedzinfo.github.io/rwf/reference/plot_outlier.md)`(``df ``=`` ``skewed``, method ``=`` ``"mean"``, title ``=`` ``"mean"``)``,`` `` `[`plot_outlier`](https://sedzinfo.github.io/rwf/reference/plot_outlier.md)`(``df ``=`` ``skewed``, method ``=`` ``"median"``, title ``=`` ``"median"``)``,`` `` `[`plot_outlier`](https://sedzinfo.github.io/rwf/reference/plot_outlier.md)`(``df ``=`` ``skewed``, method ``=`` ``"boxplot"``, title ``=`` ``"boxplot"``)``)``,`` `` cols ``=`` ``3``)``)`
+``` r
+
+skewed <- df$skewed[1:100]
+invisible(plot_multiplot(plotlist = c(plot_outlier(df = skewed, method = "mean", title = "mean"),
+                                      plot_outlier(df = skewed, method = "median", title = "median"),
+                                      plot_outlier(df = skewed, method = "boxplot", title = "boxplot")),
+                         cols = 3))
+```
 
 ![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_outlier-1.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_outlier-2.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_outlier-3.png)![](EXPLORE_ASSUMPTIONS_files/figure-html/plot_outlier-4.png)
 
@@ -310,7 +343,10 @@ For normal data about 100\cdot2\left(1-\Phi(c)\right) percent are
 expected: 5%, 1% and 0.1%. Clearly larger percentages point to heavy
 tails or outliers (Tabachnick & Fidell, 2013).
 
-[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`t`](https://rdrr.io/r/base/t.html)`(`[`sapply`](https://rdrr.io/r/base/lapply.html)`(``df``, ``outlier_summary``)``)``)`
+``` r
+
+data.frame(t(sapply(df, outlier_summary)))
+```
 
     ##             abs_z_1.96 abs_z_2.58 abs_z_3.29
     ## normal          5.76 %     0.68 %        0 %
@@ -327,7 +363,12 @@ x_i\>Q\_{p_2}+1.5\\IQR\\ x_i & \text{otherwise}\end{cases}
 IQR is always Q\_{0.75}-Q\_{0.25}, whatever `probs` is; with the default
 `probs = c(0.25, 0.75)` these are the boxplot fences (Tukey, 1977).
 
-`cleaned`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`sapply`](https://rdrr.io/r/base/lapply.html)`(``df``, ``remove_outliers``)``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``missing_before ``=`` `[`colSums`](https://rdrr.io/r/base/colSums.html)`(`[`is.na`](https://rdrr.io/r/base/NA.html)`(``df``)``)``,`` `` missing_after ``=`` `[`colSums`](https://rdrr.io/r/base/colSums.html)`(`[`is.na`](https://rdrr.io/r/base/NA.html)`(``cleaned``)``)``)`
+``` r
+
+cleaned <- data.frame(sapply(df, remove_outliers))
+data.frame(missing_before = colSums(is.na(df)),
+           missing_after = colSums(is.na(cleaned)))
+```
 
     ##             missing_before missing_after
     ## normal                   5             7

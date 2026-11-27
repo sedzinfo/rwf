@@ -42,7 +42,10 @@ Bonferroni (Dunn, 1961) holds for any dependence between the tests;
 Šidák (Šidák, 1967) assumes independent tests and is slightly less
 strict.
 
-[`compute_adjustment`](https://sedzinfo.github.io/rwf/reference/compute_adjustment.md)`(``a ``=`` ``0.05``, ntests ``=`` ``10``)`
+``` r
+
+compute_adjustment(a = 0.05, ntests = 10)
+```
 
     ## $sidak
     ## [1] 0.005116197
@@ -54,7 +57,14 @@ Comparing a p value with \alpha/k is the same as comparing k\\p with
 \alpha, which is what
 [`stats::p.adjust`](https://rdrr.io/r/stats/p.adjust.html) returns:
 
-`p`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``0.001``, ``0.004``, ``0.02``, ``0.3``)`` ``adjustment`` ``<-`` `[`compute_adjustment`](https://sedzinfo.github.io/rwf/reference/compute_adjustment.md)`(``a ``=`` ``0.05``, ntests ``=`` `[`length`](https://rdrr.io/r/base/length.html)`(``p``)``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``p``,`` `` significant_rwf ``=`` ``p`` ``<`` ``adjustment``$``bonferroni``,`` `` significant_p_adjust ``=`` ``stats``::`[`p.adjust`](https://rdrr.io/r/stats/p.adjust.html)`(``p``, method ``=`` ``"bonferroni"``)`` ``<`` ``0.05``)`
+``` r
+
+p <- c(0.001, 0.004, 0.02, 0.3)
+adjustment <- compute_adjustment(a = 0.05, ntests = length(p))
+data.frame(p,
+           significant_rwf = p < adjustment$bonferroni,
+           significant_p_adjust = stats::p.adjust(p, method = "bonferroni") < 0.05)
+```
 
     ##       p significant_rwf significant_p_adjust
     ## 1 0.001            TRUE                 TRUE
@@ -84,7 +94,12 @@ Transforms a vector into standard scores. With `input = "non_standard"`
 | `"cumulative_density"` | C_i=\sum\_{j=1}^{i}x_j (running sum of the input) |
 | `"all"` | data frame with `z`, `sten`, `t`, `stanine`, `percent`, `percentile` and `scale_0_1`, sorted by `z` |
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``vector`` ``<-`` `[`round`](https://rdrr.io/r/base/Round.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``10``, mean ``=`` ``100``, sd ``=`` ``15``)``)`` `[`compute_standard`](https://sedzinfo.github.io/rwf/reference/compute_standard.md)`(``vector``, type ``=`` ``"all"``)`
+``` r
+
+set.seed(1)
+vector <- round(rnorm(10, mean = 100, sd = 15))
+compute_standard(vector, type = "all")
+```
 
     ##    score           z sten        t stanine   percent percentile  scale_0_1
     ## 3     87 -1.27791413    3 37.22086       2  70.16129   10.06399 0.00000000
@@ -101,26 +116,43 @@ Transforms a vector into standard scores. With `input = "non_standard"`
 The z-scores match [`scale()`](https://rdrr.io/r/base/scale.html), and
 the T-scores and percentiles follow directly from them:
 
-`z`` ``<-`` `[`compute_standard`](https://sedzinfo.github.io/rwf/reference/compute_standard.md)`(``vector``, type ``=`` ``"z"``)`` `[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(``z``, `[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(`[`scale`](https://rdrr.io/r/base/scale.html)`(``vector``)``)``)`
+``` r
+
+z <- compute_standard(vector, type = "z")
+all.equal(z, as.numeric(scale(vector)))
+```
 
     ## [1] TRUE
 
-[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(`[`compute_standard`](https://sedzinfo.github.io/rwf/reference/compute_standard.md)`(``vector``, type ``=`` ``"t"``)``, ``10`` ``*`` ``z`` ``+`` ``50``)`
+``` r
+
+all.equal(compute_standard(vector, type = "t"), 10 * z + 50)
+```
 
     ## [1] TRUE
 
-[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(`[`compute_standard`](https://sedzinfo.github.io/rwf/reference/compute_standard.md)`(``vector``, type ``=`` ``"percentile"``)``, ``100`` ``*`` `[`pnorm`](https://rdrr.io/r/stats/Normal.html)`(``z``)``)`
+``` r
+
+all.equal(compute_standard(vector, type = "percentile"), 100 * pnorm(z))
+```
 
     ## [1] TRUE
 
-[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(`[`compute_standard`](https://sedzinfo.github.io/rwf/reference/compute_standard.md)`(``vector``, type ``=`` ``"scale_zero_one"``)``,`` `` ``(``vector`` ``-`` `[`min`](https://rdrr.io/r/base/Extremes.html)`(``vector``)``)`` ``/`` ``(`[`max`](https://rdrr.io/r/base/Extremes.html)`(``vector``)`` ``-`` `[`min`](https://rdrr.io/r/base/Extremes.html)`(``vector``)``)``)`
+``` r
+
+all.equal(compute_standard(vector, type = "scale_zero_one"),
+          (vector - min(vector)) / (max(vector) - min(vector)))
+```
 
     ## [1] TRUE
 
 `"uz"` reverses the transformation when it is given the original mean
 and standard deviation:
 
-[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(`[`compute_standard`](https://sedzinfo.github.io/rwf/reference/compute_standard.md)`(``z``, mean ``=`` `[`mean`](https://rdrr.io/r/base/mean.html)`(``vector``)``, sd ``=`` `[`sd`](https://rdrr.io/r/stats/sd.html)`(``vector``)``, type ``=`` ``"uz"``)``, ``vector``)`
+``` r
+
+all.equal(compute_standard(z, mean = mean(vector), sd = sd(vector), type = "uz"), vector)
+```
 
     ## [1] TRUE
 
@@ -130,7 +162,15 @@ grid step \Delta x, the running sum of the density approximates the
 cumulative distribution function, \Phi(x_i)\approx\sum\_{j\le
 i}f(x_j)\\\Delta x:
 
-`grid`` ``<-`` `[`seq`](https://rdrr.io/r/base/seq.html)`(``-``4``, ``4``, ``0.01``)`` ``density`` ``<-`` `[`compute_standard`](https://sedzinfo.github.io/rwf/reference/compute_standard.md)`(``grid``, mean ``=`` ``0``, sd ``=`` ``1``, type ``=`` ``"normal_density"``)`` ``cumulative`` ``<-`` `[`compute_standard`](https://sedzinfo.github.io/rwf/reference/compute_standard.md)`(``density``, type ``=`` ``"cumulative_density"``)`` `[`par`](https://rdrr.io/r/graphics/par.html)`(``mfrow ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``2``)``)`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``grid``, ``density``, type ``=`` ``"l"``, xlab ``=`` ``"x"``, ylab ``=`` ``"density"``, main ``=`` ``"normal_density"``)`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``grid``, ``cumulative`` ``*`` ``0.01``, type ``=`` ``"l"``, xlab ``=`` ``"x"``, ylab ``=`` ``"cumulative"``, main ``=`` ``"cumulative_density x step"``)`
+``` r
+
+grid <- seq(-4, 4, 0.01)
+density <- compute_standard(grid, mean = 0, sd = 1, type = "normal_density")
+cumulative <- compute_standard(density, type = "cumulative_density")
+par(mfrow = c(1, 2))
+plot(grid, density, type = "l", xlab = "x", ylab = "density", main = "normal_density")
+plot(grid, cumulative * 0.01, type = "l", xlab = "x", ylab = "cumulative", main = "cumulative_density x step")
+```
 
 ![](FUNCTIONS_STATISTICAL_files/figure-html/compute_standard_density-1.png)
 
@@ -154,7 +194,17 @@ the estimated correlation between the true scores.
 Two true scores with a correlation of 0.6 are measured with error. The
 observed correlation is lower than 0.6; the corrected one recovers it:
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``n`` ``<-`` ``10000`` ``true_scores`` ``<-`` ``MASS``::`[`mvrnorm`](https://rdrr.io/pkg/MASS/man/mvrnorm.html)`(``n``, mu ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``0``, ``0``)``, Sigma ``=`` `[`matrix`](https://rdrr.io/r/base/matrix.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``0.6``, ``0.6``, ``1``)``, ``2``)``)`` ``error1`` ``<-`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, sd ``=`` ``0.7``)`` ``error2`` ``<-`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``n``, sd ``=`` ``0.5``)`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``true ``=`` `[`cor`](https://rdrr.io/r/stats/cor.html)`(``true_scores``[``, ``1``]``, ``true_scores``[``, ``2``]``)``,`` `` observed ``=`` `[`cor`](https://rdrr.io/r/stats/cor.html)`(``true_scores``[``, ``1``]`` ``+`` ``error1``, ``true_scores``[``, ``2``]`` ``+`` ``error2``)``,`` `` corrected ``=`` `[`compute_dissatenuation`](https://sedzinfo.github.io/rwf/reference/compute_dissatenuation.md)`(``true_scores``[``, ``1``]``, ``error1``, ``true_scores``[``, ``2``]``, ``error2``)``)`
+``` r
+
+set.seed(1)
+n <- 10000
+true_scores <- MASS::mvrnorm(n, mu = c(0, 0), Sigma = matrix(c(1, 0.6, 0.6, 1), 2))
+error1 <- rnorm(n, sd = 0.7)
+error2 <- rnorm(n, sd = 0.5)
+data.frame(true = cor(true_scores[, 1], true_scores[, 2]),
+           observed = cor(true_scores[, 1] + error1, true_scores[, 2] + error2),
+           corrected = compute_dissatenuation(true_scores[, 1], error1, true_scores[, 2], error2))
+```
 
     ##        true  observed corrected
     ## 1 0.6136158 0.4502427 0.6133957
@@ -173,11 +223,19 @@ b_1=\frac{m_3}{s^3}=g_1\left(\frac{n-1}{n}\right)^{3/2}
 tail and negative values a longer left tail. The result matches
 `e1071::skewness(type = 3)`:
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``vector`` ``<-`` `[`rexp`](https://rdrr.io/r/stats/Exponential.html)`(``1000``)`` `[`compute_skewness`](https://sedzinfo.github.io/rwf/reference/compute_skewness.md)`(``vector``)`
+``` r
+
+set.seed(1)
+vector <- rexp(1000)
+compute_skewness(vector)
+```
 
     ## [1] 1.860835
 
-`e1071``::`[`skewness`](https://rdrr.io/pkg/e1071/man/skewness.html)`(``vector``, type ``=`` ``3``)`
+``` r
+
+e1071::skewness(vector, type = 3)
+```
 
     ## [1] 1.860835
 
@@ -194,11 +252,17 @@ b_2=\frac{m_4}{s^4}-3=(g_2+3)\left(\frac{n-1}{n}\right)^{2}-3
 tails (leptokurtic) and negative values lighter tails (platykurtic). The
 result matches `e1071::kurtosis(type = 3)`:
 
-[`compute_kurtosis`](https://sedzinfo.github.io/rwf/reference/compute_kurtosis.md)`(``vector``)`
+``` r
+
+compute_kurtosis(vector)
+```
 
     ## [1] 4.615755
 
-`e1071``::`[`kurtosis`](https://rdrr.io/pkg/e1071/man/kurtosis.html)`(``vector``, type ``=`` ``3``)`
+``` r
+
+e1071::kurtosis(vector, type = 3)
+```
 
     ## [1] 4.615755
 
@@ -208,11 +272,19 @@ Standard error of the mean:
 
 SE\_{\bar{x}}=\frac{s}{\sqrt{n}}=\sqrt{\frac{s^2}{n}}
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``vector`` ``<-`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``1000``, mean ``=`` ``100``, sd ``=`` ``15``)`` `[`compute_standard_error`](https://sedzinfo.github.io/rwf/reference/compute_standard_error.md)`(``vector``)`
+``` r
+
+set.seed(1)
+vector <- rnorm(1000, mean = 100, sd = 15)
+compute_standard_error(vector)
+```
 
     ## [1] 0.4909037
 
-`psych``::`[`describe`](https://rdrr.io/pkg/psych/man/describe.html)`(``vector``)``$``se`
+``` r
+
+psych::describe(vector)$se
+```
 
     ## [1] 0.4909037
 
@@ -227,15 +299,25 @@ The function returns the margin of error, not the interval itself; the
 interval is \bar{x}\pm ME. For large samples it is close to the interval
 from `t.test`, which uses t\_{0.975,\\n-1} instead of z\_{0.975}:
 
-`margin`` ``<-`` `[`compute_confidence_inteval`](https://sedzinfo.github.io/rwf/reference/compute_confidence_inteval.md)`(``vector``)`` ``margin`
+``` r
+
+margin <- compute_confidence_inteval(vector)
+margin
+```
 
     ## [1] 0.9621535
 
-[`mean`](https://rdrr.io/r/base/mean.html)`(``vector``)`` ``+`` `[`c`](https://rdrr.io/r/base/c.html)`(``-``1``, ``1``)`` ``*`` ``margin`
+``` r
+
+mean(vector) + c(-1, 1) * margin
+```
 
     ## [1]  98.86312 100.78743
 
-[`as.numeric`](https://rdrr.io/r/base/numeric.html)`(`[`t.test`](https://rdrr.io/r/stats/t.test.html)`(``vector``)``$``conf.int``)`
+``` r
+
+as.numeric(t.test(vector)$conf.int)
+```
 
     ## [1]  98.86196 100.78860
 

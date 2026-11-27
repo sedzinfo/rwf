@@ -21,7 +21,10 @@ one-way sections. The formula `qsec ~ cyl` models quarter-mile time
 (`qsec`) as a function of number of cylinders (`cyl`), treating
 cylinders as a grouping factor.
 
-`mtcars`
+``` r
+
+mtcars
+```
 
     ##                      mpg cyl  disp  hp drat    wt  qsec vs am gear carb
     ## Mazda RX4           21.0   6 160.0 110 3.90 2.620 16.46  0  1    4    4
@@ -57,7 +60,10 @@ cylinders as a grouping factor.
     ## Maserati Bora       15.0   8 301.0 335 3.54 3.570 14.60  0  1    5    8
     ## Volvo 142E          21.4   4 121.0 109 4.11 2.780 18.60  1  1    4    2
 
-`form``<-`[`formula`](https://rdrr.io/r/stats/formula.html)`(``qsec``~``cyl``)`
+``` r
+
+form<-formula(qsec~cyl)
+```
 
 ## Kruskal-Wallis Test
 
@@ -79,7 +85,10 @@ statistic and p-value),
 (effect size via bootstrap CI). All four should produce equivalent
 results.
 
-`stats``::`[`kruskal.test`](https://rdrr.io/r/stats/kruskal.test.html)`(``formula``=``form``,data``=``mtcars``)`
+``` r
+
+stats::kruskal.test(formula=form,data=mtcars)
+```
 
     ## 
     ##  Kruskal-Wallis rank sum test
@@ -87,19 +96,28 @@ results.
     ## data:  qsec by cyl
     ## Kruskal-Wallis chi-squared = 10.155, df = 2, p-value = 0.006235
 
-`rcompanion``::`[`epsilonSquared`](https://rdrr.io/pkg/rcompanion/man/epsilonSquared.html)`(``x``=``mtcars``$``qsec``,g``=``mtcars``$``cyl``,group``=``"row"``,ci``=``TRUE``,conf``=``0.95``,type``=``"perc"``,R``=``1000``,digits``=``3``)`
+``` r
+
+rcompanion::epsilonSquared(x=mtcars$qsec,g=mtcars$cyl,group="row",ci=TRUE,conf=0.95,type="perc",R=1000,digits=3)
+```
 
     ##   epsilon.squared lower.ci upper.ci
     ## 1           0.328    0.105    0.653
 
-`rstatix``::`[`kruskal_effsize`](https://rpkgs.datanovia.com/rstatix/reference/kruskal_effsize.html)`(``mtcars``,``form``,ci``=``TRUE``,conf.level``=``0.95``,ci.type``=``"perc"``,nboot``=``100``)`
+``` r
+
+rstatix::kruskal_effsize(mtcars,form,ci=TRUE,conf.level=0.95,ci.type="perc",nboot=100)
+```
 
     ## # A tibble: 1 × 7
     ##   .y.       n effsize conf.low conf.high method  magnitude
     ## * <chr> <int>   <dbl>    <dbl>     <dbl> <chr>   <ord>    
     ## 1 qsec     32   0.281     0.03      0.65 eta2[H] large
 
-[`compute_kruskal_wallis_test`](https://sedzinfo.github.io/rwf/reference/compute_kruskal_wallis_test.md)`(``formula``=``form``,df``=``mtcars``)`
+``` r
+
+compute_kruskal_wallis_test(formula=form,df=mtcars)
+```
 
     ##      formula                       method     etasq epsilonsq        H df           p
     ## 1 qsec ~ cyl Kruskal-Wallis rank sum test 0.2812123 0.3275857 10.15516  2 0.006234986
@@ -119,17 +137,26 @@ Results are verified against `oneway.test` (F and p),
 [`sjstats::anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)
 (full table). All should agree.
 
-[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula``=``form``,df``=``mtcars``,var.equal``=``TRUE``)`
+``` r
+
+compute_one_way_test(formula=form,df=mtcars,var.equal=TRUE)
+```
 
     ##      formula                    method ss_effect ss_error ms_effect ms_error     etasq partial.etasq   omegasq partial.omegasq  cohens.f     power statistic df_effect df_error           p
     ## 1 qsec ~ cyl Assuming homoscedasticity  34.60575  64.3824  17.30288 2.220083 0.3495949     0.3495949 0.2980547       0.2980547 0.7331462 0.9502718  7.793798         2       29 0.001955091
 
-[`compute_one_way_test`](https://sedzinfo.github.io/rwf/reference/compute_one_way_test.md)`(``formula``=``form``,df``=``mtcars``,var.equal``=``FALSE``)`
+``` r
+
+compute_one_way_test(formula=form,df=mtcars,var.equal=FALSE)
+```
 
     ##      formula                      method ss_effect ss_error ms_effect ms_error     etasq partial.etasq   omegasq partial.omegasq cohens.f     power statistic df_effect df_error           p
     ## 1 qsec ~ cyl Assuming heteroscedasticity  32.28002  29.4274  16.14001 2.094919 0.5231141     0.5231141 0.4402688       0.4402688 1.047348 0.9984608  7.704359         2 14.04703 0.005512376
 
-[`oneway.test`](https://rdrr.io/r/stats/oneway.test.html)`(``formula``=``form``,data``=``mtcars``,var.equal``=``TRUE``)`
+``` r
+
+oneway.test(formula=form,data=mtcars,var.equal=TRUE)
+```
 
     ## 
     ##  One-way analysis of means
@@ -137,7 +164,10 @@ Results are verified against `oneway.test` (F and p),
     ## data:  qsec and cyl
     ## F = 7.7938, num df = 2, denom df = 29, p-value = 0.001955
 
-[`oneway.test`](https://rdrr.io/r/stats/oneway.test.html)`(``formula``=``form``,data``=``mtcars``,var.equal``=``FALSE``)`
+``` r
+
+oneway.test(formula=form,data=mtcars,var.equal=FALSE)
+```
 
     ## 
     ##  One-way analysis of means (not assuming equal variances)
@@ -145,7 +175,10 @@ Results are verified against `oneway.test` (F and p),
     ## data:  qsec and cyl
     ## F = 7.7044, num df = 2.000, denom df = 14.047, p-value = 0.005512
 
-`car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(`[`aov`](https://rdrr.io/r/stats/aov.html)`(``form``,data``=``mtcars``)``,type``=``2``)`
+``` r
+
+car::Anova(aov(form,data=mtcars),type=2)
+```
 
     ## Anova Table (Type II tests)
     ## 
@@ -156,13 +189,20 @@ Results are verified against `oneway.test` (F and p),
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-`model``<-`[`lm`](https://rdrr.io/r/stats/lm.html)`(``form``,data``=``mtcars``)`` ``lsr``::`[`etaSquared`](https://lsr.djnavarro.net/reference/etaSquared.html)`(`[`aov`](https://rdrr.io/r/stats/aov.html)`(``form``,data``=``mtcars``)``,type``=``3``,anova``=``TRUE``)`
+``` r
+
+model<-lm(form,data=mtcars)
+lsr::etaSquared(aov(form,data=mtcars),type=3,anova=TRUE)
+```
 
     ##              eta.sq eta.sq.part       SS df        MS        F            p
     ## cyl       0.3495672   0.3495672 34.60301  1 34.603009 16.12313 0.0003660533
     ## Residuals 0.6504328          NA 64.38514 30  2.146171       NA           NA
 
-`sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``model``,digits``=``22``)`
+``` r
+
+sjstats::anova_stats(model,digits=22)
+```
 
     ## etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |      term |  sumsq | df | meansq | statistic | p.value | power
     ## -----------------------------------------------------------------------------------------------------------------------------------------
@@ -184,7 +224,11 @@ sizes, power, and post hoc pairwise comparisons.
 The chunk uses `results='hide'` to suppress raw output during
 computation; the formatted results are printed in the next chunk.
 
-`result0``<-`[`report_oneway`](https://sedzinfo.github.io/rwf/reference/report_oneway.md)`(``df``=``mtcars``,dv``=``2``:``4``,iv``=``9``:``10``,plot_diagnostics``=``FALSE``,plot_means``=``FALSE``)`` ``result1``<-`[`report_oneway`](https://sedzinfo.github.io/rwf/reference/report_oneway.md)`(``df``=``mtcars``,dv``=``2``:``4``,iv``=``9``:``10``,plot_diagnostics``=``TRUE``,plot_means``=``TRUE``)`
+``` r
+
+result0<-report_oneway(df=mtcars,dv=2:4,iv=9:10,plot_diagnostics=FALSE,plot_means=FALSE)
+result1<-report_oneway(df=mtcars,dv=2:4,iv=9:10,plot_diagnostics=TRUE,plot_means=TRUE)
+```
 
 ![](GLM_ANOVA_files/figure-html/report_one-way-1.png)![](GLM_ANOVA_files/figure-html/report_one-way-2.png)![](GLM_ANOVA_files/figure-html/report_one-way-3.png)![](GLM_ANOVA_files/figure-html/report_one-way-4.png)![](GLM_ANOVA_files/figure-html/report_one-way-5.png)![](GLM_ANOVA_files/figure-html/report_one-way-6.png)![](GLM_ANOVA_files/figure-html/report_one-way-7.png)![](GLM_ANOVA_files/figure-html/report_one-way-8.png)![](GLM_ANOVA_files/figure-html/report_one-way-9.png)![](GLM_ANOVA_files/figure-html/report_one-way-10.png)![](GLM_ANOVA_files/figure-html/report_one-way-11.png)![](GLM_ANOVA_files/figure-html/report_one-way-12.png)
 
@@ -423,7 +467,29 @@ detect.
 - **r4**: Within-subjects design with covariates (DV3, DV4 as
   within-covariates)
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``12345``)`` ``df``<-`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``id``=`[`rep`](https://rdrr.io/r/base/rep.html)`(`[`seq`](https://rdrr.io/r/base/seq.html)`(``1``,``80``)``,each``=``81``,``1``)``,`` `` IV1``=`[`rep`](https://rdrr.io/r/base/rep.html)`(``LETTERS``[``1``:``3``]``,each``=``1``,``2160``)``,`` `` IV2``=`[`rep`](https://rdrr.io/r/base/rep.html)`(``LETTERS``[``4``:``6``]``,each``=``3``,``720``)``,`` `` IV3``=`[`rep`](https://rdrr.io/r/base/rep.html)`(``LETTERS``[``7``:``9``]``,each``=``9``,``240``)``,`` `` IV4``=`[`rep`](https://rdrr.io/r/base/rep.html)`(``LETTERS``[``10``:``12``]``,each``=``27``,``80``)``,`` `` stringsAsFactors``=``FALSE``)`` ``ctdf``<-`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`matrix`](https://rdrr.io/r/base/matrix.html)`(``.01``,ncol``=``4``,nrow``=``4``)``)`` ``correlation_martix``<-`[`as.matrix`](https://rdrr.io/r/base/matrix.html)`(``ctdf``)`` `[`diag`](https://rdrr.io/r/base/diag.html)`(``correlation_martix``)``<-``1`` ``ctdf``<-`[`generate_correlation_matrix`](https://sedzinfo.github.io/rwf/reference/generate_correlation_matrix.md)`(``correlation_martix``,nrows``=`[`nrow`](https://rdrr.io/r/base/nrow.html)`(``df``)``)``+``10`` `[`names`](https://rdrr.io/r/base/names.html)`(``ctdf``)``<-`[`paste0`](https://rdrr.io/r/base/paste.html)`(``"DV"``,``1``:``4``)`` ``df``<-`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``df``,``ctdf``)`` ``df``$``DV2``<-``df``$``DV2``+``10`` ``df``$``DV3``<-``df``$``DV3``+``20`` ``df``$``DV4``<-``df``$``DV4``+``30`` ``df``[``df``$``IV1`[`%in%`](https://rdrr.io/r/base/match.html)`"A"``,``]``$``DV1``<-``df``[``df``$``IV1`[`%in%`](https://rdrr.io/r/base/match.html)`"A"``,``]``$``DV1``+``1`` ``df``[``df``$``IV1`[`%in%`](https://rdrr.io/r/base/match.html)`"B"``,``]``$``DV1``<-``df``[``df``$``IV1`[`%in%`](https://rdrr.io/r/base/match.html)`"B"``,``]``$``DV1``+``2`` ``df``[``df``$``IV1`[`%in%`](https://rdrr.io/r/base/match.html)`"C"``,``]``$``DV1``<-``df``[``df``$``IV1`[`%in%`](https://rdrr.io/r/base/match.html)`"C"``,``]``$``DV1``+``3`` `[`cdf`](https://sedzinfo.github.io/rwf/reference/cdf.md)`(``df``)`
+``` r
+
+set.seed(12345)
+df<-data.frame(id=rep(seq(1,80),each=81,1),
+               IV1=rep(LETTERS[1:3],each=1,2160),
+               IV2=rep(LETTERS[4:6],each=3,720),
+               IV3=rep(LETTERS[7:9],each=9,240),
+               IV4=rep(LETTERS[10:12],each=27,80),
+               stringsAsFactors=FALSE)
+ctdf<-data.frame(matrix(.01,ncol=4,nrow=4))
+correlation_martix<-as.matrix(ctdf)
+diag(correlation_martix)<-1
+ctdf<-generate_correlation_matrix(correlation_martix,nrows=nrow(df))+10
+names(ctdf)<-paste0("DV",1:4)
+df<-data.frame(df,ctdf)
+df$DV2<-df$DV2+10
+df$DV3<-df$DV3+20
+df$DV4<-df$DV4+30
+df[df$IV1%in%"A",]$DV1<-df[df$IV1%in%"A",]$DV1+1
+df[df$IV1%in%"B",]$DV1<-df[df$IV1%in%"B",]$DV1+2
+df[df$IV1%in%"C",]$DV1<-df[df$IV1%in%"C",]$DV1+3
+cdf(df)
+```
 
     ## $summary
     ##   COLLUMNS ROWS TOTAL EMPTY null NAN na INF   FIN FACTOR
@@ -441,11 +507,52 @@ detect.
     ## 8   DV3     0    0  0   6480   0   0 6480  6480 30.01  30.00  0.98 26.1265203294059 33.1419727424988   numeric    double   numeric  FALSE
     ## 9   DV4     0    0  0   6480   0   0 6480  6480 40.00  39.99  1.01  36.482400155701 43.7443144516511   numeric    double   numeric  FALSE
 
-`r1``<-`[`report_factorial_anova`](https://sedzinfo.github.io/rwf/reference/report_factorial_anova.md)`(``df``=``df``,`` `` wid``=``"id"``,`` `` dv``=`[`c`](https://rdrr.io/r/base/c.html)`(``"DV1"``,``"DV2"``)``,`` `` within``=`[`c`](https://rdrr.io/r/base/c.html)`(``"IV1"``,``"IV2"``)``,`` `` within_full``=`[`c`](https://rdrr.io/r/base/c.html)`(``"IV1"``,``"IV2"``)``,`` `` between``=``NULL``,`` `` within_covariates``=``NULL``,`` `` between_covariates``=``NULL``,`` `` post_hoc``=``TRUE``)`` ``r2``<-`[`report_factorial_anova`](https://sedzinfo.github.io/rwf/reference/report_factorial_anova.md)`(``df``=``df``,`` `` wid``=``"id"``,`` `` dv``=`[`c`](https://rdrr.io/r/base/c.html)`(``"DV1"``,``"DV2"``)``,`` `` within``=``NULL``,`` `` within_full``=``NULL``,`` `` between``=`[`c`](https://rdrr.io/r/base/c.html)`(``"IV1"``,``"IV2"``)``,`` `` within_covariates``=``NULL``,`` `` between_covariates``=``NULL``,`` `` post_hoc``=``TRUE``)`` ``r3``<-`[`report_factorial_anova`](https://sedzinfo.github.io/rwf/reference/report_factorial_anova.md)`(``df``=``df``,`` `` wid``=``"id"``,`` `` dv``=`[`c`](https://rdrr.io/r/base/c.html)`(``"DV1"``,``"DV2"``)``,`` `` ``# within=c("IV3","IV4"),`` `` ``# within_full=c("IV3","IV4"),`` `` between``=`[`c`](https://rdrr.io/r/base/c.html)`(``"IV1"``,``"IV2"``)``,`` `` within_covariates``=``NULL``,`` `` between_covariates``=``NULL``,`` `` post_hoc``=``FALSE``)`` ``r4``<-`[`report_factorial_anova`](https://sedzinfo.github.io/rwf/reference/report_factorial_anova.md)`(``df``=``df``,`` `` wid``=``"id"``,`` `` dv``=`[`c`](https://rdrr.io/r/base/c.html)`(``"DV1"``,``"DV2"``)``,`` `` within``=`[`c`](https://rdrr.io/r/base/c.html)`(``"IV1"``,``"IV2"``)``,`` `` within_full``=`[`c`](https://rdrr.io/r/base/c.html)`(``"IV1"``,``"IV2"``)``,`` `` between``=``NULL``,`` `` within_covariates``=`[`c`](https://rdrr.io/r/base/c.html)`(``"DV3"``,``"DV4"``)``,`` `` between_covariates``=``NULL``,`` `` post_hoc``=``TRUE``)`
+``` r
+
+r1<-report_factorial_anova(df=df,
+                           wid="id",
+                           dv=c("DV1","DV2"),
+                           within=c("IV1","IV2"),
+                           within_full=c("IV1","IV2"),
+                           between=NULL,
+                           within_covariates=NULL,
+                           between_covariates=NULL,
+                           post_hoc=TRUE)
+r2<-report_factorial_anova(df=df,
+                           wid="id",
+                           dv=c("DV1","DV2"),
+                           within=NULL,
+                           within_full=NULL,
+                           between=c("IV1","IV2"),
+                           within_covariates=NULL,
+                           between_covariates=NULL,
+                           post_hoc=TRUE)
+r3<-report_factorial_anova(df=df,
+                           wid="id",
+                           dv=c("DV1","DV2"),
+                           # within=c("IV3","IV4"),
+                           # within_full=c("IV3","IV4"),
+                           between=c("IV1","IV2"),
+                           within_covariates=NULL,
+                           between_covariates=NULL,
+                           post_hoc=FALSE)
+r4<-report_factorial_anova(df=df,
+                           wid="id",
+                           dv=c("DV1","DV2"),
+                           within=c("IV1","IV2"),
+                           within_full=c("IV1","IV2"),
+                           between=NULL,
+                           within_covariates=c("DV3","DV4"),
+                           between_covariates=NULL,
+                           post_hoc=TRUE)
+```
 
 ### Within-subjects with post hocs
 
-`r1`
+``` r
+
+r1
+```
 
     ## $omnibus
     ##    dv      Effect DFn DFd          SSn       SSd            F             p      W[M]       p[M]       GGe         p[GG]       HFe         p[HF]
@@ -718,7 +825,10 @@ detect.
 
 ### Between-subjects with post hocs
 
-`r2`
+``` r
+
+r2
+```
 
     ## $omnibus
     ##    dv      Effect DFn DFd            F         p DFn[L] DFd[L]    SSn[L]   SSd[L]      F[L]      p[L]
@@ -901,7 +1011,10 @@ detect.
 
 ### Between-subjects without post hocs
 
-`r3`
+``` r
+
+r3
+```
 
     ## $omnibus
     ##    dv      Effect DFn DFd            F         p DFn[L] DFd[L]    SSn[L]   SSd[L]      F[L]      p[L]
@@ -1084,7 +1197,10 @@ detect.
 
 ### Within-subjects with covariates
 
-`r4`
+``` r
+
+r4
+```
 
     ## $omnibus
     ##    dv      Effect DFn DFd          SSn       SSd            F             p      W[M]       p[M]       GGe         p[GG]       HFe         p[HF]
@@ -1375,7 +1491,14 @@ Two models are demonstrated:
 - `model_between`: a fully between-subjects design with randomly
   generated variables, serving as a baseline showing near-null results.
 
-`## Set orthogonal contrasts.`` ``op``<-`[`options`](https://rdrr.io/r/base/options.html)`(``contrasts``=`[`c`](https://rdrr.io/r/base/c.html)`(``"contr.helmert"``,``"contr.poly"``)``)`` ``model_mixed``<-`[`manova`](https://rdrr.io/r/stats/manova.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(``yield``,``foo``)``~``N``*``P``*``K``,`[`within`](https://rdrr.io/r/base/with.html)`(``npk``,``foo``<-`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``24``)``)``)`` ``model_between``<-`[`manova`](https://rdrr.io/r/stats/manova.html)`(`[`cbind`](https://rdrr.io/r/base/cbind.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``24``)``,`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``24``)``)``~`[`round`](https://rdrr.io/r/base/Round.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``24``)``,``0``)``*`[`round`](https://rdrr.io/r/base/Round.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``24``)``,``0``)``)`` `[`report_manova`](https://sedzinfo.github.io/rwf/reference/report_manova.md)`(``model``=``model_mixed``)`
+``` r
+
+## Set orthogonal contrasts.
+op<-options(contrasts=c("contr.helmert","contr.poly"))
+model_mixed<-manova(cbind(yield,foo)~N*P*K,within(npk,foo<-rnorm(24)))
+model_between<-manova(cbind(rnorm(24),rnorm(24))~round(rnorm(24),0)*round(rnorm(24),0))
+report_manova(model=model_mixed)
+```
 
     ## [1] "##################################################"
     ## [1] "Pillai,Wilks,Hotelling-Lawley,Roy Statistics"
@@ -1434,7 +1557,10 @@ Two models are demonstrated:
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-[`report_manova`](https://sedzinfo.github.io/rwf/reference/report_manova.md)`(``model``=``model_between``)`
+``` r
+
+report_manova(model=model_between)
+```
 
     ## [1] "##################################################"
     ## [1] "Pillai,Wilks,Hotelling-Lawley,Roy Statistics"
@@ -1483,47 +1609,71 @@ Results are compared against
 using the `CO2` dataset, with `uptake` as the outcome. Both one-way
 (`Treatment`) and factorial (`Treatment × Type`) models are shown.
 
-`form``<-`[`formula`](https://rdrr.io/r/stats/formula.html)`(``uptake``~``Treatment``)`` ``one_way_between``<-`[`aov`](https://rdrr.io/r/stats/aov.html)`(``form``,``CO2``)`` ``factorial_between``<-`[`aov`](https://rdrr.io/r/stats/aov.html)`(``uptake``~``Treatment``*``Type``,``CO2``)`` `[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model``=``one_way_between``,ss``=``"I"``)`
+``` r
+
+form<-formula(uptake~Treatment)
+one_way_between<-aov(form,CO2)
+factorial_between<-aov(uptake~Treatment*Type,CO2)
+compute_aov_es(model=one_way_between,ss="I")
+```
 
     ##                 call ss comparisons Df    Sum Sq  Mean Sq  F value      Pr(>F)     etasq partial_etasq    omegasq partial_omegasq  epsilonsq  cohens_f
     ## 1 uptake ~ Treatment  I   Treatment  1  988.1144 988.1144 9.293115 0.003095733 0.1017943     0.1017943 0.08985627      0.08985627 0.09084053 0.3366462
     ## 2 uptake ~ Treatment  I   Residuals 82 8718.8612 106.3276       NA          NA        NA            NA         NA              NA         NA        NA
 
-`sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``one_way_between``,digits``=``10``)`
+``` r
+
+sjstats::anova_stats(one_way_between,digits=10)
+```
 
     ## etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |      term |    sumsq | df |  meansq | statistic | p.value | power
     ## --------------------------------------------------------------------------------------------------------------------------------------------
     ## 0.102 |         0.102 |   0.090 |           0.090 |     0.091 |    0.337 | Treatment |  988.114 |  1 | 988.114 |     9.293 |   0.003 | 0.862
     ##       |               |         |                 |           |          | Residuals | 8718.861 | 82 | 106.328 |           |         |
 
-[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model``=``one_way_between``,ss``=``"II"``)`
+``` r
+
+compute_aov_es(model=one_way_between,ss="II")
+```
 
     ##                 call ss comparisons Df    Sum Sq  Mean Sq  F value      Pr(>F)     etasq partial_etasq    omegasq partial_omegasq  epsilonsq  cohens_f
     ## 1 uptake ~ Treatment II   Treatment  1  988.1144 988.1144 9.293115 0.003095733 0.1017943     0.1017943 0.08985627      0.08985627 0.09084053 0.3366462
     ## 2 uptake ~ Treatment II   Residuals 82 8718.8612 106.3276       NA          NA        NA            NA         NA              NA         NA        NA
 
-`sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``one_way_between``,digits``=``10``)`
+``` r
+
+sjstats::anova_stats(one_way_between,digits=10)
+```
 
     ## etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |      term |    sumsq | df |  meansq | statistic | p.value | power
     ## --------------------------------------------------------------------------------------------------------------------------------------------
     ## 0.102 |         0.102 |   0.090 |           0.090 |     0.091 |    0.337 | Treatment |  988.114 |  1 | 988.114 |     9.293 |   0.003 | 0.862
     ##       |               |         |                 |           |          | Residuals | 8718.861 | 82 | 106.328 |           |         |
 
-[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model``=``one_way_between``,ss``=``"III"``)`
+``` r
+
+compute_aov_es(model=one_way_between,ss="III")
+```
 
     ##                 call  ss comparisons Df     Sum Sq    Mean Sq    F value       Pr(>F)     etasq partial_etasq    omegasq partial_omegasq  epsilonsq  cohens_f
     ## 1 uptake ~ Treatment III   Treatment  1   988.1144   988.1144   9.293115 3.095733e-03 0.1017943     0.1017943 0.08985627      0.08985627 0.09084053 0.3366462
     ## 2 uptake ~ Treatment III (Intercept)  1 62206.4144 62206.4144 585.044981 4.440975e-39        NA            NA         NA              NA         NA        NA
     ## 3 uptake ~ Treatment III   Residuals 82  8718.8612   106.3276         NA           NA        NA            NA         NA              NA         NA        NA
 
-`sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``one_way_between``,digits``=``10``)`
+``` r
+
+sjstats::anova_stats(one_way_between,digits=10)
+```
 
     ## etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |      term |    sumsq | df |  meansq | statistic | p.value | power
     ## --------------------------------------------------------------------------------------------------------------------------------------------
     ## 0.102 |         0.102 |   0.090 |           0.090 |     0.091 |    0.337 | Treatment |  988.114 |  1 | 988.114 |     9.293 |   0.003 | 0.862
     ##       |               |         |                 |           |          | Residuals | 8718.861 | 82 | 106.328 |           |         |
 
-[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model``=``factorial_between``,ss``=``"I"``)`
+``` r
+
+compute_aov_es(model=factorial_between,ss="I")
+```
 
     ##                        call ss    comparisons Df    Sum Sq    Mean Sq  F value       Pr(>F)      etasq partial_etasq    omegasq partial_omegasq  epsilonsq  cohens_f
     ## 1 uptake ~ Treatment * Type  I      Treatment  1  988.1144  988.11440 15.41641 1.817080e-04 0.10179426    0.16156982 0.09456686      0.14648382 0.09519128 0.4389820
@@ -1531,7 +1681,10 @@ using the `CO2` dataset, with `uptake` as the outcome. Both one-way
     ## 3 uptake ~ Treatment * Type  I Treatment:Type  1  225.7296  225.72964  3.52180 6.421283e-02 0.02325437    0.04216624 0.01654217      0.02914641 0.01665139 0.2098154
     ## 4 uptake ~ Treatment * Type  I      Residuals 80 5127.5971   64.09496       NA           NA         NA            NA         NA              NA         NA        NA
 
-`sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``factorial_between``,digits``=``10``)`
+``` r
+
+sjstats::anova_stats(factorial_between,digits=10)
+```
 
     ## etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |           term |    sumsq | df |   meansq | statistic | p.value | power
     ## --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1540,7 +1693,10 @@ using the `CO2` dataset, with `uptake` as the outcome. Both one-way
     ## 0.023 |         0.042 |   0.017 |           0.029 |     0.017 |    0.210 | Treatment:Type |  225.730 |  1 |  225.730 |     3.522 |   0.064 | 0.467
     ##       |               |         |                 |           |          |      Residuals | 5127.597 | 80 |   64.095 |           |         |
 
-[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model``=``factorial_between``,ss``=``"II"``)`
+``` r
+
+compute_aov_es(model=factorial_between,ss="II")
+```
 
     ##                        call ss    comparisons Df    Sum Sq    Mean Sq  F value       Pr(>F)      etasq partial_etasq    omegasq partial_omegasq  epsilonsq  cohens_f
     ## 1 uptake ~ Treatment * Type II      Treatment  1  988.1144  988.11440 15.41641 1.817080e-04 0.10179426    0.16156982 0.09456686      0.14648382 0.09519128 0.4389820
@@ -1548,7 +1704,10 @@ using the `CO2` dataset, with `uptake` as the outcome. Both one-way
     ## 3 uptake ~ Treatment * Type II Treatment:Type  1  225.7296  225.72964  3.52180 6.421283e-02 0.02325437    0.04216624 0.01654217      0.02914641 0.01665139 0.2098154
     ## 4 uptake ~ Treatment * Type II      Residuals 80 5127.5971   64.09496       NA           NA         NA            NA         NA              NA         NA        NA
 
-`sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``factorial_between``,digits``=``10``)`
+``` r
+
+sjstats::anova_stats(factorial_between,digits=10)
+```
 
     ## etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |           term |    sumsq | df |   meansq | statistic | p.value | power
     ## --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1557,7 +1716,10 @@ using the `CO2` dataset, with `uptake` as the outcome. Both one-way
     ## 0.023 |         0.042 |   0.017 |           0.029 |     0.017 |    0.210 | Treatment:Type |  225.730 |  1 |  225.730 |     3.522 |   0.064 | 0.467
     ##       |               |         |                 |           |          |      Residuals | 5127.597 | 80 |   64.095 |           |         |
 
-[`compute_aov_es`](https://sedzinfo.github.io/rwf/reference/compute_aov_es.md)`(``model``=``factorial_between``,ss``=``"III"``)`
+``` r
+
+compute_aov_es(model=factorial_between,ss="III")
+```
 
     ##                        call  ss    comparisons Df     Sum Sq     Mean Sq   F value       Pr(>F)      etasq partial_etasq    omegasq partial_omegasq  epsilonsq  cohens_f
     ## 1 uptake ~ Treatment * Type III      Treatment  1   988.1144   988.11440  15.41641 1.817080e-04 0.10179426    0.16156982 0.09456686      0.14648382 0.09519128 0.4389820
@@ -1566,7 +1728,10 @@ using the `CO2` dataset, with `uptake` as the outcome. Both one-way
     ## 4 uptake ~ Treatment * Type III    (Intercept)  1 62206.4144 62206.41440 970.53513 1.709930e-46         NA            NA         NA              NA         NA        NA
     ## 5 uptake ~ Treatment * Type III      Residuals 80  5127.5971    64.09496        NA           NA         NA            NA         NA              NA         NA        NA
 
-`sjstats``::`[`anova_stats`](https://strengejacke.github.io/sjstats/reference/anova_stats.html)`(``car``::`[`Anova`](https://rdrr.io/pkg/car/man/Anova.html)`(``factorial_between``,Type``=``3``)``,digits``=``10``)`
+``` r
+
+sjstats::anova_stats(car::Anova(factorial_between,Type=3),digits=10)
+```
 
     ## etasq | partial.etasq | omegasq | partial.omegasq | epsilonsq | cohens.f |           term |    sumsq | df |   meansq | statistic | p.value | power
     ## --------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1585,7 +1750,10 @@ with p-value adjustment for multiple comparisons.
 Here, column 6 (`wt`, car weight) is compared across the groups defined
 by column 10 (`gear`, number of gears) in `mtcars`.
 
-[`compute_posthoc`](https://sedzinfo.github.io/rwf/reference/compute_posthoc.md)`(``mtcars``[``,``6``]``,``mtcars``[``,``10``]``)`
+``` r
+
+compute_posthoc(mtcars[,6],mtcars[,10])
+```
 
     ## $input
     ## $input$x

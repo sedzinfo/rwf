@@ -44,7 +44,11 @@ one** of them is a false positive, the family-wise error rate, is up to
 
 \text{FWER}=1-(1-\alpha)^m
 
-`k`` ``<-`` ``2``:``8`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``groups ``=`` ``k``, pairs ``=`` ``k`` ``*`` ``(``k`` ``-`` ``1``)`` ``/`` ``2``, fwer ``=`` ``1`` ``-`` ``(``1`` ``-`` ``0.05``)``^``(``k`` ``*`` ``(``k`` ``-`` ``1``)`` ``/`` ``2``)``)`
+``` r
+
+k <- 2:8
+data.frame(groups = k, pairs = k * (k - 1) / 2, fwer = 1 - (1 - 0.05)^(k * (k - 1) / 2))
+```
 
     ##   groups pairs      fwer
     ## 1      2     1 0.0500000
@@ -151,14 +155,24 @@ age groups of 40, with similar variances. `chickwts` records the weight
 of 71 chicks fed six different feeds, with group sizes from 10 to 14 and
 different variances, giving 15 pairs.
 
-[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``n ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``df_blood_pressure``$``bp_before``, ``df_blood_pressure``$``agegrp``, ``length``)``,`` `` mean ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``df_blood_pressure``$``bp_before``, ``df_blood_pressure``$``agegrp``, ``mean``)``,`` `` sd ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``df_blood_pressure``$``bp_before``, ``df_blood_pressure``$``agegrp``, ``sd``)``)`
+``` r
+
+data.frame(n = tapply(df_blood_pressure$bp_before, df_blood_pressure$agegrp, length),
+           mean = tapply(df_blood_pressure$bp_before, df_blood_pressure$agegrp, mean),
+           sd = tapply(df_blood_pressure$bp_before, df_blood_pressure$agegrp, sd))
+```
 
     ##        n    mean        sd
     ## 30-45 40 151.675  9.258087
     ## 46-59 40 155.100 11.459628
     ## 60+   40 162.575 10.727122
 
-[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``n ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``chickwts``$``weight``, ``chickwts``$``feed``, ``length``)``,`` `` mean ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``chickwts``$``weight``, ``chickwts``$``feed``, ``mean``)``,`` `` sd ``=`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``chickwts``$``weight``, ``chickwts``$``feed``, ``sd``)``)`
+``` r
+
+data.frame(n = tapply(chickwts$weight, chickwts$feed, length),
+           mean = tapply(chickwts$weight, chickwts$feed, mean),
+           sd = tapply(chickwts$weight, chickwts$feed, sd))
+```
 
     ##            n     mean       sd
     ## casein    12 323.5833 64.43384
@@ -170,7 +184,11 @@ different variances, giving 15 pairs.
 
 ## compute_posthoc
 
-`result`` ``<-`` `[`compute_posthoc`](https://sedzinfo.github.io/rwf/reference/compute_posthoc.md)`(``y ``=`` ``df_blood_pressure``$``bp_before``, x ``=`` ``df_blood_pressure``$``agegrp``)`` ``result``$``output`
+``` r
+
+result <- compute_posthoc(y = df_blood_pressure$bp_before, x = df_blood_pressure$agegrp)
+result$output
+```
 
     ## $tukey
     ##                    t  df            p
@@ -201,7 +219,10 @@ their confidence intervals;
 [`stats::TukeyHSD`](https://rdrr.io/r/stats/TukeyHSD.html) gives them
 for the Tukey-Kramer test:
 
-`stats``::`[`TukeyHSD`](https://rdrr.io/r/stats/TukeyHSD.html)`(``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``bp_before`` ``~`` ``agegrp``, data ``=`` ``df_blood_pressure``)``)`
+``` r
+
+stats::TukeyHSD(stats::aov(bp_before ~ agegrp, data = df_blood_pressure))
+```
 
     ##   Tukey multiple comparisons of means
     ##     95% family-wise confidence level
@@ -220,7 +241,13 @@ or meatmeal, the two feeds with the largest standard deviations, because
 their own variances are larger than the pooled one. At the 0.05 level
 both tests find the same 8 pairs significant here:
 
-`chick`` ``<-`` `[`compute_posthoc`](https://sedzinfo.github.io/rwf/reference/compute_posthoc.md)`(``y ``=`` ``chickwts``$``weight``, x ``=`` ``chickwts``$``feed``)``$``output`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``t_tukey ``=`` ``chick``$``tukey``[``, ``"t"``]``, p_tukey ``=`` ``chick``$``tukey``[``, ``"p"``]``,`` `` t_games_howell ``=`` ``chick``$``games.howell``[``, ``"t"``]``, df_games_howell ``=`` ``chick``$``games.howell``[``, ``"df"``]``,`` `` p_games_howell ``=`` ``chick``$``games.howell``[``, ``"p"``]``)`
+``` r
+
+chick <- compute_posthoc(y = chickwts$weight, x = chickwts$feed)$output
+data.frame(t_tukey = chick$tukey[, "t"], p_tukey = chick$tukey[, "p"],
+           t_games_howell = chick$games.howell[, "t"], df_games_howell = chick$games.howell[, "df"],
+           p_games_howell = chick$games.howell[, "p"])
+```
 
     ##                       t_tukey      p_tukey t_games_howell df_games_howell p_games_howell
     ## casein:horsebean    6.9567776 3.070197e-08      7.3422577        18.35975   9.435900e-06
@@ -243,31 +270,67 @@ both tests find the same 8 pairs significant here:
 
 Every quantity from the formulas above, computed by hand:
 
-`y`` ``<-`` ``df_blood_pressure``$``bp_before`` ``x`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``df_blood_pressure``$``agegrp``)`` ``k`` ``<-`` `[`nlevels`](https://rdrr.io/r/base/nlevels.html)`(``x``)`` ``n_j`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``y``, ``x``, ``length``)`` ``mean_j`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``y``, ``x``, ``mean``)`` ``var_j`` ``<-`` `[`tapply`](https://rdrr.io/r/base/tapply.html)`(``y``, ``x``, ``var``)`` ``N`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``n_j``)`` ``ms_error`` ``<-`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``(``n_j`` ``-`` ``1``)`` ``*`` ``var_j``)`` ``/`` ``(``N`` ``-`` ``k``)`` ``pairs`` ``<-`` ``utils``::`[`combn`](https://rdrr.io/r/utils/combn.html)`(``k``, ``2``)`` ``pair_names`` ``<-`` ``utils``::`[`combn`](https://rdrr.io/r/utils/combn.html)`(`[`levels`](https://rdrr.io/r/base/levels.html)`(``x``)``, ``2``, ``paste``, collapse ``=`` ``":"``)`
+``` r
+
+y <- df_blood_pressure$bp_before
+x <- factor(df_blood_pressure$agegrp)
+k <- nlevels(x)
+n_j <- tapply(y, x, length)
+mean_j <- tapply(y, x, mean)
+var_j <- tapply(y, x, var)
+N <- sum(n_j)
+ms_error <- sum((n_j - 1) * var_j) / (N - k)
+pairs <- utils::combn(k, 2)
+pair_names <- utils::combn(levels(x), 2, paste, collapse = ":")
+```
 
 Tukey-Kramer:
 
-`t_tukey`` ``<-`` `[`apply`](https://rdrr.io/r/base/apply.html)`(``pairs``, ``2``, ``function``(``p``)`` `[`abs`](https://rdrr.io/r/base/MathFun.html)`(`[`diff`](https://rdrr.io/r/base/diff.html)`(``mean_j``[``p``]``)``)`` ``/`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``ms_error`` ``*`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``1`` ``/`` ``n_j``[``p``]``)``)``)`` ``tukey`` ``<-`` `[`cbind`](https://rdrr.io/r/base/cbind.html)`(``t ``=`` ``t_tukey``,`` `` df ``=`` ``N`` ``-`` ``k``,`` `` p ``=`` `[`ptukey`](https://rdrr.io/r/stats/Tukey.html)`(`[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``2``)`` ``*`` ``t_tukey``, nmeans ``=`` ``k``, df ``=`` ``N`` ``-`` ``k``, lower.tail ``=`` ``FALSE``)``)`` `[`rownames`](https://rdrr.io/r/base/colnames.html)`(``tukey``)`` ``<-`` ``pair_names`` ``tukey`
+``` r
+
+t_tukey <- apply(pairs, 2, function(p) abs(diff(mean_j[p])) / sqrt(ms_error * sum(1 / n_j[p])))
+tukey <- cbind(t = t_tukey,
+               df = N - k,
+               p = ptukey(sqrt(2) * t_tukey, nmeans = k, df = N - k, lower.tail = FALSE))
+rownames(tukey) <- pair_names
+tukey
+```
 
     ##                    t  df            p
     ## 30-45:46-59 1.455786 117 3.160217e-01
     ## 30-45:60+   4.633013 117 2.794141e-05
     ## 46-59:60+   3.177227 117 5.364605e-03
 
-[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(``tukey``, ``result``$``output``$``tukey``)`
+``` r
+
+all.equal(tukey, result$output$tukey)
+```
 
     ## [1] TRUE
 
 Games-Howell:
 
-`se2`` ``<-`` ``var_j`` ``/`` ``n_j`` ``t_gh`` ``<-`` `[`apply`](https://rdrr.io/r/base/apply.html)`(``pairs``, ``2``, ``function``(``p``)`` `[`abs`](https://rdrr.io/r/base/MathFun.html)`(`[`diff`](https://rdrr.io/r/base/diff.html)`(``mean_j``[``p``]``)``)`` ``/`` `[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(`[`sum`](https://rdrr.io/r/base/sum.html)`(``se2``[``p``]``)``)``)`` ``df_gh`` ``<-`` `[`apply`](https://rdrr.io/r/base/apply.html)`(``pairs``, ``2``, ``function``(``p``)`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``se2``[``p``]``)``^``2`` ``/`` `[`sum`](https://rdrr.io/r/base/sum.html)`(``se2``[``p``]``^``2`` ``/`` ``(``n_j``[``p``]`` ``-`` ``1``)``)``)`` ``games_howell`` ``<-`` `[`cbind`](https://rdrr.io/r/base/cbind.html)`(``t ``=`` ``t_gh``,`` `` df ``=`` ``df_gh``,`` `` p ``=`` `[`ptukey`](https://rdrr.io/r/stats/Tukey.html)`(`[`sqrt`](https://rdrr.io/r/base/MathFun.html)`(``2``)`` ``*`` ``t_gh``, nmeans ``=`` ``k``, df ``=`` ``df_gh``, lower.tail ``=`` ``FALSE``)``)`` `[`rownames`](https://rdrr.io/r/base/colnames.html)`(``games_howell``)`` ``<-`` ``pair_names`` ``games_howell`
+``` r
+
+se2 <- var_j / n_j
+t_gh <- apply(pairs, 2, function(p) abs(diff(mean_j[p])) / sqrt(sum(se2[p])))
+df_gh <- apply(pairs, 2, function(p) sum(se2[p])^2 / sum(se2[p]^2 / (n_j[p] - 1)))
+games_howell <- cbind(t = t_gh,
+                      df = df_gh,
+                      p = ptukey(sqrt(2) * t_gh, nmeans = k, df = df_gh, lower.tail = FALSE))
+rownames(games_howell) <- pair_names
+games_howell
+```
 
     ##                    t       df            p
     ## 30-45:46-59 1.470366 74.70085 3.109171e-01
     ## 30-45:60+   4.865110 76.36720 1.779247e-05
     ## 46-59:60+   3.011799 77.66212 9.703539e-03
 
-[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(``games_howell``, ``result``$``output``$``games.howell``)`
+``` r
+
+all.equal(games_howell, result$output$games.howell)
+```
 
     ## [1] TRUE
 
@@ -283,7 +346,11 @@ statistics and degrees of freedom.
 [`rstatix::games_howell_test`](https://rpkgs.datanovia.com/rstatix/reference/games_howell_test.html)
 gives the Games-Howell p values:
 
-`model`` ``<-`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``bp_before`` ``~`` ``agegrp``, data ``=`` ``df_blood_pressure``)`` ``stats``::`[`TukeyHSD`](https://rdrr.io/r/stats/TukeyHSD.html)`(``model``)`
+``` r
+
+model <- stats::aov(bp_before ~ agegrp, data = df_blood_pressure)
+stats::TukeyHSD(model)
+```
 
     ##   Tukey multiple comparisons of means
     ##     95% family-wise confidence level
@@ -296,7 +363,10 @@ gives the Games-Howell p values:
     ## 60+-30-45   10.900  5.314944 16.485056 0.0000279
     ## 60+-46-59    7.475  1.889944 13.060056 0.0053646
 
-[`summary`](https://rdrr.io/r/base/summary.html)`(``graphics``::`[`pairs`](https://rdrr.io/r/graphics/pairs.html)`(``emmeans``::`[`emmeans`](https://rvlenth.github.io/emmeans/reference/emmeans.html)`(``model``, ``~``agegrp``)``, adjust ``=`` ``"tukey"``)``)`
+``` r
+
+summary(graphics::pairs(emmeans::emmeans(model, ~agegrp), adjust = "tukey"))
+```
 
     ##  contrast          estimate   SE  df t.ratio p.value
     ##  (30-45) - (46-59)    -3.42 2.35 117  -1.456  0.3160
@@ -305,7 +375,10 @@ gives the Games-Howell p values:
     ## 
     ## P value adjustment: tukey method for comparing a family of 3 estimates
 
-`rstatix``::`[`tukey_hsd`](https://rpkgs.datanovia.com/rstatix/reference/tukey_hsd.html)`(``df_blood_pressure``, ``bp_before`` ``~`` ``agegrp``)`
+``` r
+
+rstatix::tukey_hsd(df_blood_pressure, bp_before ~ agegrp)
+```
 
     ## # A tibble: 3 × 9
     ##   term   group1 group2 null.value estimate conf.low conf.high     p.adj p.adj.signif
@@ -314,7 +387,10 @@ gives the Games-Howell p values:
     ## 2 agegrp 30     60+             0    10.9      5.31     16.5  0.0000279 ****        
     ## 3 agegrp 46     60+             0     7.47     1.89     13.1  0.00536   **
 
-`rstatix``::`[`games_howell_test`](https://rpkgs.datanovia.com/rstatix/reference/games_howell_test.html)`(``df_blood_pressure``, ``bp_before`` ``~`` ``agegrp``)`
+``` r
+
+rstatix::games_howell_test(df_blood_pressure, bp_before ~ agegrp)
+```
 
     ## # A tibble: 3 × 8
     ##   .y.       group1 group2 estimate conf.low conf.high     p.adj p.adj.signif
@@ -326,7 +402,10 @@ gives the Games-Howell p values:
 The Games-Howell t statistic and degrees of freedom of each pair are
 those of a Welch t test of the two groups:
 
-[`t.test`](https://rdrr.io/r/stats/t.test.html)`(``bp_before`` ``~`` ``agegrp``, data ``=`` ``df_blood_pressure``[``df_blood_pressure``$``agegrp`` `[`%in%`](https://rdrr.io/r/base/match.html)` `[`c`](https://rdrr.io/r/base/c.html)`(``"30-45"``, ``"60+"``)``, ``]``, var.equal ``=`` ``FALSE``)`
+``` r
+
+t.test(bp_before ~ agegrp, data = df_blood_pressure[df_blood_pressure$agegrp %in% c("30-45", "60+"), ], var.equal = FALSE)
+```
 
     ## 
     ##  Welch Two Sample t-test
@@ -340,7 +419,10 @@ those of a Welch t test of the two groups:
     ## mean in group 30-45   mean in group 60+ 
     ##             151.675             162.575
 
-`result``$``output``$``games.howell``[``"30-45:60+"``, ``]`
+``` r
+
+result$output$games.howell["30-45:60+", ]
+```
 
     ##            t           df            p 
     ## 4.865110e+00 7.636720e+01 1.779247e-05
@@ -351,28 +433,75 @@ those of a Welch t test of the two groups:
 packages and returns the differences, one row per pair. All the packages
 list the pairs in the same order as rwf.
 
-`check_posthoc`` ``<-`` ``function``(``y``, ``x``)`` ``{`` `` ``x`` ``<-`` `[`factor`](https://rdrr.io/r/base/factor.html)`(``x``)`` `` ``rwf`` ``<-`` `[`compute_posthoc`](https://sedzinfo.github.io/rwf/reference/compute_posthoc.md)`(``y ``=`` ``y``, x ``=`` ``x``)``$``output`` `` ``pairs`` ``<-`` ``utils``::`[`combn`](https://rdrr.io/r/utils/combn.html)`(`[`levels`](https://rdrr.io/r/base/levels.html)`(``x``)``, ``2``)`` `` ``model`` ``<-`` ``stats``::`[`aov`](https://rdrr.io/r/stats/aov.html)`(``y`` ``~`` ``x``)`` `` ``tukey_hsd`` ``<-`` ``stats``::`[`TukeyHSD`](https://rdrr.io/r/stats/TukeyHSD.html)`(``model``)``$``x`` `` ``emmeans_tukey`` ``<-`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(`[`summary`](https://rdrr.io/r/base/summary.html)`(``graphics``::`[`pairs`](https://rdrr.io/r/graphics/pairs.html)`(``emmeans``::`[`emmeans`](https://rvlenth.github.io/emmeans/reference/emmeans.html)`(``model``, ``~``x``)``, adjust ``=`` ``"tukey"``)``)``)`` `` ``df`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``y ``=`` ``y``, x ``=`` ``x``)`` `` ``rstatix_tukey`` ``<-`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(``rstatix``::`[`tukey_hsd`](https://rpkgs.datanovia.com/rstatix/reference/tukey_hsd.html)`(``df``, ``y`` ``~`` ``x``)``)`` `` ``rstatix_games_howell`` ``<-`` `[`as.data.frame`](https://rdrr.io/r/base/as.data.frame.html)`(``rstatix``::`[`games_howell_test`](https://rpkgs.datanovia.com/rstatix/reference/games_howell_test.html)`(``df``, ``y`` ``~`` ``x``)``)`` `` ``welch`` ``<-`` `[`apply`](https://rdrr.io/r/base/apply.html)`(``pairs``, ``2``, ``function``(``p``)`` ``{`` `` ``welch_t`` ``<-`` ``stats``::`[`t.test`](https://rdrr.io/r/stats/t.test.html)`(``y``[``x`` ``==`` ``p``[``1``]``]``, ``y``[``x`` ``==`` ``p``[``2``]``]``, var.equal ``=`` ``FALSE``)`` `` `[`c`](https://rdrr.io/r/base/c.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(`[`unname`](https://rdrr.io/r/base/unname.html)`(``welch_t``$``statistic``)``)``, `[`unname`](https://rdrr.io/r/base/unname.html)`(``welch_t``$``parameter``)``)`` `` ``}``)`` `` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``pair ``=`` `[`rownames`](https://rdrr.io/r/base/colnames.html)`(``rwf``$``tukey``)``,`` `` tukey_t_emmeans ``=`` ``rwf``$``tukey``[``, ``"t"``]`` ``-`` `[`abs`](https://rdrr.io/r/base/MathFun.html)`(``emmeans_tukey``$``t.ratio``)``,`` `` tukey_df_emmeans ``=`` ``rwf``$``tukey``[``, ``"df"``]`` ``-`` ``emmeans_tukey``$``df``,`` `` tukey_p_TukeyHSD ``=`` ``rwf``$``tukey``[``, ``"p"``]`` ``-`` ``tukey_hsd``[``, ``"p adj"``]``,`` `` tukey_p_emmeans ``=`` ``rwf``$``tukey``[``, ``"p"``]`` ``-`` ``emmeans_tukey``$``p.value``,`` `` tukey_p_rstatix ``=`` ``rwf``$``tukey``[``, ``"p"``]`` ``-`` ``rstatix_tukey``$``p.adj``,`` `` games_howell_t_welch ``=`` ``rwf``$``games.howell``[``, ``"t"``]`` ``-`` ``welch``[``1``, ``]``,`` `` games_howell_df_welch ``=`` ``rwf``$``games.howell``[``, ``"df"``]`` ``-`` ``welch``[``2``, ``]``,`` `` games_howell_p_rstatix ``=`` ``rwf``$``games.howell``[``, ``"p"``]`` ``-`` ``rstatix_games_howell``$``p.adj``,`` `` row.names ``=`` ``NULL``)`` ``}`` ``check_posthoc``(``y ``=`` ``df_blood_pressure``$``bp_before``, x ``=`` ``df_blood_pressure``$``agegrp``)`
+``` r
+
+check_posthoc <- function(y, x) {
+  x <- factor(x)
+  rwf <- compute_posthoc(y = y, x = x)$output
+  pairs <- utils::combn(levels(x), 2)
+  model <- stats::aov(y ~ x)
+  tukey_hsd <- stats::TukeyHSD(model)$x
+  emmeans_tukey <- as.data.frame(summary(graphics::pairs(emmeans::emmeans(model, ~x), adjust = "tukey")))
+  df <- data.frame(y = y, x = x)
+  rstatix_tukey <- as.data.frame(rstatix::tukey_hsd(df, y ~ x))
+  rstatix_games_howell <- as.data.frame(rstatix::games_howell_test(df, y ~ x))
+  welch <- apply(pairs, 2, function(p) {
+    welch_t <- stats::t.test(y[x == p[1]], y[x == p[2]], var.equal = FALSE)
+    c(abs(unname(welch_t$statistic)), unname(welch_t$parameter))
+  })
+  data.frame(pair = rownames(rwf$tukey),
+             tukey_t_emmeans = rwf$tukey[, "t"] - abs(emmeans_tukey$t.ratio),
+             tukey_df_emmeans = rwf$tukey[, "df"] - emmeans_tukey$df,
+             tukey_p_TukeyHSD = rwf$tukey[, "p"] - tukey_hsd[, "p adj"],
+             tukey_p_emmeans = rwf$tukey[, "p"] - emmeans_tukey$p.value,
+             tukey_p_rstatix = rwf$tukey[, "p"] - rstatix_tukey$p.adj,
+             games_howell_t_welch = rwf$games.howell[, "t"] - welch[1, ],
+             games_howell_df_welch = rwf$games.howell[, "df"] - welch[2, ],
+             games_howell_p_rstatix = rwf$games.howell[, "p"] - rstatix_games_howell$p.adj,
+             row.names = NULL)
+}
+check_posthoc(y = df_blood_pressure$bp_before, x = df_blood_pressure$agegrp)
+```
 
     ##          pair tukey_t_emmeans tukey_df_emmeans tukey_p_TukeyHSD tukey_p_emmeans tukey_p_rstatix games_howell_t_welch games_howell_df_welch games_howell_p_rstatix
-    ## 1 30-45:46-59   -7.105427e-15                0     5.551115e-15    3.330669e-15    5.551115e-15         0.000000e+00          1.421085e-14                      0
-    ## 2   30-45:60+   -8.881784e-15                0     0.000000e+00    0.000000e+00    0.000000e+00         0.000000e+00         -4.263256e-14                      0
-    ## 3   46-59:60+   -3.552714e-15                0    -1.110223e-16   -1.110223e-16   -1.110223e-16         8.881784e-16         -5.684342e-14                      0
+    ## 1 30-45:46-59   -1.509903e-14                0     5.440093e-15    7.438494e-15    5.440093e-15         0.000000e+00          1.421085e-14                      0
+    ## 2   30-45:60+   -1.776357e-14                0     0.000000e+00    0.000000e+00    0.000000e+00         0.000000e+00         -4.263256e-14                      0
+    ## 3   46-59:60+   -1.332268e-15                0     0.000000e+00    2.220446e-16    0.000000e+00         8.881784e-16         -5.684342e-14                      0
 
 The same check on seven datasets with different numbers of groups, equal
 and unequal group sizes, and equal and unequal variances.
 `max_abs_difference` is the largest absolute difference across all the
 comparisons and pairs for that dataset:
 
-`datasets`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``name ``=`` ``"bp_before ~ agegrp"``, y ``=`` ``df_blood_pressure``$``bp_before``, x ``=`` ``df_blood_pressure``$``agegrp``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``name ``=`` ``"bp_after ~ agegrp"``, y ``=`` ``df_blood_pressure``$``bp_after``, x ``=`` ``df_blood_pressure``$``agegrp``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``name ``=`` ``"weight ~ feed"``, y ``=`` ``chickwts``$``weight``, x ``=`` ``chickwts``$``feed``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``name ``=`` ``"count ~ spray"``, y ``=`` ``InsectSprays``$``count``, x ``=`` ``InsectSprays``$``spray``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``name ``=`` ``"weight ~ group"``, y ``=`` ``PlantGrowth``$``weight``, x ``=`` ``PlantGrowth``$``group``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``name ``=`` ``"Sepal.Length ~ Species"``, y ``=`` ``iris``$``Sepal.Length``, x ``=`` ``iris``$``Species``)``,`` `` `[`list`](https://rdrr.io/r/base/list.html)`(``name ``=`` ``"qsec ~ cyl"``, y ``=`` ``mtcars``$``qsec``, x ``=`` ``mtcars``$``cyl``)`` ``)`` `[`do.call`](https://rdrr.io/r/base/do.call.html)`(``rbind``, `[`lapply`](https://rdrr.io/r/base/lapply.html)`(``datasets``, ``function``(``d``)`` ``{`` `` ``check`` ``<-`` ``check_posthoc``(``y ``=`` ``d``$``y``, x ``=`` ``d``$``x``)`` `` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``formula ``=`` ``d``$``name``,`` `` N ``=`` `[`length`](https://rdrr.io/r/base/length.html)`(``d``$``y``)``,`` `` k ``=`` `[`length`](https://rdrr.io/r/base/length.html)`(`[`unique`](https://rdrr.io/r/base/unique.html)`(``d``$``x``)``)``,`` `` pairs ``=`` `[`nrow`](https://rdrr.io/r/base/nrow.html)`(``check``)``,`` `` max_abs_difference ``=`` `[`max`](https://rdrr.io/r/base/Extremes.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(`[`as.matrix`](https://rdrr.io/r/base/matrix.html)`(``check``[``, ``-``1``]``)``)``)``)`` ``}``)``)`
+``` r
+
+datasets <- list(
+  list(name = "bp_before ~ agegrp", y = df_blood_pressure$bp_before, x = df_blood_pressure$agegrp),
+  list(name = "bp_after ~ agegrp", y = df_blood_pressure$bp_after, x = df_blood_pressure$agegrp),
+  list(name = "weight ~ feed", y = chickwts$weight, x = chickwts$feed),
+  list(name = "count ~ spray", y = InsectSprays$count, x = InsectSprays$spray),
+  list(name = "weight ~ group", y = PlantGrowth$weight, x = PlantGrowth$group),
+  list(name = "Sepal.Length ~ Species", y = iris$Sepal.Length, x = iris$Species),
+  list(name = "qsec ~ cyl", y = mtcars$qsec, x = mtcars$cyl)
+)
+do.call(rbind, lapply(datasets, function(d) {
+  check <- check_posthoc(y = d$y, x = d$x)
+  data.frame(formula = d$name,
+             N = length(d$y),
+             k = length(unique(d$x)),
+             pairs = nrow(check),
+             max_abs_difference = max(abs(as.matrix(check[, -1]))))
+}))
+```
 
     ##                  formula   N k pairs max_abs_difference
     ## 1     bp_before ~ agegrp 120 3     3       5.684342e-14
     ## 2      bp_after ~ agegrp 120 3     3       2.842171e-14
     ## 3          weight ~ feed  71 6    15       7.105427e-15
-    ## 4          count ~ spray  72 6    15       3.086420e-14
+    ## 4          count ~ spray  72 6    15       1.065814e-14
     ## 5         weight ~ group  30 3     3       1.065814e-14
-    ## 6 Sepal.Length ~ Species 150 3     3       7.105427e-15
-    ## 7             qsec ~ cyl  32 3     3       5.329071e-15
+    ## 6 Sepal.Length ~ Species 150 3     3       3.552714e-15
+    ## 7             qsec ~ cyl  32 3     3       9.769963e-15
 
 ## Family-wise error rate
 
@@ -383,7 +512,19 @@ one of the 10 pairs is significant at 0.05 with unadjusted t tests
 with a pooled standard deviation and `p.adjust.method = "none"`),
 Tukey-Kramer and Games-Howell:
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``any_significant`` ``<-`` `[`t`](https://rdrr.io/r/base/t.html)`(`[`replicate`](https://rdrr.io/r/base/lapply.html)`(``2000``, ``{`` `` ``sim`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``group ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(``letters``[``1``:``5``]``, each ``=`` ``10``)``, score ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``50``)``)`` `` ``unadjusted`` ``<-`` ``stats``::`[`pairwise.t.test`](https://rdrr.io/r/stats/pairwise.t.test.html)`(``sim``$``score``, ``sim``$``group``, p.adjust.method ``=`` ``"none"``)``$``p.value`` `` ``posthoc`` ``<-`` `[`compute_posthoc`](https://sedzinfo.github.io/rwf/reference/compute_posthoc.md)`(``y ``=`` ``sim``$``score``, x ``=`` ``sim``$``group``)``$``output`` `` `[`c`](https://rdrr.io/r/base/c.html)`(``unadjusted ``=`` `[`any`](https://rdrr.io/r/base/any.html)`(``unadjusted`` ``<`` ``0.05``, na.rm ``=`` ``TRUE``)``,`` `` tukey ``=`` `[`any`](https://rdrr.io/r/base/any.html)`(``posthoc``$``tukey``[``, ``"p"``]`` ``<`` ``0.05``)``,`` `` games_howell ``=`` `[`any`](https://rdrr.io/r/base/any.html)`(``posthoc``$``games.howell``[``, ``"p"``]`` ``<`` ``0.05``)``)`` ``}``)``)`` `[`colMeans`](https://rdrr.io/r/base/colSums.html)`(``any_significant``)`
+``` r
+
+set.seed(1)
+any_significant <- t(replicate(2000, {
+  sim <- data.frame(group = rep(letters[1:5], each = 10), score = rnorm(50))
+  unadjusted <- stats::pairwise.t.test(sim$score, sim$group, p.adjust.method = "none")$p.value
+  posthoc <- compute_posthoc(y = sim$score, x = sim$group)$output
+  c(unadjusted = any(unadjusted < 0.05, na.rm = TRUE),
+    tukey = any(posthoc$tukey[, "p"] < 0.05),
+    games_howell = any(posthoc$games.howell[, "p"] < 0.05))
+}))
+colMeans(any_significant)
+```
 
     ##   unadjusted        tukey games_howell 
     ##       0.2775       0.0445       0.0530
@@ -396,7 +537,18 @@ the studies where none exists. Both post hoc tests stay close to 5%.
 Three groups have the same population mean, the smallest group has the
 largest standard deviation, and the largest group the smallest:
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``any_significant`` ``<-`` `[`t`](https://rdrr.io/r/base/t.html)`(`[`replicate`](https://rdrr.io/r/base/lapply.html)`(``2000``, ``{`` `` ``sim`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``group ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"a"``, ``"b"``, ``"c"``)``, times ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``10``, ``20``, ``40``)``)``,`` `` score ``=`` `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``70``, mean ``=`` ``0``, sd ``=`` `[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``4``, ``2``, ``1``)``, times ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``10``, ``20``, ``40``)``)``)``)`` `` ``posthoc`` ``<-`` `[`compute_posthoc`](https://sedzinfo.github.io/rwf/reference/compute_posthoc.md)`(``y ``=`` ``sim``$``score``, x ``=`` ``sim``$``group``)``$``output`` `` `[`c`](https://rdrr.io/r/base/c.html)`(``tukey ``=`` `[`any`](https://rdrr.io/r/base/any.html)`(``posthoc``$``tukey``[``, ``"p"``]`` ``<`` ``0.05``)``,`` `` games_howell ``=`` `[`any`](https://rdrr.io/r/base/any.html)`(``posthoc``$``games.howell``[``, ``"p"``]`` ``<`` ``0.05``)``)`` ``}``)``)`` `[`colMeans`](https://rdrr.io/r/base/colSums.html)`(``any_significant``)`
+``` r
+
+set.seed(1)
+any_significant <- t(replicate(2000, {
+  sim <- data.frame(group = rep(c("a", "b", "c"), times = c(10, 20, 40)),
+                    score = rnorm(70, mean = 0, sd = rep(c(4, 2, 1), times = c(10, 20, 40))))
+  posthoc <- compute_posthoc(y = sim$score, x = sim$group)$output
+  c(tukey = any(posthoc$tukey[, "p"] < 0.05),
+    games_howell = any(posthoc$games.howell[, "p"] < 0.05))
+}))
+colMeans(any_significant)
+```
 
     ##        tukey games_howell 
     ##       0.2525       0.0470
@@ -411,14 +563,23 @@ far more often than 5%. Games-Howell stays close to 5%.
 makes every result `NA`. Remove incomplete cases before the call, as
 `report_oneway` does:
 
-`y_missing`` ``<-`` ``df_blood_pressure``$``bp_before`` ``y_missing``[``1``]`` ``<-`` ``NA`` `[`compute_posthoc`](https://sedzinfo.github.io/rwf/reference/compute_posthoc.md)`(``y ``=`` ``y_missing``, x ``=`` ``df_blood_pressure``$``agegrp``)``$``output``$``tukey`
+``` r
+
+y_missing <- df_blood_pressure$bp_before
+y_missing[1] <- NA
+compute_posthoc(y = y_missing, x = df_blood_pressure$agegrp)$output$tukey
+```
 
     ##              t  df  p
     ## 30-45:46-59 NA 117 NA
     ## 30-45:60+   NA 117 NA
     ## 46-59:60+   NA 117 NA
 
-`complete`` ``<-`` ``stats``::`[`complete.cases`](https://rdrr.io/r/stats/complete.cases.html)`(``y_missing``, ``df_blood_pressure``$``agegrp``)`` `[`compute_posthoc`](https://sedzinfo.github.io/rwf/reference/compute_posthoc.md)`(``y ``=`` ``y_missing``[``complete``]``, x ``=`` ``df_blood_pressure``$``agegrp``[``complete``]``)``$``output`
+``` r
+
+complete <- stats::complete.cases(y_missing, df_blood_pressure$agegrp)
+compute_posthoc(y = y_missing[complete], x = df_blood_pressure$agegrp[complete])$output
+```
 
     ## $tukey
     ##                    t  df            p

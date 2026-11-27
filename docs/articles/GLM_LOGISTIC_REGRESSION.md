@@ -71,7 +71,14 @@ deviance/Pearson residual scale rather than raw residuals.
 
 ## The Logistic Function
 
-`x`` ``<-`` ``-``10``:``10`` `[`plot`](https://rdrr.io/r/graphics/plot.default.html)`(``x``, `[`compute_y_logistic`](https://sedzinfo.github.io/rwf/reference/compute_y_logistic.md)`(``intercept ``=`` ``0``, coefficient ``=`` ``1``, x ``=`` ``x``)``, type ``=`` ``"l"``,`` `` xlab ``=`` ``"x"``, ylab ``=`` ``"P(y=1)"``, main ``=`` ``"Logistic function (intercept=0, coefficient=1)"``)`` `[`grid`](https://rdrr.io/r/graphics/grid.html)`(``)`` `[`abline`](https://rdrr.io/r/graphics/abline.html)`(``h ``=`` ``.5``, lty ``=`` ``2``)`
+``` r
+
+x <- -10:10
+plot(x, compute_y_logistic(intercept = 0, coefficient = 1, x = x), type = "l",
+     xlab = "x", ylab = "P(y=1)", main = "Logistic function (intercept=0, coefficient=1)")
+grid()
+abline(h = .5, lty = 2)
+```
 
 ![](GLM_LOGISTIC_REGRESSION_files/figure-html/compute_y_logistic-1.png)
 
@@ -85,7 +92,18 @@ values make the transition steeper.
 predictor in a data frame against a single binary outcome, letting you
 compare how strongly each predictor separates the two outcome classes.
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``12345``)`` ``df`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`` `` outcome ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(``1``, ``10``)``, `[`rep`](https://rdrr.io/r/base/rep.html)`(``0``, ``10``)``)``,`` `` pd1 ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(``1``, ``11``)``, `[`rep`](https://rdrr.io/r/base/rep.html)`(``0``, ``9``)``)``,`` `` pd2 ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(``1``, ``9``)``, `[`rep`](https://rdrr.io/r/base/rep.html)`(``0``, ``11``)``)``,`` `` pc1 ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``10``, mean ``=`` ``5``)``, `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``10``, mean ``=`` ``10``)``)``,`` `` pc2 ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``10``, mean ``=`` ``5``)``, `[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``10``, mean ``=`` ``20``)``)`` ``)`` `[`plot_logistic_model`](https://sedzinfo.github.io/rwf/reference/plot_logistic_model.md)`(``df ``=`` ``df``, base_size ``=`` ``15``)`
+``` r
+
+set.seed(12345)
+df <- data.frame(
+  outcome = c(rep(1, 10), rep(0, 10)),
+  pd1 = c(rep(1, 11), rep(0, 9)),
+  pd2 = c(rep(1, 9), rep(0, 11)),
+  pc1 = c(rnorm(10, mean = 5), rnorm(10, mean = 10)),
+  pc2 = c(rnorm(10, mean = 5), rnorm(10, mean = 20))
+)
+plot_logistic_model(df = df, base_size = 15)
+```
 
 ![](GLM_LOGISTIC_REGRESSION_files/figure-html/plot_logistic_model-1.png)
 
@@ -99,7 +117,14 @@ predictor once modeled formally.
 `output_compare_model_logistic` runs the likelihood-ratio test described
 above between two fitted `glm` models.
 
-`modelcategoricalpredictor`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``case`` ``~`` ``education``, data ``=`` ``infert``, family ``=`` ``binomial``)`` ``modelcontinuouspredictor`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``case`` ``~`` ``age``, data ``=`` ``infert``, family ``=`` ``binomial``)`` ``modeltwopredictors`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``case`` ``~`` ``education`` ``*`` ``age``, data ``=`` ``infert``, family ``=`` ``binomial``)`` `` `[`anova`](https://rdrr.io/r/stats/anova.html)`(``modelcategoricalpredictor``, ``modelcontinuouspredictor``)`
+``` r
+
+modelcategoricalpredictor <- glm(case ~ education, data = infert, family = binomial)
+modelcontinuouspredictor  <- glm(case ~ age, data = infert, family = binomial)
+modeltwopredictors        <- glm(case ~ education * age, data = infert, family = binomial)
+
+anova(modelcategoricalpredictor, modelcontinuouspredictor)
+```
 
     ## Analysis of Deviance Table
     ## 
@@ -109,17 +134,26 @@ above between two fitted `glm` models.
     ## 1       245     316.17                       
     ## 2       246     316.17 -1 0.00080113
 
-[`output_compare_model_logistic`](https://sedzinfo.github.io/rwf/reference/output_compare_model_logistic.md)`(``model1 ``=`` ``modelcategoricalpredictor``, model2 ``=`` ``modeltwopredictors``)`
+``` r
+
+output_compare_model_logistic(model1 = modelcategoricalpredictor, model2 = modeltwopredictors)
+```
 
     ##          X.2 df         p
     ## 1 0.01543896  3 0.9994922
 
-[`output_compare_model_logistic`](https://sedzinfo.github.io/rwf/reference/output_compare_model_logistic.md)`(``model1 ``=`` ``modelcontinuouspredictor``, model2 ``=`` ``modeltwopredictors``)`
+``` r
+
+output_compare_model_logistic(model1 = modelcontinuouspredictor, model2 = modeltwopredictors)
+```
 
     ##          X.2 df         p
     ## 1 0.01463783  4 0.9999733
 
-[`output_compare_model_logistic`](https://sedzinfo.github.io/rwf/reference/output_compare_model_logistic.md)`(``model1 ``=`` ``modelcontinuouspredictor``, model2 ``=`` ``modelcategoricalpredictor``)`
+``` r
+
+output_compare_model_logistic(model1 = modelcontinuouspredictor, model2 = modelcategoricalpredictor)
+```
 
     ##             X.2 df p
     ## 1 -0.0008011253  1 1
@@ -138,27 +172,47 @@ pipeline: pseudo-R^2, coefficient table, residual/influence diagnostics,
 VIF, and confusion-matrix-based classification performance (with an
 optimal cut-point search).
 
-`model_simple`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``case`` ``~`` ``education``, data ``=`` ``infert``, family ``=`` ``binomial``)`` ``model_two`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``case`` ``~`` ``education`` ``+`` ``stratum``, data ``=`` ``infert``, family ``=`` ``binomial``)`` ``result_simple`` ``<-`` `[`report_logistic`](https://sedzinfo.github.io/rwf/reference/report_logistic.md)`(``model ``=`` ``model_simple``)`
+``` r
+
+model_simple <- glm(case ~ education, data = infert, family = binomial)
+model_two    <- glm(case ~ education + stratum, data = infert, family = binomial)
+result_simple <- report_logistic(model = model_simple)
+```
 
 ![](GLM_LOGISTIC_REGRESSION_files/figure-html/report_logistic-1.png)![](GLM_LOGISTIC_REGRESSION_files/figure-html/report_logistic-2.png)![](GLM_LOGISTIC_REGRESSION_files/figure-html/report_logistic-3.png)
 
-`result_two`` ``<-`` `[`report_logistic`](https://sedzinfo.github.io/rwf/reference/report_logistic.md)`(``model ``=`` ``model_two``)`
+``` r
+
+result_two    <- report_logistic(model = model_two)
+```
 
 ![](GLM_LOGISTIC_REGRESSION_files/figure-html/report_logistic-4.png)![](GLM_LOGISTIC_REGRESSION_files/figure-html/report_logistic-5.png)![](GLM_LOGISTIC_REGRESSION_files/figure-html/report_logistic-6.png)
 
-`result_simple``$``result_X2_logistic`
+``` r
+
+result_simple$result_X2_logistic
+```
 
     ## NULL
 
-`result_simple``$``result_R2_logistic`
+``` r
+
+result_simple$result_R2_logistic
+```
 
     ## NULL
 
-`result_simple``$``coefficients`
+``` r
+
+result_simple$coefficients
+```
 
     ## NULL
 
-`result_two``$``VIF`
+``` r
+
+result_two$VIF
+```
 
     ## NULL
 
@@ -179,11 +233,17 @@ classification performance on data the model wasn’t fit to, rather than
 on its own training data (which otherwise gives an optimistic,
 resubstitution estimate of accuracy):
 
-`result_validated`` ``<-`` `[`report_logistic`](https://sedzinfo.github.io/rwf/reference/report_logistic.md)`(``model ``=`` ``model_simple``, validation_data ``=`` ``infert``)`
+``` r
+
+result_validated <- report_logistic(model = model_simple, validation_data = infert)
+```
 
 ![](GLM_LOGISTIC_REGRESSION_files/figure-html/validation-1.png)![](GLM_LOGISTIC_REGRESSION_files/figure-html/validation-2.png)![](GLM_LOGISTIC_REGRESSION_files/figure-html/validation-3.png)
 
-`result_validated``$``score_descriptives`
+``` r
+
+result_validated$score_descriptives
+```
 
     ## NULL
 
@@ -194,19 +254,33 @@ across GLM families beyond binomial — though pseudo-R^2 and the
 confusion-matrix performance metrics are only meaningful for binary
 outcomes:
 
-`model_gaussian`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``case`` ``~`` ``education``, data ``=`` ``infert``, family ``=`` ``gaussian``)`` ``model_poisson`` ``<-`` `[`glm`](https://rdrr.io/r/stats/glm.html)`(``case`` ``~`` ``education``, data ``=`` ``infert``, family ``=`` ``poisson``)`` ``result_gaussian`` ``<-`` `[`report_logistic`](https://sedzinfo.github.io/rwf/reference/report_logistic.md)`(``model ``=`` ``model_gaussian``)`
+``` r
+
+model_gaussian <- glm(case ~ education, data = infert, family = gaussian)
+model_poisson  <- glm(case ~ education, data = infert, family = poisson)
+result_gaussian <- report_logistic(model = model_gaussian)
+```
 
 ![](GLM_LOGISTIC_REGRESSION_files/figure-html/other_families-1.png)![](GLM_LOGISTIC_REGRESSION_files/figure-html/other_families-2.png)![](GLM_LOGISTIC_REGRESSION_files/figure-html/other_families-3.png)
 
-`result_poisson`` ``<-`` `[`report_logistic`](https://sedzinfo.github.io/rwf/reference/report_logistic.md)`(``model ``=`` ``model_poisson``)`
+``` r
+
+result_poisson  <- report_logistic(model = model_poisson)
+```
 
 ![](GLM_LOGISTIC_REGRESSION_files/figure-html/other_families-4.png)![](GLM_LOGISTIC_REGRESSION_files/figure-html/other_families-5.png)![](GLM_LOGISTIC_REGRESSION_files/figure-html/other_families-6.png)
 
-`result_gaussian``$``logistic_output`
+``` r
+
+result_gaussian$logistic_output
+```
 
     ## NULL
 
-`result_poisson``$``logistic_output`
+``` r
+
+result_poisson$logistic_output
+```
 
     ## NULL
 

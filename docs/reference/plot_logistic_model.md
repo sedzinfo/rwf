@@ -38,6 +38,7 @@ df <- data.frame(
 )
 plot_logistic_model(df = df, base_size = 15)
 #> `geom_smooth()` using formula = 'y ~ x'
+#> Warning: glm.fit: algorithm did not converge
 #> Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 #> Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
 ```

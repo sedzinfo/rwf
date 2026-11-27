@@ -160,7 +160,7 @@ res <- report_regression(model = regressionmodel, plot_diagnostics = TRUE)
 #> (Intercept)   -5.114     10.030   -0.51    0.614  
 #> qsec           1.412      0.559    2.53    0.017 *
 #> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
 #> Residual standard error: 5.56 on 30 degrees of freedom
 #> Multiple R-squared:  0.175,  Adjusted R-squared:  0.148 
@@ -191,7 +191,7 @@ res <- report_regression(model = regressionmodel, plot_diagnostics = TRUE)
 #> qsec       1    197     197    6.38  0.017 *
 #> Residuals 30    929      31                 
 #> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> [1] "##################################################"
 #> [1] "Deviance"
 #> [1] "##################################################"
@@ -308,7 +308,7 @@ res <- report_regression(model = multipleregressionmodel)
 #> qsec:hp:wt:drat  1     12      12    2.39        0.14    
 #> Residuals       16     83       5                        
 #> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> [1] "##################################################"
 #> [1] "Deviance"
 #> [1] "##################################################"
@@ -353,7 +353,7 @@ res <- report_regression(model = regressionmodel, file = file.path(tempdir(), "r
 #> (Intercept)   -5.114     10.030   -0.51    0.614  
 #> qsec           1.412      0.559    2.53    0.017 *
 #> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
 #> Residual standard error: 5.56 on 30 degrees of freedom
 #> Multiple R-squared:  0.175,  Adjusted R-squared:  0.148 
@@ -384,7 +384,7 @@ res <- report_regression(model = regressionmodel, file = file.path(tempdir(), "r
 #> qsec       1    197     197    6.38  0.017 *
 #> Residuals 30    929      31                 
 #> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> [1] "##################################################"
 #> [1] "Deviance"
 #> [1] "##################################################"
@@ -505,7 +505,7 @@ res <- report_regression(
 #> qsec:hp:wt:drat  1     12      12    2.39        0.14    
 #> Residuals       16     83       5                        
 #> ---
-#> Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> [1] "##################################################"
 #> [1] "Deviance"
 #> [1] "##################################################"

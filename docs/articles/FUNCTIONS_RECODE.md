@@ -35,7 +35,13 @@ of the element each row came from:
 Columns with the same name are matched; a column missing from an element
 is filled with `NA`.
 
-`results`` ``<-`` `[`list`](https://rdrr.io/r/base/list.html)`(``sample_a ``=`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``mean ``=`` ``10.2``, sd ``=`` ``1.1``, n ``=`` ``30``)``,`` `` sample_b ``=`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``mean ``=`` ``11.8``, sd ``=`` ``1.4``, n ``=`` ``25``)``,`` `` sample_c ``=`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``mean ``=`` ``9.7``, sd ``=`` ``0.9``, n ``=`` ``41``)``)`` `[`flatten_list`](https://sedzinfo.github.io/rwf/reference/flatten_list.md)`(``results``)`
+``` r
+
+results <- list(sample_a = data.frame(mean = 10.2, sd = 1.1, n = 30),
+                sample_b = data.frame(mean = 11.8, sd = 1.4, n = 25),
+                sample_c = data.frame(mean = 9.7, sd = 0.9, n = 41))
+flatten_list(results)
+```
 
     ##        .id mean  sd  n
     ## 1 sample_a 10.2 1.1 30
@@ -44,7 +50,10 @@ is filled with `NA`.
 
 Vectors become one-column data frames:
 
-[`flatten_list`](https://sedzinfo.github.io/rwf/reference/flatten_list.md)`(`[`list`](https://rdrr.io/r/base/list.html)`(``group1 ``=`` ``1``:``3``, group2 ``=`` ``4``:``5``)``)`
+``` r
+
+flatten_list(list(group1 = 1:3, group2 = 4:5))
+```
 
     ##      .id x
     ## 1 group1 1
@@ -70,11 +79,18 @@ x_i'=a+b-x_i
 Missing values stay missing, and the result has the same class as the
 input (numeric, integer or character).
 
-`likert`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``2``, ``3``, ``4``, ``5``, ``5``, ``4``, ``1``)`` `[`swap`](https://sedzinfo.github.io/rwf/reference/swap.md)`(``likert``)`
+``` r
+
+likert <- c(1, 2, 3, 4, 5, 5, 4, 1)
+swap(likert)
+```
 
     ## [1] 5 4 3 2 1 1 2 5
 
-[`all.equal`](https://rdrr.io/r/base/all.equal.html)`(`[`swap`](https://sedzinfo.github.io/rwf/reference/swap.md)`(``likert``)``, ``1`` ``+`` ``5`` ``-`` ``likert``)`
+``` r
+
+all.equal(swap(likert), 1 + 5 - likert)
+```
 
     ## [1] TRUE
 
@@ -82,18 +98,28 @@ Only the **observed** values are mirrored, not the full scale. If a 1–5
 item has no answers of 4, the observed values are 1, 2, 3, 5: 1 and 5
 swap, 2 and 3 swap, and a+b-x no longer applies:
 
-`likert_gap`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``1``, ``2``, ``3``, ``5``, ``5``)`` `[`swap`](https://sedzinfo.github.io/rwf/reference/swap.md)`(``likert_gap``)`
+``` r
+
+likert_gap <- c(1, 2, 3, 5, 5)
+swap(likert_gap)
+```
 
     ## [1] 5 3 2 1 1
 
-`6`` ``-`` ``likert_gap`
+``` r
+
+6 - likert_gap
+```
 
     ## [1] 5 4 3 1 1
 
 Numbers are sorted by value and text alphabetically, so text categories
 are mirrored in alphabetical order, not in their meaning:
 
-[`swap`](https://sedzinfo.github.io/rwf/reference/swap.md)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"low"``, ``"mid"``, ``"high"``, ``"low"``)``)`
+``` r
+
+swap(c("low", "mid", "high", "low"))
+```
 
     ## [1] "low"  "high" "mid"  "low"
 
@@ -112,7 +138,12 @@ Row sums give the number of responses each person chose,
 was chosen. The function returns the 1s and 0s as text, so convert them
 to numbers before summing:
 
-`answers`` ``<-`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Email,Phone"``, ``"Phone"``, ``"Post,Email,Phone"``, ``""``, ``"Email"``)`` ``dummies`` ``<-`` `[`dummy_arrange`](https://sedzinfo.github.io/rwf/reference/dummy_arrange.md)`(``answers``)`` ``dummies`
+``` r
+
+answers <- c("Email,Phone", "Phone", "Post,Email,Phone", "", "Email")
+dummies <- dummy_arrange(answers)
+dummies
+```
 
     ##   Email Phone Post
     ## 1     1     1    0
@@ -121,11 +152,18 @@ to numbers before summing:
     ## 4     0     0    0
     ## 5     1     0    0
 
-`dummies`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`lapply`](https://rdrr.io/r/base/lapply.html)`(``dummies``, ``as.numeric``)``)`` `[`rowSums`](https://rdrr.io/r/base/colSums.html)`(``dummies``)`
+``` r
+
+dummies <- data.frame(lapply(dummies, as.numeric))
+rowSums(dummies)
+```
 
     ## [1] 2 1 3 0 1
 
-[`colSums`](https://rdrr.io/r/base/colSums.html)`(``dummies``)`
+``` r
+
+colSums(dummies)
+```
 
     ## Email Phone  Post 
     ##     3     3     1
@@ -133,7 +171,10 @@ to numbers before summing:
 Single responses work the same way. Because columns are sorted as text,
 numeric responses sort as `1`, `10`, `2`:
 
-[`dummy_arrange`](https://sedzinfo.github.io/rwf/reference/dummy_arrange.md)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"1,10"``, ``"2"``, ``"10,2"``)``)`
+``` r
+
+dummy_arrange(c("1,10", "2", "10,2"))
+```
 
     ##   1 10 2
     ## 1 1  1 0
@@ -143,11 +184,19 @@ numeric responses sort as `1`, `10`, `2`:
 `generate_multiple_response_vector` from rwf simulates multiple-response
 data; `gsub` removes the spaces after the commas:
 
-[`set.seed`](https://rdrr.io/r/base/Random.html)`(``1``)`` ``responses`` ``<-`` `[`gsub`](https://rdrr.io/r/base/grep.html)`(``" "``, ``""``, `[`generate_multiple_response_vector`](https://sedzinfo.github.io/rwf/reference/generate_multiple_response_vector.md)`(``responses ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Agree"``, ``"Hi"``, ``"All"``)``, responded ``=`` ``1``:``3``, length ``=`` ``6``)``, fixed ``=`` ``TRUE``)`` ``responses`
+``` r
+
+set.seed(1)
+responses <- gsub(" ", "", generate_multiple_response_vector(responses = c("Agree", "Hi", "All"), responded = 1:3, length = 6), fixed = TRUE)
+responses
+```
 
     ## [1] "All"          "Hi"           "All"          "Hi,All,Agree" "Agree,All,Hi" "Hi,All"
 
-[`dummy_arrange`](https://sedzinfo.github.io/rwf/reference/dummy_arrange.md)`(``responses``)`
+``` r
+
+dummy_arrange(responses)
+```
 
     ##   Agree All Hi
     ## 1     0   1  0
@@ -171,7 +220,14 @@ Levels with no observations (n\_\ell=0\le c) are removed. All factor
 columns are processed, or only the columns in `factor_index`; other
 columns are left unchanged.
 
-`df`` ``<-`` `[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(``id ``=`` ``1``:``12``,`` `` city ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(``"Athens"``, ``6``)``, `[`rep`](https://rdrr.io/r/base/rep.html)`(``"Patras"``, ``3``)``, `[`rep`](https://rdrr.io/r/base/rep.html)`(``"Volos"``, ``2``)``, ``"Chania"``)``,`` `` levels ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"Athens"``, ``"Patras"``, ``"Volos"``, ``"Chania"``, ``"Larissa"``)``)``,`` `` group ``=`` `[`factor`](https://rdrr.io/r/base/factor.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(`[`c`](https://rdrr.io/r/base/c.html)`(``"x"``, ``"y"``)``, ``6``)``)``)`` `[`table`](https://rdrr.io/r/base/table.html)`(``df``$``city``)`
+``` r
+
+df <- data.frame(id = 1:12,
+                 city = factor(c(rep("Athens", 6), rep("Patras", 3), rep("Volos", 2), "Chania"),
+                               levels = c("Athens", "Patras", "Volos", "Chania", "Larissa")),
+                 group = factor(rep(c("x", "y"), 6)))
+table(df$city)
+```
 
     ## 
     ##  Athens  Patras   Volos  Chania Larissa 
@@ -180,7 +236,10 @@ columns are left unchanged.
 With c=2, Volos (2) and Chania (1) become “Other” and the empty level
 Larissa is removed:
 
-[`table`](https://rdrr.io/r/base/table.html)`(`[`drop_levels`](https://sedzinfo.github.io/rwf/reference/drop_levels.md)`(``df``, factor_index ``=`` ``2``, minimum_frequency ``=`` ``2``)``$``city``)`
+``` r
+
+table(drop_levels(df, factor_index = 2, minimum_frequency = 2)$city)
+```
 
     ## 
     ## Athens Patras  Other 
@@ -188,7 +247,10 @@ Larissa is removed:
 
 The comparison is \le, so with c=3 Patras (exactly 3) is collapsed too:
 
-[`table`](https://rdrr.io/r/base/table.html)`(`[`drop_levels`](https://sedzinfo.github.io/rwf/reference/drop_levels.md)`(``df``, factor_index ``=`` ``2``, minimum_frequency ``=`` ``3``)``$``city``)`
+``` r
+
+table(drop_levels(df, factor_index = 2, minimum_frequency = 3)$city)
+```
 
     ## 
     ## Athens  Other 
@@ -198,13 +260,20 @@ Without `factor_index`, every factor is processed. With c=6 no level of
 either factor has more than 6 cases (Athens and both levels of `group`
 have exactly 6), so each factor collapses into a single “Other” level:
 
-`result`` ``<-`` `[`drop_levels`](https://sedzinfo.github.io/rwf/reference/drop_levels.md)`(``df``, minimum_frequency ``=`` ``6``)`` `[`table`](https://rdrr.io/r/base/table.html)`(``result``$``city``)`
+``` r
+
+result <- drop_levels(df, minimum_frequency = 6)
+table(result$city)
+```
 
     ## 
     ## Other 
     ##    12
 
-[`table`](https://rdrr.io/r/base/table.html)`(``result``$``group``)`
+``` r
+
+table(result$group)
+```
 
     ## 
     ## Other 

@@ -17,21 +17,47 @@ The code can be found
 
 ## Plot Receiver Operating Characteristic ROC Curve
 
-`# Observed vector binary`` ``observed``<-`[`round`](https://rdrr.io/r/base/Round.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``100``,m``=``0``,sd``=``.5``)``)``)`` ``# Predicted vector continuous`` ``predicted``<-`[`abs`](https://rdrr.io/r/base/MathFun.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``100``,m``=``0``,sd``=``.5``)``)`` `[`plot_roc`](https://sedzinfo.github.io/rwf/reference/plot_roc.md)`(``observed``=``observed``,predicted``=``predicted``)`
+``` r
+
+# Observed vector binary
+observed<-round(abs(rnorm(100,m=0,sd=.5)))
+# Predicted vector continuous
+predicted<-abs(rnorm(100,m=0,sd=.5))
+plot_roc(observed=observed,predicted=predicted)
+```
 
 ![](FUNCTIONS_TRAIN_TEST_files/figure-html/plot_roc-1.png)![](FUNCTIONS_TRAIN_TEST_files/figure-html/plot_roc-2.png)
 
-`# An example with a good prediction`` ``df1``<-`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`matrix`](https://rdrr.io/r/base/matrix.html)`(``.999``,ncol``=``2``,nrow``=``2``)``)`` ``correlation_martix``<-`[`as.matrix`](https://rdrr.io/r/base/matrix.html)`(``df1``)`` `[`diag`](https://rdrr.io/r/base/diag.html)`(``correlation_martix``)``<-``1`` ``df1``<-`[`generate_correlation_matrix`](https://sedzinfo.github.io/rwf/reference/generate_correlation_matrix.md)`(``correlation_martix``,nrows``=``1000``)`` ``df1``$``X1``<-`[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df1``$``X1``)``<``1``,``0``,``1``)`` ``df1``$``X2``<-`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df1``$``X2``)`` ``df1``$``X2``<-``(``df1``$``X2``-`[`min`](https://rdrr.io/r/base/Extremes.html)`(``df1``$``X2``)``)``/``(`[`max`](https://rdrr.io/r/base/Extremes.html)`(``df1``$``X2``)``-`[`min`](https://rdrr.io/r/base/Extremes.html)`(``df1``$``X2``)``)`` `[`plot_roc`](https://sedzinfo.github.io/rwf/reference/plot_roc.md)`(``observed``=`[`round`](https://rdrr.io/r/base/Round.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df1``$``X1``)``,``0``)``,predicted``=`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df1``$``X2``)``)`
+``` r
+
+# An example with a good prediction
+df1<-data.frame(matrix(.999,ncol=2,nrow=2))
+correlation_martix<-as.matrix(df1)
+diag(correlation_martix)<-1
+df1<-generate_correlation_matrix(correlation_martix,nrows=1000)
+df1$X1<-ifelse(abs(df1$X1)<1,0,1)
+df1$X2<-abs(df1$X2)
+df1$X2<-(df1$X2-min(df1$X2))/(max(df1$X2)-min(df1$X2))
+plot_roc(observed=round(abs(df1$X1),0),predicted=abs(df1$X2))
+```
 
 ![](FUNCTIONS_TRAIN_TEST_files/figure-html/plot_roc-3.png)![](FUNCTIONS_TRAIN_TEST_files/figure-html/plot_roc-4.png)
 
 ## Plot Confusion Matrix
 
-[`plot_confusion`](https://sedzinfo.github.io/rwf/reference/plot_confusion.md)`(``observed``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``2``,``3``,``1``,``2``,``3``)``,predicted``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``2``,``3``,``1``,``2``,``3``)``)`
+``` r
+
+plot_confusion(observed=c(1,2,3,1,2,3),predicted=c(1,2,3,1,2,3))
+```
 
 ![](FUNCTIONS_TRAIN_TEST_files/figure-html/plot_confusion-1.png)
 
-`observed``<-`[`c`](https://rdrr.io/r/base/c.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(``"male"``,``10``)``,`[`rep`](https://rdrr.io/r/base/rep.html)`(``"female"``,``10``)``,``"male"``,``"male"``)`` ``predicted``<-`[`c`](https://rdrr.io/r/base/c.html)`(`[`rep`](https://rdrr.io/r/base/rep.html)`(``"male"``,``10``)``,`[`rep`](https://rdrr.io/r/base/rep.html)`(``"female"``,``10``)``,``"female"``,``"female"``)`` `[`plot_confusion`](https://sedzinfo.github.io/rwf/reference/plot_confusion.md)`(``observed``=``observed``,predicted``=``predicted``)`
+``` r
+
+observed<-c(rep("male",10),rep("female",10),"male","male")
+predicted<-c(rep("male",10),rep("female",10),"female","female")
+plot_confusion(observed=observed,predicted=predicted)
+```
 
 ![](FUNCTIONS_TRAIN_TEST_files/figure-html/plot_confusion-2.png)
 
@@ -42,7 +68,17 @@ density distribution of predicted probabilities for different observed
 categories. The plot helps to visualize how well the predicted
 probabilities separate the different observed categories.
 
-`df1``<-`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`matrix`](https://rdrr.io/r/base/matrix.html)`(``.999``,ncol``=``2``,nrow``=``2``)``)`` ``correlation_martix``<-`[`as.matrix`](https://rdrr.io/r/base/matrix.html)`(``df1``)`` `[`diag`](https://rdrr.io/r/base/diag.html)`(``correlation_martix``)``<-``1`` ``df1``<-`[`generate_correlation_matrix`](https://sedzinfo.github.io/rwf/reference/generate_correlation_matrix.md)`(``correlation_martix``,nrows``=``1000``)`` ``df1``$``X1``<-`[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df1``$``X1``)``<``1``,``0``,``1``)`` ``df1``$``X2``<-`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df1``$``X2``)`` ``df1``$``X2``<-``(``df1``$``X2``-`[`min`](https://rdrr.io/r/base/Extremes.html)`(``df1``$``X2``)``)``/``(`[`max`](https://rdrr.io/r/base/Extremes.html)`(``df1``$``X2``)``-`[`min`](https://rdrr.io/r/base/Extremes.html)`(``df1``$``X2``)``)`` `[`plot_separability`](https://sedzinfo.github.io/rwf/reference/plot_separability.md)`(``observed``=`[`round`](https://rdrr.io/r/base/Round.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df1``$``X1``)``,``0``)``,predicted``=`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df1``$``X2``)``)`
+``` r
+
+df1<-data.frame(matrix(.999,ncol=2,nrow=2))
+correlation_martix<-as.matrix(df1)
+diag(correlation_martix)<-1
+df1<-generate_correlation_matrix(correlation_martix,nrows=1000)
+df1$X1<-ifelse(abs(df1$X1)<1,0,1)
+df1$X2<-abs(df1$X2)
+df1$X2<-(df1$X2-min(df1$X2))/(max(df1$X2)-min(df1$X2))
+plot_separability(observed=round(abs(df1$X1),0),predicted=abs(df1$X2))
+```
 
 ![](FUNCTIONS_TRAIN_TEST_files/figure-html/plot_separability-1.png)
 
@@ -53,7 +89,19 @@ different cut-off points. It iterates through a range of cut-off points,
 calculates the confusion matrix,and evaluates the proportion of correct
 classifications for each cut-off.
 
-`df``<-`[`data.frame`](https://rdrr.io/r/base/data.frame.html)`(`[`matrix`](https://rdrr.io/r/base/matrix.html)`(``.999``,ncol``=``2``,nrow``=``2``)``)`` ``correlation_martix``<-`[`as.matrix`](https://rdrr.io/r/base/matrix.html)`(``df``)`` `[`diag`](https://rdrr.io/r/base/diag.html)`(``correlation_martix``)``<-``1`` ``df``<-`[`generate_correlation_matrix`](https://sedzinfo.github.io/rwf/reference/generate_correlation_matrix.md)`(``correlation_martix``,nrows``=``1000``)`` ``df``$``X1``<-`[`ifelse`](https://rdrr.io/r/base/ifelse.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df``$``X1``)``<``1``,``0``,``1``)`` ``df``$``X2``<-`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df``$``X2``)`` ``df``$``X2``<-``(``df``$``X2``-`[`min`](https://rdrr.io/r/base/Extremes.html)`(``df``$``X2``)``)``/``(`[`max`](https://rdrr.io/r/base/Extremes.html)`(``df``$``X2``)``-`[`min`](https://rdrr.io/r/base/Extremes.html)`(``df``$``X2``)``)`` `[`result_confusion_performance`](https://sedzinfo.github.io/rwf/reference/result_confusion_performance.md)`(``observed``=`[`round`](https://rdrr.io/r/base/Round.html)`(`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df``$``X1``)``,``0``)``,`` `` predicted``=`[`abs`](https://rdrr.io/r/base/MathFun.html)`(``df``$``X2``)``,`` `` step``=``.01``)`
+``` r
+
+df<-data.frame(matrix(.999,ncol=2,nrow=2))
+correlation_martix<-as.matrix(df)
+diag(correlation_martix)<-1
+df<-generate_correlation_matrix(correlation_martix,nrows=1000)
+df$X1<-ifelse(abs(df$X1)<1,0,1)
+df$X2<-abs(df$X2)
+df$X2<-(df$X2-min(df$X2))/(max(df$X2)-min(df$X2))
+result_confusion_performance(observed=round(abs(df$X1),0),
+                             predicted=abs(df$X2),
+                             step=.01)
+```
 
     ## $plot_performance
 
@@ -174,7 +222,10 @@ classifications for each cut-off.
     ## sum 690.00 310.00 1000.00 1.00
     ## p     0.99   0.98    1.00 0.99
 
-[`result_confusion_performance`](https://sedzinfo.github.io/rwf/reference/result_confusion_performance.md)`(``observed``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``2``,``3``,``1``,``2``,``3``)``,predicted``=`[`abs`](https://rdrr.io/r/base/MathFun.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``6``,``0``,sd``=``.1``)``)``)`
+``` r
+
+result_confusion_performance(observed=c(1,2,3,1,2,3),predicted=abs(rnorm(6,0,sd=.1)))
+```
 
     ## $plot_performance
 
@@ -202,7 +253,11 @@ classifications for each cut-off.
 
 Sample data for train test validation procedures
 
-`infert_formula``<-`[`as.formula`](https://rdrr.io/r/stats/formula.html)`(`[`factor`](https://rdrr.io/r/base/factor.html)`(``case``)``~``age``+``parity``+``education``+``spontaneous``+``induced``)`` ``result``<-`[`k_fold`](https://sedzinfo.github.io/rwf/reference/k_fold.md)`(``infert``,k``=``10``,model_formula``=``infert_formula``)`
+``` r
+
+infert_formula<-as.formula(factor(case)~age+parity+education+spontaneous+induced)
+result<-k_fold(infert,k=10,model_formula=infert_formula)
+```
 
     ## Fold Cases: 1 Train: 223 Test: 25 Total: 248 Unique Train: 223 Unique Test: 25 
     ## Fold Cases: 2 Train: 223 Test: 25 Total: 248 Unique Train: 223 Unique Test: 25 
@@ -215,7 +270,11 @@ Sample data for train test validation procedures
     ## Fold Cases: 9 Train: 223 Test: 25 Total: 248 Unique Train: 223 Unique Test: 25 
     ## Fold Cases: 10 Train: 223 Test: 25 Total: 248 Unique Train: 223 Unique Test: 25
 
-`model_formula``<-`[`as.formula`](https://rdrr.io/r/stats/formula.html)`(``mpg``~``cyl``+``disp``+``hp``+``drat``+``wt``+``qsec``+``vs``+``am``+``gear``+``carb``)`` ``result``<-`[`k_fold`](https://sedzinfo.github.io/rwf/reference/k_fold.md)`(``mtcars``,k``=``2``,model_formula``=``model_formula``)`
+``` r
+
+model_formula<-as.formula(mpg~cyl+disp+hp+drat+wt+qsec+vs+am+gear+carb)
+result<-k_fold(mtcars,k=2,model_formula=model_formula)
+```
 
     ## Fold Cases: 1 Train: 16 Test: 16 Total: 32 Unique Train: 16 Unique Test: 16 
     ## Fold Cases: 2 Train: 16 Test: 16 Total: 32 Unique Train: 16 Unique Test: 16
@@ -224,7 +283,11 @@ Sample data for train test validation procedures
 
 Sample data for train test validation procedures
 
-`infert_formula``<-`[`as.formula`](https://rdrr.io/r/stats/formula.html)`(`[`factor`](https://rdrr.io/r/base/factor.html)`(``case``)``~``age``+``parity``+``education``+``spontaneous``+``induced``)`` ``result``<-`[`k_sample`](https://sedzinfo.github.io/rwf/reference/k_sample.md)`(``df``=``infert``,k``=``10``,model_formula``=``infert_formula``)`
+``` r
+
+infert_formula<-as.formula(factor(case)~age+parity+education+spontaneous+induced)
+result<-k_sample(df=infert,k=10,model_formula=infert_formula)
+```
 
     ## Fold Cases: 1 Train: 12 Test: 6 Validation: 6 Total: 25 Unique Train: 12 Unique Test: 6 Unique Validation: 7 
     ## Fold Cases: 2 Train: 12 Test: 6 Validation: 6 Total: 25 Unique Train: 12 Unique Test: 6 Unique Validation: 7 
@@ -237,7 +300,11 @@ Sample data for train test validation procedures
     ## Fold Cases: 9 Train: 12 Test: 6 Validation: 6 Total: 25 Unique Train: 12 Unique Test: 6 Unique Validation: 7 
     ## Fold Cases: 10 Train: 12 Test: 6 Validation: 6 Total: 25 Unique Train: 12 Unique Test: 6 Unique Validation: 7
 
-`model_formula``<-`[`as.formula`](https://rdrr.io/r/stats/formula.html)`(``mpg``~``cyl``+``disp``+``hp``+``drat``+``wt``+``qsec``+``vs``+``am``+``gear``+``carb``)`` ``result``<-`[`k_sample`](https://sedzinfo.github.io/rwf/reference/k_sample.md)`(``df``=``mtcars``,k``=``10``,model_formula``=``model_formula``)`
+``` r
+
+model_formula<-as.formula(mpg~cyl+disp+hp+drat+wt+qsec+vs+am+gear+carb)
+result<-k_sample(df=mtcars,k=10,model_formula=model_formula)
+```
 
     ## Fold Cases: 1 Train: 2 Test: 1 Validation: 1 Total: 4 Unique Train: 2 Unique Test: 1 Unique Validation: 1 
     ## Fold Cases: 2 Train: 1 Test: 1 Validation: 1 Total: 3 Unique Train: 1 Unique Test: 1 Unique Validation: 1 
@@ -254,7 +321,11 @@ Sample data for train test validation procedures
 
 Scale all data between 0 and 1
 
-`result``<-`[`recode_scale_dummy`](https://sedzinfo.github.io/rwf/reference/recode_scale_dummy.md)`(``infert``)`` `[`head`](https://rdrr.io/r/utils/head.html)`(``result``)`
+``` r
+
+result<-recode_scale_dummy(infert)
+head(result)
+```
 
     ##   X6.11yrs X12..yrs X0.5yrs       age parity induced case spontaneous    stratum pooled.stratum
     ## 1        0        0       1 0.2173913    1.0     0.5    1         1.0 0.00000000     0.03225806
@@ -266,7 +337,10 @@ Scale all data between 0 and 1
 
 ## Confusion Matrix
 
-[`confusion`](https://sedzinfo.github.io/rwf/reference/confusion.md)`(``observed``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``2``,``3``,``4``,``5``,``10``)``,predicted``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``2``,``3``,``4``,``5``,``11``)``)`
+``` r
+
+confusion(observed=c(1,2,3,4,5,10),predicted=c(1,2,3,4,5,11))
+```
 
     ##          observed
     ## predicted 1 2 3 4 5 10 11
@@ -278,7 +352,10 @@ Scale all data between 0 and 1
     ##        10 0 0 0 0 0  0  0
     ##        11 0 0 0 0 0  1  0
 
-[`confusion`](https://sedzinfo.github.io/rwf/reference/confusion.md)`(``observed``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``2``,``2``,``2``,``2``)``,predicted``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``1``,``2``,``2``,``2``)``)`
+``` r
+
+confusion(observed=c(1,2,2,2,2),predicted=c(1,1,2,2,2))
+```
 
     ##          observed
     ## predicted 1 2
@@ -287,14 +364,22 @@ Scale all data between 0 and 1
 
 ## Proportion Accutate
 
-[`proportion_accurate`](https://sedzinfo.github.io/rwf/reference/proportion_accurate.md)`(``observed``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``2``,``3``,``4``,``5``,``10``)``,predicted``=`[`c`](https://rdrr.io/r/base/c.html)`(``1``,``2``,``3``,``4``,``5``,``11``)``)`
+``` r
+
+proportion_accurate(observed=c(1,2,3,4,5,10),predicted=c(1,2,3,4,5,11))
+```
 
     ##   cm_diagonal cm_off_diagonal kappa_unweighted kappa_linear kappa_squared
     ## 1   0.8333333               1        0.8064516    0.9285714     0.9801325
 
 ## Confusion Matrix Percent
 
-`observed``<-`[`factor`](https://rdrr.io/r/base/factor.html)`(`[`round`](https://rdrr.io/r/base/Round.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``10000``,m``=``10``,sd``=``1``)``)``)`` ``predicted``<-`[`factor`](https://rdrr.io/r/base/factor.html)`(`[`round`](https://rdrr.io/r/base/Round.html)`(`[`rnorm`](https://rdrr.io/r/stats/Normal.html)`(``10000``,m``=``10``,sd``=``1``)``)``)`` `[`confusion_matrix_percent`](https://sedzinfo.github.io/rwf/reference/confusion_matrix_percent.md)`(``observed``,``predicted``)`
+``` r
+
+observed<-factor(round(rnorm(10000,m=10,sd=1)))
+predicted<-factor(round(rnorm(10000,m=10,sd=1)))
+confusion_matrix_percent(observed,predicted)
+```
 
     ##        6     7      8       9      10      11     12    13   14      sum    p
     ## 6   0.00  0.00   1.00    1.00    2.00    1.00   0.00  0.00 0.00     5.00 0.00
@@ -311,6 +396,9 @@ Scale all data between 0 and 1
 
 ## Confusion Matrix Percent
 
-[`plot_confusion_extended`](https://sedzinfo.github.io/rwf/reference/plot_confusion_extended.md)`(``observed``=`[`c`](https://rdrr.io/r/base/c.html)`(``0``,``0``,``0``,``1``,``1``,``1``)``,predicted``=`[`c`](https://rdrr.io/r/base/c.html)`(``0``,``0``,``0``,``1``,``1``,``1``)``)`
+``` r
+
+plot_confusion_extended(observed=c(0,0,0,1,1,1),predicted=c(0,0,0,1,1,1))
+```
 
 ![](FUNCTIONS_TRAIN_TEST_files/figure-html/confusion_extended-1.png)

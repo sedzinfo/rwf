@@ -41,7 +41,13 @@ installs the packages rwf needs.
 
 #### From R-universe (recommended)
 
-[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(`` `` ``"rwf"``,`` `` repos ``=`` `[`c`](https://rdrr.io/r/base/c.html)`(``"https://sedzinfo.r-universe.dev"``, ``"https://cloud.r-project.org"``)`` ``)`
+``` r
+
+install.packages(
+  "rwf",
+  repos = c("https://sedzinfo.r-universe.dev", "https://cloud.r-project.org")
+)
+```
 
 [R-universe](https://sedzinfo.r-universe.dev/rwf) builds rwf from this
 repository after every change, ready to install on Windows, macOS and
@@ -49,7 +55,11 @@ Linux, and CRAN provides the packages it needs.
 
 #### From GitHub
 
-[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"pak"``)`` ``# once`` ``pak``::`[`pak`](https://pak.r-lib.org/reference/pak.html)`(``"sedzinfo/rwf/rwf"``)`
+``` r
+
+install.packages("pak")   # once
+pak::pak("sedzinfo/rwf/rwf")
+```
 
 #### From the release tarball
 
@@ -57,7 +67,11 @@ The [latest
 release](https://github.com/sedzinfo/rwf/releases/tag/latest) has the
 source tarball and the PDF manual, rebuilt from `main` on every change:
 
-[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"pak"``)`` ``# once`` ``pak``::`[`pak`](https://pak.r-lib.org/reference/pak.html)`(``"url::https://github.com/sedzinfo/rwf/releases/download/latest/rwf_0.1.0.tar.gz"``)`
+``` r
+
+install.packages("pak")   # once
+pak::pak("url::https://github.com/sedzinfo/rwf/releases/download/latest/rwf_0.1.0.tar.gz")
+```
 
 #### From a clone of the repository, with Git LFS
 
@@ -91,14 +105,26 @@ and `git lfs pull` to download them.
 
 **3. Install the package from the clone:**
 
-[`install.packages`](https://rdrr.io/r/utils/install.packages.html)`(``"pak"``)`` ``# once`` ``pak``::`[`local_install`](https://pak.r-lib.org/reference/local_install.html)`(``"path/to/rwf/rwf"``)`
+``` r
+
+install.packages("pak")   # once
+pak::local_install("path/to/rwf/rwf")
+```
 
 To update it later, run `git pull` and `git lfs pull` in the clone, and
 install again.
 
 ## Usage
 
-[`library`](https://rdrr.io/r/base/library.html)`(`[`rwf`](https://sedzinfo.github.io/rwf/)`)`` ``x`` ``<-`` ``df_insurance``[``, `[`c`](https://rdrr.io/r/base/c.html)`(``"age"``, ``"bmi"``, ``"charges"``)``]`` ``correlations`` ``<-`` `[`report_correlation`](https://sedzinfo.github.io/rwf/reference/report_correlation.md)`(``x``, scatterplot ``=`` ``FALSE``)`` ``correlations``$``r_lower`` ``# also the p values, confidence intervals, sample sizes, ...`` `[`report_correlation`](https://sedzinfo.github.io/rwf/reference/report_correlation.md)`(``x``, scatterplot ``=`` ``FALSE``, file ``=`` ``"correlations"``)`` ``# saves the tables in correlations.xlsx and the plot in correlations_corrplot.pdf`
+``` r
+
+library(rwf)
+x <- df_insurance[, c("age", "bmi", "charges")]
+correlations <- report_correlation(x, scatterplot = FALSE)
+correlations$r_lower   # also the p values, confidence intervals, sample sizes, ...
+report_correlation(x, scatterplot = FALSE, file = "correlations")
+# saves the tables in correlations.xlsx and the plot in correlations_corrplot.pdf
+```
 
 Most `report_*` functions take a `file` argument in the same way. Every
 function has a [help page](https://sedzinfo.github.io/rwf/reference/)
@@ -636,13 +662,6 @@ Status](https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/build
   in blocks and see how much more variance each block explains, as the
   change in R².
 
-- [Item response theory
-  reports](https://sedzinfo.github.io/rwf/articles/GLM_IRT.md):
-
-  Item response theory reports with rwf: test information and expected
-  score curves, and a full report of a mirt model with its coefficients,
-  local independence and fit.
-
 - [Thurstonian item response
   theory](https://sedzinfo.github.io/rwf/articles/GLM_IRT_T.md):
 
@@ -656,6 +675,13 @@ Status](https://img.shields.io/github/actions/workflow/status/sedzinfo/rwf/build
   Unidimensional IRT from scratch in base R with rwf: the item response
   function, item and test information for the 1PL, 2PL and 3PL models,
   and Newton-Raphson ability estimates.
+
+- [Item response theory
+  reports](https://sedzinfo.github.io/rwf/articles/GLM_IRT.md):
+
+  Item response theory reports with rwf: test information and expected
+  score curves, and a full report of a mirt model with its coefficients,
+  local independence and fit.
 
 - [Kruskal–Wallis
   test](https://sedzinfo.github.io/rwf/articles/GLM_KRUSKAL_WALLIS.md):
