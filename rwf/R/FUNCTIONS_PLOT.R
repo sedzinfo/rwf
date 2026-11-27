@@ -62,7 +62,7 @@ plot_multiplot <- function(..., plotlist = NULL, cols = 2, layout = NULL) {
     counter <- 1
     for (page in 1:pages) {
       grid::grid.newpage()
-      grid::pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+      grid::pushViewport(grid::viewport(layout = grid::grid.layout(nrow(layout), ncol(layout))))
       for (i in 1:plots_per_page) {
         position <- as.data.frame(which(layout == i, arr.ind = TRUE))
         if (counter <= nplots) {
