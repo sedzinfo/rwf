@@ -50,9 +50,9 @@
     <li><a class="dropdown-item" href="../articles/GLM_EFA.html">Exploratory factor analysis</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_FRIEDMAN.html">Friedman test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_HLR.html">Hierarchical linear regression</a></li>
-    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_T.html">Thurstonian item response theory</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_IRT_U.html">Unidimensional IRT from scratch</a></li>
+    <li><a class="dropdown-item" href="../articles/GLM_IRT.html">Item response theory reports</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_KRUSKAL_WALLIS.html">Kruskal–Wallis test</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LINEAR_REGRESSION.html">Linear regression</a></li>
     <li><a class="dropdown-item" href="../articles/GLM_LOGISTIC_REGRESSION.html">Logistic regression</a></li>
@@ -663,7 +663,7 @@ across all the comparisons for that dataset:</p>
 <span><span class="co">## 3           bp ~ time | patient 120  2  7.758621 0.06465517       0.000000e+00</span></span>
 <span><span class="co">## 4 decrease ~ treatment | rowpos   8  8 45.808670 0.81801196       7.105427e-15</span></span>
 <span><span class="co">## 5    circumference ~ age | Tree   5  7 29.913978 0.99713262       7.105427e-15</span></span>
-<span><span class="co">## 6         conc ~ time | Subject   6 11 59.536826 0.99228044       1.421085e-14</span></span>
+<span><span class="co">## 6         conc ~ time | Subject   6 11 59.536826 0.99228044       2.131628e-14</span></span>
 <span><span class="co">## 7           height ~ age | Seed  14  6 70.000000 1.00000000       0.000000e+00</span></span></code></pre>
 </div>
 <div class="section level3">
@@ -815,14 +815,14 @@ Here one measurement of the first plant is set to missing:</p>
 <span><span class="co">## Friedman chi-squared = 53.961, df = 6, p-value = 7.513e-10</span></span></code></pre>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">check_friedman</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">form</span>, df <span class="op">=</span> <span class="va">df_missing</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##   statistic                   package          rwf        other    difference</span></span>
-<span><span class="co">## 1         Q      stats::friedman.test 5.396078e+01 5.396078e+01  0.000000e+00</span></span>
-<span><span class="co">## 2         Q       coin::friedman_test 5.396078e+01 5.396078e+01 -1.421085e-14</span></span>
-<span><span class="co">## 3         Q    rstatix::friedman_test 5.396078e+01 5.396078e+01  0.000000e+00</span></span>
-<span><span class="co">## 4        df      stats::friedman.test 6.000000e+00 6.000000e+00  0.000000e+00</span></span>
-<span><span class="co">## 5         p      stats::friedman.test 7.512708e-10 7.512708e-10  0.000000e+00</span></span>
-<span><span class="co">## 6 kendall_w rstatix::friedman_effsize 8.175876e-01 8.175876e-01  0.000000e+00</span></span>
-<span><span class="co">## 7 kendall_w    effectsize::kendalls_w 8.175876e-01 8.175876e-01  0.000000e+00</span></span></code></pre>
+<pre><code><span><span class="co">##   statistic                   package          rwf        other   difference</span></span>
+<span><span class="co">## 1         Q      stats::friedman.test 5.396078e+01 5.396078e+01 0.000000e+00</span></span>
+<span><span class="co">## 2         Q       coin::friedman_test 5.396078e+01 5.396078e+01 2.131628e-14</span></span>
+<span><span class="co">## 3         Q    rstatix::friedman_test 5.396078e+01 5.396078e+01 0.000000e+00</span></span>
+<span><span class="co">## 4        df      stats::friedman.test 6.000000e+00 6.000000e+00 0.000000e+00</span></span>
+<span><span class="co">## 5         p      stats::friedman.test 7.512708e-10 7.512708e-10 0.000000e+00</span></span>
+<span><span class="co">## 6 kendall_w rstatix::friedman_effsize 8.175876e-01 8.175876e-01 0.000000e+00</span></span>
+<span><span class="co">## 7 kendall_w    effectsize::kendalls_w 8.175876e-01 8.175876e-01 0.000000e+00</span></span></code></pre>
 <p>A block with two observations for the same group is an error, because
 the design is no longer an unreplicated complete block design:</p>
 <div class="sourceCode" id="cb60"><pre class="downlit sourceCode r">
